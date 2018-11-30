@@ -1,0 +1,53 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: NeuErstellen
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _6mWlcPPPEeiRV8UfrW9XLA
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 11/29/18, 1:15 PM
+Testcase-Type: ecl
+Verifications: _TU4UsPPQEeiRV8UfrW9XLA
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Patient über View Patienten, Button add neu erstellen
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view Patienten | get-button "Neuen Patienteneintrag erstellen" | click
+with [get-window "Patient erfassen"] {
+    with [get-editbox -after [get-label Name]] {
+        set-text Name
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-editbox -after [get-label Vorname]] {
+        set-text Vorname
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    get-combo -after [get-label Geschlecht] | key-type "TRAVERSE_TAB_NEXT"
+    with [get-editbox -after [get-label Geburtsdatum]] {
+        set-text "1.1.1988"
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-editbox -after [get-label Strasse]] {
+        set-text Strasse
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-editbox -after [get-label Plz]] {
+        set-text 6850
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-editbox -after [get-label Ort]] {
+        set-text Lenzburg
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    get-editbox -after [get-label Telefon] | set-text 0815123456
+    get-button OK | click
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

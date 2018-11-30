@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.rcptt.launching.ext">
+    <booleanAttribute key="append.args" value="true"/>
+    <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
+    <booleanAttribute key="askclear" value="false"/>
+    <stringAttribute key="aut-location" value="/Applications/Elexis/Elexis3_MASTER.app"/>
+    <stringAttribute key="aut-target-platform" value="AUT Elexis3MasterOSXRunFromScratch (Target Platform)"/>
+    <booleanAttribute key="aut-target-updatable" value="true"/>
+    <stringAttribute key="bootstrap" value=""/>
+    <stringAttribute key="checked" value="[NONE]"/>
+    <booleanAttribute key="clearConfig" value="false"/>
+    <booleanAttribute key="clearws" value="true"/>
+    <booleanAttribute key="clearwslog" value="false"/>
+    <stringAttribute key="com.xored.launching.common.attrArch" value="x86_64"/>
+    <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterOSXRunFromScratch"/>
+    <stringAttribute key="location" value="${workspace_loc}/../aut-Elexis3MasterOSXRunFromScratch"/>
+    <booleanAttribute key="org.eclipse.debug.ui.ATTR_APPEND_TO_FILE" value="true"/>
+    <stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="/Users/marco/rcpttWorkspace/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterOSXRunFromScratch/console.log"/>
+    <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_181]"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch x86_64 -consoleLog"/>
+    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.console.enable.builtin=true -Xms256m -Xmx1024m&#10;-Dfile.encoding=utf-8 -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts=false &#10;-Djava.awt.headless=true -XX:MaxPermSize=128m&#10;-Duser.language=de -Duser.region=CH&#10;-Dch.elexis.username=007 -Dch.elexis.password=topsecret -Delexis-run-mode=RunFromScratch"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/Users/marco/Desktop/Elexis3_MASTER.app/Contents/Eclipse"/>
+    <stringAttribute key="pde.version" value="3.3"/>
+    <stringAttribute key="product" value="ch.elexis.core.application.product"/>
+    <booleanAttribute key="tracing" value="false"/>
+    <booleanAttribute key="useDefaultConfig" value="true"/>
+    <booleanAttribute key="useDefaultConfigArea" value="true"/>
+    <booleanAttribute key="useProduct" value="true"/>
+</launchConfiguration>

@@ -1,0 +1,43 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: BenutzerAnlegen
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _A422gPSaEeihgIWtsvN7iA
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 11/30/18, 1:22 PM
+Testcase-Type: ecl
+Verifications: _iDjg0PSaEeihgIWtsvN7iA
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-preferences-menu | click
+with [get-window Benutzervorgaben] {
+    get-tree | select "Gruppen und Rechte/Benutzerverwaltung"
+    get-button -after [get-label Benutzerverwaltung] -index 3 | click
+}
+with [get-window "Benutzernamen festlegen"] {
+    get-editbox 
+        -after [get-label "Benutzernamen festlegen - dieser kann nicht mehr geändert, sowie zukünftig anderweitig verwendet werden."] 
+        | set-text user
+    get-button OK | click
+}
+with [get-window Benutzervorgaben] {
+    get-table | select user
+    with [get-group Verrechnung] {
+        get-group Rollenzuordnung | get-table | get-item -path fhir | check
+        get-group "tätig für" | get-table | get-item -path "Bond James" | check
+    }
+    get-window "No contact assigned" | get-button OK | click
+    get-group Verrechnung | get-link "Nicht gesetzt <a>ändern</a>" | click-link
+    with [get-window "Kontakt auswählen"] {
+        get-table | select "Bond James - Bond James \\(m\\), , Dr. med. \\(\\)"
+        get-button OK | click
+    }
+    get-button "Anwenden und Schließen" | click
+}
+get-preferences-menu | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
