@@ -1,0 +1,22 @@
+---
+
+dist: xenial # we need xenial to have mysql 5.7
+
+language: java
+jdk: openjdk8 # oraclejdk8 is no longer supported by travis-ci
+env:
+  global:
+  - JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+  - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//')
+
+install: mvn -V --quiet clean
+
+script: xvfb-run mvn -V clean verify
+
+notifications:
+  email:
+  - niklaus.giger@member.fsf.org
+
+cache:
+  directories:
+  - $HOME/.m2
