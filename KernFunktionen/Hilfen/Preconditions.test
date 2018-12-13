@@ -1,0 +1,60 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _Cr4zgP0jEeiNqfuAT0PA2A
+Element-Name: Preconditions
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _2H3IsP0WEeiNqfuAT0PA2A
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/12/18 7:33 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+// output some utility information uisng procedures from ecl_helper 
+log -message [ concat "Value of environmnet variable PATH is: " [ get-env PATH] ]
+log -message [ concat "Value of get-seconds is: " [ get-seconds ] ]
+log -message [ concat "Value of Java property ch.elexis.password is: " [ get-java-property ch.elexis.password] ]
+log -message [ concat "Value of Locale.getDefault is: " [ get-default-locale ] ]
+log -message [ concat "Value of get-user-dir is: " [ get-user-dir ] ]
+concat "a"[  safe-get-java-property THIS_ENV_VARIABLE_SHOULD_NOT_EXIST ] "b" | eq "ab" | verify-true 
+concat "a"[  get-env "THIS_ENV_VARIABLE_SHOULD_NOT_EXIST" ] "b" |  eq "ab" | verify-true 
+log --message "Checked failure"
+// log -message [ concat "Value of get-workspace-location is: " [ get-workspace-location ] ]
+try {
+	log -message "Check Benutzervorgaben"
+	exec-with-options -disableJobWaiting -command {
+   		get-window Benutzervorgaben | get-button Abbrechen | click
+	}
+} -catch {
+    // Verify that the window was missing (and not some other problem)
+    verify-error -command {get-window Benutzervorgaben}
+}
+get-preferences-menu | click
+concat [get-user-dir] "/my_preferences.csv" |log
+exec-with-options -disableJobWaiting -command {
+  	get-window "Benutzervorgaben" | get-tree | expand-all | get-table-data | write-csv-file
+   		[ concat [get-user-dir] "/my_preferences.csv" ]
+	wait 100
+	get-window "Benutzervorgaben" | get-button "Abbrechen" | click
+}
+
+// Create some uniq variable to ease running unit tests several time with the same database
+global [val currentUniqPatient "FirstValue" ]
+global [val currentUniqPatient [ concat "Patient_" [ get-seconds | str ] ] ]  -override // -override must be at the end
+global [val currentUniqUser [ concat "Arzt_" [ get-seconds | str ] ] ]  -override
+global [val currentUniqMpa [ concat "MPA_" [ get-seconds | str ] ] ]  -override
+log -message "Error Message. Is it correctly sorted ?" -severity error
+log -message "warning Message. This should not appear in the preconditions_log.csv"    -severity warning
+log -message "info Message. Is it correctly sorted ?" -severity info
+
+get-log -levels info -levels error | as-table-data | sort-by dateText | write-csv-file [ concat [get-user-dir] "/results/preconditions_log.csv" ]   
+
+concat "Preconditions passed. currentUniqName is: " $currentUniqPatient | log
+
+
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

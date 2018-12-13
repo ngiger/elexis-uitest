@@ -1,0 +1,75 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Preconditions
+Element-Type: context
+Element-Version: 2.0
+Id: __8MAcP49EeiuqdAcgkHVvQ
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/12/18 8:12 PM
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Checks some preconditions for Running RCPTT tests for Elexis.
+
+Defines the following global variables:
+
+* currentUniqPatient
+* currentUniqUser
+* currentUniqMpa
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+// output some utility information uisng procedures from ecl_helper 
+log -message [ concat "Value of environmnet variable PATH is: " [ get-env PATH] ]
+log -message [ concat "Value of get-seconds is: " [ get-seconds ] ]
+log -message [ concat "Value of Java property ch.elexis.password is: " [ get-java-property ch.elexis.password] ]
+log -message [ concat "Value of Locale.getDefault is: " [ get-default-locale ] ]
+log -message [ concat "Value of get-user-dir is: " [ get-user-dir ] ]
+concat "a"[  safe-get-java-property THIS_ENV_VARIABLE_SHOULD_NOT_EXIST ] "b" | eq "ab" | verify-true 
+concat "a"[  get-env "THIS_ENV_VARIABLE_SHOULD_NOT_EXIST" ] "b" |  eq "ab" | verify-true 
+log --message "Checked failure"
+// log -message [ concat "Value of get-workspace-location is: " [ get-workspace-location ] ]
+try {
+	log -message "Check Benutzervorgaben"
+	exec-with-options -disableJobWaiting -command {
+   		get-window Benutzervorgaben | get-button Abbrechen | click
+	}
+} -catch {
+    // Verify that the window was missing (and not some other problem)
+    verify-error -command {get-window Benutzervorgaben}
+}
+get-preferences-menu | click
+concat [get-user-dir] "/my_preferences.csv" |log
+exec-with-options -disableJobWaiting -command {
+  	get-window "Benutzervorgaben" | get-tree | expand-all | get-table-data | write-csv-file
+   		[ concat [get-user-dir] "/my_preferences.csv" ]
+	wait 100
+	get-window "Benutzervorgaben" | get-button "Abbrechen" | click
+}
+
+// Create some uniq variable to ease running unit tests several time with the same database
+global [val currentUniqPatient "FirstValue" ]
+global [val currentUniqPatient [ concat "Patient_" [ get-seconds | str ] ] ]  -override // -override must be at the end
+global [val currentUniqUser [ concat "Arzt" [ get-seconds | str ] ] ]
+global [val currentUniqMpa [ concat "MPA_" [ get-seconds | str ] ] ]
+
+// Der Verantwortliche Arzt ist bei RunFromScratch James Bond,
+// bei der DemoDB aber Dr. Test Alfred, also müssen wir uns mit einem regulären Ausdruck behelfen
+global [val VerantwortlicherArzt ".*Bond James.*|.*Test Alfred.*" ]
+
+log -message "Error Message. Is it correctly sorted ?" -severity error
+log -message "warning Message. This should not appear in the preconditions_log.csv"    -severity warning
+log -message "info Message. Is it correctly sorted ?" -severity info
+
+get-log -levels info -levels error | as-table-data | sort-by dateText | write-csv-file [ concat [get-user-dir] "/results/preconditions_log.csv" ]   
+
+concat "Preconditions passed. currentUniqName is: " $currentUniqPatient | log
+
+
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

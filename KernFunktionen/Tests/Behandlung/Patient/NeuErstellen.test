@@ -1,14 +1,14 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
+Contexts: _Cr4zgP0jEeiNqfuAT0PA2A,__8MAcP49EeiuqdAcgkHVvQ
 Element-Name: NeuErstellen
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _6mWlcPPPEeiRV8UfrW9XLA
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 11/29/18, 1:15 PM
+Save-Time: 12/13/18 10:35 AM
 Testcase-Type: ecl
-Verifications: _TU4UsPPQEeiRV8UfrW9XLA
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -23,7 +23,7 @@ Entry-Name: .content
 get-view Patienten | get-button "Neuen Patienteneintrag erstellen" | click
 with [get-window "Patient erfassen"] {
     with [get-editbox -after [get-label Name]] {
-        set-text Name
+        set-text $currentUniqPatient
         key-type "TRAVERSE_TAB_NEXT"
     }
     with [get-editbox -after [get-label Vorname]] {
@@ -36,15 +36,15 @@ with [get-window "Patient erfassen"] {
         key-type "TRAVERSE_TAB_NEXT"
     }
     with [get-editbox -after [get-label Strasse]] {
-        set-text Strasse
+        set-text "Täfernstrasse 16"
         key-type "TRAVERSE_TAB_NEXT"
     }
     with [get-editbox -after [get-label Plz]] {
-        set-text 6850
+        set-text 5405
         key-type "TRAVERSE_TAB_NEXT"
     }
     with [get-editbox -after [get-label Ort]] {
-        set-text Lenzburg
+        set-text "Baden-Dättwil"
         key-type "TRAVERSE_TAB_NEXT"
     }
     get-editbox -after [get-label Telefon] | set-text 0815123456

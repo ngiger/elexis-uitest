@@ -20,7 +20,41 @@
 
   <build>
     <plugins>
-
+      <plugin>
+        <groupId>com.googlecode.maven-download-plugin</groupId>
+        <artifactId>download-maven-plugin</artifactId>
+        <version>1.4.1</version>
+        <executions>
+           <!-- At the moment we want to use RunFromScratch
+         <execution>
+            <id>download-artikelstamm</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://raw.githubusercontent.com/elexis/elexis-3-base/master/tests/at.medevit.ch.artikelstamm.elexis.common.tests/rsc/artikelstamm_first_v5.xml</url>
+              <unpack>true</unpack>
+              <outputDirectory>${user.home}/elexis</outputDirectory>
+              <md5>6d31964be9370faa87f4793dc1aba5c1</md5>
+            </configuration>
+          </execution>
+          <execution>
+            <id>download-demoDB</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>http://download.elexis.info/demoDB/demoDB_elexis_3.6.0.zip</url>
+              <unpack>true</unpack>
+              <outputDirectory>${user.home}/elexis</outputDirectory>
+              <md5>49ce0d97169e12e07d09faedaffe4a5b</md5>
+            </configuration>
+          </execution>
+          -->
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.eclipse.rcptt</groupId>
         <artifactId>rcptt-maven-plugin</artifactId>
