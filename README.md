@@ -14,7 +14,6 @@ Wir möchten folgende Ziele (Reihenfolge unten ist im Moment nur ein Vorschlag!)
 * Eine Testvariante soll aufbauend von einer leeren DB (RunFromScratch) eine verbesserte DemoDB (mit Artikelstamm, Tarmed, EAL, Hilotech-TextPlugin + Vorlagen) erzeugen und dumpen (Mehrere DBs?).
 * Ausführliche Tests regelmässig (täglich/wöchentlich) mit Sprachen durchführen.
 
-
 ## Flexibilität
 
 Niklaus machte folgende Schritte, damit das Testen auf lange Sicht mit der DemoDB und RunFromScratch einfach bleibt.
@@ -56,8 +55,8 @@ Für H2 demoDB unter C:\Tests\db (Unter Pfad\zu\Benutzer\elexis darf allerdings 
     
 Für RunFromScratch (leere DB mit 007 als Arzt) hinzufügen
 
-    -Dch.elexis.dbUser=sa -Dch.elexis.dbPw= -Dch.elexis.dbFlavor=h2
-    -Dch.elexis.dbSpec=jdbc:h2:C:\Tests\runFromScratch/db;AUTO_SERVER=TRUE 
+    -Dch.elexis.dbUser=sa -Dch.elexis.dbPw="" -Dch.elexis.dbFlavor=h2
+    -Dch.elexis.dbSpec="jdbc:h2:C:\Tests\runFromScratch/db;AUTO_SERVER=TRUE"
     -Delexis-run-mode=RunFromScratch
     -Dch.elexis.username=007 -Dch.elexis.password=topsecret
 
@@ -104,3 +103,15 @@ Hier bin ich mir noch nicht klar, wie diese strukturiert sein sollen und ggf via
 * Patch von Marco, nicht sicher ob das notwendig/gut ist. [14722] ElEvDispatcher move from Eclipse Job to SchdldExecutorService Siehe https://github.com/elexis/elexis-3-core/commit/d1020e0cff157bf074d4a7e4a62869249e9fd93a
 
 Auch wenn uns Xored abrät, diesen Patch zu benutzen, lasse ich ihn im Moment trotzdem aktiviert, da nur so ein flüssiges Arbeiten mit RCPTT und Elexis möglich ist. Beim Arbeiten mit dem Artikelstamm habe ich jedoch festgestellt, dass es hier zu Problemen kommen kann, da hier häufig Aktionen (Auswahl eines Medi) relativ lange dauern und hier wahrscheinlich die von Xored befürchteten Race-Conditions auftreten.
+
+
+# Eigenheit der ECL (Eclipse Command Language)
+
+Erinnert ein wenig an TCL. Ist gewöhungsbedürftig.
+
+So sind z.B. Bedingung und Prozduren wie folgt zu schreiben
+    proc "MeineProzedur" [ var param ] {
+        if [$param div 10 | equals 0] {
+            bool true // Return wert ist jeweils die zuletzt ausgeführte Funktion. Es gibt kein Return Statement
+        }
+    }

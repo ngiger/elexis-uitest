@@ -1,0 +1,53 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Fall
+Element-Type: context
+Element-Version: 2.0
+Id: _p5Ui8P79EeiFyvHqIglmCA
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/13/18 11:27 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc FallZuPatientErstellen [val caseLaw] [val startDate] {
+	get-view "Fälle" | get-button "Einen neuen Fall erstellen" | click
+	with [get-window "Neuer Fall"] {
+		get-combo -after [get-label Abrechnungsmethode] | select $caseLaw
+		key-type Tab
+
+		key-type 1
+		key-type "."
+		type-text $startDate
+		with [get-control Any -after [get-label Startdatum]] {
+			key-type Tab
+
+			type-text $startDate
+		}
+		get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
+		get-eclipse-window | get-object | save-screenshot [concat "results/images/" $caseLaw _ $startDate
+			"_created.png"]
+		get-button OK | click
+	}
+}
+
+proc FallOffen [val caseLaw] [val startDate] {
+	let [val searchPattern [concat ".*" $caseLaw ".*"]] {
+		try {
+			get-view "Fälle" | get-table | get-item $searchPattern | get-property caption
+			bool true  // 0 stands for true
+		} -catch {
+			// verify-error -command {
+			//	get-item $searchPattern
+			// }
+			// log [concat "Searchpattern " $searchPattern " not found"]
+			// get-view "Fälle" | get-table | get-items | length | equals 8888
+			bool false // 1 stands for false
+		}// get-view "Fälle" | get-table | get-item ".*" | get-property caption | log
+		// get-view "Fälle" | get-table | get-item ".*Krank.*" | get-property caption | log
+		// get-view "Fälle" | get-table | get-items | length | eq 999
+	}
+}
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

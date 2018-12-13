@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/12/18 8:12 PM
+Save-Time: 12/13/18 9:36 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -40,6 +40,7 @@ try {
    		get-window Benutzervorgaben | get-button Abbrechen | click
 	}
 } -catch {
+	
     // Verify that the window was missing (and not some other problem)
     verify-error -command {get-window Benutzervorgaben}
 }
