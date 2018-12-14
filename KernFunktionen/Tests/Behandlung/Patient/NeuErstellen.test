@@ -1,13 +1,13 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _Cr4zgP0jEeiNqfuAT0PA2A,__8MAcP49EeiuqdAcgkHVvQ,_dgccYP7qEeiuqdAcgkHVvQ,_p5Ui8P79EeiFyvHqIglmCA
+Contexts: _Cr4zgP0jEeiNqfuAT0PA2A,__8MAcP49EeiuqdAcgkHVvQ,_dgccYP7qEeiuqdAcgkHVvQ,_p5Ui8P79EeiFyvHqIglmCA,_tIpJwP9tEeiDKs20GBwclA
 Element-Name: NeuErstellen
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _6mWlcPPPEeiRV8UfrW9XLA
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/13/18 11:20 PM
+Save-Time: 12/14/18 1:50 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -36,6 +36,8 @@ concat "Result NOTTOBEFOUND: " [FallOffen NOTTOBEFOUND "20.4.2018"] | log
 	log "Fall gefunden"
 } */
 log "UVG Fall vorhanden"
+
+visit-all-preferences
 
 // Sollte man hier elexis_db_shaker.actions.Namen.getRandomVorname verwenden könne. Geht aber nur, wenn dbshaker installiert ist.
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

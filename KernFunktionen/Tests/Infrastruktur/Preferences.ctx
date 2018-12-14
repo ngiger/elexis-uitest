@@ -1,0 +1,82 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Preferences
+Element-Type: context
+Element-Version: 2.0
+Id: _tIpJwP9tEeiDKs20GBwclA
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/14/18 1:50 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc "close-window-if-open" [val windowName] {
+	log [concat "Must close Window " $windowName]
+
+	try {
+		get-window $windowName | close
+	} -catch {
+		log [concat "Window " $windowName " not open"]
+	}
+}
+proc "get-first-preference-item" {
+	close-window-if-open Benutzervorgaben
+	get-preferences-menu | click
+	with [get-window Benutzervorgaben] {
+		// get-tree | select ".*" | get-property path -raw | log
+		get-tree | select ".*" | click
+		// get-item -index 1 | log
+		// get-item -index 1 | click
+		get-tree | get-item -path Bezugskontakt | get-property "getParent().getSelection().TreeItem[0].getText()" | log
+		get-tree | get-item -path Bezugskontakt | get-property "getParent().getSelection().TreeItem[0].getText()" -raw
+	}
+}
+global [val curPrefSection [get-first-preference-item]] -override
+close-window-if-open Benutzervorgaben
+
+proc "check-one-preference-item" [val prefName] {
+   // prefName as seen in the CSV file
+   
+    global [val  pathName [ replaceFirst $prefName "0," "" ] ] -override
+    global [val  pathName [ replaceFirst $pathName "1," ".*/" ] ] -override
+    if [$prefName | str | matches "^0,.*"] {
+	   		global [val  curPrefSection [ replaceFirst $prefName "0," "" ] ] -override
+	   		global [val  curFullPath    [ concat $curPrefSection ".png"   ] ] -override
+		} -else {
+	   		global [val  curFullPath    [ concat 
+	   		[ $curPrefSection ]
+	   		 "/" 
+	   		[ replaceAll $pathName "\W" "_" ]
+	   		".png"
+	   		]] -override
+		} 
+    global [val  imgName [ 
+   		concat  [ get-workspace-location ]
+	   	 	"/results/images/preferences/"
+	   	 	[$curFullPath
+    	] ] ] -override
+   
+	concat "save-screenshot: " $imgName | log
+	get-preferences-menu | click
+	with [get-window Benutzervorgaben] {
+		with [get-tree] {
+			expand-all | select $pathName | key-type Down | log
+			get-window Benutzervorgaben | get-object |save-screenshot -out [ replaceAll $imgName "/___" "/" ]
+		}
+		get-button "Anwenden und Schließen" | click
+	}
+}
+
+proc "visit-all-preferences" {
+	read-lines $preferencesCsvFile | foreach [val item] {
+		if [$item | str | matches "^_indent.*"] {
+			log "Skipping first line"
+		} -else {
+			check-one-preference-item $item
+		}
+	}
+}
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

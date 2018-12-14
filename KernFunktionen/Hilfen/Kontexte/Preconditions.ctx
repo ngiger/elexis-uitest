@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/13/18 9:36 PM
+Save-Time: 12/14/18 12:17 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -45,10 +45,11 @@ try {
     verify-error -command {get-window Benutzervorgaben}
 }
 get-preferences-menu | click
-concat [get-user-dir] "/my_preferences.csv" |log
+global [val preferencesCsvFile [ concat [get-user-dir] "/my_preferences.csv" ] ]
+
+log $preferencesCsvFile
 exec-with-options -disableJobWaiting -command {
-  	get-window "Benutzervorgaben" | get-tree | expand-all | get-table-data | write-csv-file
-   		[ concat [get-user-dir] "/my_preferences.csv" ]
+  	get-window "Benutzervorgaben" | get-tree | expand-all | get-table-data | write-csv-file $preferencesCsvFile
 	wait 100
 	get-window "Benutzervorgaben" | get-button "Abbrechen" | click
 }
@@ -63,6 +64,7 @@ global [val currentUniqMpa [ concat "MPA_" [ get-seconds | str ] ] ]
 // bei der DemoDB aber Dr. Test Alfred, also müssen wir uns mit einem regulären Ausdruck behelfen
 global [val VerantwortlicherArzt ".*Bond James.*|.*Test Alfred.*" ]
 
+log -message [ concat "Workdir is " [ get-workspace-location ]]
 log -message "Error Message. Is it correctly sorted ?" -severity error
 log -message "warning Message. This should not appear in the preconditions_log.csv"    -severity warning
 log -message "info Message. Is it correctly sorted ?" -severity info

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/13/18 9:01 AM
+Save-Time: 12/14/18 10:39 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -42,4 +42,18 @@ proc "safe-get-java-property" [val name] {
 proc "get-seconds" {
 	 invoke-static "org.eclipse.rcptt.util" "java.lang.System" currentTimeMillis | div 1000
 }
+
+/**
+ * @input: inString a string
+*/
+proc "replaceFirst" [ val inString ] [ val searchPattern ] [ val replaceString] {
+	$inString | invoke replaceFirst $searchPattern $replaceString
+}
+
+proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
+	$inString | invoke replaceAll $searchPattern $replaceString
+}
+
+// replaceFirst "Welcome to Tutorialspoint.com" "(.*)Tutorials(.*)" "AMROOD" | log
+
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
