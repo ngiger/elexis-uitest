@@ -5,7 +5,6 @@
   <artifactId>KernFunktionen</artifactId>
   <version>0.1</version>
   <packaging>rcpttTest</packaging>
-
   <pluginRepositories>
     <pluginRepository>
       <id>rcptt-releases</id>
@@ -13,7 +12,6 @@
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
   </pluginRepositories>
-
   <properties>
     <rcptt-maven-version>2.3.0</rcptt-maven-version>
   </properties>
@@ -25,20 +23,6 @@
         <artifactId>download-maven-plugin</artifactId>
         <version>1.4.1</version>
         <executions>
-           <!-- At the moment we want to use RunFromScratch
-         <execution>
-            <id>download-artikelstamm</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://raw.githubusercontent.com/elexis/elexis-3-base/master/tests/at.medevit.ch.artikelstamm.elexis.common.tests/rsc/artikelstamm_first_v5.xml</url>
-              <unpack>true</unpack>
-              <outputDirectory>${user.home}/elexis</outputDirectory>
-              <md5>6d31964be9370faa87f4793dc1aba5c1</md5>
-            </configuration>
-          </execution>
           <execution>
             <id>download-demoDB</id>
             <phase>generate-resources</phase>
@@ -46,13 +30,12 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://download.elexis.info/demoDB/demoDB_elexis_3.6.0.zip</url>
+              <url>http://download.elexis.info/demoDB/demoDB_elexis_3.7.0.zip</url>
               <unpack>true</unpack>
-              <outputDirectory>${user.home}/elexis</outputDirectory>
-              <md5>49ce0d97169e12e07d09faedaffe4a5b</md5>
+              <outputDirectory>${user.home}/elexis/</outputDirectory>
+              <md5>f8adb8a630e480e96f67c40b8b327745</md5>
             </configuration>
           </execution>
-          -->
         </executions>
       </plugin>
       <plugin>
@@ -62,6 +45,17 @@
         <extensions>true</extensions>
         <configuration>
           <aut>
+            <injections>
+              <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
+              <injection>
+                <site>https://download.elexis.info/elexis/master/p2/elexis-3-base</site>
+                <!--
+                <features>
+                  <feature>ch.elexis.base.ch.feature.feature.group</feature>
+                </features>
+                -->
+              </injection>
+            </injections>
             <!-- Use URL like this for the AUT
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
             https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
@@ -74,9 +68,15 @@
               <arg>-noregtool</arg>
             </args>
             <vmArgs>
-              <vmArg>-Delexis-run-mode=RunFromScratch</vmArg>
-              <vmArg>-Dch.elexis.username=007</vmArg>
-              <vmArg>-Dch.elexis.password=topsecret</vmArg>
+              <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
+              <!-- did not work as rcptt-maven-plug does not handle " in vmargs
+              <vmArg>-Dch.elexis.dbUser=sa</vmArg>
+              <vmArg>-Dch.elexis.dbPw=</vmArg>
+              <vmArg>-Dch.elexis.dbFlavor=h2</vmArg>
+              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:"${user.home}/elexis/db_for_rcptt/demoDB/db;AUTO_SERVER=TRUE"</vmArg>
+              -->
+              <vmArg>-Dch.elexis.username=test</vmArg>
+              <vmArg>-Dch.elexis.password=test</vmArg>
             </vmArgs>
           </aut>
           <runner>
