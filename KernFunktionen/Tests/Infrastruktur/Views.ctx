@@ -1,0 +1,76 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Views
+Element-Type: context
+Element-Version: 2.0
+Id: _P7r6AP-yEeiDKs20GBwclA
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/14/18 5:34 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+global [val viewsCsvFile [concat [get-user-dir] "/my_views.csv"]] -override
+global [val viewPathName "" ] -override
+
+log $viewsCsvFile
+exec-with-options -disableJobWaiting -command {
+	get-menu -path "Fenster/Ansicht/Andere..." | click
+	get-window "Sicht anzeigen" | get-tree | expand-all | get-table-data | write-csv-file $viewsCsvFile
+	wait 100
+	get-window "Sicht anzeigen" | get-button Abbrechen | click
+}
+
+proc "open-window-by-name" [ val windowName ] {
+	get-menu -path "Fenster/Ansicht/Andere..." | click
+	with [get-window "Sicht anzeigen"] {
+	    if [ matches $windowName ".*/.*" ] {
+			get-tree | select $windowName 
+	    } -else {
+			get-tree | select [ concat ".*/" $windowName ]
+		}
+		get-button "Öffnen" | click
+	}
+}
+proc "reset-perspective" {
+	get-menu -path "Fenster/Perspektiven/Perspektive zurücksetzen..." | click
+	get-window "Perspektive zurücksetzen" | get-button Ja | click
+}
+proc "check-one-view-item" [val viewName] {
+	// viewName as seen in the CSV file
+
+	global [val viewPathName [replaceFirst $viewName "0," ""]] -override
+	if [$viewName | str | matches "^0,.*"] {
+		global [val curViewSection [replaceFirst $viewName "0," ""]] -override
+		// global [val viewPathName [concat $curViewSection ".png"]] -override
+		concat "curViewSection: " $curViewSection | log
+		 reset-perspective
+		// TODO: View Auwahl anzeigen?
+	} -else {
+		global [val viewPathName [replaceFirst $viewName "1," ""]] -override
+		global [val viewPathName [concat [$curViewSection] "/" $viewPathName]] -override
+		// concat "viewPathName: " $viewPathName | log
+		global [val curViewImage [ concat 
+			[get-workspace-location]
+			"/results/images/views/" 
+			[ replaceAll [ $viewPathName ] "\W" "_" ]
+			] ] -override
+
+		concat "save-screenshot: " $curViewImage | log
+		open-window-by-name $viewPathName
+		get-eclipse-window | get-object | save-screenshot -out [ $curViewImage ]
+	}
+}
+
+proc "visit-all-views" {
+	read-lines $viewsCsvFile | foreach [val item] {
+		if [$item | str | matches "^_indent.*"] {
+			log "Skipping first line of views"
+		} -else {
+			check-one-view-item $item
+		}
+	}
+}
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

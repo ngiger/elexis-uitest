@@ -6,14 +6,14 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/13/18 6:31 PM
+Save-Time: 12/14/18 5:32 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 proc SelectPatient [val familyName] [val firstName] {
-	get-menu -path "Fenster/Ansicht/Patienten" | click
+	open-window-by-name "Patienten"
 	get-view Patienten | get-editbox | set-focus
 	with [get-view Patienten] {
 		with [get-editbox] {
@@ -28,7 +28,7 @@ proc SelectPatient [val familyName] [val firstName] {
 
 proc PatientenErstellen [val familyName] [val firstName] [val male] [val birthDate] [val street] [val zipCode]
 	[val location] [val phone] {
-	get-menu -path "Fenster/Ansicht/Patienten" | click
+	open-window-by-name "Patienten"
 	get-view Patienten | get-editbox | set-focus
 	get-view Patienten | get-button "Neuen Patienteneintrag erstellen" | click
 	with [get-window "Patient erfassen"] {
