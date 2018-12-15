@@ -115,3 +115,27 @@ So sind z.B. Bedingung und Prozduren wie folgt zu schreiben
             bool true // Return wert ist jeweils die zuletzt ausgeführte Funktion. Es gibt kein Return Statement
         }
     }
+
+Procedures can define ‘input’ arguments and default values for arguments:
+    // Declaring:
+    proc set-text-after-label [val parent -input] [val label] [val text ""] {
+        $parent | get-editbox -after [get-label $label] | set-text $text
+    }
+    // Using -- text arg is not set, so default value will be used
+    get-window "New Project" | set-text-after-label "Project name:"
+
+
+# Ideen für das weitere Vorgehen
+
+Es braucht eventuell eigene Anpassungen, um die DatePicker testen zu können. s.a https://github.com/xored/rcptt.extensions.ecl
+
+Unter https://github.com/xored/q7.examples.multirun/tree/master/tests/q7tests findet man eine Lösung, wie man Tests auf verschiedenen Platformen aufrufen kann.
+https://github.com/xored/q7.examples.multirun/tree/master/tests/q7tests
+
+https://github.com/xored/q7.examples.jacoco
+
+https://www.eclipse.org/rcptt/blog/2015/06/17/code-coverage.html
+
+https://www.eclipse.org/rcptt/blog/2014/11/21/screenshots-with-rcptt.html
+
+https://www.eclipse.org/rcptt/blog/2014/12/10/test-about-dialog.html

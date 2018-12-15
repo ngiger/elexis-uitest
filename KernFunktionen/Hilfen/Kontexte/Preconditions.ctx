@@ -5,8 +5,8 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/14/18 12:17 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/15/18 11:40 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -45,7 +45,7 @@ try {
     verify-error -command {get-window Benutzervorgaben}
 }
 get-preferences-menu | click
-global [val preferencesCsvFile [ concat [get-user-dir] "/my_preferences.csv" ] ]
+global [val preferencesCsvFile [ concat "file:" [get-user-dir] "/my_preferences.csv" ] ]
 
 log $preferencesCsvFile
 exec-with-options -disableJobWaiting -command {

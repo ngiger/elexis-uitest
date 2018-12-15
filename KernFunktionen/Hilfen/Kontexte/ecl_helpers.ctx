@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/14/18 10:39 AM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/15/18 11:37 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -28,7 +28,7 @@ proc "get-default-locale" {
 
 proc "get-user-dir" {
 	invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub 
-	-methodName getWritableUserDir 
+	-methodName getWritableUserDir
 }
 proc "safe-get-java-property" [val name] {
 	try {
