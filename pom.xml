@@ -5,27 +5,98 @@
   <artifactId>KernFunktionen</artifactId>
   <version>0.1</version>
   <packaging>rcpttTest</packaging>
-  <pluginRepositories>
+  <properties>
+    <!-- we need a version > 2.3.0 because we need the proc find-all to extract the language from the nl parameter
+    commit 265067eb1ce14428ea4d33e97606934a6238d9e8
+    Author: Alexander Dudaev <aleksandr.dudayev@xored.com>
+    Date:   Wed Jul 25 20:56:41 2018 +0700
+    Added new ECL Command "find-all"
+    -->
+    <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
+    <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
+    <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
+    <rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version>
+    <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
+    <suite2run>SmokeTestSuite</suite2run>
+    <locale>de_CH</locale>
+    <useBranch>master</useBranch>
+    <localeSqlScript>${rcptt-resources}/set_locale_${locale}.sql</localeSqlScript>
+  </properties>
+
+  <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
     <pluginRepository>
       <id>rcptt-releases</id>
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-  </pluginRepositories>
-  <properties>
-    <rcptt-maven-version>2.3.0</rcptt-maven-version>
-  </properties>
-
+    <pluginRepository>
+      <id>rcptt-snapshots</id>
+      <name>RCPTT Maven Snapshots repository</name>
+      <!--
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+      -->
+      <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
+    </pluginRepository>
+  </pluginRepositories> 
   <build>
     <plugins>
       <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.4.1</version>
+          <configuration>
+              <filesets>
+                  <fileset>
+                      <directory>${user.home}/elexis/demoDB</directory>
+                      <followSymlinks>false</followSymlinks>
+                  </fileset>
+                  <fileset>
+                      <directory>${rcptt-resources}</directory>
+                      <followSymlinks>false</followSymlinks>
+                  </fileset>
+              </filesets>
+          </configuration>
+      </plugin>
+    <plugin>
+      <artifactId>maven-antrun-plugin</artifactId>
+      <version>1.8</version>
+      <executions>
+        <execution>
+          <id>copy</id>
+          <phase>generate-sources</phase>
+          <configuration>
+            <tasks>
+              <copy file="${project.basedir}/translations.properties" tofile="${rcptt-resources}/translations.properties"/>
+            </tasks>
+          </configuration>
+          <goals>
+            <goal>run</goal>
+          </goals>
+        </execution> 
+      </executions>
+    </plugin>
+    <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
         <version>1.4.1</version>
         <executions>
           <execution>
+            <id>download-h2-jar</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>http://central.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar</url>
+              <outputDirectory>${rcptt-resources}</outputDirectory>
+              <md5>f9893acfa22b7fe1492dd9c515af2e5b</md5>
+            </configuration>
+          </execution>
+          <execution>
             <id>download-demoDB</id>
-            <phase>generate-resources</phase>
+            <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
             </goals>
@@ -39,6 +110,69 @@
         </executions>
       </plugin>
       <plugin>
+        <!--https://books.sonatype.com/mcookbook/reference/ch02s03.html#ex-groovy-script-ex -->
+        <!-- Create a script to change the locale used by the db -->
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <phase>process-sources</phase> <!-- is after generate-sources -->
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <scripts>
+                  <script><![CDATA[
+      repo_version_file = new File("AAA")
+      repo_version_file.write("bbb") 
+      file = new File("${localeSqlScript}")
+      file.write("-- Created by ${project.basedir}/pom.xml\n")
+      file.append("update config set wert = '${locale}' where param like '%locale';\n")
+  ]]></script>
+  </scripts>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.5.4</version>
+            <type>pom</type>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
+          <execution>
+            <phase>process-sources</phase> <!-- is after generate-sources -->
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>java</executable>
+          <arguments>
+            <argument>-classpath</argument>
+            <argument>${rcptt-resources}/h2-1.4.197.jar</argument>
+            <argument>org.h2.tools.RunScript</argument>
+            <argument>-script</argument>
+            <argument>${localeSqlScript}</argument>
+            <argument>-url</argument>
+            <argument>jdbc:h2:${user.home}/elexis/demoDB/db</argument>
+            <argument>-user</argument>
+            <argument>sa</argument>
+            <argument>-showResults</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.eclipse.rcptt</groupId>
         <artifactId>rcptt-maven-plugin</artifactId>
         <version>${rcptt-maven-version}</version>
@@ -48,22 +182,25 @@
             <injections>
               <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
               <injection>
-                <site>https://download.elexis.info/elexis/master/p2/elexis-3-base</site>
+                <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
                 <!--
+                                -->
+
                 <features>
                   <feature>ch.elexis.base.ch.feature.feature.group</feature>
+                  <feature>ch.gpb.elexis.cst.feature.feature.group</feature>
+                  <feature>ch.medshare.mediport.feature.feature.group</feature>
                 </features>
-                -->
               </injection>
             </injections>
             <!-- Use URL like this for the AUT
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
             https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
             automatically replaced according to the current platform -->
-            <explicit> https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
+            <explicit> https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
             <args>
               <arg>-nl</arg>
-              <arg>de_CH</arg>
+              <arg>${locale}</arg>
               <arg>-nosplash</arg>
               <arg>-noregtool</arg>
             </args>
@@ -87,7 +224,7 @@
             </vmArgs>
           </runner>
                  <suites>
-                       <suite>AllTestsSuite</suite>
+                       <suite>${suite2run}</suite>
                  </suites>
         </configuration>
       </plugin>
