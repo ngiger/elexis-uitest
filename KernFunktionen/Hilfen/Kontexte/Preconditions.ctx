@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/15/18 11:40 AM
+Save-Time: 12/19/18 8:28 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -35,23 +35,68 @@ concat "a"[  get-env "THIS_ENV_VARIABLE_SHOULD_NOT_EXIST" ] "b" |  eq "ab" | ver
 log --message "Checked failure"
 // log -message [ concat "Value of get-workspace-location is: " [ get-workspace-location ] ]
 try {
-	log -message "Check Benutzervorgaben"
+	log -message "Check Preferences Window"
 	exec-with-options -disableJobWaiting -command {
-   		get-window Benutzervorgaben | get-button Abbrechen | click
+   		get-window [ t preferences ] | get-button [ t cancel ] | click
 	}
 } -catch {
-	
     // Verify that the window was missing (and not some other problem)
-    verify-error -command {get-window Benutzervorgaben}
+    verify-error -command {get-window [ t preferences ]}
 }
 get-preferences-menu | click
-global [val preferencesCsvFile [ concat "file:" [get-user-dir] "/my_preferences.csv" ] ]
-
+global [val preferencesCsvFile [concat [get-workspace-location] "/results/preferences.csv" ] ]
 log $preferencesCsvFile
-exec-with-options -disableJobWaiting -command {
-  	get-window "Benutzervorgaben" | get-tree | expand-all | get-table-data | write-csv-file $preferencesCsvFile
+
+// Some Hints from http://h2database.com/html/tutorial.html#tutorial_starting_h2_console
+// http://central.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar
+// java -classpath ~/elexis/rcptt/h2-1.4.197.jar org.h2.tools.RunScript -script locale.sql -url jdbc:h2:/home/niklaus/elexis/demoDB/db -user sa  -showResults
+// Save to test.zip
+// java -classpath ~/elexis/rcptt/h2-1.4.197.jar org.h2.tools.Script -url jdbc:h2:~/elexis/demoDB/db -user sa -script test.zip -options compression zip
+
+// Restore from test.zip
+// java -classpath ~/elexis/rcptt/h2-1.4.197.jar org.h2.tools.RunScript -url jdbc:h2:~/elexis/demoDB/db -user sa -script test.zip -options compression zip
+
+// RunScript runs a SQL script against a database. 
+ 
+
+// Verify demoDB exists
+// At the moment we do not support running with mysql or PostgreSQL
+global [val h2Jar           [ concat [ get-user-dir ] "/rcptt/h2-1.4.197.jar"] ] 
+global [val dumpFile        [ concat [ get-user-dir ] "/rcptt/dump.sql.zip"] ] 
+global [val sqlCmdFile      [ concat [ get-user-dir ] "/rcptt/commands.sql"] ] 
+global [val jdbcConnection  "Unknown jdbcConnection"]
+
+if [ safe-get-java-property "RunFromScratch" |  eq "" ] {
+	log "Running from Scratch: Don't know how to get use jdbcConnection" 
+	} -else {	
+	concat "file:" [ get-user-dir ] "/demoDB/db.h2.db" | get-file | get exists | verify-true
+	global [val jdbcConnection  [ concat "jdbc:h2:" [ get-user-dir ] "/demoDB/db;AUTO_SERVER=TRUE"] ] -override
+}
+
+proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
+		// For unknown reason statement fails for param = 'locale' or param like 'locale'
+                       [val sqlCommand [concat "select wert from  config where param like '%locale';" ] ]
+	                   [val jdbc $jdbcConnection] {
+	concat "executing " [ str $sqlCommand  ] " via " [str $sqlCmdFile ] | log
+	concat "java" " -classpath " $h2Jar " " $scriptName" -url "  $jdbc " -user " "sa" " -script " $sqlCmdFile " -showResults" | log
+	exec-process "java" "-classpath" $h2Jar $scriptName"-url"  $jdbc "-user" "sa" "-script" $sqlCmdFile "-showResults" | find-all  "-->.*"
+}
+
+
+proc "create-backup-sql" [val zipFile $dumpFile] 
+	                     [val jarFile $h2Jar]
+	                     [val jdbc $jdbcConnection] {
+	concat "Will create SQL backup for h2 under: " $zipFile | log
+	exec-process "java" "-classpath" $jarFile "org.h2.tools.Script" "-url"  $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
+	concat "Created SQL backup for h2 under: " $zipFile | log
+
+}
+
+exec-with-options -command {
+ t preferences|log
+  	get-window [ t preferences ] | get-tree | expand-all | get-table-data | write-csv-file $preferencesCsvFile
 	wait 100
-	get-window "Benutzervorgaben" | get-button "Abbrechen" | click
+	get-window [ t preferences ] | get-button [ t cancel ] | click
 }
 
 // Create some uniq variable to ease running unit tests several time with the same database
@@ -72,7 +117,6 @@ log -message "info Message. Is it correctly sorted ?" -severity info
 get-log -levels info -levels error | as-table-data | sort-by dateText | write-csv-file [ concat [get-user-dir] "/results/preconditions_log.csv" ]   
 
 concat "Preconditions passed. currentUniqName is: " $currentUniqPatient | log
-
 
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

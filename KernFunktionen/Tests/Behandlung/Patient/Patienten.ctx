@@ -5,65 +5,65 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/14/18 5:32 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/19/18 2:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 proc SelectPatient [val familyName] [val firstName] {
-	open-window-by-name "Patienten"
-	get-view Patienten | get-editbox | set-focus
-	with [get-view Patienten] {
+	open-window-by-name [t view_patients ]
+	get-view [t view_patients ] | get-editbox | set-focus
+	with [get-view [t view_patients ]] {
 		with [get-editbox] {
 			set-text $familyName
 			key-type TRAVERSE_TAB_NEXT
 		}
 		get-editbox -index 1 | set-text $firstName
-		get-view Patienten | get-table | get-property itemCount | log
+		get-view [t view_patients ] | get-table | get-property itemCount | log
 	}
-	get-view Patienten | get-table | get-property itemCount -raw | int | gt 0
+	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 }
 
 proc PatientenErstellen [val familyName] [val firstName] [val male] [val birthDate] [val street] [val zipCode]
 	[val location] [val phone] {
-	open-window-by-name "Patienten"
-	get-view Patienten | get-editbox | set-focus
-	get-view Patienten | get-button "Neuen Patienteneintrag erstellen" | click
-	with [get-window "Patient erfassen"] {
-		with [get-editbox -after [get-label Name]] {
+	open-window-by-name [t view_patients ]
+	get-view [t view_patients ] | get-editbox | set-focus
+	get-view [t view_patients ] | get-button [ t btn_create_new_patient ]  | click
+	with [get-window [t dlg_new_patient ]] {
+		with [get-editbox -after [get-label [ t dlg_new_patient_nom ]]] {
 			set-text $familyName
 			key-type TRAVERSE_TAB_NEXT
 		}
-		with [get-editbox -after [get-label Vorname]] {
+		with [get-editbox -after [get-label [ t dlg_new_patient_firstname ]]] {
 			set-text $firstName
 			key-type TRAVERSE_TAB_NEXT
 		}
 		if [$male] {
-			get-combo -after [get-label Geschlecht] | select m
+			get-combo -after [get-label [ t dlg_new_patient_sex ]] | select m
 		} -else {
-			get-combo -after [get-label Geschlecht] | select w
+			get-combo -after [get-label [ t dlg_new_patient_sex ]] | select w
 		}
-		with [get-editbox -after [get-label Geburtsdatum]] {
+		with [get-editbox -after [get-label [ t dlg_new_patient_birthday ]]] {
 			set-text $birthDate
 			key-type TRAVERSE_TAB_NEXT
 		}
-		with [get-editbox -after [get-label Strasse]] {
+		with [get-editbox -after [get-label [ t dlg_new_patient_street ]]] {
 			set-text $street
 			key-type TRAVERSE_TAB_NEXT
 		}
-		with [get-editbox -after [get-label Plz]] {
+		with [get-editbox -after [get-label [ t dlg_new_patient_plz ]]] {
 			set-text $zipCode
 			key-type TRAVERSE_TAB_NEXT
 		}
-		with [get-editbox -after [get-label Ort]] {
+		with [get-editbox -after [get-label [ t dlg_new_patient_location ]]] {
 			set-text $location
 			key-type TRAVERSE_TAB_NEXT
 		}
-		get-editbox -after [get-label Telefon] | set-text $phone
+		get-editbox -after [get-label [ t dlg_new_patient_phone ] ] | set-text $phone
 		get-eclipse-window | get-object | save-screenshot [concat "results/images/" $familyName "_created.png"]
-		get-button OK | click
+		get-button [t ok ] | click
 	}
 }
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

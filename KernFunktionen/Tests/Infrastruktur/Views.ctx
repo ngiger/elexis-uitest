@@ -5,38 +5,37 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/14/18 5:34 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/19/18 8:23 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-global [val viewsCsvFile [concat [get-user-dir] "/my_views.csv"]] -override
+global [val viewsCsvFile [concat [get-workspace-location] "/results/views.csv"]] -override
 global [val viewPathName "" ] -override
-
 log $viewsCsvFile
-exec-with-options -disableJobWaiting -command {
-	get-menu -path "Fenster/Ansicht/Andere..." | click
-	get-window "Sicht anzeigen" | get-tree | expand-all | get-table-data | write-csv-file $viewsCsvFile
+exec-with-options -command {
+	get-menu -path [ t menu_select_view ]| click
+	get-window [ t show_view ] | get-tree | expand-all | get-table-data | write-csv-file $viewsCsvFile
 	wait 100
-	get-window "Sicht anzeigen" | get-button Abbrechen | click
+	get-window [ t show_view ] | get-button [ t cancel ] | click
 }
 
 proc "open-window-by-name" [ val windowName ] {
-	get-menu -path "Fenster/Ansicht/Andere..." | click
-	with [get-window "Sicht anzeigen"] {
+	get-menu -path [ t menu_select_view ]| click
+	with [get-window [ t show_view ]] {
 	    if [ matches $windowName ".*/.*" ] {
-			get-tree | select $windowName 
+			get-tree | expand-all | select $windowName 
 	    } -else {
-			get-tree | select [ concat ".*/" $windowName ]
+			get-tree | expand-all | select [ concat ".*/" $windowName ]
 		}
-		get-button "Öffnen" | click
+		get-button [t open ] | click
 	}
 }
 proc "reset-perspective" {
-	get-menu -path "Fenster/Perspektiven/Perspektive zurücksetzen..." | click
-	get-window "Perspektive zurücksetzen" | get-button Ja | click
+	get-menu -path [ t menu_reset_perspective ] | click
+	get-window  [ t reset_perspective ]  | get-button  [ t yes ] | click
 }
 proc "check-one-view-item" [val viewName] {
 	// viewName as seen in the CSV file
@@ -60,6 +59,7 @@ proc "check-one-view-item" [val viewName] {
 
 		concat "save-screenshot: " $curViewImage | log
 		open-window-by-name $viewPathName
+		wait 100 // Give it some time to populate it
 		get-eclipse-window | get-object | save-screenshot -out [ $curViewImage ]
 	}
 }

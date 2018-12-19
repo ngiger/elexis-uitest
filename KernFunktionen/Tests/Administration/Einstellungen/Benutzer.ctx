@@ -1,0 +1,63 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Benutzer
+Element-Type: context
+Element-Version: 2.0
+Id: _TrPRoAOnEemXxf0UDvXYOw
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/19/18 7:04 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc "create-user" [val userName]  [val forMandat] [val role] [val kontakt] {
+	get-preferences-menu | click
+	with [get-window [ t preferences ]] {
+	    get-tree | expand-all | select [ t prefs_users_and_rights ] 
+	    get-button -after [get-label [t btn_user_admin] ] -index 3 | click
+	}
+	with [get-window [ t dlg_create_user ] ] {
+	    get-editbox 
+	        -after [get-label [ t dlg_create_user_set] ] | set-text $userName
+	    get-button [ t ok ] | click
+	}
+	        log $forMandat
+	with [get-window [ t preferences ]] {
+	    get-table | select $userName
+	    with [get-group [t dlg_create_user_accounting] ] {
+	        t user_role | log
+	        get-group [t user_role] | get-table | get-item -path $role | check
+	        get-group [t select_works_for] | get-table | get-item  -path $forMandat | check
+	    }
+	/* war in BenutzerAnlesg
+with [get-window Benutzervorgaben] {
+    get-table | select $currentUniqUser
+    with [get-group Verrechnung] {
+        get-group Rollenzuordnung | get-table | get-item -path fhir | check
+        get-group "tätig für" | get-table | get-item -path $VerantwortlicherArzt | check
+    }
+    get-window "No contact assigned" | get-button OK | click
+    get-group Verrechnung | get-link "Nicht gesetzt <a>ändern</a>" | click-link
+    with [get-window "Kontakt auswählen"] {
+        get-table | select  $VerantwortlicherArzt
+        get-button OK | click
+    }
+	get-eclipse-window | get-object | save-screenshot [concat "results/images/" $VerantwortlicherArzt "_created.png" ]
+}
+}*/
+	    get-window [t view_no_contact] | get-button [t ok] | click
+	    get-group [t dlg_create_user_accounting] | get-link [ t dlg_create_user_accounting_change ] | click-link
+	    with [get-window [t select_contact] ] {
+	        get-table | select  $forMandat
+	        get-button [ t ok ] | click
+	    }
+		get-eclipse-window | get-object | save-screenshot [concat "results/images/" $VerantwortlicherArzt "_created.png" ]
+		get-button [ t apply_and_close ] | click
+	}
+	concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
+}
+
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

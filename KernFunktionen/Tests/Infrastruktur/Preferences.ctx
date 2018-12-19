@@ -5,8 +5,8 @@ Element-Name: Preferences
 Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/14/18 1:50 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/19/18 11:25 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -22,9 +22,9 @@ proc "close-window-if-open" [val windowName] {
 	}
 }
 proc "get-first-preference-item" {
-	close-window-if-open Benutzervorgaben
+	close-window-if-open [ t preferences ]
 	get-preferences-menu | click
-	with [get-window Benutzervorgaben] {
+	with [get-window [ t preferences ]] {
 		// get-tree | select ".*" | get-property path -raw | log
 		get-tree | select ".*" | click
 		// get-item -index 1 | log
@@ -34,7 +34,7 @@ proc "get-first-preference-item" {
 	}
 }
 global [val curPrefSection [get-first-preference-item]] -override
-close-window-if-open Benutzervorgaben
+close-window-if-open [ t preferences ]
 
 proc "check-one-preference-item" [val prefName] {
    // prefName as seen in the CSV file
@@ -60,12 +60,12 @@ proc "check-one-preference-item" [val prefName] {
    
 	concat "save-screenshot: " $imgName | log
 	get-preferences-menu | click
-	with [get-window Benutzervorgaben] {
+	with [get-window [ t preferences ]] {
 		with [get-tree] {
 			expand-all | select $pathName | key-type Down | log
-			get-window Benutzervorgaben | get-object |save-screenshot -out [ replaceAll $imgName "/___" "/" ]
+			get-window [ t preferences ] | get-object |save-screenshot -out [ replaceAll $imgName "/___" "/" ]
 		}
-		get-button "Anwenden und Schließen" | click
+		get-button [ t apply_and_close ] | click
 	}
 }
 

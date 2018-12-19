@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/15/18 11:37 AM
+Save-Time: 12/19/18 3:50 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -49,11 +49,34 @@ proc "get-seconds" {
 proc "replaceFirst" [ val inString ] [ val searchPattern ] [ val replaceString] {
 	$inString | invoke replaceFirst $searchPattern $replaceString
 }
+// replaceFirst "Welcome to Tutorialspoint.com" "(.*)Tutorials(.*)" "AMROOD" | log
 
 proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 	$inString | invoke replaceAll $searchPattern $replaceString
 }
 
-// replaceFirst "Welcome to Tutorialspoint.com" "(.*)Tutorials(.*)" "AMROOD" | log
+global [ val translations [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations.properties"]]]
+
+concat "get-default-locale returns: " [get-default-locale] |log
+find-all [ get-default-locale] "([^_]+)" | log
+find-all [ get-default-locale] "([^_]+)" | to-list | log
+find-all [ get-default-locale] "([^_]+)" | to-list | get 0  | log
+find-all [ get-default-locale] "([^_]+)" | to-list | get 0  | get 0  | log
+global [ val defaultLanguage [find-all [ get-default-locale] "([^_]+)"  | to-list | get 0 | get 0 ] ]
+concat "defaultLanguage is now: " $defaultLanguage| log
+$translations | get "de.open"| eq "Öffnen" | verify-true
+proc "t" [val key] [val language $defaultLanguage] {
+	try {
+		// concat "Searching: " $language "." $key | log
+		$translations | get [ concat $language "." $key] 
+		} -catch {
+		concat "Unable to fetch key " [ concat $language "." $key] " in " $translations | log
+		bool false
+	}
+}
+t "open" "de" | eq "Öffnen" | verify-true
+t "open" "fr" | eq "Ouvrir" | verify-true
+// t "ShouldNotBeAValidKey" "fr" | verify-false
+// log "ECL done"
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

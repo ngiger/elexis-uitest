@@ -124,6 +124,21 @@ Procedures can define ‘input’ arguments and default values for arguments:
     // Using -- text arg is not set, so default value will be used
     get-window "New Project" | set-text-after-label "Project name:"
 
+## Auf französisch testen
+
+Damit man mit -nl fr_CH aufstarten kann, muss vorgäng in der DB das Statement `update config set wert = 'fr_CH' where param = 'locale';` ausgeführt werden. Damit Tests via maven auf französisch ausgeführt werden, muss als maven wie folgt  aufgerufen werden `mvn clean verify -Dlocale=fr_CH`
+
+### Erkannte Probleme mit der französischen Version
+
+* Wenn man auf Französisch einen Fall erstelllt, wird der z.B: mit LAMal: maladie en général angezeigt auch wenn man nachher auf Deutsch startet.
+* Diverse Übersetzungen sind schlecht. Siehe translations.properties
+* Das Erstellen eines neuen Mandanten ist nicht übersetzt
+
+
+## Einen anderen Branch testen (z.B. NoPo)
+
+`mvn clean verify -Dusebranch=fr_CH`
+
 
 # Ideen für das weitere Vorgehen
 

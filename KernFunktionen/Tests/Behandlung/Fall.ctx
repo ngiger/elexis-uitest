@@ -5,29 +5,44 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/13/18 11:27 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/19/18 3:44 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc FallZuPatientErstellen [val caseLaw] [val startDate] {
-	get-view "Fälle" | get-button "Einen neuen Fall erstellen" | click
-	with [get-window "Neuer Fall"] {
-		get-combo -after [get-label Abrechnungsmethode] | select $caseLaw
-		key-type Tab
-
-		key-type 1
-		key-type "."
-		type-text $startDate
-		with [get-control Any -after [get-label Startdatum]] {
-			key-type Tab
-
-			type-text $startDate
-		}
-		get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
-		get-eclipse-window | get-object | save-screenshot [concat "results/images/" $caseLaw _ $startDate
+proc "set-date-picker-date" [val window ] [ val labelBefore -input ] [ val "date" ] {
+	concat "set-date-picker-date: " $date| log
+	global [ val myCombo [  get-window $window | get-editbox -after [get-label $labelBefore ] ]] -override
+	/*
+	with [get-window "nouveau cas"] {
+    get-label[ t dlg_new_case_startDate ] | get-property caption | equals[ t dlg_new_case_startDate ] | verify-true
+    get-editbox -after [get-label "Créer un nouveau cas"] | get-property className 
+        | equals "org.eclipse.swt.widgets.Text" | verify-true
+        get-window "nouveau cas" | get-editbox -after [get-label "Créer un nouveau cas"] | get-property text 
+    | equals "19.12.18" | verify-true
+        */
+        // Assertion of text failed: expected:<19.12.18> but was:<0.0>.
+	// get-window $window | get-editbox -after [get-label $labelBefore ] | get-property text | equals "19.12.18" | verify-true
+    // $myCombo | getObject | invoke | setText $date
+    // line above results in error: There is no open report node for command invoke "Spinner {*Wrong Thread*}"
+  //  get-window $window | get-editbox -after [get-label $labelBefore ] | get-property text | equals  $date | verify-true	
+  	concat "At the moment I do not know how to set datePick date in " $window " after " $labelBefore " to " $date | log
+}
+proc FallZuPatientErstellen [val caseLaw] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
+	get-view [ t view_cases ] | click
+	 t view_cases | log
+	 t dlg_new_case_caseReason | log
+	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | log
+	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
+	wait 100
+	
+	with [get-window [ t dlg_new_case ] ] {
+		get-combo -after [get-label [ t dlg_new_case_caseMethod ]] | select $caseLaw
+		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
+		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
+		get-eclipse-window | get-object | save-screenshot [concat "results/images/" $caseLaw " " $startDate
 			"_created.png"]
 		get-button OK | click
 	}
@@ -36,18 +51,20 @@ proc FallZuPatientErstellen [val caseLaw] [val startDate] {
 proc FallOffen [val caseLaw] [val startDate] {
 	let [val searchPattern [concat ".*" $caseLaw ".*"]] {
 		try {
-			get-view "Fälle" | get-table | get-item $searchPattern | get-property caption
+			concat "MySearchpattern is: " $searchPattern | log
+			get-view [ t view_cases ] | get-table | log
+			get-view [ t view_cases ] | get-table | get-item $searchPattern | get-property caption
 			bool true  // 0 stands for true
 		} -catch {
 			// verify-error -command {
 			//	get-item $searchPattern
 			// }
 			// log [concat "Searchpattern " $searchPattern " not found"]
-			// get-view "Fälle" | get-table | get-items | length | equals 8888
+			// get-view [ t view_cases ]| get-table | get-items | length | equals 8888
 			bool false // 1 stands for false
-		}// get-view "Fälle" | get-table | get-item ".*" | get-property caption | log
-		// get-view "Fälle" | get-table | get-item ".*Krank.*" | get-property caption | log
-		// get-view "Fälle" | get-table | get-items | length | eq 999
+		}// get-view [ t view_cases ]| get-table | get-item ".*" | get-property caption | log
+		// get-view [ t view_cases ]| get-table | get-item ".*Krank.*" | get-property caption | log
+		// get-view [ t view_cases ]| get-table | get-items | length | eq 999
 	}
 }
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
