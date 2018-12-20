@@ -126,7 +126,7 @@
                   <script><![CDATA[
       repo_version_file = new File("AAA")
       repo_version_file.write("bbb") 
-      file = new File("${localeSqlScript}")
+      file = new File("${localeSqlScript}".replace("\\","/"))
       file.write("-- Created by ${project.basedir}/pom.xml\n")
       file.append("update config set wert = '${language}_CH' where param like '%locale';\n")
   ]]></script>
