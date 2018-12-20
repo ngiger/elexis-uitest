@@ -20,7 +20,7 @@
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
     <useBranch>master</useBranch>
-    <localeSqlScript>${rcptt-resources}/set_locale_${language}_CH.sql</localeSqlScript>
+    <localeSqlScript>${project.basedir}/setlocale_${language}_CH.sql</localeSqlScript>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
