@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 8:57 AM
+Save-Time: 12/20/18 5:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -42,8 +42,7 @@ proc FallZuPatientErstellen [val caseLaw] [val startDate "30.4.2018"] [val endDa
 		get-combo -after [get-label [ t dlg_new_case_caseMethod ]] | select $caseLaw
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
-		get-eclipse-window | get-object | save-screenshot [concat $resultsDir "images/" $caseLaw " " $startDate
-			"_created.png"]
+		get-eclipse-window | get-object | save-screenshot [concat $resultsDir "images/" $caseLaw " " $startDate "_created.png"]
 		get-button OK | click
 	}
 }
