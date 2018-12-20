@@ -79,7 +79,8 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 	                   [val jdbc $jdbcConnection] {
 	concat "executing " [ str $sqlCommand  ] " via " [str $sqlCmdFile ] | log
 	concat "java" " -classpath " $h2Jar " " $scriptName" -url "  $jdbc " -user " "sa" " -script " $sqlCmdFile " -showResults" | log
-	exec-process "java" "-classpath" $h2Jar $scriptName"-url"  $jdbc "-user" "sa" "-script" $sqlCmdFile "-showResults" | find-all  "-->.*"
+  // TODO: When RCPTT > 2.3.0 is available add | find-all  "-->. to select only result lines
+	exec-process "java" "-classpath" $h2Jar $scriptName"-url"  $jdbc "-user" "sa" "-script" $sqlCmdFile "-showResults"
 }
 
 

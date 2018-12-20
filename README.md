@@ -154,3 +154,10 @@ https://www.eclipse.org/rcptt/blog/2015/06/17/code-coverage.html
 https://www.eclipse.org/rcptt/blog/2014/11/21/screenshots-with-rcptt.html
 
 https://www.eclipse.org/rcptt/blog/2014/12/10/test-about-dialog.html
+
+# TODO: Cleanup
+
+* Wenn RCPTT 2.3.1 (oder 2.4.0) herauskommt, commit vom 20.12.2018 wegen find-all rückgängig machen.
+** Find-all war sauberer Lösung für locale
+** find-all erlaubte filtern von SQL-Scripts, so dass nur Resultate zurückkamen
+** SNAPSHOT-Version braucht jeden Tag viel zu lange, bis sie runter geladen war

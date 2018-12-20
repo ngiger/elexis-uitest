@@ -58,11 +58,8 @@ proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 global [ val translations [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations.properties"]]]
 
 concat "get-default-locale returns: " [get-default-locale] |log
-find-all [ get-default-locale] "([^_]+)" | log
-find-all [ get-default-locale] "([^_]+)" | to-list | log
-find-all [ get-default-locale] "([^_]+)" | to-list | get 0  | log
-find-all [ get-default-locale] "([^_]+)" | to-list | get 0  | get 0  | log
-global [ val defaultLanguage [find-all [ get-default-locale] "([^_]+)"  | to-list | get 0 | get 0 ] ]
+concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log
+global [ val defaultLanguage [ get-java-property "user.language" "de" ] ]
 concat "defaultLanguage is now: " $defaultLanguage| log
 $translations | get "de.open"| eq "Öffnen" | verify-true
 proc "t" [val key] [val language $defaultLanguage] {
