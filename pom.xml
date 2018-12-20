@@ -183,15 +183,15 @@
               <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
               <injection>
                 <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
-                <!--
-                                -->
-
-                <features>
+                <!-- When installing CST here, it looks like we have problems with a missing ch.elexis.befunde
+               <features>
                   <feature>ch.elexis.base.ch.feature.feature.group</feature>
                   <feature>ch.gpb.elexis.cst.feature.feature.group</feature>
                   <feature>ch.medshare.mediport.feature.feature.group</feature>
                 </features>
-              </injection>
+                                -->
+ 
+               </injection>
             </injections>
             <!-- Use URL like this for the AUT
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip

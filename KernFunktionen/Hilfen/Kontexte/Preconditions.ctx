@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/19/18 8:28 PM
+Save-Time: 12/20/18 10:30 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -44,7 +44,7 @@ try {
     verify-error -command {get-window [ t preferences ]}
 }
 get-preferences-menu | click
-global [val preferencesCsvFile [concat [get-workspace-location] "/results/preferences.csv" ] ]
+global [val preferencesCsvFile [concat $resultsDir "preferences.csv" ] ]
 log $preferencesCsvFile
 
 // Some Hints from http://h2database.com/html/tutorial.html#tutorial_starting_h2_console
@@ -115,7 +115,7 @@ log -message "Error Message. Is it correctly sorted ?" -severity error
 log -message "warning Message. This should not appear in the preconditions_log.csv"    -severity warning
 log -message "info Message. Is it correctly sorted ?" -severity info
 
-get-log -levels info -levels error | as-table-data | sort-by dateText | write-csv-file [ concat [get-user-dir] "/results/preconditions_log.csv" ]   
+get-log -levels info -levels error | as-table-data | sort-by dateText | write-csv-file [ concat $resultsDir "preconditions_log.csv" ]
 
 concat "Preconditions passed. currentUniqName is: " $currentUniqPatient | log
 

@@ -7,13 +7,13 @@ Element-Version: 3.0
 External-Reference: 
 Id: _PKoyQAO9EemQJcOrOzv6KA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/19/18 8:05 PM
+Save-Time: 12/20/18 8:58 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-create-backup-sql -zipFile [ concat [get-workspace-location ] "/dump_"  [ get-default-locale] "_.sql.zip"]
+create-backup-sql -zipFile [ concat $resultsDir "dump_"  [ get-default-locale] "_.sql.zip"]
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

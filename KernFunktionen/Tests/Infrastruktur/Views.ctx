@@ -6,13 +6,13 @@ Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/19/18 8:23 PM
+Save-Time: 12/20/18 4:41 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-global [val viewsCsvFile [concat [get-workspace-location] "/results/views.csv"]] -override
+global [val viewsCsvFile [concat  $resultsDir "views.csv"]] -override
 global [val viewPathName "" ] -override
 log $viewsCsvFile
 exec-with-options -command {
@@ -26,7 +26,7 @@ proc "open-window-by-name" [ val windowName ] {
 	get-menu -path [ t menu_select_view ]| click
 	with [get-window [ t show_view ]] {
 	    if [ matches $windowName ".*/.*" ] {
-			get-tree | expand-all | select $windowName 
+			get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima
 	    } -else {
 			get-tree | expand-all | select [ concat ".*/" $windowName ]
 		}
@@ -45,21 +45,22 @@ proc "check-one-view-item" [val viewName] {
 		global [val curViewSection [replaceFirst $viewName "0," ""]] -override
 		// global [val viewPathName [concat $curViewSection ".png"]] -override
 		concat "curViewSection: " $curViewSection | log
-		 reset-perspective
+		reset-perspective
 		// TODO: View Auwahl anzeigen?
 	} -else {
 		global [val viewPathName [replaceFirst $viewName "1," ""]] -override
 		global [val viewPathName [concat [$curViewSection] "/" $viewPathName]] -override
 		// concat "viewPathName: " $viewPathName | log
-		global [val curViewImage [ concat 
-			[get-workspace-location]
-			"/results/images/views/" 
-			[ replaceAll [ $viewPathName ] "\W" "_" ]
+		global [val curViewImage [ concat $resultsDir
+			"images/views/"
+			[ replaceAll $viewPathName "\W" "_" ]
+			".png"
 			] ] -override
-
 		concat "save-screenshot: " $curViewImage | log
 		open-window-by-name $viewPathName
 		wait 100 // Give it some time to populate it
+		// TODO: Check that Die Ansicht konnte nicht erstellt werden is not visible
+		// TODO: Check Table "CSTGROUPS" not found
 		get-eclipse-window | get-object | save-screenshot -out [ $curViewImage ]
 	}
 }

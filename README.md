@@ -144,6 +144,9 @@ Damit man mit -nl fr_CH aufstarten kann, muss vorgäng in der DB das Statement `
 
 Es braucht eventuell eigene Anpassungen, um die DatePicker testen zu können. s.a https://github.com/xored/rcptt.extensions.ecl
 
+Wöchentlichen CI-Jobs erstellen, der einzeln base + 1 feature lädt, damit fehlende Abhängigkeiten gefunden werden können (z:B. CST). Dazu muss man den Test fehlschlagen lassen, wenn Fehlermeldung "Die Ansicht konnte nicht erstellt werden" auftaucht.
+
+
 Unter https://github.com/xored/q7.examples.multirun/tree/master/tests/q7tests findet man eine Lösung, wie man Tests auf verschiedenen Platformen aufrufen kann.
 https://github.com/xored/q7.examples.multirun/tree/master/tests/q7tests
 

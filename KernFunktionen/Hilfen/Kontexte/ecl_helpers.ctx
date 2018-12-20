@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/19/18 3:50 PM
+Save-Time: 12/20/18 8:52 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -20,6 +20,11 @@ Entry-Name: .ecl.context
 
 proc "get-env" [val name] {
 		invoke-static "org.eclipse.rcptt.util" "java.lang.System" getenv $name
+}
+
+proc "pwd" {
+  // invoke-static "org.eclipse.rcptt.util" -className java.nio.file.Paths -methodName get -args "."
+  get-java-property "user.dir"
 }
 
 proc "get-default-locale" {
@@ -56,6 +61,7 @@ proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 }
 
 global [ val translations [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations.properties"]]]
+global [ val resultsDir   [ concat "file:" [pwd] "/results/"]]
 
 concat "get-default-locale returns: " [get-default-locale] |log
 concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log
