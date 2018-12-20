@@ -6,13 +6,12 @@ Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 4:41 PM
+Save-Time: 12/22/18 12:22 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-global [val viewsCsvFile [concat  $resultsDir "views.csv"]] -override
 global [val viewPathName "" ] -override
 log $viewsCsvFile
 exec-with-options -command {
@@ -37,6 +36,8 @@ proc "reset-perspective" {
 	get-menu -path [ t menu_reset_perspective ] | click
 	get-window  [ t reset_perspective ]  | get-button  [ t yes ] | click
 }
+
+global [val curViewSection ""] -override
 proc "check-one-view-item" [val viewName] {
 	// viewName as seen in the CSV file
 
@@ -51,8 +52,8 @@ proc "check-one-view-item" [val viewName] {
 		global [val viewPathName [replaceFirst $viewName "1," ""]] -override
 		global [val viewPathName [concat [$curViewSection] "/" $viewPathName]] -override
 		// concat "viewPathName: " $viewPathName | log
-		global [val curViewImage [ concat $resultsDir
-			"images/views/"
+		global [val curViewImage [ concat $imagesDir
+			"views/"
 			[ replaceAll $viewPathName "\W" "_" ]
 			".png"
 			] ] -override
@@ -65,10 +66,13 @@ proc "check-one-view-item" [val viewName] {
 	}
 }
 
-proc "visit-all-views" {
+proc "visit-all-views" [ val addToIgnorePattern "" ] {
 	read-lines $viewsCsvFile | foreach [val item] {
-		if [$item | str | matches "^_indent.*"] {
-			log "Skipping first line of views"
+		concat "visit-all-views checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
+		// if [$item | str | matches "^_indent.*" [
+		 if [$item | str | matches [
+			concat  "^_indent.*" $addToIgnorePattern] ] {
+			concat "Skipping first line and " $addToIgnorePattern " in visit all Views"| log
 		} -else {
 			check-one-view-item $item
 		}

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 4:09 PM
+Save-Time: 12/22/18 12:23 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -64,12 +64,12 @@ proc "check-one-preference-item" [val prefName] {
 		}
 	}
     global [val  imgName [ 
-   		concat  $resultsDir
-   		    "images/preferences/"
-	   	 	[$curFullPath
-    	] ] ] -override
+			concat $imagesDir
+			    "preferences/"
+				[$curFullPath
+			] ] ] -override
    
-	concat "save-screenshot: " $imgName | log
+	concat "save-screenshot: " $imgName " curPath: " $curPath | log
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
 		with [get-tree] {
@@ -80,10 +80,12 @@ proc "check-one-preference-item" [val prefName] {
 	}
 }
 
-proc "visit-all-preferences" {
+proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
 	read-lines $preferencesCsvFile | foreach [val item] {
-		if [$item | str | matches "^_indent.*"] {
-			log "Skipping first line"
+		concat "visit-all-preferences checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
+		if [$item | str | matches [
+			concat  "^_indent.*" $addToIgnorePattern] ] {
+			concat "Skipping first line and " $addToIgnorePattern | log
 		} -else {
 			check-one-preference-item $item
 		}

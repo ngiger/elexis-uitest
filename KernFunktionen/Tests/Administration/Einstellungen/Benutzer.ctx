@@ -5,8 +5,8 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 8:57 AM
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/21/18 4:07 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -37,7 +37,7 @@ proc "create-user" [val userName]  [val forMandat] [val role] [val kontakt] {
 	        get-table | select  $forMandat
 	        get-button [ t ok ] | click
 	    }
-		get-eclipse-window | get-object | save-screenshot [concat $resultsDir "images/" $VerantwortlicherArzt "_created.png" ]
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir VerantwortlicherArzt "_created.png" ]
 		get-button [ t apply_and_close ] | click
 	}
 	concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log

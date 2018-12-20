@@ -5,8 +5,8 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 8:56 AM
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/21/18 4:07 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -62,7 +62,7 @@ proc PatientenErstellen [val familyName] [val firstName] [val male] [val birthDa
 			key-type TRAVERSE_TAB_NEXT
 		}
 		get-editbox -after [get-label [ t dlg_new_patient_phone ] ] | set-text $phone
-		get-eclipse-window | get-object | save-screenshot [concat  $resultsDir "images/" $familyName "_created.png"]
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir $familyName "_created.png"]
 		get-button [t ok ] | click
 	}
 }

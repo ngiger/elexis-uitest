@@ -1,13 +1,13 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _Cr4zgP0jEeiNqfuAT0PA2A,__8MAcP49EeiuqdAcgkHVvQ,_tIpJwP9tEeiDKs20GBwclA,_P7r6AP-yEeiDKs20GBwclA,_TrPRoAOnEemXxf0UDvXYOw,_dgccYP7qEeiuqdAcgkHVvQ,_p5Ui8P79EeiFyvHqIglmCA
+Contexts: _tIpJwP9tEeiDKs20GBwclA,_P7r6AP-yEeiDKs20GBwclA,_TrPRoAOnEemXxf0UDvXYOw,_dgccYP7qEeiuqdAcgkHVvQ,_p5Ui8P79EeiFyvHqIglmCA
 Element-Name: BasicTests
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _GbaREP_HEeiXxf0UDvXYOw
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/19/18 8:20 PM
+Save-Time: 12/22/18 12:24 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -31,10 +31,14 @@ if [FallOffen [ t case_KVG ] "201."] {
 } -else {
 	FallZuPatientErstellen [ t case_KVG ]  "20.4.2018"
 }
+SelectPatient "Armes Wesen" Vorname
 if [FallOffen [ t case_UVG ] "201."] {
 	log "Offenen Fall UVG gefunden"
 } -else {
 	FallZuPatientErstellen [ t case_UVG ]  "20.6.2018"
 }
+visit-all-views "|.*Medikamente-Verlauf.*|.*Eingangsfach.*"
+visit-all-preferences -addToIgnorePattern "|.*iWork Pages Proces.*|.*Barcode Scanner.*|.*AbacusJunior.*"
+
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

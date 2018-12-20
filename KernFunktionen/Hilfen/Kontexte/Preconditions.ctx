@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 5:38 PM
+Save-Time: 12/22/18 12:00 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -36,16 +36,12 @@ log --message "Checked failure"
 // log -message [ concat "Value of get-workspace-location is: " [ get-workspace-location ] ]
 try {
 	log -message "Check Preferences Window"
-	exec-with-options -disableJobWaiting -command {
-   		get-window [ t preferences ] | get-button [ t cancel ] | click
-	}
+	get-window [ t preferences ] | get-button [ t cancel ] | click
 } -catch {
     // Verify that the window was missing (and not some other problem)
     verify-error -command {get-window [ t preferences ]}
 }
 get-preferences-menu | click
-global [val preferencesCsvFile [concat $resultsDir "preferences.csv" ] ]
-log $preferencesCsvFile
 
 // Some Hints from http://h2database.com/html/tutorial.html#tutorial_starting_h2_console
 // http://central.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar
@@ -79,7 +75,6 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 	                   [val jdbc $jdbcConnection] {
 	concat "jdbcConnection: " $jdbcConnection
 	concat "executing " [ str $sqlCommand  ] " via " [str $sqlCmdFile ] | log
-	concat "java" " -classpath " $h2Jar " " $scriptName" -url "  $jdbc " -user " "sa" " -script " $sqlCmdFile " -showResults" | log
   // TODO: When RCPTT > 2.3.0 is available add | find-all  "-->. to select only result lines
 	exec-process "java" "-classpath" $h2Jar $scriptName"-url"  [concat "'" $jdbc "'"] "-user" "sa" "-script" $sqlCmdFile "-showResults"
 }
@@ -89,9 +84,9 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 	                     [val jarFile $h2Jar]
 	                     [val jdbc $jdbcConnection] {
 	concat "Will create SQL backup for h2 under: " $zipFile | log
-	exec-process "java" "-classpath" $jarFile "org.h2.tools.Script" "-url"  $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
+	      concat "java" " -classpath " $jarFile " org.h2.tools.Script   -url " $jdbc " -user " "sa" " -script " $zipFile "-options" " compression zip" | log
+	exec-process "java"  "-classpath"  $jarFile  "org.h2.tools.Script" "-url"  $jdbc  "-user"  "sa"  "-script"  test.xx.zip "-options"  "compression" "zip"
 	concat "Created SQL backup for h2 under: " $zipFile | log
-
 }
 
 exec-with-options -command {

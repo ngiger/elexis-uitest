@@ -1,0 +1,18 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.parameters
+Element-Name: VisitOneView
+Element-Type: context
+Element-Version: 2.0
+Id: _h-OyEASXEemcp9WoDsgIvA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/20/18 9:41 PM
+
+------=_.parameters.context-2e023de5-3294-36a9-ac1d-6701f05a40ee
+Content-Type: text/properties
+Entry-Name: .parameters.context
+
+#Thu Dec 20 21:41:41 CET 2018
+viewName=1,Patienten
+
+------=_.parameters.context-2e023de5-3294-36a9-ac1d-6701f05a40ee--

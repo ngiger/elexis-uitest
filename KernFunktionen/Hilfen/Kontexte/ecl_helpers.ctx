@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 5:57 PM
+Save-Time: 12/22/18 12:01 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -21,7 +21,6 @@ Entry-Name: .ecl.context
 proc "get-env" [val name] {
 		invoke-static "org.eclipse.rcptt.util" "java.lang.System" getenv $name
 }
-
 proc "pwd" {
   // invoke-static "org.eclipse.rcptt.util" -className java.nio.file.Paths -methodName get -args "."
   get-java-property "user.dir"
@@ -32,8 +31,18 @@ proc "get-default-locale" {
 }
 
 proc "get-user-dir" {
-	invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub 
-	-methodName getWritableUserDir
+	if [ get-by-os  -win true -macosx false -linux false ] {
+		global [val myUserDir [ concat  [get-java-property user.home] "/elexis" | str ] ] -override
+		// concat "global1 myUserDir: " $myUserDir |log
+		global [val myUserDir [ replaceAll  -replaceString  "/" -searchPattern  "C:" -inString $myUserDir] ] -override
+		global [val myUserDir [ replaceAll  -replaceString  "/" -searchPattern  "\\\\" -inString $myUserDir] ] -override
+		// concat "global3 myUserDir: " $myUserDir |log
+		global [val myUserDir [ replaceAll  -replaceString  "\\\\ " -searchPattern  " " -inString $myUserDir] ] -override
+		concat "get-user-dir return: " $myUserDir |log
+		$myUserDir | str
+	} -else {
+		invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir
+    }
 }
 proc "safe-get-java-property" [val name] {
 	try {
@@ -60,12 +69,13 @@ proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 	$inString | invoke replaceAll $searchPattern $replaceString
 }
 
+global [ val resultsDir   [ concat  [ pwd ]  "/../results/"] ]
 global [ val translations [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations.properties"]]]
-global [ val resultsDir  [concat  [ pwd ]  "/../results/"] ]
-
+global [ val imagesDir    [ concat $resultsDir "images/" ] ]
+global [ val preferencesCsvFile [ concat  $resultsDir "preferences.csv" ] ]
+global [ val viewsCsvFile       [ concat  $resultsDir "views.csv" ] ]
 concat "get-default-locale returns: " [get-default-locale] |log
 concat "get-user-dir returns: " [get-user-dir] |log
-concat "resultsDir returns: " $resultsDir |log
 concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log
 global [ val defaultLanguage [ get-java-property "user.language" "de" ] ]
 concat "defaultLanguage is now: " $defaultLanguage| log
