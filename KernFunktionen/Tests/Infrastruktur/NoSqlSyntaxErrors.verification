@@ -1,0 +1,28 @@
+--- RCPTT verification ---
+Format-Version: 1.0
+Element-Name: NoSqlSyntaxErrors
+Element-Type: verification
+Element-Version: 2.0
+Id: _GcdboAX2Eemcp9WoDsgIvA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 12/22/18 5:55 PM
+Verification-Type: org.eclipse.rcptt.verifications.log
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Ensure that we have no SQL errors. Eg. we found in 3.7.0
+
+Syntax error in SQL statement "CREATE CACHED TABLE ""CSTGROUP_LABITEM_JOINT"" ( ""ID"" VARCHAR(25) NULL DEFAULT NULL, ""DELETED"" CHAR(1) NULL DEFAULT '0', ""LASTUPDATE"" BIGINT(20) NULL DEFAULT NULL, ""GROUPID"" VARCHAR(25) NULL DEFAULT NULL, ""ITEMID"" VARCHAR(25) NULL DEFAULT NULL, ""DISPLAYONCE"" CHAR(1) NOT NULL DEFAULT '0', ""COMMENT"" LONGVARCHAR NULL, UNIQUE INDEX ""GROUPID"" (""GROUPID"", ""ITEMID"")) COLLATE[*]='utf8_general_ci' ENGINE=INNODB "; SQL statement:
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.errorlog.verification-3ceb5b18-8b7c-3939-9191-416e6e78eb57
+Content-Type: text/errorlog-verification
+Entry-Name: .errorlog.verification
+
+INCLUDE CONTEXTS: true
+DENIED:
+7 0 .* Message:.*Syntax error in SQL statement.*
+
+------=_.errorlog.verification-3ceb5b18-8b7c-3939-9191-416e6e78eb57--

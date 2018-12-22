@@ -97,6 +97,8 @@ Im Moment bin ich zufrieden, wenn eine TestSuite durchläuft. Nachher muss man w
 
 Hier bin ich mir noch nicht klar, wie diese strukturiert sein sollen und ggf via properties gesteurt (z.B: für Matrix-Projekte von Jenkins).
 
+Für Linux-Buils muss die Bibliothek librxtx-java installiert.
+
 
 # Gemachte Anpassungen an Elexis
 
@@ -139,20 +141,13 @@ Damit man mit -nl fr_CH aufstarten kann, muss vorgäng in der DB das Statement `
 
 `mvn clean verify -Dusebranch=fr_CH`
 
-## Testen mit Xvfb
+## Testen mit Xvfb (headless)
 
-xfonts-scalable
- xfonts-unifont
-libfonts-java 
- xfonts-100dpi  xfonts-75dpi  ttf-unifont 
- 
-Um headless zu testen, 
+Die Screenshots sehen hässlich aus, wenn nicht eine volle Gnome/KDE-Umgebung installiert ist.
 
-The following additional packages will be installed:
-  gnome-mime-data libart-2.0-2 libbonobo2-0 libbonobo2-common libbonoboui2-0 libbonoboui2-common libcanberra0 libequinox-osgi-java libfelix-bundlerepository-java libfelix-gogo-command-java libfelix-gogo-runtime-java libfelix-gogo-shell-java libfelix-osgi-obr-java libfelix-shell-java libfelix-utils-java libglade2-0
-  libgnome-2-0 libgnome-keyring-common libgnome-keyring0 libgnome2-common libgnomecanvas2-0 libgnomecanvas2-common libgnomeui-0 libgnomeui-common libgnomevfs2-0 libgnomevfs2-common libgnomevfs2-extra libicu4j-49-java libkxml2-java liborbit-2-0 libosgi-annotation-java libosgi-compendium-java libosgi-core-java
-  libswt-cairo-gtk-3-jni libswt-gnome-gtk-3-jni libswt-gtk-3-java libswt-webkit-gtk-3-jni libtdb1
+Niklaus fehlt die Zeit um genau herauszufinden, welche Pakte (wahrschein nur Fonts) fehlen. (fonts-freefont-otf fonts-linuxlibertine fonts-lmodern fonts-texgyre xfonts-scalable xfonts-unifont libfonts-java xfonts-100dpi xfonts-75dpi ttf-unifont) scheinen zu reichen.
 
+Lokal lässt Niklaus dann die Builds wie folgt laufen: `xvfb-run -a mvn clean verify 2>&1 | tee maven.log`
 
 # Ideen für das weitere Vorgehen
 
