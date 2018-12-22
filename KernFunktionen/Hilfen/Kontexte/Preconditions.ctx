@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/22/18 1:45 PM
+Save-Time: 12/22/18 8:20 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -86,7 +86,12 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 	exec-process "java" "-classpath" $h2Jar $scriptName"-url"  [concat "'" $jdbc "'"] "-user" "sa" "-script" $sqlCmdFile "-showResults"
 }
 
-
+/** (Only for h2 at the moment)
+*   Creates a dump. When running headless it fails with log entries like
+*   org.h2.jdbc.JdbcSQLException: Verbindung ist unterbrochen: "java.net.ConnectException: Verbindungsaufbau abgelehnt (Connection refused):
+*      144.76.170.222:45657" Connection is broken: "java.net.ConnectException:
+*      Verbindungsaufbau abgelehnt (Connection refused): 144.76.170.222:45657" [90067-197]
+*/
 proc "create-backup-sql" [val zipFile $dumpFile] 
 	                     [val jarFile $h2Jar]
 	                     [val jdbc $jdbcConnection] {
