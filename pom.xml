@@ -125,7 +125,7 @@
               <scripts>
                   <script><![CDATA[
       file = new File("${localeSqlScript}")
-      file.write("-- Created by ${project.basedir}/pom.xml\n")
+      file.write("-- Created by elexis-uitest/pom.xml\n")
       file.append("update config set wert = '${language}_CH' where param like '%locale';\n")
   ]]></script>
   </scripts>
