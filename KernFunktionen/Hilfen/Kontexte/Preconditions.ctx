@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/22/18 12:00 AM
+Save-Time: 12/22/18 1:45 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -24,6 +24,13 @@ Defines the following global variables:
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
+// Fail early when User.home with space in it. Some scripts (e.g. backup sql) will not work (at least under windows)
+if [ get-java-property "user.home" | matches ".* .*" | eq true ] {
+	concat "User home directory may not contain a space" | log
+	get-java-property "user.dir" | matches ".* .*"  | eq true | verify-false
+} -else {
+	concat "Check passed: get-java-property user.home -> " [ get-java-property "user.home" ] " does not contain a space" | log
+}
 // output some utility information uisng procedures from ecl_helper 
 log -message [ concat "Value of environmnet variable PATH is: " [ get-env PATH] ]
 log -message [ concat "Value of get-seconds is: " [ get-seconds ] ]

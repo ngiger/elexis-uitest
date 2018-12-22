@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/22/18 12:23 AM
+Save-Time: 12/22/18 1:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -40,6 +40,12 @@ close-window-if-open [ t preferences ]
 
 proc "check-one-preference-item" [val prefName] {
    // prefName as seen in the CSV file
+// Todo: Workarounds für
+//  * keine rxtxt library gefunden wird /(AbacusJunior) set error message if Log-Eintrag mit java.lang.UnsatisfiedLinkError: no rxtxSerial in java.library.path
+//  * GlobalInbox nicht vorhanden (Eurolyser, OK Änderungen nicht akzeptiert, Nur Abbrechen enables
+// * HL7 Dateien (Der Wert muss ein vorhandenes Verzeichnis sein.
+// * Datenaustausch/Omnivore: Der Wert muss ein vorhandenes Verzeichnis sein.
+
     if [$prefName | str | matches "2,.*"] {
 		global [val curSubSection [ replaceFirst $curPath ".*/" ""] ] -override
 	    global [val  curPath [ concat $curPrefSection "/" $curSubSection [ replaceFirst $prefName "2," "/"] ] ] -override

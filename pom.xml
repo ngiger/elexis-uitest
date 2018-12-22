@@ -20,7 +20,7 @@
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
     <useBranch>master</useBranch>
-    <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
+    <localeSqlScript>./setlocale_${language}_CH.sql</localeSqlScript>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
@@ -206,6 +206,7 @@
               <arg>-noregtool</arg>
             </args>
             <vmArgs>
+              <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
               <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
               <vmArg>-Dlanguage=${language}</vmArg>
               <vmArg>-Duser.language=${language}</vmArg>
