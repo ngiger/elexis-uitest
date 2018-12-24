@@ -204,7 +204,8 @@
               <arg>${language}_CH</arg>
               <arg>-nosplash</arg>
               <arg>-noregtool</arg>
-            </args>
+              <arg>--use-config=rpctt</arg>
+           </args>
             <vmArgs>
               <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
               <vmArg>-DGTK_IM_MODULE=ibus</vmArg>

@@ -60,6 +60,7 @@ Für RunFromScratch (leere DB mit 007 als Arzt) hinzufügen
     -Delexis-run-mode=RunFromScratch
     -Dch.elexis.username=007 -Dch.elexis.password=topsecret
 
+* Sich überlegen, ob man eine separate config-xml-Datei verwenden will. Wenn ja dann `--use-config=anstell_von_local` hinzufügen
 * Mit Doppelclick ElexisDemoDB starten
 
 ## Test aufnehmen
