@@ -1,0 +1,28 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: NoViewWithPercent
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _yxaoYBA9Eem9AMAqvR_wLg
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 1/4/19 5:36 PM
+Testcase-Type: ecl
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Checks that we do not have any window with a percent sign in its name, as this is probably a missing translation.
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-menu -path [ t menu_select_view ]| click
+with [get-window [ t show_view ]] {
+	get-editbox | set-text "%"
+	get-tree | get-property itemCount | equals 0 | verify-true
+	get-button [t cancel ] | click
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
