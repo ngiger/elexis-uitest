@@ -1,0 +1,155 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Kons
+Element-Type: context
+Element-Version: 2.0
+Id: _yO1KQAYtEemcp9WoDsgIvA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/8/19 3:34 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
+	with [get-view [ t kons_view ] ] {
+		t kons_create_new | log
+	    get-button [ t kons_create_new ] | click
+	    // Nächste Zeil kam einmal nicht sofort. Deshalb wait eingeführt
+	    wait 100
+	    get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
+	}
+}
+
+proc "HasKonsSelected" {
+	try {
+		get-view [ t kons_view ]  | get-label -index 0 | get-property caption | equals  [ t lbl_no_kons_selected ] | verify-false
+		bool true  // 0 stands for true
+	} -error [val errorObj] -catch {
+		// log [$errorObj | get message]
+		bool false
+	}   
+}
+    
+
+proc "PressAddDiagnosisToKons" {
+	// TODO: This button should get a toolbar
+	with [get-view  [ t kons_view ] | get-button -after [ get-label [ t btn_diagnosis ] ] ] {
+	    click
+	}
+}
+
+proc "PressAddLeistungToKons" {
+	// TODO: This button should get a toolbar
+	with [get-view [ t kons_view ] | get-button -after [ get-label [ t btn_accounting ] ] ] {
+	    click
+	}
+}
+
+proc "ActivateVisibleKonsView" {
+	with [get-view [ t kons_view ] ] {
+		click
+	}
+}
+
+proc "kons-neue-diagnose" [ val reiter ] [ val item ] {
+	ActivateVisibleKonsView
+	PressAddDiagnosisToKons
+	with [get-view [ t diagnosen ] ] {
+	    get-group [ t all ] | get-editbox | set-focus
+	    get-tab-folder | get-tab-item $reiter | click
+	    with [get-group [ t all ]] {
+	        get-editbox | set-focus
+	        with [get-tree] {
+	            select $item
+	            get-item -path $item | double-click
+	            get-item -path $item | click
+	        }
+	    }
+	}
+
+    // Close Leistungen
+	ActivateVisibleKonsView 
+    concat "kons-neue-diagnose added " $reiter " " $item | log
+}
+
+/**
+ * Das geht eine Ewigkeit, weil rcptt sich den ganzen Artikelstamm ins Memory lädt!!
+*/
+proc "kons-neuen-artikelstamm-item" [ val item_short ] [ val item_long ] {
+	t kons_view | log
+	PressAddLeistungToKons
+	with [get-view [t leistungen ] ] {
+	   // get-tab-folder | get-tab-item [ t artikelstamm ] | click
+	    with [get-group [ t all ]] {
+	        get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
+	        get-table | select $item_long | double-click
+	    }
+	}
+    concat "kons-neuen-artikelstamm-ite added " $item_short " " $item_long | log
+}
+
+proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führerschein" ] {
+	PressAddLeistungToKons
+	with [get-view [ t leistungen ] ] {
+	    get-button [ t btn_show_list ] click
+	    get-tab-folder | get-tab-item Eigenleistung | click
+	    with [get-group [ t all ] ] {
+	        get-editbox -after [get-label Code] | set-focus
+	        get-table | select $itemName | double-click
+	    }
+    }
+    // Close Leistungen
+	ActivateVisibleKonsView 
+
+}
+proc "kons-add-tarmed" [ val itemName  "00.01.01 Konsultation" ] {
+	PressAddLeistungToKons
+	with [get-view [ t leistungen ] ] {
+		    get-button [ t btn_show_list ] click
+	    get-tab-folder | get-tab-item Tarmed | click
+	    with [get-editbox -after [get-label Ziffer]] {
+	        click-text
+	        set-focus
+	        set-text $itemName
+	    }
+	    get-button "Suche jetzt ausführen" | click
+	    // Select just the first element
+	    get-tree | select ".*" | double-click
+    }
+    // Close Leistungen
+	ActivateVisibleKonsView 
+	// TODO: This fails with NullPointerException and does not populate the Verrechnung
+	// Not checking for this condition at the moment
+}
+
+proc "preferences-use-macros-with-TI-and-Favoriten" {
+	get-preferences-menu | click
+	with [get-window Benutzervorgaben] {
+	    get-tree | select "Anwender/Texteingabe"
+	    get-editbox -after [get-label "Makro-Zeichen"] | set-text "$"
+	    get-button "Makros Verrechenbar Favoriten" | check
+	    get-button "TI Diagnosen" | check
+	    get-button "Anwenden und Schließen" | click
+	}
+}
+
+proc "kons-add-macro" [ val macroName "soap" ] {
+	with [get-view Konsultation] {
+	    click
+	    with [get-editbox -after [get-label ".*heute.*"]] {
+	        set-text-offset 0 0
+	        type-text "soap$"
+	    }
+/*
+		get-view Konsultation | get-editbox -after [get-label "23.12.2018 (heute)"] | get-property text | matches ".*S:\n"
+		    + "O:\n"
+		    + "A:\n"
+		    + "P:.*" | verify-true
+		    */
+	}
+}
+	// ENDE
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

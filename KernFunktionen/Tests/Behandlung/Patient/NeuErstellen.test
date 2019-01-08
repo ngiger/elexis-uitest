@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _6mWlcPPPEeiRV8UfrW9XLA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/20/18 9:51 PM
+Save-Time: 1/8/19 4:02 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -24,8 +24,8 @@ Entry-Name: .content
 if [SelectPatient "Armes Wesen" Vorname | eq false] {
 	PatientenErstellen "Armes Wesen" Vorname true "30.3.1980" "Nebenstrasse 31" 3120 Elexiskon "055 123 45 67"
 }
-if [SelectPatient Berset Armin | eq false] {
-	PatientenErstellen Berset Armin false "30.3.1980" "Hauptstrasse 31" 3003 Bern "031 123 45 67"
+if [SelectPatient Berset Alain | eq false] {
+	PatientenErstellen Berset Alain false "9.4.1972" "Hauptstrasse 31" 3003 Bern "031 123 45 67"
 }
 log "Zwei Patienten vorhanden"
 concat "Result Krank:        " [FallOffen Krank "20.4.2018"] | log

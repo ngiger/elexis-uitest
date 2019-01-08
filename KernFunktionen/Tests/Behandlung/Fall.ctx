@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/21/18 10:25 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/8/19 4:07 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -32,12 +32,6 @@ proc "set-date-picker-date" [val window ] [ val labelBefore -input ] [ val "date
 }
 proc FallZuPatientErstellen [val caseLaw] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
 	get-view [ t view_cases ] | click
-	 t view_cases | log
-	 t dlg_new_case_caseReason | log
-/* get-view Patienten | get-table | select "Armes Wesen Vorname \\(m\\), 30.03.1980"
-get-view "Fälle" | get-button "Einen neuen Fall erstellen" | click
-*/
-	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | log
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
 	wait 100
 	
@@ -46,7 +40,13 @@ get-view "Fälle" | get-button "Einen neuen Fall erstellen" | click
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
 		get-eclipse-window | get-object | save-screenshot [concat $imagesDir $caseLaw " " $startDate "_created.png"]
-		get-button OK | click
+		get-button  [ t ok] | click
+	}
+}
+
+proc SelectFall [val caseLaw] [val startDate] {
+	let [ val searchPattern [ concat $caseLaw ".*" $startDate ".*"] ] {
+		get-view [ t view_cases ] | get-table | select $searchPattern | click
 	}
 }
 
@@ -54,19 +54,23 @@ proc FallOffen [val caseLaw] [val startDate] {
 	let [val searchPattern [concat ".*" $caseLaw ".*"]] {
 		try {
 			concat "MySearchpattern is: " $searchPattern | log
-			get-view [ t view_cases ] | get-table | log
 			get-view [ t view_cases ] | get-table | get-item $searchPattern | get-property caption
 			bool true  // 0 stands for true
 		} -catch {
-			// verify-error -command {
-			//	get-item $searchPattern
-			// }
-			// log [concat "Searchpattern " $searchPattern " not found"]
-			// get-view [ t view_cases ]| get-table | get-items | length | equals 8888
 			bool false // 1 stands for false
-		}// get-view [ t view_cases ]| get-table | get-item ".*" | get-property caption | log
-		// get-view [ t view_cases ]| get-table | get-item ".*Krank.*" | get-property caption | log
-		// get-view [ t view_cases ]| get-table | get-items | length | eq 999
+		}
 	}
 }
+
+proc AktuellenFallVerrechnen {
+	get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
+    try {
+		get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
+		log "AktuellenFallVerrechnen: Failed. See message above" -severity error
+    } -catch {
+    	log "Catched error"
+    }
+	get-window [ t error ] | verify-false
+}
+
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

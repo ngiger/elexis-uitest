@@ -6,11 +6,21 @@ Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 12/22/18 1:20 PM
+Save-Time: 1/8/19 12:56 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+proc SavePreferencesToFile {
+	exec-with-options -command {
+	 get-preferences-menu | click
+	 t preferences|log
+	  	get-window [ t preferences ] | get-tree | expand-all | get-table-data | write-csv-file $preferencesCsvFile
+		wait 100
+		get-window [ t preferences ] | get-button [ t cancel ] | click
+	}
+}
 
 proc "close-window-if-open" [val windowName] {
 	log [concat "Must close Window " $windowName]
@@ -87,6 +97,7 @@ proc "check-one-preference-item" [val prefName] {
 }
 
 proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
+	SavePreferencesToFile
 	read-lines $preferencesCsvFile | foreach [val item] {
 		concat "visit-all-preferences checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
 		if [$item | str | matches [
