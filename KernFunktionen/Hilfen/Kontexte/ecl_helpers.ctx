@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 2:54 PM
+Save-Time: 1/9/19 10:04 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -97,6 +97,7 @@ proc OpenAndResetStartPerspektive {
 	get-button [ t btn_start_perspective ]  | click
 	get-menu -path [ t menu_reset_perspective ] | click
 	get-window [ t reset_perspective ] | get-button  [ t yes ]  | click
+	log "OpenAndResetStartPerspektive done"
 }
 
 //

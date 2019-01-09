@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _c13msBQlEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 8:23 PM
+Save-Time: 1/9/19 10:43 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -27,6 +27,10 @@ Imports the following datasets:
 Content-Type: text/ecl
 Entry-Name: .content
 
+get-eclipse-window | get-object | save-screenshot [concat $imagesDir "before_view_article.png"]
+open-window-by-name "Artikel"
+get-eclipse-window | get-object | save-screenshot [concat $imagesDir "after_view_article.png"]
+wait 5000 // On the Jenkins master we have problems. I suspect that reading the loinc takes too long
 ReadBlocksExchange
 ReadMigel
 ReadAnalysenListe

@@ -148,7 +148,7 @@ Die Screenshots sehen hässlich aus, wenn nicht eine volle Gnome/KDE-Umgebung in
 
 Niklaus fehlt die Zeit um genau herauszufinden, welche Pakte (wahrschein nur Fonts) fehlen. (fonts-freefont-otf fonts-linuxlibertine fonts-lmodern fonts-texgyre xfonts-scalable xfonts-unifont libfonts-java xfonts-100dpi xfonts-75dpi ttf-unifont) scheinen zu reichen.
 
-Lokal lässt Niklaus dann die Builds wie folgt laufen: `xvfb-run -a mvn clean verify 2>&1 | tee maven.log`
+Lokal lässt Niklaus dann die Builds wie folgt laufen: `xvfb-run -screen 0 1280x1024x24 -a mvn clean verify 2>&1 | tee maven.log`. The dimension of the screen are important or the images are very ugly (at least when running via Jenkins).
 
 # Ideen für das weitere Vorgehen
 

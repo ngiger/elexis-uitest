@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 9:44 PM
+Save-Time: 1/9/19 10:38 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -133,8 +133,12 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	    get-button OK | click
 	    concat "XXXXDone ReadTarmed with file: " $file | log
 	}
-	get-window "Import erfolgreich" | get-button OK | click
-	log "ReadTarmed: Closed dialog Import erfolgreich"
+	try {
+		get-window "Import erfolgreich" | get-button OK | click
+		log "ReadTarmed: Closed dialog Import erfolgreich"
+	} -catch {
+		log "ReadTarmed:  dialog Import erfolgreich not found"
+	}
 }
 
 // Ende
