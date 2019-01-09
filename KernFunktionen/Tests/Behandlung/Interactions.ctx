@@ -1,0 +1,54 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Interactions
+Element-Type: context
+Element-Version: 2.0
+Id: _-OHP8BOEEemEb8FG0wciYA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/8/19 10:49 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc LogInteractionStatus {
+	log "LogInteractionStatus"
+	get-view Konsultation | get-link -after [ get-label [ t btn_accounting ] ] | get-property caption -raw  | log
+}
+proc VerifyInteractionStatus [ val status "Keine Interaktionen bekannt" ] {
+	LogInteractionStatus
+	concat "VerifyInteractionStatus check: " $status | log
+	get-view Konsultation | get-link -after [ get-label [ t btn_accounting ] ] | 
+	get-property caption  | equals $status | verify-true
+}
+
+proc AllVerrechnungenEntfernen { $resultsDir
+	with [get-view Konsultation | get-table -after [ get-label [ t btn_accounting ] ] ] {
+		try {
+		    select 1 | get-menu -path "Alle entfernen" | click
+	    	log "AllVerrechnungenEntfernen. DOne"
+	    } -catch {
+	    	log "AllVerrechnungenEntfernen Nix zu tun!"
+	    }
+	}
+}
+
+proc SetEphaInteractionCheck [ val enabled true ] {
+	get-preferences-menu | click
+	with [get-window [ t preferences ] ] {
+	    get-editbox | set-text Medi
+	    get-tree | select "Anwender/Medikation"
+	    if [ $enabled | eq true ] {
+		    get-button ".*auf Interaktionen.*unterdrücken" | uncheck
+	    	log "SetEphaInteractionCheck enabled it"
+			get-window  [ t preferences ] | get-object | save-screenshot [concat $imagesDir "EphaInteractions/preferences_enabled.png"]
+	    } -else {
+	    	get-button ".*auf Interaktionen.*unterdrücken" | check
+	    	log "SetEphaInteractionCheck disabled it"
+			get-window  [ t preferences ] | get-object | save-screenshot [concat $imagesDir "EphaInteractions/preferences_disabled.png"]
+	    }
+	    get-button "Anwenden und Schließen" | click
+	}
+}
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

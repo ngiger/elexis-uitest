@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Produced by /opt/src/oddb2xml/lib/oddb2xml/builder.rb version 2.5.9 at 2018-11-12 09:47:58 +0100-->
+<!-- Selected some items to have a small artikelstamm for rcptt by Niklaus Giger, 2019-01-08 -->
+<ARTIKELSTAMM xmlns="http://elexis.ch/Elexis_Artikelstamm_v5" CREATION_DATETIME="2018-11-12T09:47:58.534+01:00" BUILD_DATETIME="2018-11-12T09:47:58.534+01:00" DATA_SOURCE="oddb2xml">
+    <PRODUCTS>
+        <PRODUCT>
+            <PRODNO>6291101</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Aspirin S, überzogene Tabletten</DSCR>
+            <DSCRF>Aspirin S, überzogene Tabletten</DSCRF>
+            <ATC>N02BA01</ATC>
+        </PRODUCT>
+        <PRODUCT>
+            <PRODNO>3905302</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Nolvadex</DSCR>
+            <DSCRF>Nolvadex</DSCRF>
+            <ATC>L02BA01</ATC>
+            <SUBSTANCE>Tamoxifenum</SUBSTANCE>
+        </PRODUCT>
+         <PRODUCT>
+            <PRODNO>5913101</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Metoprolol Helvepharm</DSCR>
+            <DSCRF>Metoprolol Helvepharm</DSCRF>
+            <ATC>C07AB02</ATC>
+            <SUBSTANCE>Metoprololi tartras (2:1)</SUBSTANCE>
+        </PRODUCT>
+        <PRODUCT>
+            <PRODNO>5829301</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Losartan Sandoz 12.5 mg, Filmtabletten</DSCR>
+            <DSCRF>Losartan Sandoz 12.5 mg, Filmtabletten</DSCRF>
+            <ATC>C09CA01</ATC>
+        </PRODUCT>
+        <PRODUCT>
+            <PRODNO>5829302</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Losartan Sandoz 25 mg, Filmtabletten</DSCR>
+            <DSCRF/>
+            <ATC>C09CA01</ATC>
+        </PRODUCT>
+        <PRODUCT>
+            <PRODNO>5829303</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Losartan Sandoz</DSCR>
+            <DSCRF>Losartan Sandoz</DSCRF>
+            <ATC>C09CA01</ATC>
+            <SUBSTANCE>Losartanum kalicum</SUBSTANCE>
+        </PRODUCT>
+        <PRODUCT>
+            <PRODNO>5863601</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Paroxetin Mepha</DSCR>
+            <DSCRF>Paroxétine Mepha</DSCRF>
+            <ATC>N06AB05</ATC>
+            <SUBSTANCE>Paroxetinum</SUBSTANCE>
+        </PRODUCT>
+        <PRODUCT>
+            <PRODNO>5863602</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Paroxetin-Mepha 30 mg, Lactab</DSCR>
+            <DSCRF/>
+            <ATC>N06AB05</ATC>
+      </PRODUCT>  
+              <PRODUCT>
+            <PRODNO>5922602</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Ilaris</DSCR>
+            <DSCRF>Ilaris</DSCRF>
+            <ATC>L04AC08</ATC>
+            <LIMNAMEBAG>ILARIS3</LIMNAMEBAG>
+            <SUBSTANCE>Canakinumabum</SUBSTANCE>
+        </PRODUCT>
+      </PRODUCTS>
+      <LIMITATIONS>
+       <LIMITATION>
+            <LIMNAMEBAG>ILARIS3</LIMNAMEBAG>
+            <DSCR>&lt;b&gt;Cryopyrin-assoziiertes periodisches Syndrom (CAPS):&lt;/b&gt;
+
+Nach Kostengutsprache des Krankenversicherers und vorgängiger Konsultation des Vertrauensarztes zur Behandlung von Patienten mit CAPS mit bestätigter Mutation des NLRP3-Gens.
+
+
+
+&lt;b&gt;Aktive systemische juvenile idiopathische Arthritis (sJIA):&lt;/b&gt;
+
+Zur ausschliesslichen Verschreibung in Zentren für Kinderrheumatologie durch Fachärzte der Rheumatologie in Zusammenarbeit mit Fachärzten für Kinder- und Jugendmedizin oder durch Fachärzte für Kinder- und Jugendmedizin mit Weiterbildung im Schwerpunkt pädiatrischer Rheumatologie (Weiterbildung Anhang 10 nach SIWF, FMH).
+
+Nach Kostengutsprache des Krankenversicherers mit vorgängiger Konsultation des Vertrauensarztes zur Behandlung von aktiver sJIA bei Patienten ab 2 Jahren, die auf die vorangehende Therapie mit nicht-steroidalen Antirheumatika (NSAIDs) und systemischen Kortikosteroiden unzureichend angesprochen haben. ILARIS kann als Monotherapie oder in Kombination mit Methotrexat verabreicht werden.
+ 
+In einer Dosierung von maximal 4 mg/kg (bis maximal 300 mg), verabreicht alle 4 Wochen über eine subkutane Injektion. Bei Patienten mit deutlichem initialem Ansprechen und anhaltender Remission von mehr als 24 Wochen unter ILARIS ist eine Reduktion der Dosis auf 2 mg/kg alle 4 Wochen und allenfalls anschliessend ein Absetzen der Therapie mit ILARIS in Erwägung zu ziehen.
+ 
+Patienten mit aktiver sJIA sind im Register JIRcohorte (www.jircohorte.ch) zu erfassen.
+ 
+Voraussetzung für eine Weiterbehandlung nach 6 Monaten ist das Ansprechen auf die Behandlung mit ILARIS. Für eine erneute Weiterbehandlung nach 6 Monaten ist erneut eine Kostengutsprache des Krankenversicherers mit vorgängiger Konsultation des Vertrauensarztes einzuholen.
+
+
+
+&lt;b&gt;Tumornekrosefaktor-Rezeptor-assoziiertes periodisches Syndrom (TRAPS):&lt;/b&gt;
+
+ILARIS ist zur Behandlung von Patienten mit dem Tumornekrosefaktor-Rezeptor-assoziierten periodischen Syndrom (TRAPS) indiziert.
+
+
+
+&lt;b&gt;Hyperimmunglobulin-D-Syndrom (HIDS)/Mevalonatkinasedefizienz (MKD):&lt;/b&gt;
+
+ILARIS ist zur Behandlung von Patienten mit dem Hyperimmunglobulin-D-Syndrom (HIDS)/Mevalonatkinasedefizienz (MKD) indiziert.
+
+
+
+&lt;b&gt;Familiäres Mittelmeerfieber (FMF):&lt;/b&gt;
+
+ILARIS ist für die Behandlung von Patienten mit dem Familiären Mittelmeerfieber (FMF) indiziert, bei welchen eine herkömmliche Therapie kontraindiziert ist, nicht vertragen wird oder kein adäquates Ansprechen trotz Verabreichung der höchstverträglichen Dosis erreicht wird.
+
+
+
+Zur ausschliesslichen Verschreibung in Zentren für Kinderrheumatologie, Rheumatologie, Kinderimmunologie und Immunologie.
+
+
+
+Patienten mit TRAPS, HIDS/MKD und FMF sind im Register JIRcohorte (www.jircohorte.ch) zu erfassen.
+</DSCR>
+            <DSCRF>&lt;b&gt;Syndromes périodiques associés à la cryopyrine (CAPS):&lt;/b&gt;
+
+Après la garantie de la prise en charge de l’assurance maladie et la consultation préalable du médecin-conseil de l’assurance maladie pour le traitement des patients affectés par CAPS porteurs d'une mutation confirmée du gène NLRP3.
+
+
+
+&lt;b&gt;Arthrite juvénile idiopathique systémique (AJIS):&lt;/b&gt;
+
+Pour prescription exclusive dans les centres de rhumatologie pédiatrique, par des spécialistes en rhumatologie, en collaboration avec des spécialistes en pédiatrie, ou par des spécialistes en pédiatrie avec une formation approfondie en rhumatologie pédiatrique (formation continue à l'annexe 10, selon SIWF, FMH).
+
+Après la garantie de prise en charge de l'assurance maladie après consultation préalable du médecin-conseil pour le traitement de l'arthrite juvénile idiopathique systémique (AJIs), chez les patients à partir de 2 ans, qui ont répondu de manière insuffisante au traitement préalable avec des anti-inflammatoires non stéroïdiens (AINS) et aux corticostéroïdes systémiques. ILARIS peut être administré comme monothérapie ou en combinaison avec le méthotrexate.
+ 
+À une dose maximale de 4 mg/kg (jusqu'à 300 mg au maximum), administrée toutes les 4 semaines par injection sous-cutanée. Chez les patients ayant une réponse initiale nette et une rémission durable de plus de 24 semaines sous ILARIS, une réduction de la dose à 2 mg/kg toutes les 4 semaines, puis le cas échéant, un arrêt du traitement par ILARIS doivent être envisagés.
+ 
+Les patients avec une AJIs doivent être répertoriés dans le registre JIR cohorte (www.jircohorte.ch).
+
+La poursuite du traitement au-delà de 6 mois est conditionnée par la réponse au traitement par ILARIS. Afin de poursuivre le traitement après 6 mois, il faut obtenir à nouveau, une garantie de prise en charge de l'assurance maladie après consultation préalable du médecin-conseil.
+
+
+
+&lt;b&gt;Syndrome périodique associé au récepteur du facteur de nécrose tumorale (TRAPS):&lt;/b&gt;
+
+ILARIS est indiqué dans le traitement des patients atteints d'un syndrome périodique associé au récepteur du facteur de nécrose tumorale (TRAPS).
+
+
+
+&lt;b&gt;Syndrome de fièvre périodique avec hyperimmunoglobulinémie D (HIDS)/déficit en mévalonate kinase (MKD):&lt;/b&gt;
+
+ILARIS est indiqué dans le traitement des patients atteints du syndrome de fièvre périodique avec hyperimmunoglobulinémie D (HIDS)/déficit en mévalonate kinase (MKD).
+
+
+
+&lt;b&gt;Fièvre méditerranéenne familiale (FMF):&lt;/b&gt;
+
+ILARIS est indiqué dans le traitement des patients atteints de fièvre méditerranéenne familiale (FMF), chez qui un traitement conventionnel est contre-indiqué ou non toléré ou en l'absence de réponse suffisante malgré l'administration des doses maximales tolérées.
+
+
+
+Pour prescription exclusive dans des centres de rhumatologie pédiatrique, rhumatologie, immunologie pédiatrique et immunologie.
+
+
+
+Les patients atteints de TRAPS, HIDS/MKD et FMF doivent être répertoriés dans le registre JIRcohorte (www.jircohorte.ch).
+</DSCRF>
+            <LIMITATION_PTS>1</LIMITATION_PTS>
+        </LIMITATION>
+      </LIMITATIONS>
+      <ITEMS>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680629110019</GTIN>
+            <PHAR>6132151</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>ASPIRIN S Tabl 500 mg 20 Stk</DSCR>
+            <DSCRF>ASPIRINE S cpr 500 mg 20 pce</DSCRF>
+            <COMP>
+                <NAME>Bayer (Schweiz) AG</NAME>
+                <GLN>7601001002593</GLN>
+            </COMP>
+            <PEXF>5.49</PEXF>
+            <PPUB>8.70</PPUB>
+            <PKG_SIZE>20</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>überzogene Tabletten</DOSAGE_FORM>
+            <IKSCAT>D</IKSCAT>
+            <PRODNO>6291101</PRODNO>
+        </ITEM> 
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680390530399</GTIN>
+            <PHAR>1165039</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Nolvadex Tabl 20 mg 30 Stk</DSCR>
+            <DSCRF>Nolvadex cpr 20 mg 30 pce</DSCRF>
+            <COMP>
+                <NAME>AstraZeneca AG</NAME>
+                <GLN>7601001348622</GLN>
+            </COMP>
+            <PEXF>13.38</PEXF>
+            <PPUB>27.65</PPUB>
+            <PKG_SIZE>30</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>A</IKSCAT>
+            <GENERIC_TYPE>O</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>3905302</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680390530474</GTIN>
+            <PHAR>1165045</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Nolvadex Tabl 20 mg 100 Stk</DSCR>
+            <DSCRF>Nolvadex cpr 20 mg 100 pce</DSCRF>
+            <COMP>
+                <NAME>AstraZeneca AG</NAME>
+                <GLN>7601001348622</GLN>
+            </COMP>
+            <PEXF>36.26</PEXF>
+            <PPUB>58.05</PPUB>
+            <PKG_SIZE>100</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>A</IKSCAT>
+            <GENERIC_TYPE>O</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>3905302</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680582930020</GTIN>
+            <PHAR>4290578</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>LOSARTAN Sandoz Filmtabl 12.5 mg 7 Stk</DSCR>
+            <DSCRF>LOSARTAN Sandoz cpr pell 12.5 mg 7 pce</DSCRF>
+            <COMP>
+                <NAME>Sandoz Pharmaceuticals AG</NAME>
+                <GLN>7601001029439</GLN>
+            </COMP>
+            <PKG_SIZE>7</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <IKSCAT>B</IKSCAT>
+            <PRODNO>5829301</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680582930044</GTIN>
+            <SALECD>A</SALECD>
+            <DSCR>Losartan Sandoz 25 mg, Filmtabletten</DSCR>
+            <DSCRF>--missing--</DSCRF>
+            <COMP>
+                <NAME>Sandoz Pharmaceuticals AG</NAME>
+                <GLN/>
+            </COMP>
+            <PKG_SIZE>28</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <IKSCAT>B</IKSCAT>
+            <PRODNO>5829302</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680582930068</GTIN>
+            <SALECD>A</SALECD>
+            <DSCR>Losartan Sandoz 25 mg, Filmtabletten</DSCR>
+            <DSCRF>--missing--</DSCRF>
+            <COMP>
+                <NAME>Sandoz Pharmaceuticals AG</NAME>
+                <GLN/>
+            </COMP>
+            <PKG_SIZE>98</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <IKSCAT>B</IKSCAT>
+            <PRODNO>5829302</PRODNO>
+        </ITEM>
+                <ITEM PHARMATYPE="P">
+            <GTIN>7680586360069</GTIN>
+            <PHAR>5829571</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Paroxetin Mepha Lactabs 20 mg 14 Stk</DSCR>
+            <DSCRF>Paroxétine Mepha lactabs 20 mg 14 pce</DSCRF>
+            <COMP>
+                <NAME>Mepha Pharma AG</NAME>
+                <GLN>7601001001121</GLN>
+            </COMP>
+            <PEXF>8.18</PEXF>
+            <PPUB>17.6</PPUB>
+            <PKG_SIZE>14</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Tabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>B</IKSCAT>
+            <GENERIC_TYPE>G</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5863601</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680586360076</GTIN>
+            <PHAR>5829594</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Paroxetin Mepha Lactabs 20 mg 28 Stk</DSCR>
+            <DSCRF>Paroxétine Mepha lactabs 20 mg 28 pce</DSCRF>
+            <COMP>
+                <NAME>Mepha Pharma AG</NAME>
+                <GLN>7601001001121</GLN>
+            </COMP>
+            <PEXF>12.31</PEXF>
+            <PPUB>26.45</PPUB>
+            <PKG_SIZE>28</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Tabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>B</IKSCAT>
+            <GENERIC_TYPE>G</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5863601</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680586360083</GTIN>
+            <PHAR>5829602</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Paroxetin Mepha Lactabs 20 mg 98 Stk</DSCR>
+            <DSCRF>Paroxétine Mepha lactabs 20 mg 98 pce</DSCRF>
+            <COMP>
+                <NAME>Mepha Pharma AG</NAME>
+                <GLN>7601001001121</GLN>
+            </COMP>
+            <PEXF>51.53</PEXF>
+            <PPUB>75.55</PPUB>
+            <PKG_SIZE>98</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Tabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>B</IKSCAT>
+            <GENERIC_TYPE>G</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5863601</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680586360090</GTIN>
+            <SALECD>A</SALECD>
+            <DSCR>Paroxetin-Mepha 30 mg, Lactab</DSCR>
+            <DSCRF>--missing--</DSCRF>
+            <COMP>
+                <NAME>Mepha Pharma AG</NAME>
+                <GLN/>
+            </COMP>
+            <PKG_SIZE>28</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Tabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés</DOSAGE_FORMF>
+            <IKSCAT>B</IKSCAT>
+            <PRODNO>5863602</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680586360106</GTIN>
+            <SALECD>A</SALECD>
+            <DSCR>Paroxetin-Mepha 30 mg, Lactab</DSCR>
+            <DSCRF>--missing--</DSCRF>
+            <COMP>
+                <NAME>Mepha Pharma AG</NAME>
+                <GLN/>
+            </COMP>
+            <PKG_SIZE>98</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Tabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés</DOSAGE_FORMF>
+            <IKSCAT>B</IKSCAT>
+            <PRODNO>5863602</PRODNO>
+        </ITEM>
+          <ITEM PHARMATYPE="P">
+            <GTIN>7680591310011</GTIN>
+            <PHAR>4700591</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Metoprolol Helvepharm Ret Filmtabl 25 mg 30 Stk</DSCR>
+            <DSCRF>Metoprolol Helvepharm cpr pell ret 25 mg 30 pce</DSCRF>
+            <COMP>
+                <NAME>Helvepharm AG</NAME>
+                <GLN>7601001003736</GLN>
+            </COMP>
+            <PEXF>2.06</PEXF>
+            <PPUB>6.45</PPUB>
+            <PKG_SIZE>30</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>B</IKSCAT>
+            <GENERIC_TYPE>G</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5913101</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680591310028</GTIN>
+            <PHAR>4700616</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Metoprolol Helvepharm Ret Filmtabl 25 mg 100 Stk</DSCR>
+            <DSCRF>Metoprolol Helvepharm cpr pell ret 25 mg 100 pce</DSCRF>
+            <COMP>
+                <NAME>Helvepharm AG</NAME>
+                <GLN>7601001003736</GLN>
+            </COMP>
+            <PEXF>6.86</PEXF>
+            <PPUB>16.1</PPUB>
+            <PKG_SIZE>100</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>B</IKSCAT>
+            <GENERIC_TYPE>G</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5913101</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680592260018</GTIN>
+            <SALECD>A</SALECD>
+            <DSCR>Ilaris, Trockensub 150 mg</DSCR>
+            <DSCRF>Ilaris, subst sèche 150 mg</DSCRF>
+            <COMP>
+                <NAME>Novartis Pharma Schweiz AG</NAME>
+                <GLN/>
+            </COMP>
+            <PEXF>11841.96</PEXF>
+            <PPUB>12384</PPUB>
+            <PKG_SIZE>1</PKG_SIZE>
+            <MEASURE>Durchstechflasche(n)</MEASURE>
+            <MEASUREF>Durchstechflasche(n)</MEASUREF>
+            <DOSAGE_FORM>Pulver</DOSAGE_FORM>
+            <DOSAGE_FORMF>Poudre soluble</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>A</IKSCAT>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5922601</PRODNO>
+        </ITEM>
+      </ITEMS>
+</ARTIKELSTAMM>

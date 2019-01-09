@@ -6,13 +6,12 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/8/19 2:23 PM
+Save-Time: 1/9/19 10:26 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-log "abc"
 proc RechnungAusgebenAlt [ val invoiceListViewName "Rechnungsliste.*beta.*" ] [val betrag "60.0.*" ] [val patient "Duck Donald"] {
 	open-window-by-name $invoiceListViewName
 	get-view  $invoiceListViewName | get-table | log
@@ -74,8 +73,6 @@ log Rechnungsliste
 	}
 	*/
 
-log "cde"
-
 proc SelectPatient [val familyName] [val firstName] {
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
@@ -86,6 +83,12 @@ proc SelectPatient [val familyName] [val firstName] {
 		}
 		get-editbox -index 1 | set-text $firstName
 		get-view [t view_patients ] | get-table | get-property itemCount | log
+	}
+	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
+	try {
+		get-view [t view_patients ]  | get-table | select [ concat  $familyName ".*" $firstName ".*"]
+	} -catch {
+	  log "SelectPatient not found"
 	}
 	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 }

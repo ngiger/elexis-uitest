@@ -94,7 +94,7 @@ Die Verifikationen von Marco habe ich gelöscht, da ich sonst Probleme habe, die
 
 ## Continuos Integration
 
-Im Moment bin ich zufrieden, wenn eine TestSuite durchläuft. Nachher muss man wahrscheinlich zu pro testenden Fall Unterprojekte mit separatem pom.xml erstellen.
+Nachdem zuerst Tests mit der DemoDB liefen, habe ich im Januar 2019 Unterverzeichnisse für demoDB und RunFromScratch angelegt.
 
 Hier bin ich mir noch nicht klar, wie diese strukturiert sein sollen und ggf via properties gesteurt (z.B: für Matrix-Projekte von Jenkins).
 

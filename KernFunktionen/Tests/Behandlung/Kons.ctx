@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/8/19 3:34 PM
+Save-Time: 1/9/19 10:42 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -24,10 +24,13 @@ proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 
 proc "HasKonsSelected" {
 	try {
+		get-view [ t kons_view ]  | get-label -index 0 | get-property caption -raw | log
+		get-view [ t kons_view ]  | get-link "\(.*\)" | get-property caption -raw | log
 		get-view [ t kons_view ]  | get-label -index 0 | get-property caption | equals  [ t lbl_no_kons_selected ] | verify-false
-		bool true  // 0 stands for true
+		get-view [ t kons_view ]  | get-link "\(.*\)" | get-property caption  | equals "\(.*\)" | verify-true
+		bool true
 	} -error [val errorObj] -catch {
-		// log [$errorObj | get message]
+		log [$errorObj | get message]
 		bool false
 	}   
 }
@@ -77,17 +80,20 @@ proc "kons-neue-diagnose" [ val reiter ] [ val item ] {
 /**
  * Das geht eine Ewigkeit, weil rcptt sich den ganzen Artikelstamm ins Memory lädt!!
 */
-proc "kons-neuen-artikelstamm-item" [ val item_short ] [ val item_long ] {
-	t kons_view | log
+proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 	PressAddLeistungToKons
+	log "PressAddLeistungToKons done"
 	with [get-view [t leistungen ] ] {
-	   // get-tab-folder | get-tab-item [ t artikelstamm ] | click
-	    with [get-group [ t all ]] {
-	        get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
-	        get-table | select $item_long | double-click
-	    }
+	    get-tab-folder | get-tab-item Artikelstamm | click
+	    get-group  [ t all ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+        get-group  [ t all ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
+		log  "before double-click"
+		get-button "Suche jetzt ausführen" | click
+        get-group  [ t all ] | get-table | select $item_long | double-click
+        key-type Enter
 	}
-    concat "kons-neuen-artikelstamm-ite added " $item_short " " $item_long | log
+    concat "kons-neuen-artikelstamm item added " $item_short " " $item_long | log
+	ActivateVisibleKonsView
 }
 
 proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führerschein" ] {
@@ -102,7 +108,6 @@ proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führer
     }
     // Close Leistungen
 	ActivateVisibleKonsView 
-
 }
 proc "kons-add-tarmed" [ val itemName  "00.01.01 Konsultation" ] {
 	PressAddLeistungToKons

@@ -2,42 +2,22 @@
 	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.elexis.rcptt</groupId>
-  <artifactId>common</artifactId>
-  <version>0.1</version>
-  <packaging>pom</packaging>
+  <artifactId>RunFromScratch</artifactId>
+  <packaging>rcpttTest</packaging>
+  <parent>
+    <groupId>ch.elexis.rcptt</groupId>
+    <artifactId>common</artifactId>
+    <version>0.1</version>
+  </parent>
   <properties>
-    <!-- we need a version > 2.3.0 because we need the proc find-all to extract the language from the nl parameter
-    commit 265067eb1ce14428ea4d33e97606934a6238d9e8
-    Author: Alexander Dudaev <aleksandr.dudayev@xored.com>
-    Date:   Wed Jul 25 20:56:41 2018 +0700
-    Added new ECL Command "find-all"
-    -->
-    <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
-    <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
-    <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
-    <rcptt-maven-version>2.3.0</rcptt-maven-version>
-    <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
-    <suite2run>SmokeTestSuite</suite2run>
-    <language>de</language>
-    <useBranch>master</useBranch>
-    <myBaseDir>${project.basedir}</myBaseDir>
+    <suite2run>TestsThatShouldPassButFail</suite2run>
+    <myBaseDir>${project.basedir}/..</myBaseDir>
   </properties>
-
-  <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
+   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
     <pluginRepository>
       <id>rcptt-releases</id>
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>rcptt-snapshots</id>
-      <name>RCPTT Maven Snapshots repository</name>
-      <!--
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-      -->
-      <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
     </pluginRepository>
   </pluginRepositories> 
   <build>
@@ -60,35 +40,6 @@
           </configuration>
       </plugin>
     <plugin>
-      <artifactId>maven-antrun-plugin</artifactId>
-      <version>1.8</version>
-      <executions>
-        <execution>
-          <id>copy-translations</id>
-          <phase>generate-sources</phase>
-          <configuration>
-            <target>
-              <copy file="${myBaseDir}/translations.properties" tofile="${rcptt-resources}/translations.properties"/>
-            </target>
-          </configuration>
-          <goals>
-            <goal>run</goal>
-          </goals>
-        </execution>        <execution>
-          <id>copy-Artikelstamm_Short_v5</id>
-          <phase>generate-sources</phase>
-          <configuration>
-            <target>
-              <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml"/>
-            </target>
-          </configuration>
-          <goals>
-            <goal>run</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-    <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
         <version>1.4.1</version>
@@ -105,7 +56,7 @@
               <md5>f9893acfa22b7fe1492dd9c515af2e5b</md5>
             </configuration>
           </execution>
-         </executions>
+        </executions>
       </plugin>
        <plugin>
         <groupId>org.eclipse.rcptt</groupId>
@@ -113,7 +64,10 @@
         <version>${rcptt-maven-version}</version>
         <extensions>true</extensions>
         <configuration>
-          <testOptions>
+          <projects>
+              <project>${project.basedir}/../KernFunktionen</project>
+          </projects>
+         <testOptions>
             <!-- the default value of 300 did was not long enough for VisitAllViews -->
             <testExecTimeout>1800</testExecTimeout>
           </testOptions>
@@ -148,14 +102,9 @@
               <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
               <vmArg>-Dlanguage=${language}</vmArg>
               <vmArg>-Duser.language=${language}</vmArg>
-              <!-- did not work as rcptt-maven-plug does not handle " in vmargs
-              <vmArg>-Dch.elexis.dbUser=sa</vmArg>
-              <vmArg>-Dch.elexis.dbPw=</vmArg>
-              <vmArg>-Dch.elexis.dbFlavor=h2</vmArg>
-              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:"${user.home}/elexis/db_for_rcptt/demoDB/db;AUTO_SERVER=TRUE"</vmArg>
-              -->
-              <vmArg>-Dch.elexis.username=test</vmArg>
-              <vmArg>-Dch.elexis.password=test</vmArg>
+              <vmArg>-Delexis-run-mode=RunFromScratch</vmArg>
+              <vmArg>-Dch.elexis.username=007</vmArg>
+              <vmArg>-Dch.elexis.password=topsecret</vmArg>
             </vmArgs>
           </aut>
           <runner>

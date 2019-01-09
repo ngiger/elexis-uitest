@@ -2,25 +2,16 @@
 	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.elexis.rcptt</groupId>
-  <artifactId>common</artifactId>
-  <version>0.1</version>
-  <packaging>pom</packaging>
+  <artifactId>demoDB</artifactId>
+  <packaging>rcpttTest</packaging>
+  <parent>
+    <groupId>ch.elexis.rcptt</groupId>
+    <artifactId>common</artifactId>
+    <version>0.1</version>
+  </parent>
   <properties>
-    <!-- we need a version > 2.3.0 because we need the proc find-all to extract the language from the nl parameter
-    commit 265067eb1ce14428ea4d33e97606934a6238d9e8
-    Author: Alexander Dudaev <aleksandr.dudayev@xored.com>
-    Date:   Wed Jul 25 20:56:41 2018 +0700
-    Added new ECL Command "find-all"
-    -->
-    <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
-    <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
-    <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
-    <rcptt-maven-version>2.3.0</rcptt-maven-version>
-    <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
-    <suite2run>SmokeTestSuite</suite2run>
-    <language>de</language>
-    <useBranch>master</useBranch>
-    <myBaseDir>${project.basedir}</myBaseDir>
+    <myBaseDir>${project.basedir}/..</myBaseDir>
+    <localeSqlScript>./setlocale_${language}_CH.sql</localeSqlScript>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
@@ -60,35 +51,6 @@
           </configuration>
       </plugin>
     <plugin>
-      <artifactId>maven-antrun-plugin</artifactId>
-      <version>1.8</version>
-      <executions>
-        <execution>
-          <id>copy-translations</id>
-          <phase>generate-sources</phase>
-          <configuration>
-            <target>
-              <copy file="${myBaseDir}/translations.properties" tofile="${rcptt-resources}/translations.properties"/>
-            </target>
-          </configuration>
-          <goals>
-            <goal>run</goal>
-          </goals>
-        </execution>        <execution>
-          <id>copy-Artikelstamm_Short_v5</id>
-          <phase>generate-sources</phase>
-          <configuration>
-            <target>
-              <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml"/>
-            </target>
-          </configuration>
-          <goals>
-            <goal>run</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-    <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
         <version>1.4.1</version>
@@ -105,14 +67,91 @@
               <md5>f9893acfa22b7fe1492dd9c515af2e5b</md5>
             </configuration>
           </execution>
-         </executions>
+          <execution>
+            <id>download-demoDB</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>http://download.elexis.info/demoDB/demoDB_elexis_3.7.0.zip</url>
+              <unpack>true</unpack>
+              <outputDirectory>${user.home}/elexis/</outputDirectory>
+              <md5>f8adb8a630e480e96f67c40b8b327745</md5>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
-       <plugin>
+      <plugin>
+        <!--https://books.sonatype.com/mcookbook/reference/ch02s03.html#ex-groovy-script-ex -->
+        <!-- Create a script to change the locale used by the db -->
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <phase>process-sources</phase> <!-- is after generate-sources -->
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <scripts>
+                  <script><![CDATA[
+      file = new File("${localeSqlScript}")
+      file.write("-- Created by elexis-uitest/pom.xml\n")
+      file.append("update config set wert = '${language}_CH' where param like '%locale';\n")
+  ]]></script>
+  </scripts>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.5.4</version>
+            <type>pom</type>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+      </plugin>
+     <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
+          <execution>
+            <phase>processm-sources</phase> <!-- is after generate-sources -->
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>java</executable>
+          <arguments>
+            <argument>-classpath</argument>
+            <argument>${rcptt-resources}/h2-1.4.197.jar</argument>
+            <argument>org.h2.tools.RunScript</argument>
+            <argument>-script</argument>
+            <argument>${localeSqlScript}</argument>
+            <argument>-url</argument>
+            <argument>jdbc:h2:${user.home}/elexis/demoDB/db</argument>
+            <argument>-user</argument>
+            <argument>sa</argument>
+            <argument>-showResults</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.eclipse.rcptt</groupId>
         <artifactId>rcptt-maven-plugin</artifactId>
         <version>${rcptt-maven-version}</version>
         <extensions>true</extensions>
         <configuration>
+          <projects>
+              <project>${project.basedir}/../KernFunktionen</project>
+          </projects>
           <testOptions>
             <!-- the default value of 300 did was not long enough for VisitAllViews -->
             <testExecTimeout>1800</testExecTimeout>
