@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 10:41 AM
+Save-Time: 1/9/19 12:26 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -104,10 +104,11 @@ proc "DeleteAllArtikelstammItems" {
 	try {
 		exec-process "java" "-classpath" $h2Jar "org.h2.tools.RunScript" "-url" $jdbcConnection "-user" "sa" "-script" $sqlCmdFile
 	} -catch {
-		log "Some error while deleting Aritiklestamm"
+		log "Some error while deleting ARTIKELSTAMM_CH"
 	}
 	log "DeleteAllArtikelstammItems done"
 }
+
 proc "ReadArtikelstamm" [ val xmlFile "~/elexis/rcptt/Artikelstamm_Short_v5.xml" ] {
 	concat "Restarting before Reading Artikelstamm file: " $xmlFile | log
 	get-button "Artikel.*öffnen" | click
