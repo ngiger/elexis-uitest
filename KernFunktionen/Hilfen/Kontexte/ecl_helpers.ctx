@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 2:16 PM
+Save-Time: 1/9/19 2:54 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -99,53 +99,6 @@ proc OpenAndResetStartPerspektive {
 	get-window [ t reset_perspective ] | get-button  [ t yes ]  | click
 }
 
-proc "DeleteAllArtikelstammItems" {
-	str "delete from ARTIKELSTAMM_CH;" | write-lines $sqlCmdFile
-	try {
-		exec-process "java" "-classpath" $h2Jar "org.h2.tools.RunScript" "-url" $jdbcConnection "-user" "sa" "-script" $sqlCmdFile
-	} -catch {
-		log "Some error while deleting ARTIKELSTAMM_CH"
-	}
-	log "DeleteAllArtikelstammItems done"
-}
-
-proc "ReadArtikelstamm" [ val xmlFile "~/elexis/rcptt/Artikelstamm_Short_v5.xml" ] {
-	concat "Restarting before Reading Artikelstamm file: " $xmlFile | log
-	get-button "Artikel.*öffnen" | click
-	with [get-view Artikel] {
-	    get-tab-folder | get-tab-item Artikelstamm | click
-	    get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
-	}
-	get-button "Menü anzeigen" | click
-	get-view Artikel | get-menu -path "Import..." | click
-	with [get-window Datenimport] {
-	    // TODO: Wait that pull request 174 for Tickets 14745 gets merged
-	    // get-button "Pharma-Artikel" | check
-	    with [get-editbox -after [get-label "Bitte Datei angeben:"]] {
-	        set-text $xmlFile
-        }
-        get-button OK | click
-    }
-
-	exec-with-options {
-	    get-view Artikel | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
-	    try {
-			get-window "Fehler aufgetreten" | verify-false
-		} -catch {
-			concat "No error while importing artikelstamm: " $xmlFile
-		}
-	} -allowStatusDialog
-	// 19:25:06.595 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - ArtikelstammImporterPage.doImport /home/niklaus/elexis/rcptt/Artikelstamm_Short_v5.xml
-	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
-	get-view Artikel | get-button "Automatische Suche aktivieren" | click
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
-	wait 1200 // 10 seconds are enough for the Artikelstamm_Short_v5
-	get-view Artikel | get-button "Automatische Suche aktivieren" | click
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
-	get-view Artikel | get-table | get-item -path "ASPIRIN S Tabl 500 mg 20 Stk <8.7> " | get-property caption
-    | equals "ASPIRIN S Tabl 500 mg 20 Stk <8.7>" | verify-true
-	concat "Read Artiklestamm done: " $imagesDir |log
-}
 //
 // Ende
 

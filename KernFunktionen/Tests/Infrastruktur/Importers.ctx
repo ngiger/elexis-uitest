@@ -1,0 +1,131 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Importers
+Element-Type: context
+Element-Version: 2.0
+Id: _7pLWIBQVEemEb8FG0wciYA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/9/19 7:06 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc "DeleteAllArtikelstammItems" {
+	str "delete from ARTIKELSTAMM_CH;" | write-lines $sqlCmdFile
+	try {
+		exec-process "java" "-classpath" $h2Jar "org.h2.tools.RunScript" "-url" $jdbcConnection "-user" "sa" "-script" $sqlCmdFile
+	} -catch {
+		log "Some error while deleting ARTIKELSTAMM_CH"
+	}
+	log "DeleteAllArtikelstammItems done"
+}
+
+proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
+	concat "Restarting before Reading Artikelstamm file: " $file | log
+	get-button "Artikel.*öffnen" | click
+	with [get-view Artikel] {
+	    get-tab-folder | get-tab-item Artikelstamm | click
+	    get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+	}
+	get-button "Menü anzeigen" | click
+	get-view Artikel | get-menu -path "Import..." | click
+	set-dialog-result File $file
+	with [get-window Datenimport] {
+	    get-button "Suche..." | click
+	    // TODO: Wait that pull request 174 for Tickets 14745 gets merged
+	    // get-button "Pharma-Artikel" | check
+        get-button OK | click
+    }
+
+	exec-with-options {
+	    get-view Artikel | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+	    try {
+			get-window "Fehler aufgetreten" | verify-false
+		} -catch {
+			concat "No error while importing artikelstamm: " $file
+		}
+	} -allowStatusDialog
+	// 19:25:06.595 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - ArtikelstammImporterPage.doImport /home/niklaus/elexis/rcptt/Artikelstamm_Short_v5.xml
+	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
+	get-view Artikel | get-button "Automatische Suche aktivieren" | click
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
+	wait 1200 // 10 seconds are enough for the Artikelstamm_Short_v5
+	get-view Artikel | get-button "Automatische Suche aktivieren" | click
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
+	if [ $file | matches "Short" ] {
+		get-view Artikel | get-table | get-item -path "ASPIRIN S Tabl 500 mg 20 Stk <8.7> " | get-property caption
+	    | equals "ASPIRIN S Tabl 500 mg 20 Stk <8.7>" | verify-true
+    }
+	concat "Read Artiklestamm done: " $file |log
+}
+
+proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_landarztpraxis_sevelen.xchange"] ] {
+	concat "ReadBlocksExchange file is: " $file | log
+	get-button "Leistungen öffnen" | click
+	with [get-view Codes] {
+	    get-tab-folder | get-tab-item "Blöcke" | click
+	    get-editbox -after [get-label Name] | set-focus
+	}
+	get-button "Menü anzeigen" | click
+	get-view Codes | get-menu -path "Import..." | click
+	set-dialog-result File $file
+	with [get-window Datenimport] {
+	    get-button "Suche..." | click
+	    get-button OK | click
+	}
+}
+proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
+	get-button "Leistungen öffnen" | click
+	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
+	concat "ReadAnalysenListe file is: " $file | log
+	get-button "Menü anzeigen" | click
+	get-view Codes | get-menu -path "Import..." | click
+	set-dialog-result File $file
+	with [get-window Datenimport] {
+	    get-button "Suche..." | click
+	    get-button OK | click
+	}
+}
+
+proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
+	get-button "Artikel öffnen" | click
+	get-view Artikel | get-tab-folder | get-tab-item MiGeL | click
+	get-view Artikel | get-menu -path "Import..." | click
+	set-dialog-result File $file
+	with [get-window Datenimport] {
+	    with [get-button "Alle Daten vorher löschen (empfehlenswert)"] {
+	        check
+	    }
+	    get-button "Suche..." | click
+	    get-button OK | click
+	}
+}
+
+proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
+	get-button "Leistungen öffnen" | click
+	with [get-view Codes] {
+	    get-tab-folder | get-tab-item Tarmed | click
+	    get-editbox -after [get-label Ziffer] | set-focus
+	}
+	get-button "Menü anzeigen" | click
+	get-view Codes | get-menu -path "Import..." | click
+	set-dialog-result File $file
+	with [get-window Datenimport] {
+	    get-button "Suche..." | click
+	    with [get-combo -after [get-label "Gesetz des Datensatz (relevant ab Tarmed 1.09)"]] {
+	        set-text KV
+	        select KVG
+	    }
+	    concat "XXXXStarting ReadTarmed with file: " $file | log
+	    get-button OK | click
+	    concat "XXXXDone ReadTarmed with file: " $file | log
+	}
+	get-window "Import erfolgreich" | get-button OK | click
+	log "Closed dialog mport erfolgreich"
+}
+
+// Ende
+//
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

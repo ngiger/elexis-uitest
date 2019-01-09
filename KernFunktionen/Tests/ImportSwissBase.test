@@ -1,0 +1,44 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _P7r6AP-yEeiDKs20GBwclA,_7pLWIBQVEemEb8FG0wciYA
+Element-Name: ImportSwissBase
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _c13msBQlEemEb8FG0wciYA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/9/19 8:23 PM
+Testcase-Type: ecl
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+Imports the following datasets:
+
+* Blöcke der Landarztpraxis Sevelen
+* MiGel
+* Analysenliste EAL
+* Artikelstamm (als Vorgabe nur einen kleinen Subset)
+* Tarmed (Dauert mehrere Minuten)
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+ReadBlocksExchange
+ReadMigel
+ReadAnalysenListe
+ReadArtikelstamm -file [ concat  [get-user-dir] "/rcptt/artikelstamm_01012019_v5.xml" ]
+ReadTarmed
+
+concat "Worksapce location: " $resultsDir "saved.h2.db" | log
+exec-process  [ concat [ get-user-dir] "/rcptt/save_run_from_scratch.sh" ] -ignoreStderr -ignoreExitCode -args [ concat  $resultsDir "saved.h2.db" ]
+exec-process  [ concat [ get-user-dir] "/rcptt/save_run_from_scratch.sh" ] -ignoreStderr -ignoreExitCode -args [ concat [ get-user-dir] "/rcptt/ImportSwissBase.h2.db" ]
+exec-process  [ concat [ get-user-dir] "/rcptt/save_run_from_scratch.sh" ] -ignoreStderr -ignoreExitCode
+
+log "Import of swissbase tables done"
+// Ende
+//
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

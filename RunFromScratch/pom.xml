@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	     xsi:schemaLocagittion="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.elexis.rcptt</groupId>
   <artifactId>RunFromScratch</artifactId>
@@ -29,6 +29,12 @@
           <configuration>
               <filesets>
                   <fileset>
+                      <directory>/tmp</directory>
+                      <includes>
+                        <include>elexis*db</include>
+                      </includes>
+                  </fileset>
+                  <fileset>
                       <directory>${user.home}/elexis/demoDB</directory>
                       <followSymlinks>false</followSymlinks>
                   </fileset>
@@ -38,26 +44,7 @@
                   </fileset>
               </filesets>
           </configuration>
-      </plugin>
-    <plugin>
-        <groupId>com.googlecode.maven-download-plugin</groupId>
-        <artifactId>download-maven-plugin</artifactId>
-        <version>1.4.1</version>
-        <executions>
-          <execution>
-            <id>download-h2-jar</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>http://central.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <md5>f9893acfa22b7fe1492dd9c515af2e5b</md5>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+        </plugin>
        <plugin>
         <groupId>org.eclipse.rcptt</groupId>
         <artifactId>rcptt-maven-plugin</artifactId>

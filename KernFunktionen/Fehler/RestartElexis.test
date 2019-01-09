@@ -6,7 +6,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _3oYfkBQoEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 5:14 PM
+Save-Time: 1/9/19 8:23 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -64,8 +64,7 @@ org.eclipse.swt.SWTException: Invalid thread access
         at org.eclipse.rcptt.ecl.internal.core.AbstractSession.internalDoExecute(AbstractSession.java:83) ~[na:na]
         at org.eclipse.rcptt.ecl.internal.core.Session$1.run(Session.java:48) ~[na:na]
         at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56) ~[na:na]
-        
-        */ 
+*/
         
 // Ende
 //
