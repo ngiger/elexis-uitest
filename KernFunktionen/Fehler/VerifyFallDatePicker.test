@@ -1,0 +1,52 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _P7r6AP-yEeiDKs20GBwclA,_dgccYP7qEeiuqdAcgkHVvQ,_p5Ui8P79EeiFyvHqIglmCA
+Element-Name: VerifyFallDatePicker
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _XU6YABQDEemEb8FG0wciYA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/9/19 2:06 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+if [SelectPatient Fall Picker| eq false] {
+	PatientenErstellen  Fall Picker true "30.3.1979" "Nebenstrasse 33" 3320 Elexiskon "055 323 45 67"
+}
+
+SetRightToDeleteCase
+SetRightToDeleteCase
+
+if [FallOffen [ t case_UVG ] "201."] {
+	log "Offenen Fall UVG gefunden"
+	DeleteSelectedCase
+} 
+// Here follows the slighly modified FallZuPatientErstellen
+proc FallZuPatientErstellenWithDatePick [val caseLaw] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
+	get-view [ t view_cases ] | click
+	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
+	wait 100
+	
+	with [get-window [ t dlg_new_case ] ] {
+		get-combo -after [get-label [ t dlg_new_case_caseMethod ]] | select $caseLaw
+		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
+		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir $caseLaw " " $startDate "_created.png"]
+		get-button  [ t ok] | click
+	}
+}
+FallZuPatientErstellenWithDatePick [ t case_UVG ] -startDate "4.1.2018"
+let [val searchPattern [concat ".*" [ t case_UVG ] ".*4.1.2018.*"]] {
+	concat "searchPattern ist: " $searchPattern | log
+	get-view "Fälle" | get-table | get-item -path  $searchPattern | get-property caption
+	    | matches  $searchPattern | verify-true
+}
+log "VerifyFallDatePicker passed"
+
+// Ende
+//
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

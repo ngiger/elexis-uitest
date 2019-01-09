@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/8/19 4:07 PM
+Save-Time: 1/9/19 2:07 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -28,14 +28,38 @@ proc "set-date-picker-date" [val window ] [ val labelBefore -input ] [ val "date
     // $myCombo | getObject | invoke | setText $date
     // line above results in error: There is no open report node for command invoke "Spinner {*Wrong Thread*}"
   //  get-window $window | get-editbox -after [get-label $labelBefore ] | get-property text | equals  $date | verify-true	
-  	concat "At the moment I do not know how to set datePick date in " $window " after " $labelBefore " to " $date | log
+	concat "At the moment I do not know how to set datePick date in " $window " after " $labelBefore " to " $date | log
 }
+
+proc "SetRightToDeleteCase" {
+	get-preferences-menu | click
+	with [get-window [ t preferences ] ] {
+	    get-tree | select [ t select_roles_right ]
+	    get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | get-item -path  [ t right_delete_case ]
+		  | get-property "values['u']" -raw | log
+		if [ get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | get-item -path  [ t right_delete_case ]
+		  | get-property "values['u']" -raw | equals x | eq true ] {
+			log "User has already the right"
+		  } -else {
+			log "Must git the user the right"
+		    get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | select [ t right_delete_case ]
+		  }
+	    get-button [ t apply_and_close ] | click
+	}
+}
+
+proc DeleteSelectedCase {
+	get-view [ t view_cases ] | click
+	get-view [ t view_cases ] | get-table | get-menu -path  [ t btn_delete_case ] | click
+}
+
 proc FallZuPatientErstellen [val caseLaw] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
 	get-view [ t view_cases ] | click
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
 	wait 100
 	
 	with [get-window [ t dlg_new_case ] ] {
+		concat "caseLaw: " $caseLaw | log
 		get-combo -after [get-label [ t dlg_new_case_caseMethod ]] | select $caseLaw
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
@@ -68,7 +92,7 @@ proc AktuellenFallVerrechnen {
 		get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
 		log "AktuellenFallVerrechnen: Failed. See message above" -severity error
     } -catch {
-    	log "Catched error"
+		log "Catched error"
     }
 	get-window [ t error ] | verify-false
 }
