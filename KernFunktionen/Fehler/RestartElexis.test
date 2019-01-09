@@ -1,0 +1,72 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: RestartElexis
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _3oYfkBQoEemEb8FG0wciYA
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/9/19 5:14 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+log "Trying to restart Elexis"
+restart-aut
+wait-until-eclipse-is-ready
+log "Restart successfull"
+
+/* Does not work. I see log entries like
+17:14:01.975 [Worker-46] INFO  PLATFORM - [org.eclipse.core.runtime] Trying to restart Elexis
+17:14:01.978 [Worker-48] ERROR PLATFORM - [org.eclipse.core.runtime] Invalid thread access
+org.eclipse.swt.SWTException: Invalid thread access
+        at org.eclipse.swt.SWT.error(SWT.java:4533) ~[na:na]
+        at org.eclipse.swt.SWT.error(SWT.java:4448) ~[na:na]
+        at org.eclipse.swt.SWT.error(SWT.java:4419) ~[na:na]
+        at org.eclipse.swt.widgets.Display.error(Display.java:1289) ~[na:na]
+        at org.eclipse.swt.widgets.Display.checkDevice(Display.java:820) ~[na:na]
+        at org.eclipse.swt.widgets.Display.getFocusControl_aroundBody8(Display.java:2315) ~[na:na]
+        at org.eclipse.swt.widgets.Display$AjcClosure9.run(Display.java:1) ~[na:na]
+        at org.eclipse.rcptt.tesla.swt.aspects.DisplayAspect.ajc$around$org_eclipse_rcptt_tesla_swt_aspects_DisplayAspect$17$8b24bfadproceed(DisplayAspect.aj:507) ~[na:na]
+        at org.eclipse.rcptt.tesla.swt.aspects.DisplayAspect.ajc$around$org_eclipse_rcptt_tesla_swt_aspects_DisplayAspect$17$8b24bfad(DisplayAspect.aj:515) ~[na:na]
+        at org.eclipse.swt.widgets.Display.getFocusControl(Display.java:2315) ~[na:na]
+        at org.eclipse.ui.internal.WorkbenchWindow.run(WorkbenchWindow.java:2149) ~[na:na]
+        at org.eclipse.ui.internal.SaveableHelper.runProgressMonitorOperation(SaveableHelper.java:278) ~[na:na]
+        at org.eclipse.ui.internal.SaveablesList.saveModels(SaveablesList.java:676) ~[na:na]
+        at org.eclipse.ui.internal.WorkbenchPage.saveAll(WorkbenchPage.java:3690) ~[na:na]
+        at org.eclipse.ui.internal.Workbench.saveAllEditors(Workbench.java:1391) ~[na:na]
+        at org.eclipse.ui.internal.Workbench.saveAllEditors(Workbench.java:1370) ~[na:na]
+        at org.eclipse.rcptt.tesla.ecl.internal.impl.commands.RestartAutService.service(RestartAutService.java:26) ~[na:na]
+        at org.eclipse.rcptt.ecl.internal.core.AbstractSession.internalDoExecute(AbstractSession.java:83) ~[org.eclipse.rcptt.ecl.core_2.4.0.201806290314.jar:na]
+        at org.eclipse.rcptt.ecl.internal.core.Session$1.run(Session.java:48) [org.eclipse.rcptt.ecl.core_2.4.0.201806290314.jar:na]
+        at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56) [org.eclipse.core.jobs_3.9.3.v20180115-1757.jar:na]
+17:14:01.983 [ch.elexis.core.logging.osgi.OsgiSl4fjLoggingAdapter@2f07e35f] ERROR OSGI - [org.eclipse.rcptt.ecl.core] Invalid thread access
+org.eclipse.swt.SWTException: Invalid thread access
+        at org.eclipse.swt.SWT.error(SWT.java:4533) ~[na:na]
+        at org.eclipse.swt.SWT.error(SWT.java:4448) ~[na:na]
+        at org.eclipse.swt.SWT.error(SWT.java:4419) ~[na:na]
+        at org.eclipse.swt.widgets.Display.error(Display.java:1289) ~[na:na]
+        at org.eclipse.swt.widgets.Display.checkDevice(Display.java:820) ~[na:na]
+        at org.eclipse.swt.widgets.Display.getFocusControl_aroundBody8(Display.java:2315) ~[na:na]
+        at org.eclipse.swt.widgets.Display$AjcClosure9.run(Display.java:1) ~[na:na]
+        at org.eclipse.rcptt.tesla.swt.aspects.DisplayAspect.ajc$around$org_eclipse_rcptt_tesla_swt_aspects_DisplayAspect$17$8b24bfadproceed(DisplayAspect.aj:507) ~[na:na]
+        at org.eclipse.rcptt.tesla.swt.aspects.DisplayAspect.ajc$around$org_eclipse_rcptt_tesla_swt_aspects_DisplayAspect$17$8b24bfad(DisplayAspect.aj:515) ~[na:na]
+        at org.eclipse.swt.widgets.Display.getFocusControl(Display.java:2315) ~[na:na]
+        at org.eclipse.ui.internal.WorkbenchWindow.run(WorkbenchWindow.java:2149) ~[na:na]
+        at org.eclipse.ui.internal.SaveableHelper.runProgressMonitorOperation(SaveableHelper.java:278) ~[na:na]
+        at org.eclipse.ui.internal.SaveablesList.saveModels(SaveablesList.java:676) ~[na:na]
+        at org.eclipse.ui.internal.WorkbenchPage.saveAll(WorkbenchPage.java:3690) ~[na:na]
+        at org.eclipse.ui.internal.Workbench.saveAllEditors(Workbench.java:1391) ~[na:na]
+        at org.eclipse.ui.internal.Workbench.saveAllEditors(Workbench.java:1370) ~[na:na]
+        at org.eclipse.rcptt.tesla.ecl.internal.impl.commands.RestartAutService.service(RestartAutService.java:26) ~[na:na]
+        at org.eclipse.rcptt.ecl.internal.core.AbstractSession.internalDoExecute(AbstractSession.java:83) ~[na:na]
+        at org.eclipse.rcptt.ecl.internal.core.Session$1.run(Session.java:48) ~[na:na]
+        at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56) ~[na:na]
+        
+        */ 
+        
+// Ende
+//
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
