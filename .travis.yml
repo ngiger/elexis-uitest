@@ -9,9 +9,13 @@ env:
   - JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
   - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//')
 
+
+before_install:
+  - sudo apt-get install -y librxtx-java
+
 install: mvn -V --quiet clean
 
-script: xvfb-run mvn -V clean verify
+script: xvfb-run mvn -V clean verify -f demoDB/pom.xml
 
 notifications:
   email:
