@@ -6,11 +6,19 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 7:06 PM
+Save-Time: 1/9/19 9:44 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+// We try to increase here some timeout to let artikelstamm and tarmed importer complete successfully
+set-q7-option uijobHangTimeout       20000
+set-q7-option jobSleepingStepTimeout 240000
+// https://www.eclipse.org/forums/index.php/m/1734168/?srch=wait+progress+view#msg_1734168
+// with 1000 and 2000 the OK danach arrived after 2 seconds
+// 21:32:16.991 [Worker-28] INFO  PLATFORM - [org.eclipse.core.runtime] ReadArtikelstamm OK before q7
+// 21:32:18.135 [Worker-22] INFO  PLATFORM - [org.eclipse.core.runtime] ReadArtikelstamm OK danach
 
 proc "DeleteAllArtikelstammItems" {
 	str "delete from ARTIKELSTAMM_CH;" | write-lines $sqlCmdFile
@@ -23,7 +31,7 @@ proc "DeleteAllArtikelstammItems" {
 }
 
 proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
-	concat "Restarting before Reading Artikelstamm file: " $file | log
+	concat "Restarting before ReadArtikelstamm file: " $file | log
 	get-button "Artikel.*öffnen" | click
 	with [get-view Artikel] {
 	    get-tab-folder | get-tab-item Artikelstamm | click
@@ -32,6 +40,8 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 	get-button "Menü anzeigen" | click
 	get-view Artikel | get-menu -path "Import..." | click
 	set-dialog-result File $file
+
+	log "ReadArtikelstamm OK before"
 	with [get-window Datenimport] {
 	    get-button "Suche..." | click
 	    // TODO: Wait that pull request 174 for Tickets 14745 gets merged
@@ -39,6 +49,7 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
         get-button OK | click
     }
 
+    log "ReadArtikelstamm OK danach"
 	exec-with-options {
 	    get-view Artikel | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
 	    try {
@@ -123,7 +134,7 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	    concat "XXXXDone ReadTarmed with file: " $file | log
 	}
 	get-window "Import erfolgreich" | get-button OK | click
-	log "Closed dialog mport erfolgreich"
+	log "ReadTarmed: Closed dialog Import erfolgreich"
 }
 
 // Ende
