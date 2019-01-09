@@ -15,7 +15,7 @@ before_install:
 
 install: mvn -V --quiet clean
 
-script: xvfb-run mvn -V clean verify -f demoDB/pom.xml
+script: xvfb-run -a 1280x1024x24 mvn -V clean verify -f demoDB/pom.xml
 
 notifications:
   email:

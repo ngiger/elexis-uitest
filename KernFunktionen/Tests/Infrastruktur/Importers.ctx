@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 10:38 PM
+Save-Time: 1/9/19 11:49 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -50,6 +50,7 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
     }
 
     log "ReadArtikelstamm OK danach"
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_0.png"]
 	exec-with-options {
 	    get-view Artikel | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
 	    try {
@@ -62,19 +63,27 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
 	get-view Artikel | get-button "Automatische Suche aktivieren" | click
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
-	wait 1200 // 10 seconds are enough for the Artikelstamm_Short_v5
-	get-view Artikel | get-button "Automatische Suche aktivieren" | click
+	if [ $file | matches "Short" ] {
+		wait 10000	// 10 seconds are enough for the Artikelstamm_Short_v5
+		log "Waited short 10 seconds"
+	} -else {
+		wait 40000 // 40 seconds should be enough for the large Artikelstamm
+		log "Waited long c40 seconds"
+	}
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
+	get-view Artikel | get-button "Automatische Suche aktivieren" | click
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_3.png"]
 	if [ $file | matches "Short" ] {
 		get-view Artikel | get-table | get-item -path "ASPIRIN S Tabl 500 mg 20 Stk <8.7> " | get-property caption
 	    | equals "ASPIRIN S Tabl 500 mg 20 Stk <8.7>" | verify-true
     }
-	concat "Read Artiklestamm done: " $file |log
+	concat "ReadArtikelstamm done: " $file |log
 }
 
 proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_landarztpraxis_sevelen.xchange"] ] {
 	concat "ReadBlocksExchange file is: " $file | log
-	get-button "Leistungen öffnen" | click
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
+	open-window-by-name "Codes/Codes"
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item "Blöcke" | click
 	    get-editbox -after [get-label Name] | set-focus
@@ -88,7 +97,7 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	}
 }
 proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
-	get-button "Leistungen öffnen" | click
+	open-window-by-name "Codes"
 	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
 	concat "ReadAnalysenListe file is: " $file | log
 	get-button "Menü anzeigen" | click
@@ -115,11 +124,13 @@ proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx
 }
 
 proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
-	get-button "Leistungen öffnen" | click
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_1.png"]
+	open-window-by-name "Codes/Codes"
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item Tarmed | click
 	    get-editbox -after [get-label Ziffer] | set-focus
 	}
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_2.png"]
 	get-button "Menü anzeigen" | click
 	get-view Codes | get-menu -path "Import..." | click
 	set-dialog-result File $file
