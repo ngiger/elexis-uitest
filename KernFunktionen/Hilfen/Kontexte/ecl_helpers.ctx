@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 12:26 PM
+Save-Time: 1/9/19 2:16 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -119,7 +119,8 @@ proc "ReadArtikelstamm" [ val xmlFile "~/elexis/rcptt/Artikelstamm_Short_v5.xml"
 	get-button "Menü anzeigen" | click
 	get-view Artikel | get-menu -path "Import..." | click
 	with [get-window Datenimport] {
-	    get-button "Pharma-Artikel" | check
+	    // TODO: Wait that pull request 174 for Tickets 14745 gets merged
+	    // get-button "Pharma-Artikel" | check
 	    with [get-editbox -after [get-label "Bitte Datei angeben:"]] {
 	        set-text $xmlFile
         }
