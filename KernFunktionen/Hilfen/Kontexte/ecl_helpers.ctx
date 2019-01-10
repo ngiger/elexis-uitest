@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 10:04 PM
+Save-Time: 1/10/19 9:22 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -96,7 +96,12 @@ t "open" "fr" | eq "Ouvrir" | verify-true
 proc OpenAndResetStartPerspektive {
 	get-button [ t btn_start_perspective ]  | click
 	get-menu -path [ t menu_reset_perspective ] | click
-	get-window [ t reset_perspective ] | get-button  [ t yes ]  | click
+	try {
+		get-window [ t reset_perspective ] | get-button  [ t yes ]  | click
+		log "OpenAndResetStartPerspektive done"
+	} -catch {
+		log "OpenAndResetStartPerspektive failed"
+	}
 	log "OpenAndResetStartPerspektive done"
 }
 

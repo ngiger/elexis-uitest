@@ -6,33 +6,40 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 11:49 PM
+Save-Time: 1/10/19 1:56 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 // We try to increase here some timeout to let artikelstamm and tarmed importer complete successfully
-set-q7-option uijobHangTimeout       20000
-set-q7-option jobSleepingStepTimeout 240000
+//	set-q7-option uijobHangTimeout       30000
+//	set-q7-option jobSleepingStepTimeout 120000
 // https://www.eclipse.org/forums/index.php/m/1734168/?srch=wait+progress+view#msg_1734168
 // with 1000 and 2000 the OK danach arrived after 2 seconds
 // 21:32:16.991 [Worker-28] INFO  PLATFORM - [org.eclipse.core.runtime] ReadArtikelstamm OK before q7
 // 21:32:18.135 [Worker-22] INFO  PLATFORM - [org.eclipse.core.runtime] ReadArtikelstamm OK danach
 
-proc "DeleteAllArtikelstammItems" {
-	str "delete from ARTIKELSTAMM_CH;" | write-lines $sqlCmdFile
+// Achtung: Nur für demoDB gedacht und dort läuft es auch nicht wie geplant,
+// da die Anpassungen beim Import immer noch auf dem alten Wert steht
+proc "SetArtikelstammOrigin2oddb2ml" {
+    if [ get-file $sqlCmdFile | get exists ] {
+		delete-file $sqlCmdFile
+		concat "deleted: " $sqlCmdFile | log
+	}
+	str "UPDATE ARTIKELSTAMM_CH set  ADDDSCR= 'oddb2ml' where ID like 'VERSION' and ADDDSCR = 'medindex'; ---" | write-lines $sqlCmdFile
 	try {
 		exec-process "java" "-classpath" $h2Jar "org.h2.tools.RunScript" "-url" $jdbcConnection "-user" "sa" "-script" $sqlCmdFile
 	} -catch {
 		log "Some error while deleting ARTIKELSTAMM_CH"
 	}
-	log "DeleteAllArtikelstammItems done"
+	concat "DeleteAllArtikelstammItems done via: " $sqlCmdFile | log
 }
 
 proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
-	concat "Restarting before ReadArtikelstamm file: " $file | log
+	open-window-by-name "Daten/Artikel"
 	get-button "Artikel.*öffnen" | click
+	concat "before ReadArtikelstamm file: " $file | log
 	with [get-view Artikel] {
 	    get-tab-folder | get-tab-item Artikelstamm | click
 	    get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
@@ -40,8 +47,7 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 	get-button "Menü anzeigen" | click
 	get-view Artikel | get-menu -path "Import..." | click
 	set-dialog-result File $file
-
-	log "ReadArtikelstamm OK before"
+    concat "ReadArtikelstamm OK before " $file | log
 	with [get-window Datenimport] {
 	    get-button "Suche..." | click
 	    // TODO: Wait that pull request 174 for Tickets 14745 gets merged
@@ -49,41 +55,20 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
         get-button OK | click
     }
 
-    log "ReadArtikelstamm OK danach"
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_0.png"]
-	exec-with-options {
-	    get-view Artikel | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
-	    try {
-			get-window "Fehler aufgetreten" | verify-false
-		} -catch {
-			concat "No error while importing artikelstamm: " $file
-		}
-	} -allowStatusDialog
+    concat "ReadArtikelstamm OK danach " $file | log
+    
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	// 19:25:06.595 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - ArtikelstammImporterPage.doImport /home/niklaus/elexis/rcptt/Artikelstamm_Short_v5.xml
 	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
 	get-view Artikel | get-button "Automatische Suche aktivieren" | click
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
-	if [ $file | matches "Short" ] {
-		wait 10000	// 10 seconds are enough for the Artikelstamm_Short_v5
-		log "Waited short 10 seconds"
-	} -else {
-		wait 40000 // 40 seconds should be enough for the large Artikelstamm
-		log "Waited long c40 seconds"
-	}
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
-	get-view Artikel | get-button "Automatische Suche aktivieren" | click
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_3.png"]
-	if [ $file | matches "Short" ] {
-		get-view Artikel | get-table | get-item -path "ASPIRIN S Tabl 500 mg 20 Stk <8.7> " | get-property caption
-	    | equals "ASPIRIN S Tabl 500 mg 20 Stk <8.7>" | verify-true
-    }
 	concat "ReadArtikelstamm done: " $file |log
 }
 
 proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_landarztpraxis_sevelen.xchange"] ] {
+	get-button "Leistung.*öffnen" | click
 	concat "ReadBlocksExchange file is: " $file | log
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
-	open-window-by-name "Codes/Codes"
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item "Blöcke" | click
 	    get-editbox -after [get-label Name] | set-focus
@@ -97,7 +82,8 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	}
 }
 proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
-	open-window-by-name "Codes"
+	get-button "Leistung.*öffnen" | click
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadEAL_1.png"]
 	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
 	concat "ReadAnalysenListe file is: " $file | log
 	get-button "Menü anzeigen" | click
@@ -110,7 +96,9 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 }
 
 proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
-	get-button "Artikel öffnen" | click
+	open-window-by-name "Daten/Artikel"
+	get-button "Artikel.*öffnen" | click
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadMigel_1.png"]
 	get-view Artikel | get-tab-folder | get-tab-item MiGeL | click
 	get-view Artikel | get-menu -path "Import..." | click
 	set-dialog-result File $file
@@ -124,8 +112,8 @@ proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx
 }
 
 proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
+	get-button "Leistung.*öffnen" | click
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_1.png"]
-	open-window-by-name "Codes/Codes"
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item Tarmed | click
 	    get-editbox -after [get-label Ziffer] | set-focus

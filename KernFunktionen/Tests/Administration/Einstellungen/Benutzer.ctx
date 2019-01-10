@@ -5,14 +5,15 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 12/21/18 4:07 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/10/19 12:37 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc "create-user" [val userName]  [val forMandat] [val role] [val kontakt] {
+proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ val plainPW "test" ]{
+    concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password " $plainPW | log
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
 	    get-tree | expand-all | select [ t prefs_users_and_rights ] 
@@ -23,11 +24,9 @@ proc "create-user" [val userName]  [val forMandat] [val role] [val kontakt] {
 	        -after [get-label [ t dlg_create_user_set] ] | set-text $userName
 	    get-button [ t ok ] | click
 	}
-	        log $forMandat
 	with [get-window [ t preferences ]] {
 	    get-table | select $userName
 	    with [get-group [t dlg_create_user_accounting] ] {
-	        t user_role | log
 	        get-group [t user_role] | get-table | get-item -path $role | check
 	        get-group [t select_works_for] | get-table | get-item  -path $forMandat | check
 	    }
@@ -37,11 +36,23 @@ proc "create-user" [val userName]  [val forMandat] [val role] [val kontakt] {
 	        get-table | select  $forMandat
 	        get-button [ t ok ] | click
 	    }
+	    with [get-group Systemzugang] {
+	        get-button Administrator | check
+	        get-link "<a>Passwort ändern</a>" | click-link
+	    }
+	    concat "Neues Passwort ist: " $plainPW| log
+	    with [get-window -class ChangePasswordDialog] {
+	        get-editbox -after [get-label "Neues Passwort"] | set-text $plainPW
+	        get-editbox -after [get-label "Bestätigen"] | set-text $plainPW
+	        get-button "Prüfregeln ignorieren (nicht empfohlen)" | check
+	        get-button OK | click
+	    }
 		get-eclipse-window | get-object | save-screenshot [concat $imagesDir VerantwortlicherArzt "_created.png" ]
 		get-button [ t apply_and_close ] | click
 	}
 	concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
 }
 
-
+// Ende
+//
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

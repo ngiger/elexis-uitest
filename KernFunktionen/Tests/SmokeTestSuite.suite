@@ -5,8 +5,8 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
-Runtime-Version: 2.3.0.201806262310
-Save-Time: 1/4/19 5:43 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 1/10/19 1:28 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -19,6 +19,7 @@ Sollte nicht mehr als 10 Minuten dauren.
 Content-Type: text/testcase
 Entry-Name: testcase-items
 
+_tFxLkBNbEemKBfY3bI9wrQ	// kind: 'test' name: 'EphaInteraktionen' path: 'EphaInteraktionen.test'
 __ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: 'Infrastruktur/NoPreferenceWithPercent.test'
 _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: 'Infrastruktur/NoViewWithPercent.test'
 _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicTests' path: 'BasicTests.test'

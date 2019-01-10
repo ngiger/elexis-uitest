@@ -86,7 +86,8 @@
               <arg>${language}_CH</arg>
               <arg>-nosplash</arg>
               <arg>-noregtool</arg>
-              <arg>--use-config=rpctt</arg>
+              <arg>--use-config=rpctt-RunFromScratch</arg>
+              <arg>--clean-all</arg>
            </args>
             <vmArgs>
               <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>

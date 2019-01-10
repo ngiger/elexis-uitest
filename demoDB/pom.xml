@@ -100,6 +100,7 @@
       file = new File("${localeSqlScript}")
       file.write("-- Created by elexis-uitest/pom.xml\n")
       file.append("update config set wert = '${language}_CH' where param like '%locale';\n")
+      file.append("UPDATE ARTIKELSTAMM_CH set  ADDDSCR= 'oddb2ml' where ID like 'VERSION' and ADDDSCR = 'medindex';\n")
   ]]></script>
   </scripts>
             </configuration>
