@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _GbaREP_HEeiXxf0UDvXYOw
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/8/19 4:03 PM
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 1/12/19 4:02 PM
 Testcase-Type: ecl
 Verifications: _GcdboAX2Eemcp9WoDsgIvA
 
@@ -53,8 +53,11 @@ if [ HasKonsSelected | eq false] {
 	log "HasKonsSelected returned true"
 }
 kons-add-macro
-kons-add-eigenleistung
-kons-add-tarmed
+
+// TODO: The next two tests work only with the demoDB. We must change them to be able to run them
+// via RunFromScratch or a new demoDB initialized with all data
+// kons-add-eigenleistung
+// kons-add-tarmed
 kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 // TODO: 
 // AktuellenFallVerrechnen

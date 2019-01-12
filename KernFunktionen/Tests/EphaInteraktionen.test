@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _tFxLkBNbEemKBfY3bI9wrQ
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/10/19 12:35 PM
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 1/10/19 5:32 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -45,7 +45,7 @@ Entry-Name: .content
 // * One of them with an open consultation to be able to add artikelstamm items
 
 try {
-	get-button "Artikel.*öffnen" | click
+	open-window-by-name "Daten/Artikel"
 	get-view Artikel | get-table | get-item -path "ASPIRIN S Tabl 500 mg 20 Stk <8.7> " | get-property caption 
     | equals "ASPIRIN S Tabl 500 mg 20 Stk <8.7>" | verify-true
 } -catch {

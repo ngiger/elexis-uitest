@@ -74,10 +74,10 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://download.elexis.info/demoDB/demoDB_elexis_3.7.0.zip</url>
+              <url>http://download.elexis.info/demoDB/ImportSwissBase-3.8.0.zip</url>
               <unpack>true</unpack>
               <outputDirectory>${user.home}/elexis/</outputDirectory>
-              <md5>f8adb8a630e480e96f67c40b8b327745</md5>
+              <md5>186b829a5916e2e7ee2e566f46c555c0</md5>
             </configuration>
           </execution>
         </executions>

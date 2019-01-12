@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/10/19 1:56 PM
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 1/10/19 5:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -38,7 +38,6 @@ proc "SetArtikelstammOrigin2oddb2ml" {
 
 proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
 	open-window-by-name "Daten/Artikel"
-	get-button "Artikel.*öffnen" | click
 	concat "before ReadArtikelstamm file: " $file | log
 	with [get-view Artikel] {
 	    get-tab-folder | get-tab-item Artikelstamm | click
@@ -97,7 +96,6 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 
 proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
 	open-window-by-name "Daten/Artikel"
-	get-button "Artikel.*öffnen" | click
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadMigel_1.png"]
 	get-view Artikel | get-tab-folder | get-tab-item MiGeL | click
 	get-view Artikel | get-menu -path "Import..." | click
