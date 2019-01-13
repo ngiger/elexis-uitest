@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 12:10 PM
+Save-Time: 1/13/19 12:13 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -72,8 +72,13 @@ global [val jdbcConnection  "Unknown jdbcConnection"]
 if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 	log "Running from Scratch: Don't know how to get use jdbcConnection"
 } -else {
-	concat "file:" [ get-user-dir ] "/demoDB/db.h2.db" | get-file | get exists | verify-true
-	global [val jdbcConnection  [ concat "jdbc:h2:" [ get-user-dir ] "/demoDB/db;AUTO_SERVER=TRUE"] ] -override
+	if [ safe-get-java-property "ch.elexis.dbSpec" | matches "jdbc:.*" ] {
+		log "Found JDBC"
+		global [val jdbcConnection  [ safe-get-java-property "ch.elexis.dbSpec" ] ] -override
+	} -else {
+		concat "file:" [ get-user-dir ] "/demoDB/db.h2.db" | get-file | get exists | verify-true
+		global [val jdbcConnection  [ concat "jdbc:h2:" [ get-user-dir ] "/demoDB/db;AUTO_SERVER=TRUE"] ] -override
+	}
 }
 
 proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
