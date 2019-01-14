@@ -40,17 +40,30 @@
           <configuration>
               <filesets>
                   <fileset>
-                      <directory>${user.home}/elexis/demoDB</directory>
-                      <followSymlinks>false</followSymlinks>
+                      <directory>/tmp</directory>
+                      <includes>
+                        <include>elexis*db</include>
+                      </includes>
                   </fileset>
                   <fileset>
-                      <directory>${rcptt-resources}</directory>
-                      <followSymlinks>false</followSymlinks>
+                    <directory>${user.home}/elexis</directory>
+                   <includes>
+                      <include>localCfg_rpctt.xml</include>
+                    </includes>
                   </fileset>
+                  <fileset>
+                      <directory>${user.home}/elexis/logs</directory>
+                  </fileset>
+                  <fileset>
+                    <directory>${user.home}/elexis/demoDB</directory>
+                  </fileset>
+                  <fileset>
+                    <directory>${rcptt-resources}</directory>
+                 </fileset>
               </filesets>
           </configuration>
-      </plugin>
-    <plugin>
+        </plugin>
+      <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
         <version>1.4.1</version>

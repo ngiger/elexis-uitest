@@ -35,17 +35,20 @@
                       </includes>
                   </fileset>
                   <fileset>
-                      <directory>${user.home}/elexis</directory>
-                      <includes>
-                        <include>localCfg_rpctt.xml</include>
-                      </includes>
+                    <directory>${user.home}/elexis</directory>
+                   <includes>
+                      <include>localCfg_rpctt-RunFromScratch.xml</include>
+                    </includes>
                   </fileset>
                   <fileset>
-                      <directory>${user.home}/elexis/demoDB</directory>
+                      <directory>${user.home}/elexis/logs</directory>
                   </fileset>
                   <fileset>
-                      <directory>${rcptt-resources}</directory>
+                    <directory>${user.home}/elexis/demoDB</directory>
                   </fileset>
+                  <fileset>
+                    <directory>${rcptt-resources}</directory>
+                 </fileset>
               </filesets>
           </configuration>
         </plugin>
