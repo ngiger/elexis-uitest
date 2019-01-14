@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/13/19 12:13 PM
+Save-Time: 1/14/19 1:57 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -131,5 +131,20 @@ get-log -levels info -levels error | as-table-data | sort-by dateText | write-cs
 
 concat "Preconditions passed. currentUniqName is: " $currentUniqPatient | log
 
+proc "features-to-csv" {
+	list-features | write-lines [ concat  $resultsDir "features.csv" ]
+	concat "wrote csv: " $resultsDir "features.csv"  | log
+}
+
+
+proc "installed-units-to-csv" {
+	list-install-units | write-lines [ concat  $resultsDir "installed-units.csv" ]
+	concat "wrote csv: " $resultsDir "installed-units.csv"  | log
+}
+
+features-to-csv
+installed-units-to-csv
+// Ende
+//
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
