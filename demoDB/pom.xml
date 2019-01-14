@@ -11,7 +11,7 @@
   </parent>
   <properties>
     <myBaseDir>${project.basedir}/..</myBaseDir>
-    <localeSqlScript>./setlocale_${language}_CH.sql</localeSqlScript>
+    <localeSqlScript>../setlocale_${language}_CH.sql</localeSqlScript>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
@@ -68,7 +68,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>download-demoDB</id>
+            <id>download-ImportSwissBase</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
@@ -122,7 +122,7 @@
         <version>1.6.0</version>
         <executions>
           <execution>
-            <phase>processm-sources</phase> <!-- is after generate-sources -->
+            <phase>process-sources</phase> <!-- is after generate-sources -->
             <goals>
               <goal>exec</goal>
             </goals>

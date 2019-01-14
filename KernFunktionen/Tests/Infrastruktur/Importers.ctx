@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/14/19 12:17 PM
+Save-Time: 1/14/19 2:13 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -36,19 +36,26 @@ proc "SetArtikelstammOrigin2oddb2ml" {
 	concat "DeleteAllArtikelstammItems done via: " $sqlCmdFile | log
 }
 
+proc "ExecuteDataImport" {
+	with [get-window [ t view_data_import ]] {
+	    get-button [ t btn_data_import_search ] | click
+	    get-button OK | click
+	}
+}
+
 proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
 	open-window-by-name [ t daten_artikel ]
 	concat "before ReadArtikelstamm file: " $file | log
-	with [get-view Artikel] {
+	with [get-view [ t artikel ]] {
 	    get-tab-folder | get-tab-item Artikelstamm | click
-	    get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+	    get-editbox -after [get-label [ t artikelstamm_label  ]] | set-focus
 	}
-	get-button "Menü anzeigen" | click
-	get-view Artikel | get-menu -path "Import..." | click
+	get-button [ t show_menu ] | click
+	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
     concat "ReadArtikelstamm OK before " $file | log
-	with [get-window Datenimport] {
-	    get-button "Suche..." | click
+	with [get-window [ t view_data_import ]] {
+	    get-button [ t btn_data_import_search ] | click
 	    // TODO: Wait that pull request 174 for Tickets 14745 gets merged
 	    // get-button "Pharma-Artikel" | check
         get-button OK | click
@@ -59,72 +66,61 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	// 19:25:06.595 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - ArtikelstammImporterPage.doImport /home/niklaus/elexis/rcptt/Artikelstamm_Short_v5.xml
 	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
-	get-view Artikel | get-button "Automatische Suche aktivieren" | click
+	get-view [ t artikel ] | get-button "Automatische Suche aktivieren" | click
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
 	concat "ReadArtikelstamm done: " $file |log
 }
 
 proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_landarztpraxis_sevelen.xchange"] ] {
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_0.png"]
-	get-button "Leistung.*öffnen" | click
+	get-button [ t btn_services ] | click
 	concat "ReadBlocksExchange file is: " $file | log
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
 	with [get-view Codes] {
-	    get-tab-folder | get-tab-item "Blöcke" | click
+	    get-tab-folder | get-tab-item [ t blocks ] | click
 	    get-editbox -after [get-label Name] | set-focus
 	}
-	get-button "Menü anzeigen" | click
-	get-view Codes | get-menu -path "Import..." | click
+	get-button [ t show_menu ] | click
+	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
-	with [get-window Datenimport] {
-	    get-button "Suche..." | click
-	    get-button OK | click
-	}
+	ExecuteDataImport
 }
 proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
-	get-button "Leistung.*öffnen" | click
+	get-button [ t btn_services ] | click
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadEAL_1.png"]
 	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
 	concat "ReadAnalysenListe file is: " $file | log
-	get-button "Menü anzeigen" | click
-	get-view Codes | get-menu -path "Import..." | click
+	get-button [ t show_menu ] | click
+	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
-	with [get-window Datenimport] {
-	    get-button "Suche..." | click
-	    get-button OK | click
-	}
+	ExecuteDataImport
 }
 
 proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
 	open-window-by-name [ t daten_artikel ]
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadMigel_1.png"]
-	get-view Artikel | get-tab-folder | get-tab-item MiGeL | click
-	get-view Artikel | get-menu -path "Import..." | click
+	get-view [ t artikel ] | get-tab-folder | get-tab-item MiGeL | click
+	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
-	with [get-window Datenimport] {
-	    with [get-button "Alle Daten vorher löschen (empfehlenswert)"] {
-	        check
-	    }
-	    get-button "Suche..." | click
-	    get-button OK | click
-	}
+	get-window [ t view_data_import ] | get-button [ t delete_all_data ] | check
+	ExecuteDataImport
 }
 
 proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
-	get-button "Leistung.*öffnen" | click
+	get-button [ t btn_services ] | click
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_1.png"]
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item Tarmed | click
 	    get-editbox -after [get-label Ziffer] | set-focus
 	}
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_2.png"]
-	get-button "Menü anzeigen" | click
-	get-view Codes | get-menu -path "Import..." | click
+	get-button [ t show_menu ] | click
+	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
-	with [get-window Datenimport] {
-	    get-button "Suche..." | click
-	    with [get-combo -after [get-label "Gesetz des Datensatz (relevant ab Tarmed 1.09)"]] {
-	        set-text KV
+	with [get-window [ t view_data_import ]] {
+	    get-button [ t btn_data_import_search ] | click
+	    with [get-combo -after [get-label [ t relevant_tarmed_caselaw ] ]  {
+	        set-text KVG
 	        select KVG
 	    }
 	    concat "XXXXStarting ReadTarmed with file: " $file | log

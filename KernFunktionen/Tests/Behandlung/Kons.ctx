@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 10:42 AM
+Save-Time: 1/14/19 2:55 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -60,9 +60,9 @@ proc "kons-neue-diagnose" [ val reiter ] [ val item ] {
 	ActivateVisibleKonsView
 	PressAddDiagnosisToKons
 	with [get-view [ t diagnosen ] ] {
-	    get-group [ t all ] | get-editbox | set-focus
+	    get-group [ t alle_leistungen ] | get-editbox | set-focus
 	    get-tab-folder | get-tab-item $reiter | click
-	    with [get-group [ t all ]] {
+	    with [get-group [ t alle_leistungen ]] {
 	        get-editbox | set-focus
 	        with [get-tree] {
 	            select $item
@@ -85,11 +85,11 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 	log "PressAddLeistungToKons done"
 	with [get-view [t leistungen ] ] {
 	    get-tab-folder | get-tab-item Artikelstamm | click
-	    get-group  [ t all ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
-        get-group  [ t all ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
+	    get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+        get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
 		log  "before double-click"
-		get-button "Suche jetzt ausführen" | click
-        get-group  [ t all ] | get-table | select $item_long | double-click
+		get-button [ t btn_execute_search ] | click
+        get-group  [ t alle_leistungen ] | get-table | select $item_long | double-click
         key-type Enter
 	}
     concat "kons-neuen-artikelstamm item added " $item_short " " $item_long | log
@@ -101,7 +101,7 @@ proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führer
 	with [get-view [ t leistungen ] ] {
 	    get-button [ t btn_show_list ] click
 	    get-tab-folder | get-tab-item Eigenleistung | click
-	    with [get-group [ t all ] ] {
+	    with [get-group [ t alle_leistungen ] ] {
 	        get-editbox -after [get-label Code] | set-focus
 	        get-table | select $itemName | double-click
 	    }
@@ -119,7 +119,7 @@ proc "kons-add-tarmed" [ val itemName  "00.01.01 Konsultation" ] {
 	        set-focus
 	        set-text $itemName
 	    }
-	    get-button "Suche jetzt ausführen" | click
+	    get-button [ t btn_execute_search ] | click
 	    // Select just the first element
 	    get-tree | select ".*" | double-click
     }
@@ -141,14 +141,13 @@ proc "preferences-use-macros-with-TI-and-Favoriten" {
 }
 
 proc "kons-add-macro" [ val macroName "soap" ] {
-	with [get-view Konsultation] {
+	with [get-view [ t kons_view ]] {
 	    click
 	    with [get-editbox -after [get-label ".*heute.*"]] {
 	        set-text-offset 0 0
 	        type-text "soap$"
 	    }
-/*
-		get-view Konsultation | get-editbox -after [get-label "23.12.2018 (heute)"] | get-property text | matches ".*S:\n"
+/*		get-view Konsultation | get-editbox -after [get-label "23.12.2018 (heute)"] | get-property text | matches ".*S:\n"
 		    + "O:\n"
 		    + "A:\n"
 		    + "P:.*" | verify-true

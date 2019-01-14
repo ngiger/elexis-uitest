@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _tFxLkBNbEemKBfY3bI9wrQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/13/19 1:00 PM
+Save-Time: 1/14/19 2:50 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -68,7 +68,7 @@ if [SelectPatient Mille Tonnere| eq false] {
 if [FallOffen [ t case_UVG ] "201."] {
 	log "Offenen Fall UVG gefunden"
 } -else {
-	FallZuPatientErstellen [ t case_UVG ]  "20.8.2018"
+	FallZuPatientErstellen [ t case_UVG ] -startDate  "20.8.2018"
 	log "Fall UVG 20.8.2018 erstellt"
 }
 
@@ -89,29 +89,29 @@ proc "EnsurePatientChanged" {
 
 kons-add-artikelstamm Paroxetin "Paroxetin.*20 mg 14 Stk.*"
 VerifyInteractionStatus
-get-view Konsultation | get-control Any -after [get-label Behandlungsdiagnosen] -index 8 |
+get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
 	get-object | save-screenshot [concat $imagesDir "EphaInteractions/no_interaction.png"]
 
 kons-add-artikelstamm LOSARTAN "LOSARTAN.*12.5.*"
 EnsurePatientChanged // Is needed if it is the first time we downloaded the interaction. TODO: FIX IT!
 VerifyInteractionStatus ".*Vermutlich keine relevante Interaktion"
-get-view Konsultation | get-control Any -after [get-label Behandlungsdiagnosen] -index 8 |
+get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
 	get-object | save-screenshot[concat $imagesDir "EphaInteractions/probably_no_interaction.png"]
 
 kons-add-artikelstamm METOPROLOL "Metoprolol.*100 Stk.*"
 VerifyInteractionStatus ".*Regelmässige Überwachung"
-get-view Konsultation | get-control Any -after [get-label Behandlungsdiagnosen] -index 8 |
+get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
 	get-object | save-screenshot [concat $imagesDir "EphaInteractions/check_interaction.png"]
 
 kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
 VerifyInteractionStatus ".*Kontraindiziert"
-get-view Konsultation | get-control Any -after [get-label Behandlungsdiagnosen] -index 8 |
+get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
 	get-object | save-screenshot [concat $imagesDir "EphaInteractions/contra_indicated.png"]
 
 SetEphaInteractionCheck false
 EnsurePatientChanged
 VerifyInteractionStatus ""
-get-view Konsultation | get-control Any -after [get-label Behandlungsdiagnosen] -index 8 |  
+get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |  
 	get-object | save-screenshot [concat $imagesDir "EphaInteractions/interaction_check_disabled.png"]
 
 SetEphaInteractionCheck true
