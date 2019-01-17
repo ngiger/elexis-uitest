@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _-OHP8BOEEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/14/19 2:56 PM
+Save-Time: 1/17/19 2:26 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -21,6 +21,23 @@ proc VerifyInteractionStatus [ val status "Keine Interaktionen bekannt" ] {
 	concat "VerifyInteractionStatus check: " $status | log
 	get-view [ t kons_view ] | get-link -after [ get-label [ t btn_accounting ] ] |
 	get-property caption  | equals $status | verify-true
+}
+
+/**
+ * Check whether the link contained in the tooltip matches the new spec
+ * as seen January 17, 2018
+ */
+proc VerifyInteractionLink {
+  global [val foundEphaUrl [bool false] ] -override
+	$foundEphaUrl  | verify-false
+    let [val httpLink [ get-view [ t kons_view ] | get-link -after [ get-label [ t btn_accounting ] ] | get-property toltip -raw  ]] {
+    $httpLink | split "\n"| foreach [val line]{
+      if [ $line | matches "https://epha.ch/matrix/visual/\\d{13},\\d{13}.*" | eq true ]{
+        global [val foundEphaUrl [bool true] ] -override
+      }
+    }
+	$foundEphaUrl  | verify-true
+	}
 }
 
 proc AllVerrechnungenEntfernen { $resultsDir
