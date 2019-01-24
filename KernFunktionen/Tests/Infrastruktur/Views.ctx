@@ -5,8 +5,8 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/14/19 1:24 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/24/19 5:21 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -34,7 +34,7 @@ proc "open-window-by-name" [ val windowName ] {
 }
 proc "reset-perspective" {
 	get-menu -path [ t menu_reset_perspective ] | click
-	get-window  [ t reset_perspective ]  | get-button  [ t yes ] | click
+	get-window  [ t reset_perspective ]  | get-button  [ t btn_reset_perspective ] | click
 }
 
 global [val curViewSection ""] -override

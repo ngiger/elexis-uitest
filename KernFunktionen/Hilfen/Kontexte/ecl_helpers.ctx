@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/13/19 12:58 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/24/19 5:19 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -93,23 +93,34 @@ proc "t" [val key] [val language $defaultLanguage] {
 t "open" "de" | eq "Öffnen" | verify-true
 t "open" "fr" | eq "Ouvrir" | verify-true
 
-proc OpenAndResetStartPerspektive {
+global [ val praxisProperties [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/praxis.properties"]]]
+
+proc "GetPraxisProperty" [val key]  {
 	try {
-		get-window [ t reset_perspective ] | get-button  [ t yes ]  | click
-		concat "OpenAndResetStartPerspektive closed "  [ t reset_perspective ] | log
-	} -catch {
-		// log "OpenAndResetStartPerspektive failed"
+		// concat "Searching: " $language "." $key | log
+		$praxisProperties | get $key
+		} -catch {
+			concat "Unable to fetch key " $key " in praxis.properties"  | log -severity Error
+			concat ""
 	}
-	get-menu -path [ t menu_reset_perspective ] | click
-	try {
-		get-window [ t reset_perspective ] | get-button  [ t yes ]  | click
-		log "OpenAndResetStartPerspektive done"
-	} -catch {
-		log "OpenAndResetStartPerspektive failed"
-	}
-	log "OpenAndResetStartPerspektive done"
 }
 
+proc handleResetPerspectiveDialog {
+	try {
+		concat "handleResetPerspectiveDialog via "  [ t reset_perspective ] " and "  [ t btn_reset_perspective ]  | log
+		get-window [ t reset_perspective ] | get-button [ t btn_reset_perspective ]  | click
+	} -catch {
+		// log "handleResetPerspectiveDialog failed"
+	}
+}
+
+proc OpenAndResetStartPerspektive {
+	handleResetPerspectiveDialog
+	get-menu -path [ t menu_reset_perspective ] | click
+	handleResetPerspectiveDialog
+}
+
+handleResetPerspectiveDialog
 //
 // Ende
 

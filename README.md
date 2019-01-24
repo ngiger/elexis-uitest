@@ -31,6 +31,8 @@ Niklaus machte folgende Schritte, damit das Testen auf lange Sicht mit der DemoD
 * Vorhandene Elexis-Installation (>= 3.7.0) und Datenbank z.B [installierte DemoDB](https://wiki.elexis.info/Installation_Elexis_3.0_demoDB)
 * Installiertes RCPTT-Programm [Download](https://www.eclipse.org/rcptt/download/)
 * In RCPTT muss in der View "Applications" mit einem Doppelclick ein Elexis (nachfolgend ElexisDemoDB) genannt definiert werden.
+** Da Elexis im master Zweig auf eclipse 2018-09 aufsetzt, müssen die Snapshot-Versionen von rcptt verwendet werden bis RCPTTT 2.3.1 herauskommt, z.B. viaa
+  http://download.eclipse.org/rcptt/nightly/2.4.0/201901240014/ide/rcptt.ide-2.4.0-N201901240014-linux.gtk.x86_64.zip
 
 ### AUT definieren
 
@@ -78,7 +80,6 @@ Dazu im Fenster "Control Panel" kann man mit Hilfe eines Toolbar-Button "Switch 
 Um zu Testen, ob die Liste der Patienten anwählbar ist, wird folgender Text hinzugefügt
 
     get-view Patienten | get-table | get-property enablement | equals true | verify-true
-
 
 ## Test nachbearbeiten
 

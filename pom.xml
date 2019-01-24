@@ -52,6 +52,7 @@
           <configuration>
             <target>
               <copy file="${myBaseDir}/translations.properties" tofile="${rcptt-resources}/translations.properties"/>
+              <copy file="${myBaseDir}/praxis.properties" tofile="${rcptt-resources}/praxis.properties"/>
             </target>
           </configuration>
           <goals>
