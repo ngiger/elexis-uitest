@@ -15,7 +15,7 @@
     <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
     <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
     <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
-    <rcptt-maven-version>2.3.0</rcptt-maven-version>
+    <rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version>
     <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
