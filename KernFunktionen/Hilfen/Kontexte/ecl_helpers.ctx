@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/24/19 5:19 PM
+Save-Time: 1/25/19 9:03 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -113,14 +113,17 @@ proc handleResetPerspectiveDialog {
 		// log "handleResetPerspectiveDialog failed"
 	}
 }
-
-proc OpenAndResetStartPerspektive {
-	handleResetPerspectiveDialog
-	get-menu -path [ t menu_reset_perspective ] | click
+proc resetPerspective {
+	if [ get-button [ t reset_perspective ]  | get-property enablement | equals true ] {
+		get-menu -path [ t menu_reset_perspective ] | click
+	}
 	handleResetPerspectiveDialog
 }
 
-handleResetPerspectiveDialog
+proc OpenAndResetStartPerspektive {
+	handleResetPerspectiveDialog
+	resetPerspective
+}
 //
 // Ende
 

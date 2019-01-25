@@ -21,56 +21,91 @@
     <language>de</language>
     <useBranch>master</useBranch>
     <myBaseDir>${project.basedir}</myBaseDir>
+    <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
-    <pluginRepository>
+    <!-->Y  <pluginRepository>
       <id>rcptt-releases</id>
       <name>RCPTT Maven repository</name>
-      <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
+      <url>http://ftp.halifax.rwth-aachen.de/eclipse/rcptt/</url>
     </pluginRepository>
+    -->
     <pluginRepository>
       <id>rcptt-snapshots</id>
-      <name>RCPTT Maven Snapshots repository</name>
-      <!--
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-      -->
+      <name>RCPTT Maven milestone¨ repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
     </pluginRepository>
   </pluginRepositories> 
   <build>
     <plugins>
-    <plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.4.1</version>
+          <configuration>
+              <filesets>
+                  <fileset>
+                      <directory>/tmp</directory>
+                      <includes>
+                        <include>elexis*db</include>
+                      </includes>
+                  </fileset>
+                  <fileset>
+                    <directory>${user.home}/elexis</directory>
+                   <includes>
+                      <include>localCfg_rpctt-RunFromScratch.xml</include>
+                    </includes>
+                  </fileset>
+                  <fileset>
+                      <directory>${user.home}/elexis/logs</directory>
+                  </fileset>
+                  <fileset>
+                    <directory>${user.home}/elexis/demoDB</directory>
+                  </fileset>
+                  <fileset>
+                    <directory>${rcptt-resources}</directory>
+                 </fileset>
+              </filesets>
+          </configuration>
+        </plugin>
+        <plugin>
       <artifactId>maven-antrun-plugin</artifactId>
       <version>1.8</version>
       <executions>
         <execution>
-          <id>copy-translations</id>
+          <id>copy-datafiles</id>
           <phase>generate-sources</phase>
           <configuration>
             <target>
-              <copy file="${myBaseDir}/translations.properties" tofile="${rcptt-resources}/translations.properties"/>
-              <copy file="${myBaseDir}/praxis.properties" tofile="${rcptt-resources}/praxis.properties"/>
-            </target>
+              <copy file="${myBaseDir}/data/translations.properties" tofile="${rcptt-resources}/translations.properties" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
+              <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/praxis.properties" tofile="${rcptt-resources}/praxis.properties" preservelastmodified="true" />
+          </target>
           </configuration>
           <goals>
             <goal>run</goal>
           </goals>
         </execution>
         <execution>
-          <id>copy-Artikelstamm_Short_v5</id>
-          <phase>generate-sources</phase>
+          <id>unpack-vorlagen-into-one-directory</id>
+          <phase>process-sources</phase>
           <configuration>
             <target>
-              <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml"/>
+              <exec executable="/usr/bin/unzip">
+                <arg value="-j"/>
+                <arg value="-d"/>
+                <arg value="${rcptt-resources}/vorlagen"/>
+                <arg value="${rcptt-resources}/master.zip"/>
+              </exec>
             </target>
           </configuration>
           <goals>
             <goal>run</goal>
           </goals>
-         </execution>
+        </execution>
         <execution>
           <id>copy-save_run_from_scratch.sh</id>
           <phase>generate-sources</phase>
@@ -95,16 +130,42 @@
         <version>1.4.1</version>
         <executions>
           <execution>
+            <id>download-Universal-krankenkasse</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://wiki.elexis.info/images/c/ce/Universal_krankenkasse.xls</url>
+              <outputDirectory>${rcptt-resources}</outputDirectory>
+              <unpack>false</unpack>
+              <md5>470b203a84b64ed92595ec9c6070a4d4</md5>
+            </configuration>
+          </execution> 
+          <execution>
+            <id>download-Universal-patienten</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://wiki.elexis.info/images/a/ae/Universal_patienten.xls</url>
+              <outputDirectory>${rcptt-resources}</outputDirectory>
+              <unpack>false</unpack>
+              <md5>808a8662e6f421c52e7805043e04f943</md5>
+            </configuration>
+          </execution>
+          <execution>
             <id>download-ODF-Hilotec-Vorlagen</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://github.com/hilotec/elexis-vorlagen/archive/master.zip</url>
+              <url>https://github.com/ngiger/elexis-vorlagen/archive/master.zip</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
-              <unpack>true</unpack>
-              <md5>e34d89f968bbf9fd5f20534f53bd1d20</md5>
+              <unpack>false</unpack>
+              <md5>66179feb49538d028f7010467ab7c662</md5>
             </configuration>
           </execution>
           <execution>
@@ -225,7 +286,10 @@
             <injections>
               <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
               <injection>
+                <site>file:///opt/rm/elexis-master/elexis-3-base/ch.elexis.base.p2site/target/repository</site>
+                <!--
                 <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
+                -->
                 <!-- When installing CST here, it looks like we have problems with a missing ch.elexis.befunde
                 <features>
                   <feature>ch.elexis.base.ch.feature.feature.group</feature>
@@ -237,9 +301,9 @@
             </injections>
             <!-- Use URL like this for the AUT
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
-            https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
+            <explicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
             automatically replaced according to the current platform -->
-            <explicit> https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
+            <explicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
             <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>
@@ -252,12 +316,6 @@
               <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
               <vmArg>-Dlanguage=${language}</vmArg>
               <vmArg>-Duser.language=${language}</vmArg>
-              <!-- did not work as rcptt-maven-plug does not handle " in vmargs
-              <vmArg>-Dch.elexis.dbUser=sa</vmArg>
-              <vmArg>-Dch.elexis.dbPw=</vmArg>
-              <vmArg>-Dch.elexis.dbFlavor=h2</vmArg>
-              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:"${user.home}/elexis/db_for_rcptt/demoDB/db;AUTO_SERVER=TRUE"</vmArg>
-              -->
               <vmArg>-Dch.elexis.username=test</vmArg>
               <vmArg>-Dch.elexis.password=test</vmArg>
             </vmArgs>

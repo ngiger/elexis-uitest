@@ -151,6 +151,18 @@ Niklaus fehlt die Zeit um genau herauszufinden, welche Pakte (wahrschein nur Fon
 
 Lokal lässt Niklaus dann die Builds wie folgt laufen: `xvfb-run -screen 0 1280x1024x24 -a mvn clean verify 2>&1 | tee maven.log`. The dimension of the screen are important or the images are very ugly (at least when running via Jenkins).
 
+## Neuaufsetzen einer Praxis-DB
+
+Dazu muss die Datei praxis.properties angpasst werden. Ebenso muss eine leere Datenbank erstellt werden, z.B. via `sudo -u postgres psql` folgende eingeben
+
+    drop database if exists mustermann;
+    create database mustermann encoding 'utf8' template template0;
+    create user mustermann with UNENCRYPTED password 'elexisTest';
+    GRANT ALL PRIVILEGES ON DATABASE mustermann TO mustermann ;
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mustermann;
+    \q
+
+
 # Ideen für das weitere Vorgehen
 
 Es braucht eventuell eigene Anpassungen, um die DatePicker testen zu können. s.a https://github.com/xored/rcptt.extensions.ecl

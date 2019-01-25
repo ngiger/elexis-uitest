@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/14/19 2:30 PM
+Save-Time: 1/18/19 10:51 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -53,6 +53,13 @@ proc DeleteSelectedCase {
 	get-view [ t view_cases ] | get-table | get-menu -path  [ t btn_delete_case ] | click
 }
 
+proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "201.*"] [val endDate "01.08.2018"] {
+	if [FallOffen -caseLaw $caseLaw -startDate $startDate ] {
+		concat  "Offenen Fall " $caseLaw " gefunden für Startatum " $startDate
+	} -else {
+		FallZuPatientErstellen -caseLaw $caseLaw -caseReason $caseReason -startDate "20.4.2018"
+	}
+}
 proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
 	get-view [ t view_cases ] | click
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click

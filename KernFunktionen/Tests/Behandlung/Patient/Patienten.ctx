@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/9/19 10:26 AM
+Save-Time: 1/18/19 2:34 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -93,8 +93,18 @@ proc SelectPatient [val familyName] [val firstName] {
 	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 }
 
-proc PatientenErstellen [val familyName] [val firstName] [val male] [val birthDate] [val street] [val zipCode]
-	[val location] [val phone] {
+proc PatientenErstellenFallsNichtVorhanden [val familyName "Wesen" ] [val firstName "Armes" ] [val male [bool true] ] 
+	[val birthDate "29.2.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
+	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] {
+	if [SelectPatient -familyName $familyName -firstName $firstName | eq false] {
+		PatientenErstellen -familyName $familyName -firstName $firstName -male $male -birthDate $birthDate 
+			-street $street -zipCode $zipCode -location $location -phone $phone
+	}
+}
+
+proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val male "m" ] 
+	[val birthDate "29.2.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
+	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] {
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
 	get-view [t view_patients ] | get-button [ t btn_create_new_patient ]  | click

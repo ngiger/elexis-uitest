@@ -5,12 +5,79 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/10/19 12:37 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/25/19 10:56 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+proc EnterOneDetail [ val key ] [ val idMandant 1 ]  {
+	concat EnterOneDetail $key| log
+	concat "EnterOneDetail: " $key " translation "  [ t $key ] | log
+	concat "EnterOneDetail: " $key " praxiskey "  "praxis.mandant.1" $key | log
+	concat "EnterOneDetail: " $key " GetPraxisProperty "  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant "." $key ] ] | log
+	with [get-window Identifikationselemente] {
+        with [get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein"] {
+			 let [ val label [ t $key ] ] {
+		         let [ val value [ GetPraxisProperty [ concat "praxis.mandant." $idMandant "." $key ] ] ] {
+					concat "EnterOneDetail: " $key " label "  $label " value " $value | log
+					get-editbox -after [get-label $label] | set-text $value
+				}
+			}
+		}
+	}
+}
+
+proc SetMandantenDetails [ val idMandant 1 ] {
+	get-preferences-menu | click
+	with [get-window Benutzervorgaben] {
+	    get-tree | select "Gruppen und Rechte/Benutzerverwaltung"
+		GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"]  | log
+	    get-table | select  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] | double-click
+	    get-tree | select "Abrechnungssysteme/Tarmed-Rechnungen"
+	    get-group Detailangaben | get-link Leistungserbringer | click
+	    with [get-window Identifikationselemente] {
+		    str "tarmed_anrede tarmed_ean tarmed_ksk tarmed_kanton1 tarmed_kanton2 tarmed_rolle tarmed_nif tarmed_diag_system tarmed_esr5oresr9 tarmed_esrplus tarmed_erbringungsort tarmed_speziality tarmed_tg_or_tg"  |
+		    split -sep " " | foreach [val item]  {
+				concat "item: " $item | log
+				EnterOneDetail -key $item -idMandant $idMandant
+			}
+	        get-button OK | click
+	    }
+	    with [get-group Trustcenter] {
+	        get-combo | select "TC test"
+	        get-button "eDA Vertrag mit Trustcenter vorhanden. (Rechnungen an TC und Token auf Papier-Rn)" | check
+	    }
+	    with [get-group Detailangaben] {
+	        get-link Postkonto | click
+	    }
+	    with [get-window Postkonto] {
+	        // get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein" | get-editbox 
+	        get-editbox -after [get-label TarmedESRParticipantNumber] | set-text "80-22 369-9"
+	        get-button OK | click
+	    }
+	    get-button "Anwenden und Schließen" | click
+	}
+}
+/*
+
+	TODO: Erst nach Merge von KontaktExtDialoge path
+	    with [get-group Detailangaben] {
+	        get-link Postkonto | click
+	    }
+	    with [get-window Postkonto] {
+	        with [get-table] {
+	            select TarmedESRParticipantNumber | get-canvas | type-text 8
+	            with [get-editbox] {
+	                set-text "80-22369-9"
+	                key-type Enter
+	            }
+	        }
+	        get-button OK | click
+	    }
+	    get-group "Responsible Doctor" | get-combo | select unbekannt
+	    */
 
 proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ val plainPW "test" ]{
     concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password " $plainPW | log
@@ -52,7 +119,8 @@ proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ va
 	}
 	concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
 }
-
+log "Gamma"
 // Ende
+
 //
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

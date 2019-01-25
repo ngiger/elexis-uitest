@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/24/19 5:21 PM
+Save-Time: 1/25/19 9:05 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -32,10 +32,6 @@ proc "open-window-by-name" [ val windowName ] {
 		get-button [t open ] | click
 	}
 }
-proc "reset-perspective" {
-	get-menu -path [ t menu_reset_perspective ] | click
-	get-window  [ t reset_perspective ]  | get-button  [ t btn_reset_perspective ] | click
-}
 
 global [val curViewSection ""] -override
 proc "check-one-view-item" [val viewName] {
@@ -46,7 +42,7 @@ proc "check-one-view-item" [val viewName] {
 		global [val curViewSection [replaceFirst $viewName "0," ""]] -override
 		// global [val viewPathName [concat $curViewSection ".png"]] -override
 		concat "viewName: " $viewName " in curViewSection: " $curViewSection | log
-		reset-perspective
+		resetPerspective
 		// TODO: View Auwahl anzeigen?
 	} -else {
 		global [val viewPathName [replaceFirst $viewName "1," ""]] -override

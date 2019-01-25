@@ -5,8 +5,8 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/14/19 1:57 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/25/19 10:53 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -64,9 +64,10 @@ OpenAndResetStartPerspektive
 
 // Verify demoDB exists
 // At the moment we do not support running with mysql or PostgreSQL
-global [val h2Jar           [ concat [ get-user-dir ] "/rcptt/h2-1.4.197.jar"] ] 
-global [val dumpFile        [ concat [ get-user-dir ] "/rcptt/dump.sql.zip"] ] 
-global [val sqlCmdFile      [ concat [ get-user-dir ] "/rcptt/commands.sql"] ] 
+global [val rcpttDir        [ concat [ get-user-dir ] "/rcptt/"] ]
+global [val h2Jar           [ concat $rcpttDir "h2-1.4.197.jar"] ]
+global [val dumpFile        [ concat $rcpttDir "dump.sql.zip"] ]
+global [val sqlCmdFile      [ concat $rcpttDir "commands.sql"] ]
 global [val jdbcConnection  "Unknown jdbcConnection"]
 
 if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
@@ -120,7 +121,8 @@ global [val currentUniqMpa [ concat "MPA_" [ get-seconds | str ] ] ]
 
 // Der Verantwortliche Arzt ist bei RunFromScratch James Bond,
 // bei der DemoDB aber Dr. Test Alfred, also müssen wir uns mit einem regulären Ausdruck behelfen
-global [val VerantwortlicherArzt ".*Bond James.*|.*Test Alfred.*" ]
+// Bei first we only get test
+global [val VerantwortlicherArzt ".*Bond James.*|.*Test Alfred.*|.*test.*" ]
 
 log -message [ concat "Workdir is " [ get-workspace-location ]]
 log -message "Error Message. Is it correctly sorted ?" -severity error

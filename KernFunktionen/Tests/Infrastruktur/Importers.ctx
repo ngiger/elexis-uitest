@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/14/19 4:43 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/25/19 10:02 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -135,6 +135,20 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	}
 }
 
+proc "ReadDataImport" [ val file [ concat  [get-user-dir] "/rcptt/Universal_patienten.xls" ] ] 
+	[ val tab [ t tab_data_kontakte ] ] {
+	concat "ReadDataImport tab " $tab " from " $file " exists? " [ get-file $file | get exists ] | log
+	get-file $file| get exists | verify-true
+	get-menu -path [ t menu_data_import ] | click
+	get-window [ t view_general_data_import ] | get-tab-folder | get-tab-item $tab | click
+	set-dialog-result File $file
+	with [get-window [ t view_general_data_import  ] ] {
+	    get-button [ t btn_dataimport_select_file ] | click	    	
+  	    get-eclipse-window | get-object | save-screenshot  [concat $imagesDir "ReadDataImport.png"]
+
+	    get-button [ t ok ] | click
+    }
+}
 // Ende
 //
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

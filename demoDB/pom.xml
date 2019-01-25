@@ -11,7 +11,6 @@
   </parent>
   <properties>
     <myBaseDir>${project.basedir}/..</myBaseDir>
-    <localeSqlScript>../setlocale_${language}_CH.sql</localeSqlScript>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
@@ -33,36 +32,7 @@
   </pluginRepositories> 
   <build>
     <plugins>
-      <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>2.4.1</version>
-          <configuration>
-              <filesets>
-                  <fileset>
-                      <directory>/tmp</directory>
-                      <includes>
-                        <include>elexis*db</include>
-                      </includes>
-                  </fileset>
-                  <fileset>
-                    <directory>${user.home}/elexis</directory>
-                   <includes>
-                      <include>localCfg_rpctt.xml</include>
-                    </includes>
-                  </fileset>
-                  <fileset>
-                      <directory>${user.home}/elexis/logs</directory>
-                  </fileset>
-                  <fileset>
-                    <directory>${user.home}/elexis/demoDB</directory>
-                  </fileset>
-                  <fileset>
-                    <directory>${rcptt-resources}</directory>
-                 </fileset>
-              </filesets>
-          </configuration>
-        </plugin>
+
       <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
@@ -80,6 +50,7 @@
               <md5>f9893acfa22b7fe1492dd9c515af2e5b</md5>
             </configuration>
           </execution>
+          <!--
           <execution>
             <id>download-ImportSwissBase</id>
             <phase>generate-sources</phase>
@@ -93,6 +64,20 @@
               <md5>186b829a5916e2e7ee2e566f46c555c0</md5>
             </configuration>
           </execution>
+          -->
+          <execution>
+            <id>download-demoDB-3.7.0</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>http://download.elexis.info/demoDB/demoDB_elexis_3.7.0.zip</url>
+              <unpack>true</unpack>
+              <outputDirectory>${user.home}/elexis/</outputDirectory>
+              <md5>f8adb8a630e480e96f67c40b8b327745</md5>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -103,7 +88,7 @@
         <version>1.5</version>
         <executions>
           <execution>
-            <phase>process-sources</phase> <!-- is after generate-sources -->
+            <phase>generate-sources</phase> <!-- is after generate-sources -->
             <goals>
               <goal>execute</goal>
             </goals>
@@ -111,7 +96,8 @@
               <scripts>
                   <script><![CDATA[
       file = new File("${localeSqlScript}")
-      file.write("-- Created by elexis-uitest/pom.xml\n")
+      System.out.println("Created ${localeSqlScript}")
+      file.write("-- Created by elexis-uitest/pom.xml as ${localeSqlScript}\n")
       file.append("update config set wert = '${language}_CH' where param like '%locale';\n")
       file.append("UPDATE ARTIKELSTAMM_CH set  ADDDSCR= 'oddb2ml' where ID like 'VERSION' and ADDDSCR = 'medindex';\n")
   ]]></script>

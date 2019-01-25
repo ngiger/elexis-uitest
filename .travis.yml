@@ -4,6 +4,7 @@ dist: xenial # we need xenial to have mysql 5.7
 
 language: java
 jdk: openjdk8 # oraclejdk8 is no longer supported by travis-ci
+
 env:
   global:
   - JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
@@ -11,11 +12,13 @@ env:
 
 
 before_install:
-  - sudo apt-get install -y librxtx-java
+  # Debian has since stretch an OCR-B font and a fonts-ocr-a
+  # Xenial only has fonts-ocr-a
+  - sudo apt-get install -y librxtx-java fonts-ocr-a
 
 install: mvn -V --quiet clean
 
-script: xvfb-run -a 1280x1024x24 mvn -V clean verify -f demoDB/pom.xml
+script: xvfb-run -a 1280x1024x24 mvn -V clean verify -f RunFromScratch/pom.xml -Dsuite2run=SmokeTestSuite
 
 notifications:
   email:

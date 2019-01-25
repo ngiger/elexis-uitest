@@ -61,29 +61,7 @@
           <projects>
               <project>${project.basedir}/../KernFunktionen</project>
           </projects>
-         <testOptions>
-            <!-- the default value of 300 did was not long enough for VisitAllViews -->
-            <testExecTimeout>1800</testExecTimeout>
-          </testOptions>
           <aut>
-            <injections>
-              <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
-              <injection>
-                <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
-                <!-- When installing CST here, it looks like we have problems with a missing ch.elexis.befunde
-                <features>
-                  <feature>ch.elexis.base.ch.feature.feature.group</feature>
-                  <feature>ch.gpb.elexis.cst.feature.feature.group</feature>
-                  <feature>ch.medshare.mediport.feature.feature.group</feature>
-                </features>
-                                -->
-              </injection>
-            </injections>
-            <!-- Use URL like this for the AUT
-            ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
-            https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
-            automatically replaced according to the current platform -->
-            <explicit> https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
             <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>
@@ -102,16 +80,6 @@
               <vmArg>-Dch.elexis.password=topsecret</vmArg>
             </vmArgs>
           </aut>
-          <runner>
-            <version>${rcptt-maven-version}</version>
-            <vmArgs>
-              <vmArg>-Xmx2048m</vmArg>
-              <vmArg>-Xms2048m</vmArg>
-            </vmArgs>
-          </runner>
-                 <suites>
-                       <suite>${suite2run}</suite>
-                 </suites>
         </configuration>
       </plugin>
     </plugins>
