@@ -1,0 +1,13 @@
+NIL,Elexis,-,-
+Elexis,Ins,Installationsproblem,Allgemeine Fehler bei der Installationsproblem
+Ins,Ooo,OpenOffice Problem,Falsche Version oder missglückte Installation
+Ins,Jre,Java Problem,Falsche Version oder missglückte Installation
+Elexis,Abr,Abrechnung,Fragen zur Abrechnung
+Elexis,Allg,Allgemein,Allgemeine Bedienungsfragen
+Elexis,Cfg,Konfiguration,Fragen zur Konfiguration
+NIL,Abh,Abhängigkeit,Süchte und Abhängigkeiten
+Abh,Nik,Nikotineabhängigkeit,Abhängigket von Tabakprodukten
+Abh,Alk,Alkoholbhängigkeit,Abhängigket von Alkoholika aller Art
+Abh,Inet,Internetabhängigkeit,'Abhängigket von "Surfen"'
+Abh,Pc,Computerabhängigkeit,Abhängigket von Computern
+Abh,Work,Workaholic,"Unfähigkeit, Arbeit liegen zu lassen"

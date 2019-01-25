@@ -1,0 +1,7 @@
+NIL,Elexis,Elexis,0,0,0,01.01.2007,31.12.2038
+Elexis,Fern,Fernsupport,0,0,0,01.01.2007,31.12.2038
+Fern,Tel,Telefon bis 15 min.,0,3000,15,01.01.2007,31.12.2038
+Fern,Remote,Fernzugriff bis 15 min.,10,3000,15,01.01.2007,31.12.2038
+Elexis,Vor Ort,Support vor Ort Std.,0,13000,60,01.01.2007,31.12.2038
+Elexis,Prog,Programmierarbeiten Std.,0,13000,60,01.01.2007,31.12.2038
+Elexis,Fahrt,Fahrtkosten km,80,90,1,01.01.2007,31.12.2038
