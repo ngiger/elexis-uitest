@@ -59,6 +59,7 @@
                   </fileset>
                   <fileset>
                       <directory>${user.home}/elexis/logs</directory>
+                      <directory>${user.home}/elexis/rcptt</directory>
                   </fileset>
                   <fileset>
                     <directory>${user.home}/elexis/demoDB</directory>
@@ -89,8 +90,8 @@
             <goal>run</goal>
           </goals>
         </execution>
-        <execution>
-          <id>unpack-vorlagen-into-one-directory</id>
+         <execution>
+          <id>unpack-vorlagen-hilotec</id>
           <phase>process-sources</phase>
           <configuration>
             <target>
@@ -99,6 +100,25 @@
                 <arg value="-d"/>
                 <arg value="${rcptt-resources}/vorlagen"/>
                 <arg value="${rcptt-resources}/master.zip"/>
+¨                <arg value="elexis-vorlagen-master/hilotec-odt/*"/>
+              </exec>
+            </target>
+          </configuration>
+          <goals>
+            <goal>run</goal>
+          </goals>
+        </execution>
+       <execution>
+          <id>unpack-vorlagen-openoffice</id>
+          <phase>process-sources</phase>
+          <configuration>
+            <target>
+              <exec executable="/usr/bin/unzip">
+                <arg value="-j"/>
+                <arg value="-d"/>
+                <arg value="${rcptt-resources}/openoffice"/>
+                <arg value="${rcptt-resources}/master.zip"/>
+                <arg value="elexis-vorlagen-master/openoffice/*"/>
               </exec>
             </target>
           </configuration>
@@ -165,7 +185,7 @@
               <url>https://github.com/ngiger/elexis-vorlagen/archive/master.zip</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <unpack>false</unpack>
-              <md5>66179feb49538d028f7010467ab7c662</md5>
+              <md5>496cfd421265f3e1a871342aa35ed528</md5>
             </configuration>
           </execution>
           <execution>
@@ -286,9 +306,9 @@
             <injections>
               <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
               <injection>
-                <site>file:///opt/rm/elexis-master/elexis-3-base/ch.elexis.base.p2site/target/repository</site>
-                <!--
                 <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
+                <!--
+               <site>file:///opt/rm/elexis-master/elexis-3-base/ch.elexis.base.p2site/target/repository</site>
                 -->
                 <!-- When installing CST here, it looks like we have problems with a missing ch.elexis.befunde
                 <features>
@@ -301,10 +321,10 @@
             </injections>
             <!-- Use URL like this for the AUT
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
+              <explicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
+          automatically replaced according to the current platform -->
             <explicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
-            automatically replaced according to the current platform -->
-            <explicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
-            <args>
+          <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>
               <arg>-nosplash</arg>
