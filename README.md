@@ -33,6 +33,7 @@ Niklaus machte folgende Schritte, damit das Testen auf lange Sicht mit der DemoD
 * In RCPTT muss in der View "Applications" mit einem Doppelclick ein Elexis (nachfolgend ElexisDemoDB) genannt definiert werden.
 ** Da Elexis im master Zweig auf eclipse 2018-09 aufsetzt, müssen die Snapshot-Versionen von rcptt verwendet werden bis RCPTTT 2.3.1 herauskommt, z.B. viaa
   http://download.eclipse.org/rcptt/nightly/2.4.0/201901240014/ide/rcptt.ide-2.4.0-N201901240014-linux.gtk.x86_64.zip
+* maven > 3.3.9 (z.B. 3.5.2 oder 3.6.0) zum Starten der Tests auf der Komandozeile z.B via `-V clean verify  -f RunFromScratch/pom.xml -Dsuite2run=SmokeTestSuite`
 
 ### AUT definieren
 

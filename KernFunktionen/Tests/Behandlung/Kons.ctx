@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/18/19 11:13 AM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 2/3/19, 4:11 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -31,6 +31,7 @@ proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 
 proc "HasKonsSelected" {
 	try {
+		open-window-by-name  [ t kons_view ]
 		get-view [ t kons_view ]  | get-label -index 0 | get-property caption -raw | log
 		get-view [ t kons_view ]  | get-link "\(.*\)" | get-property caption -raw | log
 		get-view [ t kons_view ]  | get-label -index 0 | get-property caption | equals  [ t lbl_no_kons_selected ] | verify-false

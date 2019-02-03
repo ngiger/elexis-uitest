@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/18/19 10:51 AM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/28/19, 7:25 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -61,7 +61,7 @@ proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ va
 	}
 }
 proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
-	get-view [ t view_cases ] | click
+	open-window-by-name [ t view_cases ]
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
 	wait 100
 	
@@ -105,4 +105,34 @@ proc AktuellenFallVerrechnen {
 	get-window [ t error ] | verify-false
 }
 
+proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [ val comment "" ] [ val startDate "" ] [ val endDate ""]  {
+	with [get-view AUF] {
+	    click
+	    get-button "Eine neue AUF erstellen" | click
+	}
+	with [get-window "Arbeitsunfähigkeit"] {
+	    with [get-editbox -after [get-label Grund]] {
+	        set-text $percentage
+	    }
+	    with [get-editbox -after [get-label Grund] -index 1] {
+	        set-text $reason
+	    }
+	    get-editbox -after [get-label "ggf. Zusätzliche Angaben"] | set-text $comment
+	    get-button OK | click
+	}
+}
+proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val adrPostalcode "5401" ] {
+	with [get-view AUF] {
+		// Select first matching
+	    get-table | select [ concat ".*" $reason ".*" ]
+	    get-button "Ein Fenster mit einer Druckansicht der gewÃ¤hlten AUF Öffnen" | click
+	}
+	with [get-window "Kontakt auswählen"] {
+	    get-table | select  [ concat ".*" $adrName ".*"  $adrPostalcode ".*" ]
+	    get-button OK | click
+	}
+}
+
+// End
+//
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

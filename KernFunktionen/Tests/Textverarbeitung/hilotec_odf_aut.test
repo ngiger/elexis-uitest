@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _6_AoIBsCEembU9g-6bJhVg
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/23/19 4:20 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/28/19, 7:31 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -19,10 +19,14 @@ SetMandantenDetails
 SetHilotecODF_TextVerarbeitung
 ImportHilotecODF_Vorlagen
 PatientenErstellenFallsNichtVorhanden
+OpenAndResetStartPerspektive
 FallZuPatientErstellenFallsNichtVorhanden
 KonsErstellenFallsNichtVorhanden
+FallErzeugeAUF -percentage 88
+FallErzeugeAUF -percentage 88 -reason "Ein guter Grund" -comment "Und ein noch besserer Kommentar"
 */
-SetMandantenDetails
+SetHilotecODF_TextVerarbeitung
+ErzeugeBriefZuAUT -reason "Ein guter Grund"
 
 // ImportHilotecODF_Vorlagen
 

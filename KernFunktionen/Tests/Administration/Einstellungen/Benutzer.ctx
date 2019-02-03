@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/25/19 10:56 AM
+Save-Time: 2/3/19, 4:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -43,6 +43,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 				concat "item: " $item | log
 				EnterOneDetail -key $item -idMandant $idMandant
 			}
+			get-eclipse-window | get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_details.png"]
 	        get-button OK | click
 	    }
 	    with [get-group Trustcenter] {
@@ -54,30 +55,13 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 	    }
 	    with [get-window Postkonto] {
 	        // get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein" | get-editbox 
-	        get-editbox -after [get-label TarmedESRParticipantNumber] | set-text "80-22 369-9"
+	        get-editbox -after [get-label TarmedESRParticipantNumber] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ]
 	        get-button OK | click
 	    }
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant ".png"]
 	    get-button "Anwenden und Schließen" | click
 	}
 }
-/*
-
-	TODO: Erst nach Merge von KontaktExtDialoge path
-	    with [get-group Detailangaben] {
-	        get-link Postkonto | click
-	    }
-	    with [get-window Postkonto] {
-	        with [get-table] {
-	            select TarmedESRParticipantNumber | get-canvas | type-text 8
-	            with [get-editbox] {
-	                set-text "80-22369-9"
-	                key-type Enter
-	            }
-	        }
-	        get-button OK | click
-	    }
-	    get-group "Responsible Doctor" | get-combo | select unbekannt
-	    */
 
 proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ val plainPW "test" ]{
     concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password " $plainPW | log
@@ -119,8 +103,7 @@ proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ va
 	}
 	concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
 }
-log "Gamma"
 // Ende
-
 //
+
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
