@@ -25,18 +25,20 @@
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
-    <!-->Y  <pluginRepository>
+    <pluginRepository>
       <id>rcptt-releases</id>
       <name>RCPTT Maven repository</name>
-      <url>http://ftp.halifax.rwth-aachen.de/eclipse/rcptt/</url>
+      <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-    -->
     <pluginRepository>
       <id>rcptt-snapshots</id>
-      <name>RCPTT Maven milestone¨ repository</name>
+      <name>RCPTT Maven Snapshots repository</name>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
       <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
     </pluginRepository>
-  </pluginRepositories> 
+  </pluginRepositories>
   <build>
     <plugins>
       <plugin>
@@ -316,13 +318,13 @@
                   <feature>ch.gpb.elexis.cst.feature.feature.group</feature>
                   <feature>ch.medshare.mediport.feature.feature.group</feature>
                 </features>
-                                -->
+                              -->
               </injection>
             </injections>
             <!-- Use URL like this for the AUT
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
               <explicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
-          automatically replaced according to the current platform -->
+            automatically replaced according to the current platform -->
             <explicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
           <args>
               <arg>-nl</arg>
