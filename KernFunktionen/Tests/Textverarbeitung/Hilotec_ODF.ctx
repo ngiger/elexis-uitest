@@ -6,13 +6,13 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/5/19, 12:53 PM
+Save-Time: 2/5/19, 5:55 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-global [val hilotecOdfOutDir $imagesDir ] -override
+global [val hilotecOdfOutDir $pdfDir ] -override
 
 proc ConfigureHilotecODF_TextVerarbeitung {
 	get-preferences-menu | click
@@ -20,6 +20,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    get-tree | select Textverarbeitung
 	    // Button name various on number of installed text plugins!
 	    // There reaplce 0 :, etc by .*
+      	get-window Benutzervorgaben | get-object | save-screenshot [concat $imagesDir "select-hilotecODF.png" ]
 	    get-button ".*Hilotec-OpenDocument" | click
         get-tree | select "Hilotec-OpenDocument"
 	    with [get-editbox -after [get-label "OpenDocument Editor"]] {

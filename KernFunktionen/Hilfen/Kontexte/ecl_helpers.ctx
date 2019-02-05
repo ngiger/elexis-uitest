@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/5/19, 11:13 AM
+Save-Time: 2/5/19, 3:29 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -72,6 +72,7 @@ proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 global [ val resultsDir   [ concat  [ pwd ]  "/../results/"] ]
 global [ val translations [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations.properties"]]]
 global [ val imagesDir    [ concat $resultsDir "images/" ] ]
+global [ val pdfDir    [ concat $resultsDir "pdf/" ] ]
 global [ val preferencesCsvFile [ concat  $resultsDir "preferences.csv" ] ]
 global [ val viewsCsvFile       [ concat  $resultsDir "views.csv" ] ]
 concat "get-default-locale returns: " [get-default-locale] |log

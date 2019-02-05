@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/25/19 10:53 AM
+Save-Time: 2/5/19, 5:49 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -73,12 +73,16 @@ global [val jdbcConnection  "Unknown jdbcConnection"]
 if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 	log "Running from Scratch: Don't know how to get use jdbcConnection"
 } -else {
-	if [ safe-get-java-property "ch.elexis.dbSpec" | matches "jdbc:.*" ] {
-		log "Found JDBC"
-		global [val jdbcConnection  [ safe-get-java-property "ch.elexis.dbSpec" ] ] -override
-	} -else {
-		concat "file:" [ get-user-dir ] "/demoDB/db.h2.db" | get-file | get exists | verify-true
-		global [val jdbcConnection  [ concat "jdbc:h2:" [ get-user-dir ] "/demoDB/db;AUTO_SERVER=TRUE"] ] -override
+	try {
+		if [ safe-get-java-property "ch.elexis.dbSpec" | matches "jdbc:.*" ] {
+			log "Found JDBC"
+			global [val jdbcConnection  [ safe-get-java-property "ch.elexis.dbSpec" ] ] -override
+		} -else {
+			concat "file:" [ get-user-dir ] "/demoDB/db.h2.db" | get-file | get exists | verify-true
+			global [val jdbcConnection  [ concat "jdbc:h2:" [ get-user-dir ] "/demoDB/db;AUTO_SERVER=TRUE"] ] -override
+		}
+	} -catch {
+		log "No dbSpec specified"
 	}
 }
 
@@ -104,7 +108,6 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 	                     [val jdbc $jdbcConnection] {
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 	                    log "I do not know how to access the JDBConnection when Running from Scratch"
-	                    bool false | verify-true
 	} -else {
 		concat "Will create SQL backup for h2 under: " $zipFile | log
 		      concat "java" " -classpath " $jarFile " org.h2.tools.Script   -url " $jdbc " -user " "sa" " -script " $zipFile "-options" " compression zip" | log
