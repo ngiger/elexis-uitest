@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/3/19, 4:09 PM
+Save-Time: 2/5/19, 10:39 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -64,44 +64,55 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 }
 
 proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ val plainPW "test" ]{
-    concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password " $plainPW | log
 	get-preferences-menu | click
-	with [get-window [ t preferences ]] {
-	    get-tree | expand-all | select [ t prefs_users_and_rights ] 
-	    get-button -after [get-label [t btn_user_admin] ] -index 3 | click
+	get-window [ t preferences ] | get-tree | expand-all | select [ t prefs_users_and_rights ]
+	try {
+		get-window Benutzervorgaben | get-table | get-item -path $userName | get-property caption | equals $userName | verify-true
+		concat "Benutzer, " $userName " already exists" | log
+		get-window Benutzervorgaben | get-button [ t cancel ] | click
+	} -error  [val errorObj]  -catch {
+		// concat "EError was: " $errorObj | log
+    	concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password " $plainPW | log
+		with [get-window [ t preferences ]] {
+		    get-button -after [get-label [t btn_user_admin] ] -index 3 | click
+		}
+		with [get-window [ t dlg_create_user ] ] {
+		    get-editbox 
+		        -after [get-label [ t dlg_create_user_set] ] | set-text $userName
+		    get-button [ t ok ] | click
+		}
+		with [get-window [ t preferences ]] {
+		    get-table | select $userName
+		    with [get-group [t dlg_create_user_accounting] ] {
+		        get-group [t user_role] | get-table | get-item -path $role | check
+		        if [ $forMandat | matches ".+" ] {
+		        	get-group [t select_works_for] | get-table | get-item  -path $forMandat | check
+		    		get-window [t view_no_contact] | get-button [t ok] | click
+		        }
+		    }
+	        if [ $kontakt | matches ".+" ] {
+			    get-group [t dlg_create_user_accounting] | get-link [ t dlg_create_user_accounting_change ] | click-link
+			    with [get-window [t select_contact] ] {
+			        get-table | select  $kontakt
+			        get-button [ t ok ] | click
+			    }
+		    }
+		    with [get-group Systemzugang] {
+		        get-button Administrator | check
+		        get-link "<a>Passwort ändern</a>" | click-link
+		    }
+		    concat "Neues Passwort ist: " $plainPW| log
+		    with [get-window -class ChangePasswordDialog] {
+		        get-editbox -after [get-label "Neues Passwort"] | set-text $plainPW
+		        get-editbox -after [get-label "Bestätigen"] | set-text $plainPW
+		        get-button "Prüfregeln ignorieren (nicht empfohlen)" | check
+		        get-button OK | click
+		    }
+			get-eclipse-window | get-object | save-screenshot [concat $imagesDir VerantwortlicherArzt "_created.png" ]
+			get-button [ t apply_and_close ] | click
+		}
+		concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
 	}
-	with [get-window [ t dlg_create_user ] ] {
-	    get-editbox 
-	        -after [get-label [ t dlg_create_user_set] ] | set-text $userName
-	    get-button [ t ok ] | click
-	}
-	with [get-window [ t preferences ]] {
-	    get-table | select $userName
-	    with [get-group [t dlg_create_user_accounting] ] {
-	        get-group [t user_role] | get-table | get-item -path $role | check
-	        get-group [t select_works_for] | get-table | get-item  -path $forMandat | check
-	    }
-	    get-window [t view_no_contact] | get-button [t ok] | click
-	    get-group [t dlg_create_user_accounting] | get-link [ t dlg_create_user_accounting_change ] | click-link
-	    with [get-window [t select_contact] ] {
-	        get-table | select  $forMandat
-	        get-button [ t ok ] | click
-	    }
-	    with [get-group Systemzugang] {
-	        get-button Administrator | check
-	        get-link "<a>Passwort ändern</a>" | click-link
-	    }
-	    concat "Neues Passwort ist: " $plainPW| log
-	    with [get-window -class ChangePasswordDialog] {
-	        get-editbox -after [get-label "Neues Passwort"] | set-text $plainPW
-	        get-editbox -after [get-label "Bestätigen"] | set-text $plainPW
-	        get-button "Prüfregeln ignorieren (nicht empfohlen)" | check
-	        get-button OK | click
-	    }
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir VerantwortlicherArzt "_created.png" ]
-		get-button [ t apply_and_close ] | click
-	}
-	concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
 }
 // Ende
 //
