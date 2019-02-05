@@ -6,19 +6,21 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/28/19, 5:58 PM
+Save-Time: 2/5/19, 12:53 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-global [val hilotecOdfOutDir " ~/elexis/drucker/hilotec_odf" ] -override
+global [val hilotecOdfOutDir $imagesDir ] -override
 
-proc SetHilotecODF_TextVerarbeitung {
+proc ConfigureHilotecODF_TextVerarbeitung {
 	get-preferences-menu | click
 	with [get-window Benutzervorgaben] {
 	    get-tree | select Textverarbeitung
-	    get-button "2 : Hilotec-OpenDocument" | click
+	    // Button name various on number of installed text plugins!
+	    // There reaplce 0 :, etc by .*
+	    get-button ".*Hilotec-OpenDocument" | click
         get-tree | select "Hilotec-OpenDocument"
 	    with [get-editbox -after [get-label "OpenDocument Editor"]] {
 	        set-text "/usr/bin/lowriter"
@@ -33,6 +35,7 @@ proc SetHilotecODF_TextVerarbeitung {
 	        set-text "/usr/bin/lowriter"
 	    }
 	    get-button "Wrapper Skript aktivieren" | uncheck
+      	get-window Benutzervorgaben | get-object | save-screenshot [concat $imagesDir "config-hilotecODF.png" ]
 	    get-button "Anwenden und Schließen" | click
 	}
 }

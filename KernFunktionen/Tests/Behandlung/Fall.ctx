@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/28/19, 7:25 PM
+Save-Time: 2/5/19, 12:46 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -105,6 +105,7 @@ proc AktuellenFallVerrechnen {
 	get-window [ t error ] | verify-false
 }
 
+global [val auf_id 1 ] -override
 proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [ val comment "" ] [ val startDate "" ] [ val endDate ""]  {
 	with [get-view AUF] {
 	    click
@@ -118,6 +119,8 @@ proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [
 	        set-text $reason
 	    }
 	    get-editbox -after [get-label "ggf. Zusätzliche Angaben"] | set-text $comment
+	    get-eclipse-window | get-object | save-screenshot [concat $imagesDir "AUF-" $auf_id ".png"]
+		global [val auf_id [  $auf_id | plus 1 ] ] -override
 	    get-button OK | click
 	}
 }
@@ -131,6 +134,7 @@ proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val ad
 	    get-table | select  [ concat ".*" $adrName ".*"  $adrPostalcode ".*" ]
 	    get-button OK | click
 	}
+
 }
 
 // End

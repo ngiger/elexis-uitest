@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/3/19, 4:09 PM
+Save-Time: 2/5/19, 11:13 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -22,7 +22,6 @@ proc "get-env" [val name] {
 		invoke-static "org.eclipse.rcptt.util" "java.lang.System" getenv $name
 }
 proc "pwd" {
-  // invoke-static "org.eclipse.rcptt.util" -className java.nio.file.Paths -methodName get -args "."
   get-java-property "user.dir"
 }
 
