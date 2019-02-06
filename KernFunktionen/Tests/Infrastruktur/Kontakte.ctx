@@ -1,0 +1,81 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Kontakte
+Element-Type: context
+Element-Version: 2.0
+Id: _jOjx0CCAEem06Mv2pVmYtA
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 1/25/19 10:41 AM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc "SelectKontakt" [ val bezeichnung1 "Devaud" ] 
+	[ val location "Yverdon" ]{
+	concat "SelectKontakt bezeichnung1 " $bezeichnung1 " from " $location  | log
+	with [get-view [ t tab_data_kontakte ] ] {
+	    with [get-editbox -index 1] {
+	        set-text $bezeichnung1
+	    }
+	    with [get-editbox -index 5] {
+	        set-text $location
+	    }
+	     get-table | get-item 
+	    -path [ concat $bezeichnung1 ".*" $location ".*"]  | get-property caption | log
+	     get-table | get-item 
+	    -path [ concat $bezeichnung1 ".*" $location ".*"]  | get-property caption 
+	    | matches ".+" | log
+	     get-table | get-item 
+	    -path [ concat $bezeichnung1 ".*" $location ".*"]  | get-property caption 
+	    | matches ".+" | verify-true 
+	}
+}
+
+proc "SetKontaktInfo" {
+	with [get-view "Details zum Kontakt"] {
+	    with [get-editbox -after [get-label Name]] {
+	        set-text Mustermann
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    with [get-editbox -after [get-label Vorname]] {
+	        set-text Vorname
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    get-editbox -after [get-label Zusatz] | set-text Zusatz
+	    with [get-editbox -after [get-label Plz]] {
+	        set-text 8752
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    with [get-editbox -after [get-label Ort]] {
+	        set-text Mollis
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    with [get-editbox -after [get-label Land]] {
+	        set-text CH
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    with [get-editbox -after [get-label Telefon1]] {
+	        set-text "055 612 20 54"
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    with [get-editbox -after [get-label Telefon2]] {
+	        set-text "077 454 01 61"
+	        click-text 14
+	        key-type "M1+c"
+	    }
+	    with [get-editbox -after [get-label "Mobil-Tel."]] {
+	        set-text "078 3455 "
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    get-editbox -after [get-label Fax] | set-focus
+	    get-editbox -after [get-label Bemerkung] | set-text "Unsere Bemerkung"
+	    get-editbox -after [get-label "Kürzel/ID"] | set-text kuerzel
+	    get-editbox -after [get-label Titel] | set-text "Dr. med."
+	}
+
+} 
+// Ende
+//
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
