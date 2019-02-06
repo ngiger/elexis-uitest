@@ -1,0 +1,22 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: LOwriterMustBeInstalled
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _gg2CoCopEem_RqgHWcTlRA
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 2/6/19, 5:32 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+log "Check wheter /usr/bin/lowriter ist installed"
+if [ get-by-os  -win false -macosx false -linux true ] {
+	get-file "/usr/bin/lowriter" | get exists | assert-true
+	log "/usr/bin/lowriter ist installed (LINUX)"
+}
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
