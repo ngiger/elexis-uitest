@@ -5,8 +5,8 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/5/19, 5:49 PM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 2/6/19, 11:12 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -124,8 +124,8 @@ global [val currentUniqMpa [ concat "MPA_" [ get-seconds | str ] ] ]
 
 // Der Verantwortliche Arzt ist bei RunFromScratch James Bond,
 // bei der DemoDB aber Dr. Test Alfred, also müssen wir uns mit einem regulären Ausdruck behelfen
-// Bei first we only get test
-global [val VerantwortlicherArzt ".*Bond James.*|.*Test Alfred.*|.*test.*" ]
+// Bei first we only get test // ".*Bond James.*|.*Test Alfred.*|.*test.*
+global [val VerantwortlicherArzt ".+" ]
 
 log -message [ concat "Workdir is " [ get-workspace-location ]]
 log -message "Error Message. Is it correctly sorted ?" -severity error
