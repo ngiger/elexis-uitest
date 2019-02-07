@@ -6,11 +6,23 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/25/19 10:02 AM
+Save-Time: 2/7/19, 9:43 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+// When running Jenkis-CI we often had the problem that
+// Clicking Leistungen öffnen did not work
+// Therefore we open the Codes/Codes view
+
+proc "OpenLeistungen" {
+	// this makes problem get-button [ t btn_services ] | click
+	open-window-by-name "Codes"
+	with [get-view Codes] {
+		 get-tab-folder | key-type "M1+m"
+	}
+}
 
 // We try to increase here some timeout to let artikelstamm and tarmed importer complete successfully
 //	set-q7-option uijobHangTimeout       30000
@@ -73,7 +85,7 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 
 proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_landarztpraxis_sevelen.xchange"] ] {
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_0.png"]
-	get-button [ t btn_services ] | click
+	OpenLeistungen
 	concat "ReadBlocksExchange file is: " $file | log
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
 	with [get-view Codes] {
@@ -86,7 +98,7 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	ExecuteDataImport
 }
 proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
-	get-button [ t btn_services ] | click
+	OpenLeistungen
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadEAL_1.png"]
 	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
 	concat "ReadAnalysenListe file is: " $file | log
@@ -107,7 +119,7 @@ proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx
 }
 
 proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
-	get-button [ t btn_services ] | click
+	OpenLeistungen
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_1.png"]
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item Tarmed | click
