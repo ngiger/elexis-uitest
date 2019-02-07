@@ -76,7 +76,7 @@
         <executions>
           <execution>
               <id>drop-create-database-elexis-rcptt</id>
-              <phase>process-sources</phase>
+              <phase>process-sources^</phase>
               <configuration>
                 <target> 
                   <exec executable="/bin/bash" >
@@ -93,7 +93,7 @@
               <phase>verify</phase>
               <configuration>
                 <target>
-                  <!-- sudo -u postgres pg_dump - -clean - -dbname sbu schoebu_postgresql.dump.sql -->
+                  <!-- /usr/bin/pg_dump - -host=localhost - -user=elexis - -encoding=UTF-8 - -clean  - -dbname elexis_rcptt - -create >pg_dump.sql -->
                   <exec executable="/usr/bin/pg_dump" output="./target/results/pg_dump.sql" >
                     <arg value="--host=localhost"/>
                     <arg value="--user=elexis"/>
@@ -102,6 +102,18 @@
                     <arg value="--dbname=elexis_rcptt"/>
                     <arg value="--create"/>
                   </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>echo-database-elexis-rcptt</id>
+              <phase>verify</phase>
+              <configuration>
+                <target>
+                     <echo>*************************************************** Build Dir</echo>
                 </target>
               </configuration>
               <goals>

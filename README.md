@@ -66,6 +66,12 @@ Für RunFromScratch (leere DB mit 007 als Arzt) hinzufügen
 * Sich überlegen, ob man eine separate config-xml-Datei verwenden will. Wenn ja dann `--use-config=anstell_von_local` hinzufügen
 * Mit Doppelclick ElexisDemoDB starten
 
+Zum Umgegehen des Ersten Mandator dialogs
+
+    -Duser.language=de -Duser.region=CH
+    -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec=jdbc:h2:~/elexis/first;AUTO_SERVER=TRUE -Dch.elexis.dbUser=sa -Dch.elexis.dbPw= 
+    -Dch.elexis.firstMandantName=mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=mustermann -Dch.elexis.password=elexisTest
+
 ## Test aufnehmen
 
 * Auf das Icon mit dem roten Punkt "Record a Snippet" drücken
