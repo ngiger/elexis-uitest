@@ -22,6 +22,7 @@
     <useBranch>master</useBranch>
     <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
+    <unzipExe>/usr/bin/unzip</unzipExe>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
@@ -81,6 +82,7 @@
           <phase>generate-sources</phase>
           <configuration>
             <target>
+              <copy file="${myBaseDir}/save_run_from_scratch.sh" tofile="${rcptt-resources}/save_run_from_scratch.sh" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/translations.properties" tofile="${rcptt-resources}/translations.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
@@ -97,7 +99,7 @@
           <phase>process-sources</phase>
           <configuration>
             <target>
-              <exec executable="/usr/bin/unzip">
+              <exec executable="${unzipExe}">
                 <arg value="-j"/>
                 <arg value="-d"/>
                 <arg value="${rcptt-resources}/vorlagen"/>
@@ -115,28 +117,12 @@
           <phase>process-sources</phase>
           <configuration>
             <target>
-              <exec executable="/usr/bin/unzip">
+              <exec executable="${unzipExe}">
                 <arg value="-j"/>
                 <arg value="-d"/>
                 <arg value="${rcptt-resources}/openoffice"/>
                 <arg value="${rcptt-resources}/master.zip"/>
                 <arg value="elexis-vorlagen-master/openoffice/*"/>
-              </exec>
-            </target>
-          </configuration>
-          <goals>
-            <goal>run</goal>
-          </goals>
-        </execution>
-        <execution>
-          <id>copy-save_run_from_scratch.sh</id>
-          <phase>generate-sources</phase>
-          <configuration>
-            <target>
-              <exec executable="/bin/cp">
-                <arg value="-p"/>
-                <arg value="${myBaseDir}/save_run_from_scratch.sh"/>
-                <arg value="${rcptt-resources}/save_run_from_scratch.sh"/>
               </exec>
             </target>
           </configuration>
@@ -300,6 +286,9 @@
         <version>${rcptt-maven-version}</version>
         <extensions>true</extensions>
         <configuration>
+           <projects>
+              <project>${project.basedir}/KernFunktionen</project>
+          </projects>
           <testOptions>
             <!-- the default value of 300 for testExecTimeout was not long enough for VisitAllViews -->
             <!-- full list given http://rcptt.xored.com/arguments -->
