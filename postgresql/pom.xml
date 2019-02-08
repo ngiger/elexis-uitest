@@ -90,7 +90,7 @@
             </execution>
           <execution>
               <id>dump-database-elexis-rcptt</id>
-              <phase>verify</phase>
+              <phase>install</phase>
               <configuration>
                 <target>
                   <!-- /usr/bin/pg_dump - -host=localhost - -user=elexis - -encoding=UTF-8 - -clean  - -dbname elexis_rcptt - -create >pg_dump.sql -->
@@ -102,18 +102,6 @@
                     <arg value="--dbname=elexis_rcptt"/>
                     <arg value="--create"/>
                   </exec>
-                </target>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>echo-database-elexis-rcptt</id>
-              <phase>verify</phase>
-              <configuration>
-                <target>
-                     <echo>*************************************************** Build Dir</echo>
                 </target>
               </configuration>
               <goals>
