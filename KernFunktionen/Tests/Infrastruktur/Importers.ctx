@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/7/19, 9:43 AM
+Save-Time: 2/8/19, 11:28 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -21,6 +21,15 @@ proc "OpenLeistungen" {
 	open-window-by-name "Codes"
 	with [get-view Codes] {
 		 get-tab-folder | key-type "M1+m"
+	}
+}
+
+proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
+	get-preferences-menu | click
+	with [get-window [t preferences ] ] {
+	    get-tree | select "System/Allgemein"
+	    get-button $language | click
+	    get-button [ t apply_and_close] | click
 	}
 }
 
@@ -48,11 +57,14 @@ proc "SetArtikelstammOrigin2oddb2ml" {
 	concat "DeleteAllArtikelstammItems done via: " $sqlCmdFile | log
 }
 
-proc "ExecuteDataImport" {
+proc "ExecuteDataImport" [ val file ] {
+	concat "ExecuteDataImport file "  $file " exists? " [get-file $file| get exists] | log
+	get-file $file| get exists | verify-true
 	with [get-window [ t view_data_import ]] {
 	    get-button [ t btn_data_import_search ] | click
 	    get-button OK | click
 	}
+	concat "ExecuteDataImport with "  $file " done" | log
 }
 
 proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
@@ -95,7 +107,7 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	get-button [ t show_menu ] | click
 	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
-	ExecuteDataImport
+	ExecuteDataImport $file
 }
 proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
 	OpenLeistungen
@@ -105,7 +117,7 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 	get-button [ t show_menu ] | click
 	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
-	ExecuteDataImport
+	ExecuteDataImport $file
 }
 
 proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
@@ -115,7 +127,7 @@ proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx
 	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	get-window [ t view_data_import ] | get-button [ t delete_all_data ] | check
-	ExecuteDataImport
+	ExecuteDataImport $file
 }
 
 proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {

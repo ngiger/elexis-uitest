@@ -5,15 +5,39 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/8/19 3:06 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 2/8/19, 3:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
+proc "AbrechnungsSystemKonfigurieren" {
+	get-preferences-menu | click
+	with [get-window Benutzervorgaben] {
+		get-tree | select Abrechnungssysteme
+		get-table | get-item -path KVG | double-click
+	    with [get-window Abrechnungssystem] {
+	        get-editbox -after [get-label Name] | set-focus
+	        get-combo -after [get-label "Leistungscode-System"] | select TarmedLeistung
+	        get-button "Hinzufügen..." | click
+	        with [get-window "Neuer Multiplikator"] {
+	            get-editbox | set-text "0.89"
+                // key-type "TRAVERSE_TAB_PREVIOUS"
+                // TODO: Howto set required start date?
+	           // get-control Any -index 4 | set-text "01.02.2018"
+	            // get-editbox -after [get-label "Start Datum"] | set-text "01.01.2018"
+	            // Changes the label "Bitte geben Sie das Datum ein, ab dem der neue Multiplikator gilt" not the date!!!
+	            get-button OK | click
+	        }
+	        get-button OK | click
+	    }
+	    get-button "Anwenden und Schließen" | click
+	}
+}
+
 proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
-	[val betrag "60.0.*" ] [val patient "Duck Donald"]  [ val status "Offen.*" ]  {
+	[val betrag ".*" ] [val patient ".*"]  [ val status "Offen.*" ]  {
 	open-window-by-name $invoiceListViewName
 	get-view  $invoiceListViewName | get-table | log
 	// get-row-header  is not yet defined in 2.3.0
@@ -25,6 +49,8 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 	get-view  $invoiceListViewName | get-table | get-column-header | log
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value ".*Duck.*"  | log
+	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
+	 -column "Patient"  -value ".*Duck.*"
 //	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 //		 -column "Patient"  -value ".*Duck.*" | get-property "columns[8]" | log  
 log Rechnungsliste      

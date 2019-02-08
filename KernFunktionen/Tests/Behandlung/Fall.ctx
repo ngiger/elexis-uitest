@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/5/19, 12:46 PM
+Save-Time: 2/8/19, 12:45 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -42,7 +42,7 @@ proc "SetRightToDeleteCase" {
 			log "User has already the right"
 		  } -else {
 			log "Must git the user the right"
-		    get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | select [ t right_delete_case ]
+		    get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | select [ t right_delete_case ] | double-click
 		  }
 	    get-button [ t apply_and_close ] | click
 	}
@@ -134,7 +134,11 @@ proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val ad
 	    get-table | select  [ concat ".*" $adrName ".*"  $adrPostalcode ".*" ]
 	    get-button OK | click
 	}
+}
 
+proc "FallSetVersicherungsNummer" [ val nummer 123456 ] {
+	get-view "Fälle" | get-table | select ".*" | double-click
+	get-view Fall | get-editbox -after [get-label Versicherungsnummer] | set-text $nummer
 }
 
 // End

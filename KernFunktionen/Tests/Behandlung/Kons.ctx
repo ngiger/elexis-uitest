@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/3/19, 4:11 PM
+Save-Time: 2/8/19, 12:40 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -161,6 +161,15 @@ proc "kons-add-macro" [ val macroName "soap" ] {
 		    + "P:.*" | verify-true
 		    */
 	}
+}
+
+proc "kons-add-block" [ val blockName "kons plus.*KVG.*" ] {
+	PressAddLeistungToKons
+    get-tab-folder | get-tab-item Block | click
+    with [get-group Alle] {
+        get-editbox -after [get-label Name] | set-focus
+        get-tree | select [get-item -path $blockName -index 1] | double-click
+    }
 }
 	// ENDE
 

@@ -1,0 +1,172 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ch.elexis.rcptt</groupId>
+  <artifactId>mysql</artifactId>
+  <packaging>rcpttTest</packaging>
+  <parent>
+    <groupId>ch.elexis.rcptt</groupId>
+    <artifactId>common</artifactId>
+    <version>0.1</version>
+  </parent>
+  <properties>
+    <!--  Initial preparation to TO ONCE
+    create database elexis_rcptt;
+    create user elexis with UNENCRYPTED password 'elexisTest';
+    grant all on elexis_rcptt.* to elexis@'%';
+    grant all on elexis_rcptt.* to 'elexis'@'%' with grant option;
+   flush privileges;
+
+    -->
+    <myBaseDir>${project.basedir}/..</myBaseDir>
+    <vmArg1>-Dch.elexis.dbFlavor=mysql</vmArg1>
+    <vmArg2>-Dch.elexis.dbSpec=jdbc:mysql://localhost/elexis_rcptt</vmArg2>
+    <vmArg3>-Dch.elexis.dbUser=elexis</vmArg3>
+    <vmArg4>-Dch.elexis.dbPw=elexisTest</vmArg4>
+    <vmArg5>-Dch.elexis.firstMandantName=mustermann</vmArg5>
+    <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
+    <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
+    <vmArg8>-Dch.elexis.username=mustermann</vmArg8>
+    <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
+    <vmArg10>-DvmArg10</vmArg10>
+    <suite2run>SmokeTestSuite</suite2run>
+    <dropCreateDbScript>${project.basedir}/drop_create_db.sql</dropCreateDbScript>
+
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <!--https://books.sonatype.com/mcookbook/reference/ch02s03.html#ex-groovy-script-ex -->
+        <!-- Create a script to change the locale used by the db -->
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase> <!-- is after generate-sources -->
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <scripts>
+                  <script><![CDATA[
+      file = new File("${dropCreateDbScript}")
+      System.out.println("# Created ${dropCreateDbScript}")
+      file.write("# Created by elexis-uitest/dbSpec/pom.xml as ${dropCreateDbScript}\n")
+      file.append("/usr/bin/mysql --host=localhost --user=elexis --password=elexisTest --execute=\"drop database if exists elexis_rcptt;\"\n")
+      file.append("/usr/bin/mysql --host=localhost --user=elexis --password=elexisTest --execute=\"create database elexis_rcptt;\"\n")
+  ]]></script>
+  </scripts>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.5.4</version>
+            <type>pom</type>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+              <id>drop-create-database-elexis-rcptt</id>
+              <phase>process-sources^</phase>
+              <configuration>
+                <target> 
+                  <exec executable="/bin/bash" >
+                    <arg value="${dropCreateDbScript}"/>
+                  </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+          <execution>
+              <id>dump-database-elexis-rcptt</id>
+              <phase>install</phase>
+              <configuration>
+                <target>
+                  <exec executable="/usr/bin/mysqldump" >
+                    <arg value="--host=localhost"/>
+                    <arg value="--user=elexis"/>
+                    <arg value="--password=elexisTest"/>
+                    <arg value="--add-drop-database"/>
+                    <arg value="--single-transaction"/>
+                    <arg value="--result-file=./target/results/mysql_dump.sql" />
+                     <arg value="elexis_rcptt"/>
+                 </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+        <groupId>org.eclipse.rcptt</groupId>
+        <artifactId>rcptt-maven-plugin</artifactId>
+        <version>${rcptt-maven-version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <projects>
+              <project>${project.basedir}/../KernFunktionen</project>
+          </projects>
+          <aut>
+            <injections>
+              <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
+              <injection>
+                <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
+              </injection>
+            </injections>
+            <!-- Use URL like this for the AUT
+            ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
+            https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
+            automatically replaced according to the current platform -->
+            <explicit> https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
+            <args>
+              <arg>-nl</arg>
+              <arg>${language}_CH</arg>
+              <arg>-nosplash</arg>
+              <arg>-noregtool</arg>
+              <arg>--use-config=rpctt</arg>
+           </args>
+            <vmArgs>
+              <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
+              <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
+              <vmArg>-Dlanguage=${language}</vmArg>
+              <vmArg>-Duser.language=${language}</vmArg>
+              <vmArg>${vmArg1}</vmArg>
+              <vmArg>${vmArg2}</vmArg>
+              <vmArg>${vmArg3}</vmArg>
+              <vmArg>${vmArg4}</vmArg>
+              <vmArg>${vmArg5}</vmArg>
+              <vmArg>${vmArg6}</vmArg>
+              <vmArg>${vmArg7}</vmArg>
+              <vmArg>${vmArg8}</vmArg>
+              <vmArg>${vmArg9}</vmArg>
+              <vmArg>${vmArg10}</vmArg>
+            </vmArgs>
+          </aut>
+          <runner>
+            <version>${rcptt-maven-version}</version>
+            <vmArgs>
+              <vmArg>-Xmx2048m</vmArg>
+              <vmArg>-Xms2048m</vmArg>
+            </vmArgs>
+          </runner>
+                 <suites>
+                       <suite>${suite2run}</suite>
+                 </suites>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _GbaREP_HEeiXxf0UDvXYOw
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/7/19, 8:59 AM
+Save-Time: 2/8/19, 10:38 AM
 Testcase-Type: ecl
 Verifications: _GcdboAX2Eemcp9WoDsgIvA
 
@@ -40,7 +40,10 @@ preferences-use-macros-with-TI-and-Favoriten
 get-eclipse-window | get-object | invoke setSize 1280 1024
 resetPerspective
 
-SelectPatient Wu Luis
+if [SelectPatient Wu Luis | eq false] {
+	PatientenErstellen Wu Luis "13.04.1980" "Vorderstrasse 33" 3003 Bern "033 323 45 67"
+}
+
 if [FallOffen -caseLaw [ t case_UVG ] -startDate "201.*"] {
 	log "Offenen Fall UVG gefunden"
 } -else {

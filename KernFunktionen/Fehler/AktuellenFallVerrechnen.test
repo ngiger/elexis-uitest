@@ -1,36 +1,57 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
+Contexts: _QPqdkBNIEemmeedSb1JQew,_LkBSkBsDEembU9g-6bJhVg
 Element-Name: AktuellenFallVerrechnen
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/18/19 10:16 AM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 2/8/19, 3:11 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-SelectPatient Wu Luis
-if [FallOffen -caseLaw [ t case_UVG ] -caseReason [ t case_UVG ] -startDate "201.*"] {
-	log "Offenen Fall UVG gefunden"
+global [val testPatient "Testarossa2"] -override
+/*
+SetMandantenDetails
+SetRightToDeleteCase
+OpenAndResetStartPerspektive
+
+preferences-use-macros-with-TI-and-Favoriten
+if [SelectPatient $testPatient Luis | eq false] {
+	PatientenErstellen $testPatient Luis true "30.3.1990" "Nebenstrasse 33" 3320 Elexiskon "055 323 45 67"
+}
+if [FallOffen -caseLaw [ t case_KVG ] -startDate "201.*"] {
+	log "Offenen Fall KVG gefunden"
 } -else {
-	FallZuPatientErstellen -caseLaw [ t case_UVG ] -caseReason [ t reason_UVG ] -startDate "20.8.2018"
-	log "Fall UVG 20.8.2018 erstellt"
+	FallZuPatientErstellen -caseLaw [ t case_KVG ] -caseReason [ t reason_KVG ] -startDate "20.8.2018"
+	log "Fall KVG 20.8.2018 erstellt"
 }
 
-SelectFall  [ t case_UVG ] "201"
+SelectFall  [ t case_KVG ] "201"
 
 if [ HasKonsSelected | eq false] {
-	kons-erstellen "BasisTests für WuLuis mit UVG"
+	kons-erstellen [ concat "BasisTests für " $testPatient " mit KVG" ]
 } -else {
 	log "HasKonsSelected returned true"
 }
 
-kons-add-eigenleistung
-kons-add-tarmed
+// kons-add-eigenleistun
+kons-add-block
+kons-add-artikelstamm -item_short Losartan -item_long "Losartan.*25 mg.*"
 kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
+
+
+FallSetVersicherungsNummer
 AktuellenFallVerrechnen
+*/
+// AbrechnungsSystemKonfigurieren
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_EZ.odt" ]
+
+RechnungAusgeben
+// Ende
+//
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
