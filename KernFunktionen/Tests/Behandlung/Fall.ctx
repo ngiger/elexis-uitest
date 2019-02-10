@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/8/19, 12:45 PM
+Save-Time: 2/10/19, 6:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -57,10 +57,10 @@ proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ va
 	if [FallOffen -caseLaw $caseLaw -startDate $startDate ] {
 		concat  "Offenen Fall " $caseLaw " gefunden für Startatum " $startDate
 	} -else {
-		FallZuPatientErstellen -caseLaw $caseLaw -caseReason $caseReason -startDate "20.4.2018"
+		FallZuPatientErstellen -caseLaw $caseLaw -caseReason $caseReason -startDate "20.04.2018"
 	}
 }
-proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
+proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "30.04.2018"] [val endDate "01.08.2018"] {
 	open-window-by-name [ t view_cases ]
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
 	wait 100
@@ -71,7 +71,8 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t re
 		get-combo -after [get-label [ t dlg_new_case_caseReason ] ] | select $caseReason
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir $caseLaw " " $startDate "_created.png"]
+		concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png" | log
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
 		get-button  [ t ok] | click
 	}
 }
@@ -87,6 +88,7 @@ proc FallOffen [val caseLaw] [val startDate] {
 		try {
 			concat "MySearchpattern is: " $searchPattern | log
 			get-view [ t view_cases ] | get-table | get-item $searchPattern | get-property caption
+			get-view [ t view_cases ] | get-table | get-item $searchPattern | select-item
 			bool true  // 0 stands for true
 		} -catch {
 			bool false // 1 stands for false
@@ -102,11 +104,13 @@ proc AktuellenFallVerrechnen {
     } -catch {
 		log "Catched error"
     }
-	get-window [ t error ] | verify-false
+	// get-window [ t error ] | verify-false
 }
 
 global [val auf_id 1 ] -override
 proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [ val comment "" ] [ val startDate "" ] [ val endDate ""]  {
+	concat "FallErzeugeAUF. Warum ist hier manchmal kein Fall ausgewählt? " $auf_id | log
+    get-eclipse-window | get-object | save-screenshot [concat $imagesDir "AUF-" $auf_id "-before-create.png"]
 	with [get-view AUF] {
 	    click
 	    get-button "Eine neue AUF erstellen" | click
