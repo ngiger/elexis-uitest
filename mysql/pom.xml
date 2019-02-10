@@ -76,7 +76,7 @@
         <executions>
           <execution>
               <id>drop-create-database-elexis-rcptt</id>
-              <phase>process-sources^</phase>
+              <phase>process-sources</phase>
               <configuration>
                 <target> 
                   <exec executable="/bin/bash" >
