@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _7B2QICqtEemYspbA8Fsyow
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/10/19, 1:29 PM
+Save-Time: 2/10/19, 8:29 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -30,6 +30,11 @@ if [FallOffen -caseLaw [ t case_UVG ] -startDate "201.*"] {
 } -else {
 	FallZuPatientErstellen -caseLaw [ t case_UVG ] -caseReason [ t reason_UVG ] -startDate "20.08.2018"
 	log "Fall UVG 20.08.2018 erstellt"
+}
+if [ HasKonsSelected | eq false] {
+	kons-erstellen "BasisPrinting AUF mit UVG"
+} -else {
+	log "HasKonsSelected returned true"
 }
 
 FallErzeugeAUF -percentage 50 -reason "RCP Test Grund" -comment "Und ein noch besserer Kommentar"
