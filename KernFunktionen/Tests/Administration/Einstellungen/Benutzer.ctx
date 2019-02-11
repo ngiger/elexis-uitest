@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/5/19, 10:39 PM
+Save-Time: 2/10/19, 9:58 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -34,7 +34,18 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 	with [get-window Benutzervorgaben] {
 	    get-tree | select "Gruppen und Rechte/Benutzerverwaltung"
 		GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"]  | log
-	    get-table | select  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] | double-click
+		try {
+	    	get-table | select  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] | double-click
+	        get-button Abbrechen | click
+    	} -catch {
+    		log "Mandant not found. Must create it"
+    		get-button Abbrechen | click
+    		create-user -userName [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] -role executive_doctor
+    		  -plainPW [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pw"] ] -forMandat "" -kontakt ""
+    	}
+	}
+  	get-preferences-menu | click
+	with [get-window Benutzervorgaben] {
 	    get-tree | select "Abrechnungssysteme/Tarmed-Rechnungen"
 	    get-group Detailangaben | get-link Leistungserbringer | click
 	    with [get-window Identifikationselemente] {
@@ -50,14 +61,42 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 	        get-combo | select "TC test"
 	        get-button "eDA Vertrag mit Trustcenter vorhanden. (Rechnungen an TC und Token auf Papier-Rn)" | check
 	    }
-	    with [get-group Detailangaben] {
-	        get-link Postkonto | click
+	    
+	    if [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ] {
+	    	log "PC-Konto definiert"
+		    with [get-group Detailangaben] |  get-link Postkonto | click
+		    with [get-window Postkonto] {
+		        // get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein" | get-editbox 
+		        get-editbox -after [get-label TarmedESRParticipantNumber] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ]
+		        get-button OK | click
+		    }
+	    } -else {
+		    get-group Detailangaben | get-link Bankverbindung | click
+		    with [get-window "Zahlungsinstitut auswählen"] {
+		        get-link Finanzinstitut | click
+		        with [get-window "Kontakt auswählen"] {
+		        	GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] | log
+		        	get-editbox -index 1 | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] ]
+		            get-table | select ".+"
+		            get-button OK | click
+		        }
+		        with [get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein"] {
+		            with [get-editbox -after [get-label Abteilung]] {
+		                set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Abteilung" ] ]
+		            }
+		            with [get-editbox -after [get-label Postfach]] {
+		                set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Postfach" ] ]
+		            }
+		            with [get-editbox -after [get-label TarmedESRParticipantNumber] ] {
+		                set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.TarmedESRParticipantNumber" ] ]
+		            }
+		            get-editbox -after [get-label TarmedESRIdentity] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.TarmedESRIdentity" ] ]
+		        }
+		        get-button OK | click
+		    }
+		    get-button Anwenden | click
 	    }
-	    with [get-window Postkonto] {
-	        // get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein" | get-editbox 
-	        get-editbox -after [get-label TarmedESRParticipantNumber] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ]
-	        get-button OK | click
-	    }
+
 		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant ".png"]
 	    get-button "Anwenden und Schließen" | click
 	}

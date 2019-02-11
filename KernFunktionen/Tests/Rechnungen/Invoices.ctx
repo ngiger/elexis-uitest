@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/8/19, 3:06 PM
+Save-Time: 2/10/19, 4:58 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -40,6 +40,25 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 	[val betrag ".*" ] [val patient ".*"]  [ val status "Offen.*" ]  {
 	open-window-by-name $invoiceListViewName
 	get-view  $invoiceListViewName | get-table | log
+
+	// get-view "Rechnungsliste (beta)" | get-table | select 1 | get-menu -path "Ausgeben..." | click
+	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
+	 -column "Patient"  -value [ concat ".*" $patient ".*"]  | log
+	get-view  $invoiceListViewName | get-table | select 1 | get-menu -path "Ausgeben..." | click
+	set-dialog-result Folder $pdfDir
+	with [get-window "Rechnung ausgeben"] {
+   		get-combo | select "Als Tarmed-Rechnung ausdrucken"
+	    get-group "Datei für TrustCenter" | get-button "Ändern|Verzeichnis:" | click
+	    get-button OK | click
+	}
+	try {
+		get-window "Fehler beim Drucken" | get-button "OK" | click
+		log "Fehler beim Drucken umgangen"
+	} -catch {
+		log "Kein Fehler beim Drucken. Okay"
+	}
+}
+proc RechnungAusgeben2 {
 	// get-row-header  is not yet defined in 2.3.0
 	// get-view  $invoiceListViewName | get-table | get-row-header | log
 	get-view  $invoiceListViewName | get-table | get-table-data | log

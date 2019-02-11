@@ -6,14 +6,14 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/25/19 10:41 AM
+Save-Time: 2/10/19, 10:29 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc "SelectKontakt" [ val bezeichnung1 "Devaud" ] 
-	[ val location "Yverdon" ]{
+proc "SelectKontakt" [ val bezeichnung1 "Devaud" ] [ val location "" ] {
+	open-window-by-name "Kontakte"	
 	concat "SelectKontakt bezeichnung1 " $bezeichnung1 " from " $location  | log
 	with [get-view [ t tab_data_kontakte ] ] {
 	    with [get-editbox -index 1] {
@@ -22,60 +22,183 @@ proc "SelectKontakt" [ val bezeichnung1 "Devaud" ]
 	    with [get-editbox -index 5] {
 	        set-text $location
 	    }
-	     get-table | get-item 
-	    -path [ concat $bezeichnung1 ".*" $location ".*"]  | get-property caption | log
-	     get-table | get-item 
-	    -path [ concat $bezeichnung1 ".*" $location ".*"]  | get-property caption 
-	    | matches ".+" | log
-	     get-table | get-item 
-	    -path [ concat $bezeichnung1 ".*" $location ".*"]  | get-property caption 
-	    | matches ".+" | verify-true 
+		try {
+			get-table | get-item 
+			    -path [ concat $bezeichnung1 ".*" $location ".*"]  | get-property caption -raw | matches ".+" | equals true
+	    } -catch {
+	    	concat "Unable to find kontakt " $bezeichnung1 " in " $location | log
+	    	bool false
+    	}
+	}
+}
+/*
+get-preferences-menu | click
+with [get-window Benutzervorgaben] {
+    get-tree | select "Gruppen und Rechte/Benutzerverwaltung"
+    get-table | select test
+}
+get-window Benutzervorgaben | get-group Verrechnung | get-link "Nicht gesetzt <a>ändern</a>" | get-property caption 
+    | equals "Nicht gesetzt <a>ändern</a>" | verify-true
+    */
+proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
+	let [ val kuerzel [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel" ] ] ] {
+		if [ SelectKontakt -bezeichnung1 $kuerzel | equals true] {		
+			with [get-view Kontakte] {
+			    get-table | select [ concat $kuerzel ".*"] | double-click
+			}
+			SetSelectedKontaktInfo -Name [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ]
+				-Vorname [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Vorname" ] ]
+				-Strasse [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Strasse" ] ]
+				-Plz [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Plz" ] ]
+				-Ort [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Ort" ] ]
+				-Titel [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Titel" ] ]
+		} -else {
+			concat "SetMandantKontatkInfo Kontakt via Kuerzel " $kuerzel " NICHT gefunden" | log
+			let [ val familyName [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ] ] {
+				if [ SelectKontakt -bezeichnung1 $familyName | equals true] {		
+					concat "SetMandantKontatkInfo Kontakt Name Kuerzel " $familyName " gefunden" | log
+				} -else {
+					concat "SetMandantKontatkInfo Kontakt via Name " $familyName " NICHT gefunden" | log
+					MandantKontaktInfoErfassen -idMandant $idMandant
+				}
+			}
+		}
+	}
+ 	get-eclipse-window | key-type "M1+m" // Maximize
+    get-eclipse-window | get-object | save-screenshot [concat $imagesDir "Mandant_" $idMandant "_kontakt_info.png"]
+}
+
+proc "SetSelectedKontaktInfo" [ val Name "" ]
+	 [ val Vorname "" ]
+	 [ val Zusatz "" ]
+	 [ val Geschlecht "" ]
+	 [ val Strasse "" ]
+	 [ val Plz "" ]
+	 [ val Ort "" ]
+	 [ val Land "" ]
+	 [ val Telefon1 "" ]
+	 [ val Telefon2 "" ]
+	 [ val Fax "" ]
+	 [ val Mobile "" ]
+	 [ val EMail "" ]
+	 [ val Website "" ]
+	 [ val Bemerkung "" ]
+	 [ val Titel "" ]
+	 [ val Kuerzel "" ]
+
+{
+/*
+	if [ SelectKontakt -bezeichnung1 $Name -location $Ort | eq false ] {
+		concat "Kontakt " $Name " in " $Ort " NICHT gefunden" | log
+	} -else {
+		concat "Kontakt " $Name " in " $Ort " gefunden" | log
+		*/
+		with [get-view "Details zum Kontakt"] {
+		get-editbox -after [get-label Name ] | set-text $Name
+		get-editbox -after [get-label Vorname ] | set-text $Vorname
+		get-editbox -after [get-label Zusatz ] | set-text Zusatz
+		get-editbox -after [get-label Plz ] | set-text $Plz
+		get-editbox -after [get-label Ort ] | set-text $Ort
+		get-editbox -after [get-label Land ] | set-text $Land
+		get-editbox -after [get-label Telefon1 ] | set-text $Telefon1
+		get-editbox -after [get-label Telefon2 ] | set-text $Telefon2
+		get-editbox -after [get-label "Mobil-Tel." ] | set-text $Mobile
+		get-editbox -after [get-label Fax ] | set-text $Fax
+		get-editbox -after [get-label Bemerkung ] | set-text $Bemerkung
+		get-editbox -after [get-label "Kürzel/ID" ] | set-text $Kuerzel
+		get-editbox -after [get-label Titel ] | set-text $Titel
+	    }
+//	}
+}
+
+proc EnterOneOrganisationDetail [ val key ] [ val idOrganisation 1 ]  {
+	with [get-window "Kontakt erfassen"] {
+         let [ val value [ GetPraxisProperty [ concat "organisation." $idOrganisation "." $key ] ] ] {
+			concat "EnterOneOrganisationDetail: " $key " value " $value | log
+			get-editbox -after [get-label $key] | set-text $value
+		}
 	}
 }
 
-proc "SetKontaktInfo" {
-	with [get-view "Details zum Kontakt"] {
-	    with [get-editbox -after [get-label Name]] {
-	        set-text Mustermann
-	        key-type "TRAVERSE_TAB_NEXT"
-	    }
-	    with [get-editbox -after [get-label Vorname]] {
-	        set-text Vorname
-	        key-type "TRAVERSE_TAB_NEXT"
-	    }
-	    get-editbox -after [get-label Zusatz] | set-text Zusatz
-	    with [get-editbox -after [get-label Plz]] {
-	        set-text 8752
-	        key-type "TRAVERSE_TAB_NEXT"
-	    }
-	    with [get-editbox -after [get-label Ort]] {
-	        set-text Mollis
-	        key-type "TRAVERSE_TAB_NEXT"
-	    }
-	    with [get-editbox -after [get-label Land]] {
-	        set-text CH
-	        key-type "TRAVERSE_TAB_NEXT"
-	    }
-	    with [get-editbox -after [get-label Telefon1]] {
-	        set-text "055 612 20 54"
-	        key-type "TRAVERSE_TAB_NEXT"
-	    }
-	    with [get-editbox -after [get-label Telefon2]] {
-	        set-text "077 454 01 61"
-	        click-text 14
-	        key-type "M1+c"
-	    }
-	    with [get-editbox -after [get-label "Mobil-Tel."]] {
-	        set-text "078 3455 "
-	        key-type "TRAVERSE_TAB_NEXT"
-	    }
-	    get-editbox -after [get-label Fax] | set-focus
-	    get-editbox -after [get-label Bemerkung] | set-text "Unsere Bemerkung"
-	    get-editbox -after [get-label "Kürzel/ID"] | set-text kuerzel
-	    get-editbox -after [get-label Titel] | set-text "Dr. med."
-	}
 
-} 
+proc EnterOneMandantDetail [ val key ] [ val idMandant 1 ]  {
+	with [get-window "Kontakt erfassen"] {
+         let [ val value [ GetPraxisProperty [ concat "praxis.mandant." $idMandant "." $key ] ] ] {
+			concat "EnterOneMandantDetail: " $key " value " $value | log
+			get-editbox -after [get-label $key] | set-text $value
+		}
+	}
+}
+
+/**
+ * Will silently ignore if Organsation already exists
+ */
+proc "OrganisationErfassen"  [ val idOrganisation 1 ] {
+	open-window-by-name "Kontakte"
+	with [get-view Kontakte] {
+	    click
+	    get-button "Neuen Kontakt erstellen" | click
+	}
+	with [get-window "Kontakt erfassen"] {
+	    get-button Organisation | check
+	    str "Bezeichnung Zusatz Ansprechperson Geburtsdatum Strasse Plz Ort Telefon EMail"  |
+		    split -sep " " | foreach [val item]  {
+				EnterOneOrganisationDetail -key $item -idOrganisation $idOrganisation
+		}
+	 	get-link "* nicht gesetzt *" | get-property enablement -raw | equals true | log
+		if [ get-link "* nicht gesetzt *" | get-property enablement -raw | equals false] {
+			get-button OK | click
+		} -else {
+	   		get-link "* nicht gesetzt *" | click
+		    try {	   		
+	       	    get-window Postanschrift | get-button OK | click
+			    get-window "Kontakt erfassen" | get-object | save-screenshot [concat $imagesDir "organisation_" $idOrganisation "_created.png"]
+				get-button OK | click
+			    try {
+			    	get-window "Company exists" | get-button Abbrechen | click
+		 	    } -catch {
+		 	    	concat "Company " $idOrganisation " already exists"	
+		    	}
+	   		} -catch {
+		    	get-window "Company exists" | get-button Abbrechen | click
+ 	    		concat "Company " $idOrganisation " already exists"	
+    		}
+    	}
+   }
+}
+
+/**
+ * Will silently ignore if Mandant already exists
+ */
+proc "MandantKontaktInfoErfassen"  [ val idMandant 1 ] {
+	open-window-by-name "Kontakte"
+	with [get-view Kontakte] {
+	    click
+	    get-button "Neuen Kontakt erstellen" | click
+	}
+	with [get-window "Kontakt erfassen"] {
+	    get-button Mandant | check
+	    str "Name Vorname Geburtsdatum Strasse Plz Ort Telefon Fax EMail"  |
+		    split -sep " " | foreach [val item]  {
+				EnterOneMandantDetail -key $item -idMandant $idMandant
+		}
+	    get-link "* nicht gesetzt *" | click
+	    try {
+	    	// Company or person
+		    get-window Postanschrift | get-button Postanschrift | click
+		    get-window Postanschrift | get-button OK | click
+	    	get-window ".* exists" | get-button Abbrechen | click
+		    get-window Postanschrift | get-button OK | click
+		    get-window "Kontakt erfassen" | get-object | save-screenshot [concat $imagesDir "mandant_" $idMandant "_created.png"]
+		    
+		    get-button OK | click
+ 	    } -catch {
+ 	    	concat "Company " $idMandant " already exists"
+		    get-window "Kontakt erfassen" | get-object | save-screenshot [concat $imagesDir "mandant_" $idMandant "_skipped.png"]
+		    get-button OK | click
+    	}
+   }
+}
 // Ende
 //
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

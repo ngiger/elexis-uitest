@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/8/19, 12:40 PM
+Save-Time: 2/11/19, 9:23 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -23,6 +23,10 @@ proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 	with [get-view [ t kons_view ] ] {
 		t kons_create_new | log
 	    get-button [ t kons_create_new ] | click
+		// TODO: Force closing then opening Konsultation necessary?
+		// TODO: Is this an RCPTT problem??
+		get-view [ t kons_view ] | close
+		open-window-by-name  [ t kons_view ]
 	    // Nächste Zeil kam einmal nicht sofort. Deshalb wait eingeführt
 	    wait 100
 	    get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
@@ -31,6 +35,9 @@ proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 
 proc "HasKonsSelected" {
 	try {
+		// TODO: Force closing then opening Konsultation necessary?
+		// TODO: Is this an RCPTT problem??
+		get-view [ t kons_view ] | close
 		open-window-by-name  [ t kons_view ]
 		get-view [ t kons_view ]  | get-label -index 0 | get-property caption -raw | log
 		get-view [ t kons_view ]  | get-link "\(.*\)" | get-property caption -raw | log
@@ -168,7 +175,7 @@ proc "kons-add-block" [ val blockName "kons plus.*KVG.*" ] {
     get-tab-folder | get-tab-item Block | click
     with [get-group Alle] {
         get-editbox -after [get-label Name] | set-focus
-        get-tree | select [get-item -path $blockName -index 1] | double-click
+        get-tree | select [get-item -path $blockName ] | double-click
     }
 }
 	// ENDE

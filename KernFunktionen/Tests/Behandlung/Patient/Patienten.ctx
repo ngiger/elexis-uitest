@@ -5,8 +5,8 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/18/19 2:34 PM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 2/10/19, 1:13 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -103,7 +103,7 @@ proc PatientenErstellenFallsNichtVorhanden [val familyName "Wesen" ] [val firstN
 }
 
 proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val male "m" ] 
-	[val birthDate "29.2.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
+	[val birthDate "29.02.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
 	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] {
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
