@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/11/19, 9:23 AM
+Save-Time: 2/11/19, 10:44 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -20,14 +20,20 @@ proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 	}
 }
 proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
+	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "Before_kons_Erstellen.png"]
 	with [get-view [ t kons_view ] ] {
 		t kons_create_new | log
 	    get-button [ t kons_create_new ] | click
 		// TODO: Force closing then opening Konsultation necessary?
 		// TODO: Is this an RCPTT problem??
-		get-view [ t kons_view ] | close
-		open-window-by-name  [ t kons_view ]
+		/*
+	}
+	get-view [ t kons_view ] | close
+
+	open-window-by-name  [ t kons_view ]
+	with [get-view [ t kons_view ] ] {
 	    // Nächste Zeil kam einmal nicht sofort. Deshalb wait eingeführt
+	    */
 	    wait 100
 	    get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
 	}
