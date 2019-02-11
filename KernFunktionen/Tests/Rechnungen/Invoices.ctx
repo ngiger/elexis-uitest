@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/11/19, 11:14 AM
+Save-Time: 2/11/19, 8:45 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -57,6 +57,11 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 	} -catch {
 		log "Kein Fehler beim Drucken. Okay"
 	}
+	with [get-view $invoiceListViewName ] {
+		get-combo -after [get-label "RG Total"] | select Alle
+		get-button "Liste neu einlesen" | click
+	}
+	get-window $invoiceListViewName | get-object | save-screenshot [concat $imagesDir "invoice_" $patient "_" $status ".png"]
 }
 proc RechnungAusgeben2 {
 	// get-row-header  is not yet defined in 2.3.0

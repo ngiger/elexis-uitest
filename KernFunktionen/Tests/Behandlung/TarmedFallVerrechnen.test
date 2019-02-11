@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/11/19, 7:39 PM
+Save-Time: 2/11/19, 8:46 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,7 +16,7 @@ Entry-Name: .content
 
 // requires ImportSwissMediBase and BasicMandanten or demoDB run before
 
-global [val testPatFamilyName "Meier"] -override
+global [val testPatFamilyName "Bernasconi"] -override
 global [val testPatFirstName "Antonio"] -override
 
 SetRightToDeleteCase
@@ -54,12 +54,12 @@ AktuellenFallVerrechnen
 
 // AbrechnungsSystemKonfigurieren
 // Des muss eine Bankverbindung mit einem Kontakt erstellt werden!!
-// ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_EZ.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/TR44_S1.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/TR44_S2.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S1.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S2.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_EZ.odt" ]
+
 
 RechnungAusgeben
 

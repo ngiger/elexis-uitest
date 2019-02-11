@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/11/19, 8:07 PM
+Save-Time: 2/11/19, 9:01 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -29,11 +29,11 @@ proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 		log "Workaround: new kons not displayed"
 	// TODO: Force closing then opening Konsultation necessary?
 	// TODO: Is this an RCPTT problem??
-		get-window [ t kons_view ]  | get-object | save-screenshot [concat $imagesDir "ERROR_must_i_close_the_kons.png" ]
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ERROR_must_i_close_the_kons.png" ]
 		get-view [ t kons_view ] | close
 		open-window-by-name  [ t kons_view ]
 		get-view [ t kons_view ]  |get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
-		get-window [ t kons_view ]  | get-object | save-screenshot [concat $imagesDir "ERRORy_reopened_kons.png" ]
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ERROR_reopened_kons.png" ]
 	}
 }
 
