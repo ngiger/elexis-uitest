@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/8/19, 11:28 AM
+Save-Time: 2/11/19, 8:08 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -109,6 +109,24 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	set-dialog-result File $file
 	ExecuteDataImport $file
 }
+
+proc "AssertNoErrorInProgress" {
+	open-window-by-name "General/Progress View"
+	get-tab-folder | key-type "M1+m"
+	with [get-view "Progress View"] {
+		global [val errorInImport "false"] -override
+	    try {
+			get-link "Fehler beim Import.*"
+			global [val errorInImport "true"] -override
+        } -error [ val errorObj ] -catch {
+			concat  " While checking for Fehler: error " $errorObj | log
+        }
+        if [ $errorInImport | matches "true" ] {
+			$errorInImport | verify-false
+		}
+	}
+}
+
 proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
 	OpenLeistungen
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadEAL_1.png"]
@@ -118,6 +136,8 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	ExecuteDataImport $file
+	// TODO: Warum kommt der Fehler beim Import for Input String "1'000"
+	// AssertNoErrorInProgress
 }
 
 proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
@@ -147,15 +167,21 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	        set-text KVG
 	        select KVG
 	    }
-	    concat "XXXXStarting ReadTarmed with file: " $file | log
+	    concat "Starting ReadTarmed with file: " $file | log
 	    get-button OK | click
-	    concat "XXXXDone ReadTarmed with file: " $file | log
+	    concat "Done ReadTarmed with file: " $file | log
 	}
-	try {
-		get-window "Import erfolgreich" | get-button OK | click
-		log "ReadTarmed: Closed dialog Import erfolgreich"
-	} -catch {
-		log "ReadTarmed:  dialog Import erfolgreich not found"
+	concat "Start wait for Import erfolgreich" | log
+	loop {
+		try {
+			get-window "Import erfolgreich" | get-object | save-screenshot [concat $imagesDir "tarmed_done.png" ]
+			get-window "Import erfolgreich" | get-button OK | click
+			concat "Wait for Import erfolgreich done" | log
+		} -error [val errorObj] -catch {
+			concat "Will wait another 10 seconds for window Import erfolgreich" | log
+	        wait 10000
+	        recur
+	    }
 	}
 }
 

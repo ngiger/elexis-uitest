@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/10/19, 4:58 PM
+Save-Time: 2/11/19, 11:14 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -44,7 +44,7 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 	// get-view "Rechnungsliste (beta)" | get-table | select 1 | get-menu -path "Ausgeben..." | click
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value [ concat ".*" $patient ".*"]  | log
-	get-view  $invoiceListViewName | get-table | select 1 | get-menu -path "Ausgeben..." | click
+	get-view  $invoiceListViewName | get-table | select ".+" | get-menu -path "Ausgeben..." | click
 	set-dialog-result Folder $pdfDir
 	with [get-window "Rechnung ausgeben"] {
    		get-combo | select "Als Tarmed-Rechnung ausdrucken"

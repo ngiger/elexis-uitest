@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/10/19, 10:29 PM
+Save-Time: 2/11/19, 12:11 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -96,7 +96,7 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 		with [get-view "Details zum Kontakt"] {
 		get-editbox -after [get-label Name ] | set-text $Name
 		get-editbox -after [get-label Vorname ] | set-text $Vorname
-		get-editbox -after [get-label Zusatz ] | set-text Zusatz
+		get-editbox -after [get-label Zusatz ] | set-text $Zusatz
 		get-editbox -after [get-label Plz ] | set-text $Plz
 		get-editbox -after [get-label Ort ] | set-text $Ort
 		get-editbox -after [get-label Land ] | set-text $Land

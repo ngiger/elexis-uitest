@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/11/19, 10:44 AM
+Save-Time: 2/11/19, 8:07 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -21,21 +21,19 @@ proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 }
 proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "Before_kons_Erstellen.png"]
-	with [get-view [ t kons_view ] ] {
-		t kons_create_new | log
-	    get-button [ t kons_create_new ] | click
-		// TODO: Force closing then opening Konsultation necessary?
-		// TODO: Is this an RCPTT problem??
-		/*
-	}
-	get-view [ t kons_view ] | close
-
-	open-window-by-name  [ t kons_view ]
-	with [get-view [ t kons_view ] ] {
-	    // Nächste Zeil kam einmal nicht sofort. Deshalb wait eingeführt
-	    */
-	    wait 100
-	    get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
+	t kons_create_new | log
+	get-view [ t kons_view ] | get-button [ t kons_create_new ] | click
+    try {
+		get-view [ t kons_view ]  |get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
+	} -catch {
+		log "Workaround: new kons not displayed"
+	// TODO: Force closing then opening Konsultation necessary?
+	// TODO: Is this an RCPTT problem??
+		get-window [ t kons_view ]  | get-object | save-screenshot [concat $imagesDir "ERROR_must_i_close_the_kons.png" ]
+		get-view [ t kons_view ] | close
+		open-window-by-name  [ t kons_view ]
+		get-view [ t kons_view ]  |get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
+		get-window [ t kons_view ]  | get-object | save-screenshot [concat $imagesDir "ERRORy_reopened_kons.png" ]
 	}
 }
 

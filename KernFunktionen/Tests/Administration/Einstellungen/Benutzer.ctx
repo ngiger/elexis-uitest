@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/10/19, 9:58 PM
+Save-Time: 2/11/19, 5:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -29,6 +29,16 @@ proc EnterOneDetail [ val key ] [ val idMandant 1 ]  {
 	}
 }
 
+proc EnterOneFinanzDetail [ val key ] [ val idMandant 1 ]  {
+	concat EnterOneFinanzDetail " key is: " "praxis.mandant." $idMandant ".bank." $key | log
+	let [ val value [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank." $key ] ] ] {
+		concat "EnterOneFinanzDetail: " $key " value " $value | log
+		with [get-editbox -after [get-label $key ] ] {
+		   set-text  $value
+	   }
+   }
+}
+
 proc SetMandantenDetails [ val idMandant 1 ] {
 	get-preferences-menu | click
 	with [get-window Benutzervorgaben] {
@@ -47,6 +57,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
   	get-preferences-menu | click
 	with [get-window Benutzervorgaben] {
 	    get-tree | select "Abrechnungssysteme/Tarmed-Rechnungen"
+		get-group Detailangaben | get-button "Bills electronically" | check
 	    get-group Detailangaben | get-link Leistungserbringer | click
 	    with [get-window Identifikationselemente] {
 		    str "tarmed_anrede tarmed_ean tarmed_ksk tarmed_kanton1 tarmed_kanton2 tarmed_rolle tarmed_nif tarmed_diag_system tarmed_esr5oresr9 tarmed_esrplus tarmed_erbringungsort tarmed_speziality tarmed_tg_or_tg"  |
@@ -81,22 +92,40 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 		            get-button OK | click
 		        }
 		        with [get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein"] {
-		            with [get-editbox -after [get-label Abteilung]] {
-		                set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Abteilung" ] ]
-		            }
-		            with [get-editbox -after [get-label Postfach]] {
-		                set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Postfach" ] ]
-		            }
-		            with [get-editbox -after [get-label TarmedESRParticipantNumber] ] {
-		                set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.TarmedESRParticipantNumber" ] ]
-		            }
-		            get-editbox -after [get-label TarmedESRIdentity] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.TarmedESRIdentity" ] ]
+	                EnterOneFinanzDetail Abteilung
+	                EnterOneFinanzDetail Postfach
+	                EnterOneFinanzDetail TarmedESRParticipantNumber
+	                EnterOneFinanzDetail TarmedESRIdentity
+					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
+		        }
+		        get-button OK | click
+	        }
+	        // TODO: Why is the work-around necessary in RCPTT???
+			get-group Detailangaben | get-link Bankverbindung | click
+		    with [get-window "Zahlungsinstitut auswählen"] {
+				with [get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein"] {
+	                EnterOneFinanzDetail Abteilung
+	                EnterOneFinanzDetail Postfach
+	                EnterOneFinanzDetail TarmedESRParticipantNumber
+	                EnterOneFinanzDetail TarmedESRIdentity
+					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 		        }
 		        get-button OK | click
 		    }
 		    get-button Anwenden | click
 	    }
-
+		// Verify TarmedESRParticipantNumber
+	    if [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ] {
+			log "Skip verify pc_konto"
+	    } -else {
+			log "Verify Bankverbindung"
+		    get-group Detailangaben | get-link Bankverbindung | click
+			get-window Benutzervorgaben | get-window "Zahlungsinstitut auswählen"
+			    | get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein" | get-editbox
+			    -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
+			get-window Benutzervorgaben | get-window "Zahlungsinstitut auswählen"| get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
+			get-window Benutzervorgaben | get-window "Zahlungsinstitut auswählen" | get-button OK | click
+	    }
 		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant ".png"]
 	    get-button "Anwenden und Schließen" | click
 	}
