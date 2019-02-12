@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/11/19, 9:01 PM
+Save-Time: 2/12/19, 9:20 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -174,12 +174,15 @@ proc "kons-add-macro" [ val macroName "soap" ] {
 	}
 }
 
-proc "kons-add-block" [ val blockName "kons plus.*KVG.*" ] {
+proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] {
 	PressAddLeistungToKons
     get-tab-folder | get-tab-item Block | click
     with [get-group Alle] {
         get-editbox -after [get-label Name] | set-focus
+		log "kons-add-block in Block"
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "kons_add_block_before.png"]
         get-tree | select [get-item -path $blockName ] | double-click
+		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "kons_add_block_after.png"]
     }
 }
 	// ENDE
