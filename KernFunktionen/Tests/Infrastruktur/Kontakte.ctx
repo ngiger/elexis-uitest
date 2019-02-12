@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 10:36 AM
+Save-Time: 2/12/19, 2:17 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -93,6 +93,7 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 	} -else {
 		concat "Kontakt " $Name " in " $Ort " gefunden" | log
 		*/
+		open-window-by-name "Details zum Kontakt"
 		with [get-view "Details zum Kontakt"] {
 		get-editbox -after [get-label Name ] | set-text $Name
 		get-editbox -after [get-label Vorname ] | set-text $Vorname
@@ -108,7 +109,7 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 		get-editbox -after [get-label "Kürzel/ID" ] | set-text $Kuerzel
 		get-editbox -after [get-label Titel ] | set-text $Titel
 	    }
-		get-window "Details zum Kontakt" | gen-screenshot [concat $imagesDir "kontakt_" $Name "_" $Vorname "_created.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "kontakt_" $Name "_" $Vorname "_created.png"]
 //	}
 }
 

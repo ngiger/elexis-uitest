@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 12:22 PM
+Save-Time: 2/12/19, 2:11 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -68,6 +68,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
   	get-preferences-menu | click
 	with [get-window Benutzervorgaben] {
 	    get-tree | select "Abrechnungssysteme/Tarmed-Rechnungen"
+	    get-combo -after [get-label "Tarmed-Rechnungen"] | select [ concat [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] ".*"]
 		get-group Detailangaben | get-button "Bills electronically" | check
 	    get-group Detailangaben | get-link Leistungserbringer | click
 	    with [get-window Identifikationselemente] {
