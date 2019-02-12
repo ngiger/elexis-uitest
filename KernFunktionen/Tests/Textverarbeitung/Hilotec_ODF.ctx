@@ -20,7 +20,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    get-tree | select Textverarbeitung
 	    // Button name various on number of installed text plugins!
 	    // There reaplce 0 :, etc by .*
-      	get-window Benutzervorgaben | get-object | save-screenshot [concat $imagesDir "select-hilotecODF.png" ]
+      	get-window Benutzervorgaben | gen-screenshot [concat $imagesDir "select-hilotecODF.png" ]
 	    get-button ".*Hilotec-OpenDocument" | click
         get-tree | select "Hilotec-OpenDocument"
 	    with [get-editbox -after [get-label "OpenDocument Editor"]] {
@@ -36,7 +36,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	        set-text "/usr/bin/lowriter"
 	    }
 	    get-button "Wrapper Skript aktivieren" | uncheck
-      	get-window Benutzervorgaben | get-object | save-screenshot [concat $imagesDir "config-hilotecODF.png" ]
+      	get-window Benutzervorgaben | gen-screenshot [concat $imagesDir "config-hilotecODF.png" ]
 	    get-button "Anwenden und Schließen" | click
 	}
 }

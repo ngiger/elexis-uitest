@@ -59,11 +59,11 @@ proc SetEphaInteractionCheck [ val enabled true ] {
 	    if [ $enabled | eq true ] {
 		    get-button [ t preferences_suppress_interaction_check ] | uncheck
 	    	log "SetEphaInteractionCheck enabled it"
-			get-window  [ t preferences ] | get-object | save-screenshot [concat $imagesDir "EphaInteractions/preferences_enabled.png"]
+			get-window  [ t preferences ] | gen-screenshot [concat $imagesDir "EphaInteractions/preferences_enabled.png"]
 	    } -else {
 			get-button  [ t preferences_suppress_interaction_check ]| check
 	    	log "SetEphaInteractionCheck disabled it"
-			get-window  [ t preferences ] | get-object | save-screenshot [concat $imagesDir "EphaInteractions/preferences_disabled.png"]
+			get-window  [ t preferences ] | gen-screenshot [concat $imagesDir "EphaInteractions/preferences_disabled.png"]
 	    }
 	    get-button [ t apply_and_close ] | click
 	}

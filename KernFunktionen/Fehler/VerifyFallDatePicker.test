@@ -34,7 +34,7 @@ proc FallZuPatientErstellenWithDatePick [val caseLaw] [val startDate "30.4.2018"
 		get-combo -after [get-label [ t dlg_new_case_caseMethod ]] | select $caseLaw
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir $caseLaw " " $startDate "_created.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir $caseLaw " " $startDate "_created.png"]
 		get-button  [ t ok] | click
 	}
 }

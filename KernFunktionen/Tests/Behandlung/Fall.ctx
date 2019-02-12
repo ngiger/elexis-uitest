@@ -72,7 +72,7 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t re
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
 		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
 		concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png" | log
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
 		get-button  [ t ok] | click
 	}
 }
@@ -110,7 +110,7 @@ proc AktuellenFallVerrechnen {
 global [val auf_id 1 ] -override
 proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [ val comment "" ] [ val startDate "" ] [ val endDate ""]  {
 	concat "FallErzeugeAUF. Warum ist hier manchmal kein Fall ausgewählt? " $auf_id | log
-    get-eclipse-window | get-object | save-screenshot [concat $imagesDir "AUF-" $auf_id "-before-create.png"]
+    get-eclipse-window | gen-screenshot [concat $imagesDir "AUF-" $auf_id "-before-create.png"]
 	with [get-view AUF] {
 	    click
 	    get-button "Eine neue AUF erstellen" | click
@@ -123,7 +123,7 @@ proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [
 	        set-text $reason
 	    }
 	    get-editbox -after [get-label "ggf. Zusätzliche Angaben"] | set-text $comment
-	    get-eclipse-window | get-object | save-screenshot [concat $imagesDir "AUF-" $auf_id ".png"]
+	    get-eclipse-window | gen-screenshot [concat $imagesDir "AUF-" $auf_id ".png"]
 		global [val auf_id [  $auf_id | plus 1 ] ] -override
 	    get-button OK | click
 	}

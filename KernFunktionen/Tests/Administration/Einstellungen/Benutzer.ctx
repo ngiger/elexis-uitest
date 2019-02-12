@@ -6,11 +6,22 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/11/19, 5:20 PM
+Save-Time: 2/12/19, 10:33 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+proc ChangeMandant [ val name ] {
+	concat "ChangeMandant: " $name | log
+	get-menu -path "Datei/Mandant wechseln..." | click
+	with [get-window -class ChangeMandantDialog] {
+	    get-list | select $name
+		get-window -class ChangeMandantDialog | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_1.png"]
+	    get-button OK | click
+	}
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_2.png"]
+}
 
 proc EnterOneDetail [ val key ] [ val idMandant 1 ]  {
 	concat EnterOneDetail $key| log
@@ -40,6 +51,7 @@ proc EnterOneFinanzDetail [ val key ] [ val idMandant 1 ]  {
 }
 
 proc SetMandantenDetails [ val idMandant 1 ] {
+	concat "SetMandantenDetails" $idMandant " starting" | log
 	get-preferences-menu | click
 	with [get-window Benutzervorgaben] {
 	    get-tree | select "Gruppen und Rechte/Benutzerverwaltung"
@@ -65,7 +77,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 				concat "item: " $item | log
 				EnterOneDetail -key $item -idMandant $idMandant
 			}
-			get-eclipse-window | get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_details.png"]
+			get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_details.png"]
 	        get-button OK | click
 	    }
 	    with [get-group Trustcenter] {
@@ -79,6 +91,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 		    with [get-window Postkonto] {
 		        // get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein" | get-editbox 
 		        get-editbox -after [get-label TarmedESRParticipantNumber] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ]
+				get-window Postkonto | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_pc.png"]
 		        get-button OK | click
 		    }
 	    } -else {
@@ -110,6 +123,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 	                EnterOneFinanzDetail TarmedESRIdentity
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 		        }
+				get-window "Zahlungsinstitut auswählen"| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
 		        get-button OK | click
 		    }
 		    get-button Anwenden | click
@@ -123,15 +137,17 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			get-window Benutzervorgaben | get-window "Zahlungsinstitut auswählen"
 			    | get-group "Bitte geben Sie die notwendigen Identifikationsdaten ein" | get-editbox
 			    -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
-			get-window Benutzervorgaben | get-window "Zahlungsinstitut auswählen"| get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
+			get-window Benutzervorgaben | get-window "Zahlungsinstitut auswählen"| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
 			get-window Benutzervorgaben | get-window "Zahlungsinstitut auswählen" | get-button OK | click
 	    }
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant ".png"]
+		get-window Benutzervorgaben | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant ".png"]
 	    get-button "Anwenden und Schließen" | click
 	}
+	concat "SetMandantenDetails" $idMandant " done" | log
 }
 
 proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ val plainPW "test" ]{
+	concat "create-user" $userName " starting" | log
 	get-preferences-menu | click
 	get-window [ t preferences ] | get-tree | expand-all | select [ t prefs_users_and_rights ]
 	try {
@@ -176,11 +192,12 @@ proc "create-user" [val userName] [val forMandat] [val role] [val kontakt]  [ va
 		        get-button "Prüfregeln ignorieren (nicht empfohlen)" | check
 		        get-button OK | click
 		    }
-			get-eclipse-window | get-object | save-screenshot [concat $imagesDir VerantwortlicherArzt "_created.png" ]
+			get-eclipse-window | gen-screenshot [concat $imagesDir "user_" VerantwortlicherArzt "_created.png" ]
 			get-button [ t apply_and_close ] | click
 		}
 		concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
 	}
+	concat "create-user" $userName " starting" | log
 }
 // Ende
 //

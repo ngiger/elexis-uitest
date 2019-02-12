@@ -20,7 +20,7 @@ proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 	}
 }
 proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "Before_kons_Erstellen.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "Before_kons_Erstellen.png"]
 	t kons_create_new | log
 	get-view [ t kons_view ] | get-button [ t kons_create_new ] | click
     try {
@@ -29,11 +29,11 @@ proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 		log "Workaround: new kons not displayed"
 	// TODO: Force closing then opening Konsultation necessary?
 	// TODO: Is this an RCPTT problem??
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ERROR_must_i_close_the_kons.png" ]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "ERROR_must_i_close_the_kons.png" ]
 		get-view [ t kons_view ] | close
 		open-window-by-name  [ t kons_view ]
 		get-view [ t kons_view ]  |get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ERROR_reopened_kons.png" ]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "ERROR_reopened_kons.png" ]
 	}
 }
 
@@ -180,9 +180,9 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] {
     with [get-group Alle] {
         get-editbox -after [get-label Name] | set-focus
 		log "kons-add-block in Block"
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "kons_add_block_before.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "kons_add_block_before.png"]
         get-tree | select [get-item -path $blockName ] | double-click
-		get-eclipse-window | get-object | save-screenshot [concat $imagesDir "kons_add_block_after.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "kons_add_block_after.png"]
     }
 }
 	// ENDE

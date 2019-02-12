@@ -36,7 +36,7 @@ with [get-window Benutzervorgaben] {
         get-table | select  $VerantwortlicherArzt
         get-button OK | click
     }
-	get-eclipse-window | get-object | save-screenshot [concat "results/images/" $VerantwortlicherArzt "_created.png" ]
+	get-eclipse-window | gen-screenshot [concat "results/images/" $VerantwortlicherArzt "_created.png" ]
 }
 concat "Benutzer " $currentUniqUser " angelegt. verantwortlich" $VerantwortlicherArzt | log
 

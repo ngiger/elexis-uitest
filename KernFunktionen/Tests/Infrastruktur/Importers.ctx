@@ -87,19 +87,19 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 
     concat "ReadArtikelstamm OK danach " $file | log
     
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	// 19:25:06.595 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - ArtikelstammImporterPage.doImport /home/niklaus/elexis/rcptt/Artikelstamm_Short_v5.xml
 	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
 	get-view [ t artikel ] | get-button "Automatische Suche aktivieren" | click
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
 	concat "ReadArtikelstamm done: " $file |log
 }
 
 proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_landarztpraxis_sevelen.xchange"] ] {
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_0.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange_0.png"]
 	OpenLeistungen
 	concat "ReadBlocksExchange file is: " $file | log
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item [ t blocks ] | click
 	    get-editbox -after [get-label Name] | set-focus
@@ -108,7 +108,7 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	ExecuteDataImport $file
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadBlocksExchange.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange.png"]
 }
 
 proc "AssertNoErrorInProgress" {
@@ -130,7 +130,7 @@ proc "AssertNoErrorInProgress" {
 
 proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
 	OpenLeistungen
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadEAL_1.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadEAL_1.png"]
 	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
 	concat "ReadAnalysenListe file is: " $file | log
 	get-button [ t show_menu ] | click
@@ -143,23 +143,23 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 
 proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
 	open-window-by-name [ t daten_artikel ]
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadMigel_1.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel_1.png"]
 	get-view [ t artikel ] | get-tab-folder | get-tab-item MiGeL | click
 	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	get-window [ t view_data_import ] | get-button [ t delete_all_data ] | check
 	ExecuteDataImport $file
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadMigel.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel.png"]
 }
 
 proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
 	OpenLeistungen
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_1.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_1.png"]
 	with [get-view Codes] {
 	    get-tab-folder | get-tab-item Tarmed | click
 	    get-editbox -after [get-label Ziffer] | set-focus
 	}
-	get-eclipse-window | get-object | save-screenshot [concat $imagesDir "ReadTarmed_2.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_2.png"]
 	get-button [ t show_menu ] | click
 	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
@@ -176,7 +176,7 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	concat "Start wait for Import erfolgreich" | log
 	loop {
 		try {
-			get-window "Import erfolgreich" | get-object | save-screenshot [concat $imagesDir "tarmed_done.png" ]
+			get-window "Import erfolgreich" | gen-screenshot [concat $imagesDir "tarmed_done.png" ]
 			get-window "Import erfolgreich" | get-button OK | click
 			concat "Wait for Import erfolgreich done" | log
 		} -error [val errorObj] -catch {
@@ -196,7 +196,7 @@ proc "ReadDataImport" [ val file [ concat  [get-user-dir] "/rcptt/Universal_pati
 	set-dialog-result File $file
 	with [get-window [ t view_general_data_import  ] ] {
 	    get-button [ t btn_dataimport_select_file ] | click	    	
-  	    get-eclipse-window | get-object | save-screenshot  [concat $imagesDir "ReadDataImport.png"]
+  	    get-eclipse-window | gen-screenshot  [concat $imagesDir "ReadDataImport.png"]
 
 	    get-button [ t ok ] | click
     }

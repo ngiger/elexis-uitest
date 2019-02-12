@@ -96,6 +96,7 @@
                 <target>
                   <!-- /usr/bin/pg_dump - -host=localhost - -user=elexis - -encoding=UTF-8 - -clean  - -dbname elexis_rcptt - -create >pg_dump.sql -->
                   <exec executable="/usr/bin/pg_dump" output="./target/results/pg_dump.sql" >
+                    <env key="PGPASSWORD" value="elexisTest"/>
                     <arg value="--host=localhost"/>
                     <arg value="--user=elexis"/>
                     <arg value="--encoding=UTF-8"/>

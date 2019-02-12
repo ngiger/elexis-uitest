@@ -58,7 +58,7 @@ proc "check-one-view-item" [val viewName] {
 		wait 100 // Give it some time to populate it
 		// TODO: Check that Die Ansicht konnte nicht erstellt werden is not visible
 		// TODO: Check Table "CSTGROUPS" not found
-		get-eclipse-window | get-object | save-screenshot -out [ $curViewImage ]
+		get-eclipse-window | gen-screenshot -out [ $curViewImage ]
 	}
 }
 

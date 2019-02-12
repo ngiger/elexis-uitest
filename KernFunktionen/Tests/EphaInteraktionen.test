@@ -90,31 +90,31 @@ proc "EnsurePatientChanged" {
 kons-add-artikelstamm Paroxetin "Paroxetin.*20 mg 14 Stk.*"
 VerifyInteractionStatus
 get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
-	get-object | save-screenshot [concat $imagesDir "EphaInteractions/no_interaction.png"]
+	gen-screenshot [concat $imagesDir "EphaInteractions/no_interaction.png"]
 
 kons-add-artikelstamm LOSARTAN "LOSARTAN.*12.5.*"
 EnsurePatientChanged // Is needed if it is the first time we downloaded the interaction. TODO: FIX IT!
 VerifyInteractionStatus ".*Vermutlich keine relevante Interaktion"
 get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
-	get-object | save-screenshot[concat $imagesDir "EphaInteractions/probably_no_interaction.png"]
+	gen-screenshot[concat $imagesDir "EphaInteractions/probably_no_interaction.png"]
 
 kons-add-artikelstamm METOPROLOL "Metoprolol.*100 Stk.*"
 VerifyInteractionStatus ".*Regelmässige Überwachung"
 VerifyInteractionLink
 get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
-	get-object | save-screenshot [concat $imagesDir "EphaInteractions/check_interaction.png"]
+	gen-screenshot [concat $imagesDir "EphaInteractions/check_interaction.png"]
 
 kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
 VerifyInteractionStatus ".*Kontraindiziert"
 VerifyInteractionLink
 get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
-	get-object | save-screenshot [concat $imagesDir "EphaInteractions/contra_indicated.png"]
+	gen-screenshot [concat $imagesDir "EphaInteractions/contra_indicated.png"]
 
 SetEphaInteractionCheck false
 EnsurePatientChanged
 VerifyInteractionStatus ""
 get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |  
-	get-object | save-screenshot [concat $imagesDir "EphaInteractions/interaction_check_disabled.png"]
+	gen-screenshot [concat $imagesDir "EphaInteractions/interaction_check_disabled.png"]
 
 SetEphaInteractionCheck true
 EnsurePatientChanged
