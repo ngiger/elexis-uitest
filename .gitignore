@@ -5,3 +5,5 @@ runFromScratch/
 *.patch
 *.log
 *#
+drop_create_db.sql
+
