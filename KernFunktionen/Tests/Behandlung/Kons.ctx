@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 9:20 AM
+Save-Time: 2/12/19, 1:08 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -156,6 +156,26 @@ proc "preferences-use-macros-with-TI-and-Favoriten" {
 	    get-button "Makros Verrechenbar Favoriten" | check
 	    get-button "TI Diagnosen" | check
 	    get-button "Anwenden und Schließen" | click
+	}
+}
+
+proc "select-block" [ val blockName "arzt_Berichte"] {
+	open-window-by-name Leistungen
+	with [get-view Leistungen] {
+	    get-button "Liste anzeigen" | click
+	    get-tab-folder | get-tab-item Block | click
+	    with [get-group Alle] {
+	        get-editbox -after [get-label Name] | set-text $blockName
+	        get-button "Suche jetzt ausführen" | click
+	    }
+    }
+	try {
+		get-view Leistungen | get-group Alle | get-tree | select [ concat $blockName ".*"]
+		concat "found block " $blockName | log
+		bool true
+     } -catch {
+		concat "Unable to find block " $blockName | log
+		bool false
 	}
 }
 

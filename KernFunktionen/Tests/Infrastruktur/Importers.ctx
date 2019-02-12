@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 9:16 AM
+Save-Time: 2/12/19, 1:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -197,7 +197,6 @@ proc "ReadDataImport" [ val file [ concat  [get-user-dir] "/rcptt/Universal_pati
 	with [get-window [ t view_general_data_import  ] ] {
 	    get-button [ t btn_dataimport_select_file ] | click	    	
   	    get-eclipse-window | gen-screenshot  [concat $imagesDir "ReadDataImport.png"]
-
 	    get-button [ t ok ] | click
     }
 }
