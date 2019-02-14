@@ -56,20 +56,20 @@ proc "check-one-preference-item" [val prefName] {
 // * HL7 Dateien (Der Wert muss ein vorhandenes Verzeichnis sein.
 // * Datenaustausch/Omnivore: Der Wert muss ein vorhandenes Verzeichnis sein.
 
-    if [$prefName | str | matches "2,.*"] {
+	if [$prefName | str | matches "2,.*"] {
 		global [val curSubSection [ replaceFirst $curPath ".*/" ""] ] -override
-	    global [val  curPath [ concat $curPrefSection "/" $curSubSection [ replaceFirst $prefName "2," "/"] ] ] -override
-	    global [val  curPath [ concat $curPrefSection "/" $curSubSection "/" [ replaceFirst $prefName "2," ""] ] ] -override
-   		global [val  curFullPath    [ concat $curPath ".png"   ] ] -override
+		global [val  curPath [ concat $curPrefSection "/" $curSubSection [ replaceFirst $prefName "2," "/"] ] ] -override
+		global [val  curPath [ concat $curPrefSection "/" $curSubSection "/" [ replaceFirst $prefName "2," ""] ] ] -override
+   		global [val  curFullPath	[ concat $curPath ".png"   ] ] -override
 	} -else {
-	    global [val  curPath [ replaceFirst $prefName "0," "" ] ] -override
-	    global [val  curPath [ replaceFirst $curPath "1," ".*/" ] ] -override
-	    global [val  curPath [ replaceFirst $curPath "2," [concat $curPrefSection ".*" ] ] ] -override // only needed for mediport
-	    if [$prefName | str | matches "^0,.*"] {
+		global [val  curPath [ replaceFirst $prefName "0," "" ] ] -override
+		global [val  curPath [ replaceFirst $curPath "1," ".*/" ] ] -override
+		global [val  curPath [ replaceFirst $curPath "2," [concat $curPrefSection ".*" ] ] ] -override // only needed for mediport
+		if [$prefName | str | matches "^0,.*"] {
 		   		global [val  curPrefSection [ replaceFirst $prefName "0," "" ] ] -override
-		   		global [val  curFullPath    [ concat $curPrefSection ".png"   ] ] -override
+		   		global [val  curFullPath	[ concat $curPrefSection ".png"   ] ] -override
 			} -else {
-		   		global [val  curFullPath    [ concat
+		   		global [val  curFullPath	[ concat
 		   		[ $curPrefSection ]
 		   		 "/"
 		   		[ replaceAll $curPath "\W" "_" ]
@@ -79,9 +79,9 @@ proc "check-one-preference-item" [val prefName] {
 			global [val curSubSection "" ] -override
 		}
 	}
-    global [val  imgName [ 
+	global [val  imgName [ 
 			concat $imagesDir
-			    "preferences/"
+				"preferences/"
 				[$curFullPath
 			] ] ] -override
    

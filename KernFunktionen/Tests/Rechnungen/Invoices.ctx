@@ -17,22 +17,22 @@ proc "AbrechnungsSystemKonfigurieren" {
 	with [get-window Benutzervorgaben] {
 		get-tree | select Abrechnungssysteme
 		get-table | get-item -path KVG | double-click
-	    with [get-window Abrechnungssystem] {
-	        get-editbox -after [get-label Name] | set-focus
-	        get-combo -after [get-label "Leistungscode-System"] | select TarmedLeistung
-	        get-button "Hinzufügen..." | click
-	        with [get-window "Neuer Multiplikator"] {
-	            get-editbox | set-text "0.89"
-                // key-type "TRAVERSE_TAB_PREVIOUS"
-                // TODO: Howto set required start date?
-	           // get-control Any -index 4 | set-text "01.02.2018"
-	            // get-editbox -after [get-label "Start Datum"] | set-text "01.01.2018"
-	            // Changes the label "Bitte geben Sie das Datum ein, ab dem der neue Multiplikator gilt" not the date!!!
-	            get-button OK | click
-	        }
-	        get-button OK | click
-	    }
-	    get-button "Anwenden und Schließen" | click
+		with [get-window Abrechnungssystem] {
+		get-editbox -after [get-label Name] | set-focus
+		get-combo -after [get-label "Leistungscode-System"] | select TarmedLeistung
+		get-button "Hinzufügen..." | click
+		with [get-window "Neuer Multiplikator"] {
+			get-editbox | set-text "0.89"
+		// key-type "TRAVERSE_TAB_PREVIOUS"
+		// TODO: Howto set required start date?
+		   // get-control Any -index 4 | set-text "01.02.2018"
+			// get-editbox -after [get-label "Start Datum"] | set-text "01.01.2018"
+			// Changes the label "Bitte geben Sie das Datum ein, ab dem der neue Multiplikator gilt" not the date!!!
+			get-button OK | click
+		}
+		get-button OK | click
+		}
+		get-button "Anwenden und Schließen" | click
 	}
 }
 
@@ -48,8 +48,8 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 	set-dialog-result Folder $pdfDir
 	with [get-window "Rechnung ausgeben"] {
    		get-combo | select "Als Tarmed-Rechnung ausdrucken"
-	    get-group "Datei für TrustCenter" | get-button "Ändern|Verzeichnis:" | click
-	    get-button OK | click
+		get-group "Datei für TrustCenter" | get-button "Ändern|Verzeichnis:" | click
+		get-button OK | click
 	}
 	try {
 		get-window "Fehler beim Drucken" | get-button "OK" | click
@@ -77,38 +77,38 @@ proc RechnungAusgeben2 {
 	 -column "Patient"  -value ".*Duck.*"
 //	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 //		 -column "Patient"  -value ".*Duck.*" | get-property "columns[8]" | log  
-log Rechnungsliste      
+log Rechnungsliste	  
 	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 8 | log
-	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1  | log       
+	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1  | log	   
 	log second 
-	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1 | get-property text   | log        
+	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1 | get-property text   | log	
 	 	log sss
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value ".*Duck.*" | select-columns "RG Nr" "Patient" | log
 	 	
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" | log
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" |
-	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file1.csv"        
+	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file1.csv"	
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value ".*Duck.*"  |   select-columns "RG Nr" "Patient" |
 	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file2.csv"
 	with [get-view  $invoiceListViewName | get-table] {
 	// If you passs betrag 60.00 then it will show up down here as 60.0
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" -raw true | log
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[8]" -raw true | log
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]  | get-property "columns[8]" |  matches $betrag | verify-true
-    }
+		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" -raw true | log
+		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[8]" -raw true | log
+		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
+		get-item  -column "Patient"  -path [ concat $patient ".*"]  | get-property "columns[8]" |  matches $betrag | verify-true
+	}
 	with [get-view  $invoiceListViewName | get-table] {
 	// If you passs betrag 60.00 then it will show up down here as 60.0
-	    get-item -path 18 | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-	    get-item -path 18 | get-property "columns[8]" | matches $betrag | verify-true
+		get-item -path 18 | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
+		get-item -path 18 | get-property "columns[8]" | matches $betrag | verify-true
 	   }
 	   /*
-	     get-item -path 18 | log
-	     get-item -path [ concat ".*" $patient ".*" ] | log
- 	    get-item -path  [ concat ".*" $patient ".*" ]  | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-	     
+		 get-item -path 18 | log
+		 get-item -path [ concat ".*" $patient ".*" ] | log
+ 		get-item -path  [ concat ".*" $patient ".*" ]  | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
+		 
 	} */
 	// get-view $invoiceListViewName | get-table | select 18 | get-menu -path "Ausgeben..." | click
 	log zwer

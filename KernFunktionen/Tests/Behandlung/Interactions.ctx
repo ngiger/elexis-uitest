@@ -30,12 +30,12 @@ proc VerifyInteractionStatus [ val status "Keine Interaktionen bekannt" ] {
 proc VerifyInteractionLink {
   global [val foundEphaUrl [bool false] ] -override
 	$foundEphaUrl  | verify-false
-    let [val httpLink [ get-view [ t kons_view ] | get-link -after [ get-label [ t btn_accounting ] ] | get-property toltip -raw  ]] {
-    $httpLink | split "\n"| foreach [val line]{
-      if [ $line | matches "https://epha.ch/matrix/visual/\\d{13},\\d{13}.*" | eq true ]{
-        global [val foundEphaUrl [bool true] ] -override
-      }
-    }
+	let [val httpLink [ get-view [ t kons_view ] | get-link -after [ get-label [ t btn_accounting ] ] | get-property toltip -raw  ]] {
+	$httpLink | split "\n"| foreach [val line]{
+	  if [ $line | matches "https://epha.ch/matrix/visual/\\d{13},\\d{13}.*" | eq true ]{
+	global [val foundEphaUrl [bool true] ] -override
+	  }
+	}
 	$foundEphaUrl  | verify-true
 	}
 }
@@ -43,29 +43,29 @@ proc VerifyInteractionLink {
 proc AllVerrechnungenEntfernen { $resultsDir
 	with [get-view [ t kons_view ] | get-table -after [ get-label [ t btn_accounting ] ] ] {
 		try {
-		    select 1 | get-menu -path [ t path_remove_all  ] | click
+			select 1 | get-menu -path [ t path_remove_all  ] | click
 			log "AllVerrechnungenEntfernen. Done"
-	    } -catch {
-	    	log "AllVerrechnungenEntfernen Nix zu tun!"
-	    }
+		} -catch {
+			log "AllVerrechnungenEntfernen Nix zu tun!"
+		}
 	}
 }
 
 proc SetEphaInteractionCheck [ val enabled true ] {
 	get-preferences-menu | click
 	with [get-window [ t preferences ] ] {
-	    get-editbox | set-text Medi
-	    get-tree | select[ t preferences_medication ]
-	    if [ $enabled | eq true ] {
-		    get-button [ t preferences_suppress_interaction_check ] | uncheck
-	    	log "SetEphaInteractionCheck enabled it"
+		get-editbox | set-text Medi
+		get-tree | select[ t preferences_medication ]
+		if [ $enabled | eq true ] {
+			get-button [ t preferences_suppress_interaction_check ] | uncheck
+			log "SetEphaInteractionCheck enabled it"
 			get-window  [ t preferences ] | gen-screenshot [concat $imagesDir "EphaInteractions/preferences_enabled.png"]
-	    } -else {
+		} -else {
 			get-button  [ t preferences_suppress_interaction_check ]| check
-	    	log "SetEphaInteractionCheck disabled it"
+			log "SetEphaInteractionCheck disabled it"
 			get-window  [ t preferences ] | gen-screenshot [concat $imagesDir "EphaInteractions/preferences_disabled.png"]
-	    }
-	    get-button [ t apply_and_close ] | click
+		}
+		get-button [ t apply_and_close ] | click
 	}
 }
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

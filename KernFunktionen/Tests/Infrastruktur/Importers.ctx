@@ -27,14 +27,14 @@ proc "OpenLeistungen" {
 proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 	get-preferences-menu | click
 	with [get-window [t preferences ] ] {
-	    get-tree | select "System/Allgemein"
-	    get-button $language | click
-	    get-button [ t apply_and_close] | click
+		get-tree | select "System/Allgemein"
+		get-button $language | click
+		get-button [ t apply_and_close] | click
 	}
 }
 
 // We try to increase here some timeout to let artikelstamm and tarmed importer complete successfully
-//	set-q7-option uijobHangTimeout       30000
+//	set-q7-option uijobHangTimeout	   30000
 //	set-q7-option jobSleepingStepTimeout 120000
 // https://www.eclipse.org/forums/index.php/m/1734168/?srch=wait+progress+view#msg_1734168
 // with 1000 and 2000 the OK danach arrived after 2 seconds
@@ -44,7 +44,7 @@ proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 // Achtung: Nur für demoDB gedacht und dort läuft es auch nicht wie geplant,
 // da die Anpassungen beim Import immer noch auf dem alten Wert steht
 proc "SetArtikelstammOrigin2oddb2ml" {
-    if [ get-file $sqlCmdFile | get exists ] {
+	if [ get-file $sqlCmdFile | get exists ] {
 		delete-file $sqlCmdFile
 		concat "deleted: " $sqlCmdFile | log
 	}
@@ -61,8 +61,8 @@ proc "ExecuteDataImport" [ val file ] {
 	concat "ExecuteDataImport file "  $file " exists? " [get-file $file| get exists] | log
 	get-file $file| get exists | verify-true
 	with [get-window [ t view_data_import ]] {
-	    get-button [ t btn_data_import_search ] | click
-	    get-button OK | click
+		get-button [ t btn_data_import_search ] | click
+		get-button OK | click
 	}
 	concat "ExecuteDataImport with "  $file " done" | log
 }
@@ -71,22 +71,22 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 	open-window-by-name [ t daten_artikel ]
 	concat "before ReadArtikelstamm file: " $file | log
 	with [get-view [ t artikel ]] {
-	    get-tab-folder | get-tab-item Artikelstamm | click
-	    get-editbox -after [get-label [ t artikelstamm_label  ]] | set-focus
+		get-tab-folder | get-tab-item Artikelstamm | click
+		get-editbox -after [get-label [ t artikelstamm_label  ]] | set-focus
 	}
 	get-button [ t show_menu ] | click
 	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
-    concat "ReadArtikelstamm OK before " $file | log
+	concat "ReadArtikelstamm OK before " $file | log
 	with [get-window [ t view_data_import ]] {
-	    get-button [ t btn_data_import_search ] | click
-	    // TODO: Wait that pull request 174 for Tickets 14745 gets merged
-	    // get-button "Pharma-Artikel" | check
-        get-button OK | click
-    }
+		get-button [ t btn_data_import_search ] | click
+		// TODO: Wait that pull request 174 for Tickets 14745 gets merged
+		// get-button "Pharma-Artikel" | check
+	get-button OK | click
+	}
 
-    concat "ReadArtikelstamm OK danach " $file | log
-    
+	concat "ReadArtikelstamm OK danach " $file | log
+	
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	// 19:25:06.595 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - ArtikelstammImporterPage.doImport /home/niklaus/elexis/rcptt/Artikelstamm_Short_v5.xml
 	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
@@ -101,8 +101,8 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	concat "ReadBlocksExchange file is: " $file | log
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
 	with [get-view Codes] {
-	    get-tab-folder | get-tab-item [ t blocks ] | click
-	    get-editbox -after [get-label Name] | set-focus
+		get-tab-folder | get-tab-item [ t blocks ] | click
+		get-editbox -after [get-label Name] | set-focus
 	}
 	get-button [ t show_menu ] | click
 	get-view Codes | get-menu -path [ t btn_import ] | click
@@ -116,13 +116,13 @@ proc "AssertNoErrorInProgress" {
 	get-tab-folder | key-type "M1+m"
 	with [get-view "Progress View"] {
 		global [val errorInImport "false"] -override
-	    try {
+		try {
 			get-link "Fehler beim Import.*"
 			global [val errorInImport "true"] -override
-        } -error [ val errorObj ] -catch {
+	} -error [ val errorObj ] -catch {
 			concat  " While checking for Fehler: error " $errorObj | log
-        }
-        if [ $errorInImport | matches "true" ] {
+	}
+	if [ $errorInImport | matches "true" ] {
 			$errorInImport | verify-false
 		}
 	}
@@ -156,22 +156,22 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	OpenLeistungen
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_1.png"]
 	with [get-view Codes] {
-	    get-tab-folder | get-tab-item Tarmed | click
-	    get-editbox -after [get-label Ziffer] | set-focus
+		get-tab-folder | get-tab-item Tarmed | click
+		get-editbox -after [get-label Ziffer] | set-focus
 	}
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_2.png"]
 	get-button [ t show_menu ] | click
 	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	with [get-window [ t view_data_import ]] {
-	    get-button [ t btn_data_import_search ] | click
-	    with [get-combo -after [get-label [ t relevant_tarmed_caselaw ] ] ] {
-	        set-text KVG
-	        select KVG
-	    }
-	    concat "Starting ReadTarmed with file: " $file | log
-	    get-button OK | click
-	    concat "Done ReadTarmed with file: " $file | log
+		get-button [ t btn_data_import_search ] | click
+		with [get-combo -after [get-label [ t relevant_tarmed_caselaw ] ] ] {
+		set-text KVG
+		select KVG
+		}
+		concat "Starting ReadTarmed with file: " $file | log
+		get-button OK | click
+		concat "Done ReadTarmed with file: " $file | log
 	}
 	concat "Start wait for Import erfolgreich" | log
 	loop {
@@ -181,9 +181,9 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 			concat "Wait for Import erfolgreich done" | log
 		} -error [val errorObj] -catch {
 			concat "Will wait another 10 seconds for window Import erfolgreich" | log
-	        wait 10000
-	        recur
-	    }
+		wait 10000
+		recur
+		}
 	}
 }
 
@@ -195,10 +195,10 @@ proc "ReadDataImport" [ val file [ concat  [get-user-dir] "/rcptt/Universal_pati
 	get-window [ t view_general_data_import ] | get-tab-folder | get-tab-item $tab | click
 	set-dialog-result File $file
 	with [get-window [ t view_general_data_import  ] ] {
-	    get-button [ t btn_dataimport_select_file ] | click	    	
-  	    get-eclipse-window | gen-screenshot  [concat $imagesDir "ReadDataImport.png"]
-	    get-button [ t ok ] | click
-    }
+		get-button [ t btn_dataimport_select_file ] | click			
+  		get-eclipse-window | gen-screenshot  [concat $imagesDir "ReadDataImport.png"]
+		get-button [ t ok ] | click
+	}
 }
 // Ende
 //

@@ -24,9 +24,9 @@ exec-with-options -command {
 proc "open-window-by-name" [ val windowName ] {
 	get-menu -path [ t menu_select_view ]| click
 	with [get-window [ t show_view ]] {
-	    if [ matches $windowName ".*/.*" ] {
+		if [ matches $windowName ".*/.*" ] {
 			get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima
-	    } -else {
+		} -else {
 			get-tree | expand-all | select [ concat ".*/" $windowName ]
 		}
 		get-button [t open ] | click

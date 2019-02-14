@@ -41,15 +41,15 @@ proc "get-user-dir" {
 		$myUserDir | str
 	} -else {
 		invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir
-    }
+	}
 }
 proc "safe-get-java-property" [val name] {
 	try {
 		log -message [ concat "Value of Java property " $name " is: " [ get-java-property $name ] ]
 		get-java-property $name
 	} -catch {
-	    log [ concat "No such java-property: " $name ]
-	    ""
+		log [ concat "No such java-property: " $name ]
+		""
 	}
 }
 
@@ -71,10 +71,10 @@ proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 
 global [ val resultsDir   [ concat  [ pwd ]  "/../results/"] ]
 global [ val translations [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations.properties"]]]
-global [ val imagesDir    [ concat $resultsDir "images/" ] ]
-global [ val pdfDir    [ concat $resultsDir "pdf/" ] ]
+global [ val imagesDir	[ concat $resultsDir "images/" ] ]
+global [ val pdfDir	[ concat $resultsDir "pdf/" ] ]
 global [ val preferencesCsvFile [ concat  $resultsDir "preferences.csv" ] ]
-global [ val viewsCsvFile       [ concat  $resultsDir "views.csv" ] ]
+global [ val viewsCsvFile	   [ concat  $resultsDir "views.csv" ] ]
 concat "get-default-locale returns: " [get-default-locale] |log
 concat "get-user-dir returns: " [get-user-dir] |log
 concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log

@@ -17,27 +17,27 @@ global [val hilotecOdfOutDir $pdfDir ] -override
 proc ConfigureHilotecODF_TextVerarbeitung {
 	get-preferences-menu | click
 	with [get-window Benutzervorgaben] {
-	    get-tree | select Textverarbeitung
-	    // Button name various on number of installed text plugins!
-	    // There reaplce 0 :, etc by .*
-      	get-window Benutzervorgaben | gen-screenshot [concat $imagesDir "select-hilotecODF.png" ]
-	    get-button ".*Hilotec-OpenDocument" | click
-        get-tree | select "Hilotec-OpenDocument"
-	    with [get-editbox -after [get-label "OpenDocument Editor"]] {
-	        set-text "/usr/bin/lowriter"
-	    }
-	    with [get-editbox -after [get-label "Argumente zum Drucken"]] {
-	        set-text [ concat "--headless --convert-to pdf --outdir " $hilotecOdfOutDir ]
-	    }
-	    with [get-editbox -after [get-label "Argumente fuer PDF-Konvertierung"]] {
-	        set-text [ concat "--headless --convert-to pdf --outdir " $hilotecOdfOutDir ]
-	    }
-	    with [get-editbox -after [get-label "PDF-Konverter"]] {
-	        set-text "/usr/bin/lowriter"
-	    }
-	    get-button "Wrapper Skript aktivieren" | uncheck
-      	get-window Benutzervorgaben | gen-screenshot [concat $imagesDir "config-hilotecODF.png" ]
-	    get-button "Anwenden und Schließen" | click
+		get-tree | select Textverarbeitung
+		// Button name various on number of installed text plugins!
+		// There reaplce 0 :, etc by .*
+	  	get-window Benutzervorgaben | gen-screenshot [concat $imagesDir "select-hilotecODF.png" ]
+		get-button ".*Hilotec-OpenDocument" | click
+	get-tree | select "Hilotec-OpenDocument"
+		with [get-editbox -after [get-label "OpenDocument Editor"]] {
+		set-text "/usr/bin/lowriter"
+		}
+		with [get-editbox -after [get-label "Argumente zum Drucken"]] {
+		set-text [ concat "--headless --convert-to pdf --outdir " $hilotecOdfOutDir ]
+		}
+		with [get-editbox -after [get-label "Argumente fuer PDF-Konvertierung"]] {
+		set-text [ concat "--headless --convert-to pdf --outdir " $hilotecOdfOutDir ]
+		}
+		with [get-editbox -after [get-label "PDF-Konverter"]] {
+		set-text "/usr/bin/lowriter"
+		}
+		get-button "Wrapper Skript aktivieren" | uncheck
+	  	get-window Benutzervorgaben | gen-screenshot [concat $imagesDir "config-hilotecODF.png" ]
+		get-button "Anwenden und Schließen" | click
 	}
 }
 
@@ -54,8 +54,8 @@ proc ImportHilotecODF_Vorlagen [ val vorlagen [ concat $rcpttDir "vorlagen/AUF-Z
 	}
 	try -command {
 		with [get-window -class TextTemplateImportConflictDialog] {
-		    get-button "Ersetzen.*" | click
-		    get-button OK | click
+			get-button "Ersetzen.*" | click
+			get-button OK | click
 		}
 		concat "Vorlage: " $vorlagen " existiert bereits, wurde ersetzt" | log
 	

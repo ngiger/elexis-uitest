@@ -26,50 +26,50 @@ proc RechnungAusgebenAlt [ val invoiceListViewName "Rechnungsliste.*beta.*" ] [v
 	 -column "Patient"  -value ".*Duck.*"  | log
 //	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 //		 -column "Patient"  -value ".*Duck.*" | get-property "columns[8]" | log  
-log Rechnungsliste      
+log Rechnungsliste	  
 	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 8 | log
-	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1  | log       
+	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1  | log	   
 	log second 
-	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1 | get-property text   | log        
+	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1 | get-property text   | log	
 	 	log sss
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value ".*Duck.*" | select-columns "RG Nr" "Patient" | log
 	 	
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" | log
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" |
-	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file1.csv"        
+	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file1.csv"	
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value ".*Duck.*"  |   select-columns "RG Nr" "Patient" |
 	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file2.csv"
 	with [get-view  $invoiceListViewName | get-table] {
 	// If you passs betrag 60.00 then it will show up down here as 60.0
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" -raw true | log
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[8]" -raw true | log
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-	    get-item  -column "Patient"  -path [ concat $patient ".*"]  | get-property "columns[8]" |  matches $betrag | verify-true
-    }
+		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" -raw true | log
+		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[8]" -raw true | log
+		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
+		get-item  -column "Patient"  -path [ concat $patient ".*"]  | get-property "columns[8]" |  matches $betrag | verify-true
+	}
 	with [get-view  $invoiceListViewName | get-table] {
 	// If you passs betrag 60.00 then it will show up down here as 60.0
-	    get-item -path 18 | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-	    get-item -path 18 | get-property "columns[8]" | matches $betrag | verify-true
+		get-item -path 18 | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
+		get-item -path 18 | get-property "columns[8]" | matches $betrag | verify-true
 	   }
 	   /*
-	     get-item -path 18 | log
-	     get-item -path [ concat ".*" $patient ".*" ] | log
- 	    get-item -path  [ concat ".*" $patient ".*" ]  | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-	     
+		 get-item -path 18 | log
+		 get-item -path [ concat ".*" $patient ".*" ] | log
+ 		get-item -path  [ concat ".*" $patient ".*" ]  | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
+		 
 	} */
 	// get-view $invoiceListViewName | get-table | select 18 | get-menu -path "Ausgeben..." | click
 	log zwer
 }
 	/* Rechnung ausgeben läuft nicht im Moment
 	with [get-window "Rechnung ausgeben"] {
-	    get-button OK | click
-	    with [get-window Statusinformationen] {
-	        get-window "Dokumentvorlage nicht gefunden" | get-button OK | click
-	        get-window "Fehler beim Drucken der Rechnung 000003000018" | get-button OK | click
-	        get-window Fehler | get-button OK | click
-	    }
+		get-button OK | click
+		with [get-window Statusinformationen] {
+		get-window "Dokumentvorlage nicht gefunden" | get-button OK | click
+		get-window "Fehler beim Drucken der Rechnung 000003000018" | get-button OK | click
+		get-window Fehler | get-button OK | click
+		}
 	}
 	*/
 

@@ -45,8 +45,8 @@ try {
 	log -message "Check Preferences Window"
 	get-window [ t preferences ] | get-button [ t cancel ] | click
 } -catch {
-    // Verify that the window was missing (and not some other problem)
-    verify-error -command {get-window [ t preferences ]}
+	// Verify that the window was missing (and not some other problem)
+	verify-error -command {get-window [ t preferences ]}
 }
 OpenAndResetStartPerspektive
 
@@ -64,10 +64,10 @@ OpenAndResetStartPerspektive
 
 // Verify demoDB exists
 // At the moment we do not support running with mysql or PostgreSQL
-global [val rcpttDir        [ concat [ get-user-dir ] "/rcptt/"] ]
-global [val h2Jar           [ concat $rcpttDir "h2-1.4.197.jar"] ]
-global [val dumpFile        [ concat $rcpttDir "dump.sql.zip"] ]
-global [val sqlCmdFile      [ concat $rcpttDir "commands.sql"] ]
+global [val rcpttDir	[ concat [ get-user-dir ] "/rcptt/"] ]
+global [val h2Jar	   [ concat $rcpttDir "h2-1.4.197.jar"] ]
+global [val dumpFile	[ concat $rcpttDir "dump.sql.zip"] ]
+global [val sqlCmdFile	  [ concat $rcpttDir "commands.sql"] ]
 global [val jdbcConnection  "Unknown jdbcConnection"]
 
 if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
@@ -88,8 +88,8 @@ if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 
 proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 		// For unknown reason statement fails for param = 'locale' or param like 'locale'
-                       [val sqlCommand [concat "select wert from  config where param like '%locale';" ] ]
-	                   [val jdbc $jdbcConnection] {
+			   [val sqlCommand [concat "select wert from  config where param like '%locale';" ] ]
+			   [val jdbc $jdbcConnection] {
 	concat "jdbcConnection: " $jdbcConnection | log
 	concat "executing " [ str $sqlCommand  ] " via " [str $sqlCmdFile ] | log
   // TODO: When RCPTT > 2.3.0 is available add | find-all  "-->. to select only result lines
@@ -100,17 +100,17 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 /** (Only for h2 at the moment)
 *   Creates a dump. When running headless it fails with log entries like
 *   org.h2.jdbc.JdbcSQLException: Verbindung ist unterbrochen: "java.net.ConnectException: Verbindungsaufbau abgelehnt (Connection refused):
-*      144.76.170.222:45657" Connection is broken: "java.net.ConnectException:
-*      Verbindungsaufbau abgelehnt (Connection refused): 144.76.170.222:45657" [90067-197]
+*	  144.76.170.222:45657" Connection is broken: "java.net.ConnectException:
+*	  Verbindungsaufbau abgelehnt (Connection refused): 144.76.170.222:45657" [90067-197]
 */
 proc "create-backup-sql" [val zipFile $dumpFile] 
-	                     [val jarFile $h2Jar]
-	                     [val jdbc $jdbcConnection] {
+				 [val jarFile $h2Jar]
+				 [val jdbc $jdbcConnection] {
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
-	                    log "I do not know how to access the JDBConnection when Running from Scratch"
+				log "I do not know how to access the JDBConnection when Running from Scratch"
 	} -else {
 		concat "Will create SQL backup for h2 under: " $zipFile | log
-		      concat "java" " -classpath " $jarFile " org.h2.tools.Script   -url " $jdbc " -user " "sa" " -script " $zipFile "-options" " compression zip" | log
+			  concat "java" " -classpath " $jarFile " org.h2.tools.Script   -url " $jdbc " -user " "sa" " -script " $zipFile "-options" " compression zip" | log
 		exec-process "java"  "-classpath"  $jarFile  "org.h2.tools.Script" "-url"  $jdbc  "-user"  "sa"  "-script"  test.xx.zip "-options"  "compression" "zip"
 		concat "Created SQL backup for h2 under: " $zipFile | log
 	}
@@ -129,7 +129,7 @@ global [val VerantwortlicherArzt ".+" ]
 
 log -message [ concat "Workdir is " [ get-workspace-location ]]
 log -message "Error Message. Is it correctly sorted ?" -severity error
-log -message "warning Message. This should not appear in the preconditions_log.csv"    -severity warning
+log -message "warning Message. This should not appear in the preconditions_log.csv"	-severity warning
 log -message "info Message. Is it correctly sorted ?" -severity info
 
 get-log -levels info -levels error | as-table-data | sort-by dateText | write-csv-file [ concat $resultsDir "preconditions_log.csv" ]
