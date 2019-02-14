@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/10/19, 6:33 PM
+Runtime-Version: 2.4.0.201902121222
+Save-Time: 2/14/19 5:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -79,7 +79,14 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t re
 
 proc SelectFall [val caseLaw] [val startDate] {
 	let [ val searchPattern [ concat $caseLaw ".*" $startDate ".*"] ] {
-		get-view [ t view_cases ] | get-table | select $searchPattern | click
+		try {
+			get-view [ t view_cases ] | get-table | select $searchPattern | click
+		} -catch {
+			// TODO: Why is this workaround necessary?
+			get-view [ t view_cases ] | close
+			open-window-by-name [ t view_cases ]
+			get-view [ t view_cases ] | get-table | select $searchPattern | click
+		}
 	}
 }
 

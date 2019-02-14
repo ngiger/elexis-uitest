@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 1:08 PM
+Runtime-Version: 2.4.0.201902121222
+Save-Time: 2/14/19 7:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -127,6 +127,38 @@ proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führer
 	}
 	// Close Leistungen
 	ActivateVisibleKonsView 
+}
+
+/**
+ * Select a tarmed by it position. As RCPTT replace a leading 00.0 by 0.0
+ * you must enter values like %00.0010 as we will strip all %
+ * RCPTT is only to able to select a single item if the full path is given, eg.
+ * "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)"
+ */
+proc "select-tarmed-leistung" [ val ziffer "%00.0010" ] [ val fullname "xxx" ] {
+	open-window-by-name "Codes"
+	with [get-view Codes] {
+		get-tab-folder | get-tab-item Tarmed | click
+		get-tab-folder | key-type "M1+m"
+		let [ val stripped [ $ziffer | split -sep "%" -omitEmptyStrings true ] ] {
+		    with [get-editbox -after [get-label Ziffer]] {
+		        set-text $stripped
+		    }
+		    get-button "Suche jetzt ausführen" | click
+		    try {
+	// TODO: RCPTT is only to able to select a single item if the full path is given, eg.
+	// get-tree | select "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)"
+	// else it fails eg.
+	// get-tree | select  ".*Grundleistungen.*" -all true
+				get-tree  | get-item -path  $fullname | get-property caption -raw | log
+				get-tree  | get-item -path $fullname | select-item | get-property caption -raw | matches ".+"
+				bool true
+		    } -error [ val errorObj ] -catch {
+				concat  " While checking for Fehler: error " $errorObj | log
+				bool false
+			}
+	    }
+	}
 }
 proc "kons-add-tarmed" [ val itemName  "00.01.01 Konsultation" ] {
 	PressAddLeistungToKons
