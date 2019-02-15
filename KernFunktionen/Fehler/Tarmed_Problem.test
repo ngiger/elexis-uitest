@@ -1,0 +1,39 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _7pLWIBQVEemEb8FG0wciYA
+Element-Name: Tarmed_Problem
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _ZI3KEDEcEemTJ4mcg2qGTg
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 2/15/19 3:58 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+// Running mvn -V clean generate-sources
+// will download the needed ~/elexis/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb
+ReadTarmed
+OpenAndResetStartPerspektive
+open-window-by-name Codes
+with [get-view Codes] {
+    get-button "Liste anzeigen" | click
+    get-tab-folder | get-tab-item Tarmed | click
+    key-type "M1+m"
+    with [get-editbox -after [get-label Ziffer]] {
+        set-focus
+    }
+    // next line is okay
+    get-view Codes | get-tree | select "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0020 \\+ Konsultation bei Personen über 6 Jahren und unter 75 Jahren, jede weiteren 5 Min. \\(Konsultationszuschlag\\) \\(KVG\\)"
+	// next line is also okay
+    get-view Codes | get-tree | select "00 Grundleistungen.*"
+	// next line fails (2019.02.15)
+    get-view Codes | get-tree | select ".*00.01 Algemeine.*"
+    // this fails too but is the intended us
+    get-view Codes | get-tree | select ".*00.0020.*"	
+}
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

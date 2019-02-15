@@ -5,15 +5,23 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _iBWHgAVHEemrdfrfk5Gp9Q
 Manually-Ordered: true
-Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/7/19, 9:51 AM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 2/15/19 3:49 PM
 
 ------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8
 Content-Type: text/testcase
 Entry-Name: testcase-items
 
-_GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicTests' path: 'BasicTests.test'
+__ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: 'Infrastruktur/NoPreferenceWithPercent.test'
+_yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: 'Infrastruktur/NoViewWithPercent.test'
+_gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: 'Textverarbeitung/LOwriterMustBeInstalled.test'
+_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: 'BasicMandanten.test'
 _c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBase' path: 'ImportSwissBase.test'
+_GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: 'BasicKonsTests.test'
 _7B2QICqtEemYspbA8Fsyow	// kind: 'test' name: 'BasicPrinting' path: 'BasicPrinting.test'
+_gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: 'Behandlung/TarmedFallVerrechnen.test'
+_tFxLkBNbEemKBfY3bI9wrQ	// kind: 'test' name: 'EphaInteraktionen' path: 'EphaInteraktionen.test'
+_EwDAgAYfEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostPreferences' path: 'Infrastruktur/VisitMostPreferences.test'
+_0fUkAAYeEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostViews' path: 'Infrastruktur/VisitMostViews.test'
 
 ------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8--

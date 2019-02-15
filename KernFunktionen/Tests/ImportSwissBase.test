@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _c13msBQlEemEb8FG0wciYA
-Runtime-Version: 2.4.0.201902121222
-Save-Time: 2/15/19 10:56 AM
+Runtime-Version: 2.4.0.201812130013
+Save-Time: 2/15/19 2:02 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -59,19 +59,21 @@ SelectKontakt -bezeichnung1 "Aquilana" | assert-true
 get-eclipse-window | gen-screenshot [concat $imagesDir "Aquilana_imported.png"]
 OpenAndResetStartPerspektive
 ReadTarmed
-concat "RestartElexis: Run-Mode is " [ safe-get-java-property "elexis-run-mode" ] | log
-if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
-	log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
-} -else {
-	log "Trying to restart Elexis"
-	restart-aut
-	wait-until-eclipse-is-ready
-	log "Restart successfull"
-}
 OpenAndResetStartPerspektive
 
 try {
-	select-tarmed-leistung -ziffer "%00.0025" -fullname "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)" | verify-true
+	open-window-by-name Codes
+	with [get-view Codes] {
+	    get-button "Liste anzeigen" | click
+	    get-tab-folder | get-tab-item Tarmed | click
+	    key-type "M1+m"
+	    with [get-editbox -after [get-label Ziffer]] {
+	        set-focus
+	    }
+	    get-eclipse-window | gen-screenshot [concat $imagesDir "TarmedImported-select-tarmed.png"]
+	    // next line is okay
+	    get-view Codes | get-tree | select "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0020 \\+ Konsultation bei Personen über 6 Jahren und unter 75 Jahren, jede weiteren 5 Min. \\(Konsultationszuschlag\\) \\(KVG\\)"
+	}
 	log "select-tarmed-leistung passed in ImportSwissBase"
 } -catch {
 	log "select-tarmed-leistung failed in ImportSwissBase, but we want to continue anyway"
