@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.0.201902121222
-Save-Time: 2/14/19 7:33 PM
+Save-Time: 2/15/19 9:42 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -136,6 +136,7 @@ proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führer
  * "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)"
  */
 proc "select-tarmed-leistung" [ val ziffer "%00.0010" ] [ val fullname "xxx" ] {
+	concat "select-tarmed-leistung " $ziffer " full: " $fullname | log
 	open-window-by-name "Codes"
 	with [get-view Codes] {
 		get-tab-folder | get-tab-item Tarmed | click
@@ -150,11 +151,14 @@ proc "select-tarmed-leistung" [ val ziffer "%00.0010" ] [ val fullname "xxx" ] {
 	// get-tree | select "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)"
 	// else it fails eg.
 	// get-tree | select  ".*Grundleistungen.*" -all true
-				get-tree  | get-item -path  $fullname | get-property caption -raw | log
-				get-tree  | get-item -path $fullname | select-item | get-property caption -raw | matches ".+"
+				get-tree | expand-all
+				get-eclipse-window | gen-screenshot [concat $imagesDir "select-tarmed_" $stripped ".png"]
+				get-tree | get-item -path  $fullname | get-property caption -raw | log
+				get-tree | get-item -path $fullname | select-item | get-property caption -raw | matches ".+"
+				concat  "select-tarmed-leistung " $stripped " passed" | log
 				bool true
 		    } -error [ val errorObj ] -catch {
-				concat  " While checking for Fehler: error " $errorObj | log
+				concat  "select-tarmed-leistung " $stripped " checking for Fehler: error " $errorObj | log
 				bool false
 			}
 	    }
