@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 1:09 PM
+Save-Time: 2/16/19 6:30 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -141,7 +141,7 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 	// AssertNoErrorInProgress
 }
 
-proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL-01012019.xlsx" ] ] {
+proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL2019v1.csv" ] ] {
 	open-window-by-name [ t daten_artikel ]
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel_1.png"]
 	get-view [ t artikel ] | get-tab-folder | get-tab-item MiGeL | click
@@ -199,6 +199,21 @@ proc "ReadDataImport" [ val file [ concat  [get-user-dir] "/rcptt/Universal_pati
   		get-eclipse-window | gen-screenshot  [concat $imagesDir "ReadDataImport.png"]
 		get-button [ t ok ] | click
 	}
+}
+
+proc "ReadComplimentary" [ val file ] {
+	OpenLeistungen
+	with [get-view Codes] {
+	    get-tab-folder | get-tab-item "Komplementärmedizin" | click
+		get-eclipse-window | gen-screenshot [concat $imagesDir "ReadComplimentary_starting.png"]
+	}
+	// get-button "Menü anzeigen" -index 2 | click
+	get-view Codes | get-menu -path "Import..." | click
+	set-dialog-result File "/home/niklaus/elexis/rcptt/complementary_190101.csv"
+	get-window Datenimport | get-button "Suche..." | click
+	get-window Datenimport | get-button OK | click
+	get-view Codes | get-button "Suche jetzt ausführen" | click
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadComplimentary_done.png"]
 }
 // Ende
 //
