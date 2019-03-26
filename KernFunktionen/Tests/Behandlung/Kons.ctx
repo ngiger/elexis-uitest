@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.4.0.201902121222
-Save-Time: 2/15/19 9:42 AM
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 3/27/19 6:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -64,14 +64,27 @@ proc "PressAddDiagnosisToKons" {
 
 proc "PressAddLeistungToKons" {
 	// TODO: This button should get a toolbar
-	with [get-view [ t kons_view ] | get-button -after [ get-label [ t btn_accounting ] ] ] {
-		click
+	try {
+		with [get-view [ t kons_view ] | get-button -after [ get-label [ t btn_accounting ] ] ] {
+			click
+		}
+	} -error [val errorObj] -catch {
+		concat "PressAddLeistungToKons failed: " $errorObj | log
+		close-window-if-open "Warnung.*"
 	}
 }
 
 proc "ActivateVisibleKonsView" {
-	with [get-view [ t kons_view ] ] {
-		click
+	concat "ActivateVisibleKonsView " [ t kons_view ] | log
+	try {
+		get-view [ t kons_view ] | get-editbox | set-focus
+		log "ActivateVisibleKonsView no problems"
+		bool true
+	}  -error [val errorObj]  -catch {
+		concat "ActivateVisibleKonsView " [ t kons_view ]  " has problems." $errorObj " Trying to close warning" | log
+		close-window-if-open "Warnung.*"
+		get-view [ t kons_view ] | get-editbox | set-focus
+		bool false
 	}
 }
 
@@ -98,6 +111,8 @@ proc "kons-neue-diagnose" [ val reiter ] [ val item ] {
 
 /**
  * Das geht eine Ewigkeit, weil rcptt sich den ganzen Artikelstamm ins Memory lädt!!
+ * <br>Der Name muss so gewählt werden, dass kein hellblau eingefärbter Artikel als erster in der
+ * Auswahl erscheint, da diese nicht verrechnet werden können
 */
 proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 	PressAddLeistungToKons
@@ -105,11 +120,11 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 	with [get-view [t leistungen ] ] {
 		get-tab-folder | get-tab-item Artikelstamm | click
 		get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
-	get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
+		get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
 		log  "before double-click"
 		get-button [ t btn_execute_search ] | click
-	get-group  [ t alle_leistungen ] | get-table | select $item_long | double-click
-	key-type Enter
+		get-group  [ t alle_leistungen ] | get-table | select $item_long | double-click
+		key-type Enter
 	}
 	concat "kons-neuen-artikelstamm item added " $item_short " " $item_long | log
 	ActivateVisibleKonsView
@@ -164,24 +179,75 @@ proc "select-tarmed-leistung" [ val ziffer "%00.0010" ] [ val fullname "xxx" ] {
 	    }
 	}
 }
-proc "kons-add-tarmed" [ val itemName  "00.01.01 Konsultation" ] {
+
+/**
+ * Adds a given tarmed number. If it starts (or ends) with 0 you must call it like
+ * <BR>kons-add-tarmed [ concat "00.0010"]
+ * <br>this prevents converting the string to a float
+*/
+proc "kons-add-tarmed" [ val ziffer ] {
 	PressAddLeistungToKons
 	with [get-view [ t leistungen ] ] {
-			get-button [ t btn_show_list ] click
+		get-button [ t btn_show_list ] click
 		get-tab-folder | get-tab-item Tarmed | click
-		with [get-editbox -after [get-label Ziffer]] {
-		click-text
-		set-focus
-		set-text $itemName
+		// disable automatic search if necessary
+		with [ get-group Alle ] {
+			if [ get-button [ t btn_automatic_search ] | get-property enablement -raw ] {
+				get-button [ t btn_automatic_search ] | click
+			}
+			if [ $ziffer | matches "[0-9][0-9]\..*" ] {
+				with [get-editbox -after [get-label Ziffer]] {
+					set-text $ziffer
+				} 
+				get-button [ t btn_execute_search ] | click
+				loop [val i 0] {
+					try {
+							if [ or [get-tree | get-item ".*" | get-property childCount -raw | eq 1 ] [ $i | gt 10 ] ] {
+								concat "kons-add-tarmed found with i " $i " childCount: <" [ get-tree | get-item ".*" | get-property childCount -raw ] ">" | log
+							} -else {
+								concat "kons-add-tarmed must wait i: " $i " childCount: <" [ get-tree | get-item ".*" | get-property childCount -raw ] ">" | log
+								wait 500 // TODO: Why do we need this delay? This takes time sometimes
+								recur [$i | plus 1]
+							}
+					} -catch {
+						concat "kons-add-tarmed unable to get childCount i: " $i | log
+						wait 500 // TODO: Why do we need this delay? This takes time sometimes
+						recur [$i | plus 1]
+					}
+				}
+				get-eclipse-window | gen-screenshot [concat $imagesDir "kons-add-tarmed_" $ziffer ".png"]
+				try {
+					concat "kons-add-tarmed via Ziffer for: " $ziffer | log
+							get-tree | select [ concat ".*/.*/" $ziffer ".*" ] | double-click
+					log "kons-add-tarmed done 1"
+				} -error [ val errorObj ] -catch {
+					try {
+						concat "kons-add-tarmed try 2: " $errorObj " " $ziffer ".*" | log
+						get-tree | select [ concat ".*/.*/.*/" $ziffer ".*" ] | double-click
+						log "kons-add-tarmed done 2"
+					} -error [ val errorObj2 ] -catch {
+						try {
+							concat "kons-add-tarmed try 3: " $errorObj2 " " $ziffer ".*" | log
+							get-tree | select [ concat ".*/.*/.*/.*/" $ziffer ".*" ] | double-click
+							log "kons-add-tarmed done 3"
+						} -error [ val errorObj3 ] -catch {
+							concat "kons-add-tarmed failed adding " $ziffer " " $errorObj3| log
+						}
+					}
+				}
+			} -else {
+				concat "kons-add-tarmed via expand-all for: " $ziffer | log
+				get-tree | expand-all
+				// Select just the first element
+				get-tree | select [ concat ".*/.*/.*/.*" $ziffer ".*" ] | double-click
+			}
 		}
-		get-button [ t btn_execute_search ] | click
-		// Select just the first element
-		get-tree | select ".*" | double-click
 	}
 	// Close Leistungen
 	ActivateVisibleKonsView 
 	// TODO: This fails with NullPointerException and does not populate the Verrechnung
 	// Not checking for this condition at the moment
+	get-eclipse-window | gen-screenshot  [concat $imagesDir "kons-add-tarmed_done_" $ziffer ".png"]
 }
 
 proc "preferences-use-macros-with-TI-and-Favoriten" {
@@ -231,15 +297,26 @@ proc "kons-add-macro" [ val macroName "soap" ] {
 }
 
 proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] {
+	concat "kons-add-block: " $blockName | log
 	PressAddLeistungToKons
 	get-tab-folder | get-tab-item Block | click
 	with [get-group Alle] {
-	get-editbox -after [get-label Name] | set-focus
-		log "kons-add-block in Block"
-		get-eclipse-window | gen-screenshot [concat $imagesDir "kons_add_block_before.png"]
-	get-tree | select [get-item -path $blockName ] | double-click
-		get-eclipse-window | gen-screenshot [concat $imagesDir "kons_add_block_after.png"]
+	get-editbox -after [get-label Name] | set-text $blockName
+	try {
+			get-button [ t btn_execute_search ] | click
+			// wait 2000 // TODO: Why must I add this delay here?
+			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-add_block_before_" $blockName ".png"]
+			get-tree | select [get-item -path $blockName ] | double-click
+			// HIer kommt die fürchterliche Warnung folgende Leistung
+			concat "kons-add-block: " $blockName " double-click done" | log
+			// wait 2000 // TODO: Why must I add this delay here?
+		} -catch {
+		concat "kons-add-block: " $blockName " double-click failed" | log
+		}
 	}
+	ActivateVisibleKonsView
+	get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $blockName ".png"]
+	concat "kons-add-block: " $blockName " done" | log
 }
 	// ENDE
 

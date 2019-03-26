@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _tFxLkBNbEemKBfY3bI9wrQ
-Runtime-Version: 2.4.0.201812130013
-Save-Time: 1/18/19 10:16 AM
+Runtime-Version: 2.4.0.201901240010
+Save-Time: 2/16/19 5:13 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -57,7 +57,15 @@ try {
 
 OpenAndResetStartPerspektive
 SetEphaInteractionCheck true
-
+concat "RestartElexis: Run-Mode is " [ safe-get-java-property "elexis-run-mode" ] | log
+if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
+	log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
+} -else {
+	log "Trying to restart Elexis"
+	restart-aut
+	wait-until-eclipse-is-ready
+	log "Restart successfull"
+}
 if [SelectPatient Armes Wesen | eq false] {
 	PatientenErstellen  Armes Wesene true "30.3.1979" "Nebenstrasse 33" 3320 Elexiskon "055 323 45 67"
 }
