@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 10:17 AM
+Save-Time: 3/28/19 4:40 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -69,12 +69,18 @@ proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 	$inString | invoke replaceAll $searchPattern $replaceString
 }
 
-proc "elexisLogMayNotContain" [ val searchFor  ] {
-	let [ val result [ exec-process "grep" $searchFor [ concat [ get-user-dir] "/logs/elexis-3.log" ] -ignoreExitCode ] ] {
-		$result | get  exitCode | equals 1 | assert-true
-		concat "elexisLogMayNotContain passed" | log
+
+proc "FileContainsString"  [ val fileName ] [ val searchFor  ] {
+	let [ val result [ exec-process "grep" $searchFor $fileName -ignoreExitCode ] ] {
+		concat "FileContainsString " $fileName " returned " [ $result | get  exitCode ] | log
+		$result | get  exitCode | equals 0 | bool
 	}
 }
+
+proc "elexisLogMayNotContain"  [ val searchFor  ] {
+ 	FileContainsString -fileName [ concat [ get-user-dir] "/logs/elexis-3.log" ] -searchFor $searchFor | not | assert-true
+}
+
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
 
 /**
@@ -82,11 +88,13 @@ elexisLogMayNotContain "java.lang.OutOfMemoryError"
  */
 proc "RestartElexis" {
 	concat "RestartElexis: Run-Mode is " [ safe-get-java-property "elexis-run-mode" ] | log
+	wait-until-eclipse-is-ready
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 		log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
 	} -else {
 		log "RestartElexis: Trying to restart Elexis"
 		restart-aut
+		log "RestartElexis: Calling wait-until-eclipse-is-ready"
 		wait-until-eclipse-is-ready
 		log "RestartElexis successfull"
 	}

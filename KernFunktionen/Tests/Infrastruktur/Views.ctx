@@ -5,8 +5,8 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.4.0.201901240010
-Save-Time: 1/25/19 9:05 AM
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 3/28/19 4:50 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -14,11 +14,14 @@ Entry-Name: .ecl.context
 
 global [val viewPathName "" ] -override
 log $viewsCsvFile
-exec-with-options -command {
-	get-menu -path [ t menu_select_view ]| click
-	get-window [ t show_view ] | get-tree | expand-all | get-table-data | write-csv-file $viewsCsvFile
-	wait 100
-	get-window [ t show_view ] | get-button [ t cancel ] | click
+
+proc "WriteViewsCsvFile" {
+	exec-with-options -command {
+		get-menu -path [ t menu_select_view ]| click
+		get-window [ t show_view ] | get-tree | expand-all | get-table-data | write-csv-file $viewsCsvFile
+		wait 100
+		get-window [ t show_view ] | get-button [ t cancel ] | click
+	}
 }
 
 proc "open-window-by-name" [ val windowName ] {
@@ -63,6 +66,7 @@ proc "check-one-view-item" [val viewName] {
 }
 
 proc "visit-all-views" [ val addToIgnorePattern "" ] {
+	WriteViewsCsvFile
 	read-lines $viewsCsvFile | foreach [val item] {
 		concat "visit-all-views checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
 		// if [$item | str | matches "^_indent.*" [

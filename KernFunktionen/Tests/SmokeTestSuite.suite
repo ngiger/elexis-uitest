@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/26/19 2:07 PM
+Save-Time: 3/28/19 5:00 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -24,9 +24,11 @@ _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: 'Infrast
 _gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: 'Textverarbeitung/LOwriterMustBeInstalled.test'
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: 'BasicMandanten.test'
 _c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBase' path: 'ImportSwissBase.test'
+_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Hilfen/RestartElexis.test'
 _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: 'BasicKonsTests.test'
 _7B2QICqtEemYspbA8Fsyow	// kind: 'test' name: 'BasicPrinting' path: 'BasicPrinting.test'
 _gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: 'Behandlung/TarmedFallVerrechnen.test'
+_Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: 'Rechnungen/CheckTarmedFallVerrechnen.test'
 _EwDAgAYfEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostPreferences' path: 'Infrastruktur/VisitMostPreferences.test'
 _0fUkAAYeEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostViews' path: 'Infrastruktur/VisitMostViews.test'
 

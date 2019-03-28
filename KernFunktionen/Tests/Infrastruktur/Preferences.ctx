@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/26/19 5:50 PM
+Save-Time: 3/28/19 5:30 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -42,8 +42,8 @@ proc "get-first-preference-item" {
 		get-tree | get-item -path Bezugskontakt | get-property "getParent().getSelection().TreeItem[0].getText()" | log
 		get-tree | get-item -path Bezugskontakt | get-property "getParent().getSelection().TreeItem[0].getText()" -raw
 	}
+	close-window-if-open [ t preferences ]
 }
-global [val curPrefSection [get-first-preference-item]] -override
 global [val curSubSection "" ] -override
 global [val curPath "" ] -override
 close-window-if-open [ t preferences ]
@@ -98,6 +98,7 @@ proc "check-one-preference-item" [val prefName] {
 
 proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
 	SavePreferencesToFile
+	global [val curPrefSection [get-first-preference-item]] -override
 	read-lines $preferencesCsvFile | foreach [val item] {
 		concat "visit-all-preferences checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
 		if [$item | str | matches [
