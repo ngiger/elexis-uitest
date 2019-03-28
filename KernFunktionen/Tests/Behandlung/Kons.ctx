@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 10:47 AM
+Save-Time: 3/28/19 12:18 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -212,7 +212,7 @@ proc "kons-add-tarmed" [ val ziffer ] {
 					} -catch {
 						concat "kons-add-tarmed unable to get childCount i: " $i | log
 						wait 500 // TODO: Why do we need this delay? This takes time sometimes
-						recur [$i | plus 1]
+						if [ $i | lt 10 ] { recur [$i | plus 1] }
 					}
 				}
 				get-eclipse-window | gen-screenshot [concat $imagesDir "kons-add-tarmed_" $ziffer ".png"]
