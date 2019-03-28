@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/27/19 6:20 PM
+Save-Time: 3/28/19 10:47 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -202,12 +202,12 @@ proc "kons-add-tarmed" [ val ziffer ] {
 				get-button [ t btn_execute_search ] | click
 				loop [val i 0] {
 					try {
-							if [ or [get-tree | get-item ".*" | get-property childCount -raw | eq 1 ] [ $i | gt 10 ] ] {
+							if [get-tree | get-item ".*" | get-property childCount -raw | eq 1 ] {
 								concat "kons-add-tarmed found with i " $i " childCount: <" [ get-tree | get-item ".*" | get-property childCount -raw ] ">" | log
 							} -else {
 								concat "kons-add-tarmed must wait i: " $i " childCount: <" [ get-tree | get-item ".*" | get-property childCount -raw ] ">" | log
 								wait 500 // TODO: Why do we need this delay? This takes time sometimes
-								recur [$i | plus 1]
+								if [ $i | lt 10 ] { recur [$i | plus 1] }
 							}
 					} -catch {
 						concat "kons-add-tarmed unable to get childCount i: " $i | log

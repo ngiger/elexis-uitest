@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/27/19 6:10 PM
+Save-Time: 3/28/19 11:03 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -15,6 +15,7 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 // requires ImportSwissMediBase and BasicMandanten or demoDB run before
+elexisLogMayNotContain "java.lang.OutOfMemoryError"
 global [val testPatFamilyName "Bernasconi"] -override
 global [val testPatFirstName "Beat"] -override
 concat "TarmedFallVerrechnen " $testPatFirstName " " $testPatFamilyName | log
@@ -37,7 +38,6 @@ if [FallOffen -caseLaw [ t case_KVG ] -startDate "201.*"] {
 	FallZuPatientErstellen -caseLaw [ t case_KVG ] -caseReason [ t reason_KVG ] -startDate "20.8.2018"
 	log "Fall KVG 20.8.2018 erstellt"
 }
-
 SelectFall  [ t case_KVG ] "201"
 
 if [ HasKonsSelected | eq false] {
@@ -46,6 +46,11 @@ if [ HasKonsSelected | eq false] {
 	log "HasKonsSelected returned true"
 }
 
+let [val fullName [ concat $testPatFamilyName " " $testPatFirstName ".*" ] ] {
+	get-view Patientendetails | get-editbox  | set-focus
+	get-eclipse-window | gen-screenshot [ concat $imagesDir "TarmedFallVerrechnen_" $fullName ".png"]
+	get-view Patientendetails | get-label $fullName | get-property caption | matches $fullName | verify-true
+}
 
 kons-add-block  "kons plus (KVG)"
 
@@ -58,7 +63,6 @@ kons-add-artikelstamm -item_short Metoprolol -item_long ".*30 Stk.*"
 
 // kons-add-eigenleistung
 kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
-
 
 FallSetVersicherungsNummer
 AktuellenFallVerrechnen
@@ -73,7 +77,7 @@ ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_EZ.odt" ]
 
 
 RechnungAusgeben
-
+elexisLogMayNotContain "java.lang.OutOfMemoryError"
 // Ende
 //
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

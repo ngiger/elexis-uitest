@@ -80,6 +80,13 @@
               <vmArg>-Dch.elexis.password=topsecret</vmArg>
             </vmArgs>
           </aut>
+          <runner>
+            <version>${rcptt-maven-version}</version>
+            <vmArgs>
+              <vmArg>-Xmx2048m</vmArg>
+              <vmArg>-Xms2048m</vmArg>
+            </vmArgs>
+          </runner>
         </configuration>
       </plugin>
     </plugins>

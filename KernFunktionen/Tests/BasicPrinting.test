@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _7B2QICqtEemYspbA8Fsyow
-Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 12:39 PM
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 3/28/19 10:19 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -43,7 +43,10 @@ if [ HasKonsSelected | eq false] {
 }
 
 FallErzeugeAUF -percentage 50 -reason "RCP Test Grund" -comment "Und ein noch besserer Kommentar"
-ErzeugeBriefZuAUT -reason "RCP Test Grund" 
+ErzeugeBriefZuAUT -reason "RCP Test Grund"
+
+elexisLogMayNotContain "java.lang.OutOfMemoryError"
+
 // TODO: 
 // AktuellenFallVerrechnen
 // RechnungAusgeben

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/27/19 5:52 PM
+Save-Time: 3/28/19 10:17 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -68,6 +68,14 @@ proc "replaceFirst" [ val inString ] [ val searchPattern ] [ val replaceString] 
 proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 	$inString | invoke replaceAll $searchPattern $replaceString
 }
+
+proc "elexisLogMayNotContain" [ val searchFor  ] {
+	let [ val result [ exec-process "grep" $searchFor [ concat [ get-user-dir] "/logs/elexis-3.log" ] -ignoreExitCode ] ] {
+		$result | get  exitCode | equals 1 | assert-true
+		concat "elexisLogMayNotContain passed" | log
+	}
+}
+elexisLogMayNotContain "java.lang.OutOfMemoryError"
 
 /**
  * Somehow this does not work, wait-until-eclipse-is-ready never returns
