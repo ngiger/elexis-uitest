@@ -5,8 +5,8 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Runtime-Version: 2.4.0.201901240010
-Save-Time: 2/12/19, 10:38 AM
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 3/29/19 6:32 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -102,7 +102,7 @@ proc PatientenErstellenFallsNichtVorhanden [val familyName "Wesen" ] [val firstN
 	}
 }
 
-proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val male "m" ] 
+proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val male true] 
 	[val birthDate "29.02.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
 	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] {
 	open-window-by-name [t view_patients ]
@@ -111,36 +111,43 @@ proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val 
 	with [get-window [t dlg_new_patient ]] {
 		with [get-editbox -after [get-label [ t dlg_new_patient_nom ]]] {
 			set-text $familyName
-			key-type TRAVERSE_TAB_NEXT
 		}
 		with [get-editbox -after [get-label [ t dlg_new_patient_firstname ]]] {
 			set-text $firstName
-			key-type TRAVERSE_TAB_NEXT
 		}
 		if [$male] {
-			get-combo -after [get-label [ t dlg_new_patient_sex ]] | select m
+			get-combo -after [get-label [ t dlg_new_patient_sex ]] | select [ t dlg_new_patient_male ]
 		} -else {
-			get-combo -after [get-label [ t dlg_new_patient_sex ]] | select w
+			get-combo -after [get-label [ t dlg_new_patient_sex ]] | select [ t dlg_new_patient_female ]
 		}
 		with [get-editbox -after [get-label [ t dlg_new_patient_birthday ]]] {
 			set-text $birthDate
-			key-type TRAVERSE_TAB_NEXT
 		}
 		with [get-editbox -after [get-label [ t dlg_new_patient_street ]]] {
 			set-text $street
-			key-type TRAVERSE_TAB_NEXT
 		}
 		with [get-editbox -after [get-label [ t dlg_new_patient_plz ]]] {
 			set-text $zipCode
-			key-type TRAVERSE_TAB_NEXT
 		}
 		with [get-editbox -after [get-label [ t dlg_new_patient_location ]]] {
 			set-text $location
-			key-type TRAVERSE_TAB_NEXT
 		}
 		get-editbox -after [get-label [ t dlg_new_patient_phone ] ] | set-text $phone
 		get-eclipse-window | gen-screenshot [concat $imagesDir $familyName "_created.png"]
 		get-button [t ok ] | click
 	}
+	global [ val PatientenErstellenOkay true ] -override
+	try {
+		get-window "Unplausible Angaben" | get-button [t ok ] | click
+		get-window [t dlg_new_patient ] | get-button [t cancel ] | click
+		log "PatientenErstellen: Unplausible Angaben gefunden!"
+		// TODO: Raise an error if the female could not be created (French)
+		global [ val PatientenErstellenOkay false ] -override
+	} -catch {
+		// Nothing to do
+	}
+	concat "Res is " $PatientenErstellenOkay | log
+	$PatientenErstellenOkay | assert-true
 }
+// Ende
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/26/19 6:41 PM
+Save-Time: 3/29/19 5:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -16,7 +16,8 @@ Entry-Name: .ecl.context
  * Select a kontact (case-insensitive) via Bezeichung1 (aka family name) and location
 */
 proc "SelectKontakt" [ val bezeichnung1 "Devaud" ] [ val location "" ] {
-	open-window-by-name "Kontakte"	
+	concat "Kontakte_is" [ t Kontakte ] | log
+	open-window-by-name [ t Kontakte ]
 	concat "SelectKontakt bezeichnung1 " $bezeichnung1 " from " $location  | log
 	with [get-view [ t tab_data_kontakte ] ] {
 		with [get-editbox -index 1] {
@@ -34,19 +35,11 @@ proc "SelectKontakt" [ val bezeichnung1 "Devaud" ] [ val location "" ] {
 		}
 	}
 }
-/*
-get-preferences-menu | click
-with [get-window Benutzervorgaben] {
-	get-tree | select "Gruppen und Rechte/Benutzerverwaltung"
-	get-table | select test
-}
-get-window Benutzervorgaben | get-group Verrechnung | get-link "Nicht gesetzt <a>ändern</a>" | get-property caption 
-	| equals "Nicht gesetzt <a>ändern</a>" | verify-true
-	*/
+
 proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
 	let [ val kuerzel [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel" ] ] ] {
 		if [ SelectKontakt -bezeichnung1 $kuerzel | equals true] {		
-			with [get-view Kontakte] {
+			with [get-view [ t Kontakte ]] {
 				get-table | select [ concat $kuerzel ".*"] | double-click
 			}
 			SetSelectedKontaktInfo -Name [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ]
@@ -61,7 +54,7 @@ proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
 			let [ val familyName [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ] ] {
 				if [ SelectKontakt -bezeichnung1 $familyName | equals true] {		
 					concat "SetMandantKontatkInfo Kontakt Name Kuerzel " $familyName " gefunden" | log
-					get-view Kontakte | get-table | select [ concat $familyName ".*" ] | double-click
+					get-view [ t Kontakte ] | get-table | select [ concat $familyName ".*" ] | double-click
 					SetSelectedKontaktInfo -Name [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ]
 						-Vorname [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Vorname" ] ]
 						-Strasse [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Strasse" ] ]
@@ -112,42 +105,46 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 	} -else {
 		concat "Kontakt " $Name " in " $Ort " gefunden" | log
 		*/
-		open-window-by-name "Details zum Kontakt"
-		with [get-view "Details zum Kontakt"] {
-		get-editbox -after [get-label Name ] | set-text $Name
-		get-editbox -after [get-label Geschlecht ] | set-text $Geschlecht
-		get-editbox -after [get-label Vorname ] | set-text $Vorname
-		get-editbox -after [get-label Zusatz ] | set-text $Zusatz
-		get-editbox -after [get-label Plz ] | set-text $Plz
-		get-editbox -after [get-label Ort ] | set-text $Ort
-		get-editbox -after [get-label Land ] | set-text $Land
-		get-editbox -after [get-label Telefon1 ] | set-text $Telefon1
-		get-editbox -after [get-label Telefon2 ] | set-text $Telefon2
-		get-editbox -after [get-label "Mobil-Tel." ] | set-text $Mobile
-		get-editbox -after [get-label Fax ] | set-text $Fax
-		get-editbox -after [get-label Bemerkung ] | set-text $Bemerkung
-		get-editbox -after [get-label "Kürzel/ID" ] | set-text $Kuerzel
-		get-editbox -after [get-label Titel ] | set-text $Titel
+		open-window-by-name [ t Details_zum_Kontakt  ]
+		with [get-view [ t Details_zum_Kontakt  ]] {
+			get-editbox -after [get-label [ t field_Name ] ] | set-text $Name
+			get-editbox -after [get-label [ t field_Geschlecht ] ] | set-text $Geschlecht
+			get-editbox -after [get-label [ t field_Vorname ] ] | set-text $Vorname
+			get-editbox -after [get-label [ t field_Zusatz ] ] | set-text $Zusatz
+			get-editbox -after [get-label [ t field_Plz ] ] | set-text $Plz
+			get-editbox -after [get-label [ t field_Ort ] ] | set-text $Ort
+			get-editbox -after [get-label [ t field_Land ] ] | set-text $Land
+			get-editbox -after [get-label [ t field_Telefon1 ] ] | set-text $Telefon1
+			get-editbox -after [get-label [ t field_Telefon2 ] ] | set-text $Telefon2
+			get-editbox -after [get-label [ t field_Mobile ] ] | set-text $Mobile
+			get-editbox -after [get-label [ t field_Fax ] ] | set-text $Fax
+			get-editbox -after [get-label [ t field_Bemerkung ] ] | set-text $Bemerkung
+			get-editbox -after [get-label [ t field_Kuerzel ] ] | set-text $Kuerzel
+			get-editbox -after [get-label [ t field_Titel ] ] | set-text $Titel
 		}
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kontakt_" $Name "_" $Vorname "_created.png"]
 //	}
 }
 
-proc EnterOneOrganisationDetail [ val key ] [ val idOrganisation 1 ]  {
-	with [get-window "Kontakt erfassen"] {
-	 let [ val value [ GetPraxisProperty [ concat "organisation." $idOrganisation "." $key ] ] ] {
-			concat "EnterOneOrganisationDetail: " $key " value " $value | log
-			get-editbox -after [get-label $key] | set-text $value
+proc EnterOneOrganisationDetail [ val key ]  [ val idOrganisation 1 ]  {
+	with [get-window [ t Kontakt_erfassen ] ] {
+		let [ val label [ t [ concat "field_" $key ] ] ] {
+				let [ val value [ GetPraxisProperty [ concat "organisation." $idOrganisation "." $key ] ] ] {
+				concat "EnterOneOrganisationDetail: " $key " value " $value " label " $label | log
+				get-editbox -after [get-label $label] | set-text $value
+			}
 		}
 	}
 }
 
 
 proc EnterOneMandantDetail [ val key ] [ val idMandant 1 ]  {
-	with [get-window "Kontakt erfassen"] {
-	 let [ val value [ GetPraxisProperty [ concat "praxis.mandant." $idMandant "." $key ] ] ] {
-			concat "EnterOneMandantDetail: " $key " value " $value | log
-			get-editbox -after [get-label $key] | set-text $value
+	with [get-window [ t Kontakt_erfassen ]] {
+		let [ val label [ t [ concat "field_" $key ] ] ] {
+			let [ val value [ GetPraxisProperty [ concat "praxis.mandant." $idMandant "." $key ] ] ] {
+				concat "EnterOneMandantDetail: " $key " value " $value " label " $label | log
+				get-editbox -after [get-label $label] | set-text $value
+			}
 		}
 	}
 }
@@ -156,33 +153,35 @@ proc EnterOneMandantDetail [ val key ] [ val idMandant 1 ]  {
  * Will silently ignore if Organsation already exists
  */
 proc "OrganisationErfassen"  [ val idOrganisation 1 ] {
-	open-window-by-name "Kontakte"
-	with [get-view Kontakte] {
+	open-window-by-name [ t Kontakte ]
+	with [get-view [ t Kontakte ] ] {
 		click
-		get-button "Neuen Kontakt erstellen" | click
+		get-button [ t Neuen_Kontakt_erstellen ] | click
 	}
-	with [get-window "Kontakt erfassen"] {
+	with [get-window [ t Kontakt_erfassen ]] {
 		get-button Organisation | check
-		str "Bezeichnung Zusatz Ansprechperson Geburtsdatum Strasse Plz Ort Telefon EMail"  |
-			split -sep " " | foreach [val item]  {
+		str [ t fields_OrganisationErfassen de ] |
+		// "Bezeichnung Zusatz Ansprechperson Geburtsdatum Strasse Plz Ort Telefon EMail"  |
+			split -sep ";" | foreach [val item]  {
 				EnterOneOrganisationDetail -key $item -idOrganisation $idOrganisation
 		}
-	 	get-link "* nicht gesetzt *" | get-property enablement -raw | equals true | log
-		if [ get-link "* nicht gesetzt *" | get-property enablement -raw | equals false] {
+	 	get-link [ t link_not_set ] | get-property enablement -raw | equals true | log
+		if [ get-link [ t link_not_set ] | get-property enablement -raw | equals false] {
 			get-button OK | click
 		} -else {
-	   		get-link "* nicht gesetzt *" | click
+	   		get-link [ t link_not_set ] | click
+	   		concat "WIndow Name: " [ t Company_exists ] | log
 			try {	   		
-		   		get-window Postanschrift | get-button OK | click
-				get-window "Kontakt erfassen" | gen-screenshot [concat $imagesDir "organisation_" $idOrganisation "_created.png"]
+		   		get-window [ t Postanschrift ] | get-button OK | click
+				get-window [ t Kontakt_erfassen ] | gen-screenshot [concat $imagesDir "organisation_" $idOrganisation "_created.png"]
 				get-button OK | click
 				try {
-					get-window "Company exists" | get-button Abbrechen | click
+					get-window [ t Company_exists ] | get-button [ t cancel ] | click
 		 		} -catch {
 		 			concat "Company " $idOrganisation " already exists"	
 				}
 	   		} -catch {
-				get-window "Company exists" | get-button Abbrechen | click
+				get-window [ t Company_exists ] | get-button [ t cancel ] | click
  				concat "Company " $idOrganisation " already exists"	
 			}
 		}
@@ -193,29 +192,30 @@ proc "OrganisationErfassen"  [ val idOrganisation 1 ] {
  * Will silently ignore if Mandant already exists
  */
 proc "MandantKontaktInfoErfassen"  [ val idMandant 1 ] {
-	open-window-by-name "Kontakte"
-	with [get-view Kontakte] {
+	open-window-by-name [ t Kontakte ]
+	with [get-view [ t Kontakte ]] {
 		click
-		get-button "Neuen Kontakt erstellen" | click
+		get-button [ t Neuen_Kontakt_erstellen ] | click
 	}
-	with [get-window "Kontakt erfassen"] {
-		get-button Mandant | check
-		str "Name Vorname Geburtsdatum Strasse Plz Ort Telefon Fax EMail"  |
-			split -sep " " | foreach [val item]  {
+	with [get-window [ t Kontakt_erfassen ]] {
+		t Mandant | log
+		get-button [t Mandant ] | check
+		str [ t fields_MandantKontaktInfoErfassen de ] |
+			split -sep ";" | foreach [val item]  {
 				EnterOneMandantDetail -key $item -idMandant $idMandant
 		}
-		get-link "* nicht gesetzt *" | click
+		get-link [ t link_not_set ] | click
 		try {
 			// Company or person
-			get-window Postanschrift | get-button Postanschrift | click
-			get-window Postanschrift | get-button OK | click
-			get-window ".* exists" | get-button Abbrechen | click
-			get-window Postanschrift | get-button OK | click
-			get-window "Kontakt erfassen" | gen-screenshot [concat $imagesDir "Mandant_" $idMandant "_kontakt_info1.png"]
+			get-window [ t Postanschrift ] | get-button [ t Postanschrift ] | click
+			get-window [ t Postanschrift ] | get-button OK | click
+			get-window ".* exists" | get-button [ t cancel ] | click
+			get-window [ t Postanschrift ] | get-button OK | click
+			get-window [ t Kontakt_erfassen ] | gen-screenshot [concat $imagesDir "Mandant_" $idMandant "_kontakt_info1.png"]
 			get-button OK | click
  		} -catch {
  			concat "Company " $idMandant " already exists"
-			get-window "Kontakt erfassen" | gen-screenshot [concat $imagesDir "Mandant_" $idMandant "_kontakt_info2.png"]
+			get-window [ t Kontakt_erfassen ] | gen-screenshot [concat $imagesDir "Mandant_" $idMandant "_kontakt_info2.png"]
 			get-button OK | click
 		}
    }

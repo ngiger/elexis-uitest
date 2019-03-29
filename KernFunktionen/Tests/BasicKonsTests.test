@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _GbaREP_HEeiXxf0UDvXYOw
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 10:18 AM
+Save-Time: 3/29/19 12:22 PM
 Testcase-Type: ecl
 Verifications: _GcdboAX2Eemcp9WoDsgIvA
 
@@ -16,12 +16,13 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 // requires ImportSwissBase and BasicMandanten or demoDB run before
+PatientenErstellen -male false -familyName Anna
 
 if [SelectPatient "Armes Wesen" Vorname | eq false] {
 	PatientenErstellen "Armes Wesen" Vorname true "30.3.1980" "Nebenstrasse 33" 3320 Elexiskon "055 323 45 67"
 }
 if [SelectPatient Berset Alain | eq false] {
-	PatientenErstellen Berset Alain false "9.4.1972" "Hauptstrasse 33" 3003 Bern "033 323 45 67"
+	PatientenErstellen Berset Alain true "9.4.1972" "Hauptstrasse 33" 3003 Bern "033 323 45 67"
 }
 log "Zwei Patienten vorhanden"
 SelectPatient "Armes Wesen" Vorname
@@ -35,8 +36,8 @@ if [FallOffen [ t case_KVG ] "201."] {
 get-eclipse-window | get-object | invoke setSize 1280 1024
 resetPerspective
 
-if [SelectPatient Wu Luis | eq false] {
-	PatientenErstellen -familyName Wu -firstName Luis -birthDate "13.04.1980" -street "Vorderstrasse 33" -zipCode 3003 -location Bern -phone "033 323 45 67"
+if [SelectPatient Wux Luis | eq false] {
+	PatientenErstellen -male true -familyName Wux -firstName Luis -birthDate "13.04.1980" -street "Vorderstrasse 33" -zipCode 3003 -location Bern -phone "033 323 45 67"
 }
 
 if [FallOffen -caseLaw [ t case_UVG ] -startDate "201.*"] {

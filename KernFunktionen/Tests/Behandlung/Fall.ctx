@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.4.0.201902121222
-Save-Time: 2/14/19 5:20 PM
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 3/29/19 6:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -108,6 +108,7 @@ proc AktuellenFallVerrechnen {
 	try {
 		get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
 		log "AktuellenFallVerrechnen: Failed. See message above" -severity error
+		close-window-if-open [ t error ]
 	} -catch {
 		log "Catched error"
 	}
@@ -118,38 +119,47 @@ global [val auf_id 1 ] -override
 proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [ val comment "" ] [ val startDate "" ] [ val endDate ""]  {
 	concat "FallErzeugeAUF. Warum ist hier manchmal kein Fall ausgewählt? " $auf_id | log
 	get-eclipse-window | gen-screenshot [concat $imagesDir "AUF-" $auf_id "-before-create.png"]
-	with [get-view AUF] {
+	with [get-view [ t AUF ]] {
 		click
-		get-button "Eine neue AUF erstellen" | click
+		get-button [ t btn_create_new_auf ] | click
 	}
-	with [get-window "Arbeitsunfähigkeit"] {
-		with [get-editbox -after [get-label Grund]] {
-		set-text $percentage
+	with [get-window [ t Arbeitsunfaehigkeit ] ] {
+		with [get-editbox -after [get-label [ t Prozent ]]] {
+			set-text $percentage
 		}
-		with [get-editbox -after [get-label Grund] -index 1] {
-		set-text $reason
+		with [get-editbox -after [get-label [ t Grund ]] -index 1] {
+			set-text $reason
 		}
-		get-editbox -after [get-label "ggf. Zusätzliche Angaben"] | set-text $comment
+		get-editbox -after [get-label [ t Zusaetzliche_Angaben ] ] | set-text $comment
 		get-eclipse-window | gen-screenshot [concat $imagesDir "AUF-" $auf_id ".png"]
 		global [val auf_id [  $auf_id | plus 1 ] ] -override
 		get-button OK | click
 	}
 }
 proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val adrPostalcode "5401" ] {
-	with [get-view AUF] {
+	with [get-view [ t AUF ]] {
 		// Select first matching
 		get-table | select [ concat ".*" $reason ".*" ]
-		get-button "Ein Fenster mit einer Druckansicht der gewÃ¤hlten AUF Öffnen" | click
+		get-button [ t open_window_for_AUF ] | click
 	}
-	with [get-window "Kontakt auswählen"] {
+	with [get-window [ t select_contact ]] {
 		get-table | select  [ concat ".*" $adrName ".*"  $adrPostalcode ".*" ]
 		get-button OK | click
 	}
 }
 
 proc "FallSetVersicherungsNummer" [ val nummer 123456 ] {
-	get-view "Fälle" | get-table | select ".*" | double-click
-	get-view Fall | get-editbox -after [get-label Versicherungsnummer] | set-text $nummer
+	get-view [ t view_cases ] | get-table | select ".*" | double-click
+	try {
+		// this work in german
+		get-view [ t Fall ] | get-button [ t Kopie_an_Patienten ] | check
+		get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer
+	} -catch {
+		// THis works in french wher Cas is name for view Fälle und Fall
+		get-view [ t Fall ] -index 1 | get-button [ t Kopie_an_Patienten ] | check
+		 // TODO: French problem: INFO  ch.elexis.data.PersistentObject - field is not mapped Désignation
+		get-view [ t Fall ] -index 1 | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer
+	}
 }
 
 // End

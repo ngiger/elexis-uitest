@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 12:18 PM
+Save-Time: 3/29/19 12:35 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -160,7 +160,7 @@ proc "select-tarmed-leistung" [ val ziffer "%00.0010" ] [ val fullname "xxx" ] {
 		    with [get-editbox -after [get-label Ziffer]] {
 		        set-text $stripped
 		    }
-		    get-button "Suche jetzt ausführen" | click
+		    get-button [ t btn_execute_search ] | click
 		    try {
 	// TODO: RCPTT is only to able to select a single item if the full path is given, eg.
 	// get-tree | select "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)"
@@ -191,7 +191,7 @@ proc "kons-add-tarmed" [ val ziffer ] {
 		get-button [ t btn_show_list ] click
 		get-tab-folder | get-tab-item Tarmed | click
 		// disable automatic search if necessary
-		with [ get-group Alle ] {
+		with [ get-group [ t alle_leistungen ] ] {
 			if [ get-button [ t btn_automatic_search ] | get-property enablement -raw ] {
 				get-button [ t btn_automatic_search ] | click
 			}
@@ -252,27 +252,27 @@ proc "kons-add-tarmed" [ val ziffer ] {
 
 proc "preferences-use-macros-with-TI-and-Favoriten" {
 	get-preferences-menu | click
-	with [get-window Benutzervorgaben] {
-		get-tree | select "Anwender/Texteingabe"
-		get-editbox -after [get-label "Makro-Zeichen"] | set-text "$"
-		get-button "Makros Verrechenbar Favoriten" | check
-		get-button "TI Diagnosen" | check
-		get-button "Anwenden und Schließen" | click
+	with [get-window [ t preferences ]] {
+		get-tree | select [ t Anwender_Texteingabe ]
+		get-editbox -after [get-label [ t Makro_Zeichen ] ] | set-text "$"
+		get-button	[ t Makros_Verrechenbar_Favoriten ] | check
+		get-button [ t TI_Diagnosen ] | check
+		get-button [ t apply_and_close ] | click
 	}
 }
 
 proc "select-block" [ val blockName "arzt_Berichte"] {
-	open-window-by-name Leistungen
-	with [get-view Leistungen] {
-		get-button "Liste anzeigen" | click
+	open-window-by-name [  t leistungen ]
+	with [get-view [  t leistungen ]] {
+		get-button [ t btn_show_list ]| click
 		get-tab-folder | get-tab-item Block | click
-		with [get-group Alle] {
-		get-editbox -after [get-label Name] | set-text $blockName
-		get-button "Suche jetzt ausführen" | click
+		with [get-group [ t alle_leistungen ]] {
+		get-editbox -after [get-label Name ] | set-text $blockName
+		get-button [ t btn_execute_search ] | click
 		}
 	}
 	try {
-		get-view Leistungen | get-group Alle | get-tree | select [ concat $blockName ".*"]
+		get-view [  t leistungen ] | get-group [ t alle_leistungen ] | get-tree | select [ concat $blockName ".*"]
 		concat "found block " $blockName | log
 		bool true
 	 } -catch {
@@ -284,9 +284,12 @@ proc "select-block" [ val blockName "arzt_Berichte"] {
 proc "kons-add-macro" [ val macroName "soap" ] {
 	with [get-view [ t kons_view ]] {
 		click
-		with [get-editbox -after [get-label ".*heute.*"]] {
-		set-text-offset 0 0
-		type-text "soap$"
+		with [get-editbox -after [get-label [ t lbl_heute ] ]] {
+			set-text-offset 0 0
+			type-text "soap$"
+			let [ val content [ get-property text ] ] {
+				concat "+xxx" content | log
+			}
 		}
 /*		get-view Konsultation | get-editbox -after [get-label "23.12.2018 (heute)"] | get-property text | matches ".*S:\n"
 			+ "O:\n"
@@ -300,8 +303,8 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] {
 	concat "kons-add-block: " $blockName | log
 	PressAddLeistungToKons
 	get-tab-folder | get-tab-item Block | click
-	with [get-group Alle] {
-	get-editbox -after [get-label Name] | set-text $blockName
+	with [get-group [ t alle_leistungen ]] {
+	get-editbox -after [get-label Name ] | set-text $blockName
 	try {
 			get-button [ t btn_execute_search ] | click
 			// wait 2000 // TODO: Why must I add this delay here?

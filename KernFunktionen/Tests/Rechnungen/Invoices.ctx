@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/27/19 11:59 AM
+Save-Time: 3/28/19 10:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -14,7 +14,7 @@ Entry-Name: .ecl.context
 
 proc "AbrechnungsSystemKonfigurieren" {
 	get-preferences-menu | click
-	with [get-window Benutzervorgaben] {
+	with [get-window [ t preferences ]] {
 		get-tree | select Abrechnungssysteme
 		get-table | get-item -path KVG | double-click
 		with [get-window Abrechnungssystem] {
@@ -32,7 +32,7 @@ proc "AbrechnungsSystemKonfigurieren" {
 		}
 		get-button OK | click
 		}
-		get-button "Anwenden und Schließen" | click
+		get-button [ t apply_and_close ] | click
 	}
 }
 

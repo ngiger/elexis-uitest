@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 10:18 AM
+Save-Time: 3/31/19 10:52 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -27,7 +27,7 @@ proc "OpenLeistungen" {
 proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 	get-preferences-menu | click
 	with [get-window [t preferences ] ] {
-		get-tree | select "System/Allgemein"
+		get-tree | select [ t System_Allgemein ]
 		get-button $language | click
 		get-button [ t apply_and_close] | click
 	}
@@ -83,7 +83,7 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 		get-button [ t btn_data_import_search ] | click
 		// TODO: Wait that pull request 174 for Tickets 14745 gets merged
 		// get-button "Pharma-Artikel" | check
-	get-button OK | click
+		get-button OK | click
 	}
 
 	concat "ReadArtikelstamm OK danach " $file | log
@@ -91,7 +91,7 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	// 19:25:06.595 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - ArtikelstammImporterPage.doImport /home/niklaus/elexis/rcptt/Artikelstamm_Short_v5.xml
 	// 19:25:15.072 [Worker-4] INFO  a.m.c.a.e.c.i.ArtikelstammImporter - [PI] Leistungsblock validation finished
-	get-view [ t artikel ] | get-button "Automatische Suche aktivieren" | click
+	get-view [ t artikel ] | get-button [ t btn_automatic_search ] | uncheck
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
 	concat "ReadArtikelstamm done: " $file |log
 }
@@ -103,7 +103,7 @@ proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_la
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
 	with [get-view Codes] {
 		get-tab-folder | get-tab-item [ t blocks ] | click
-		get-editbox -after [get-label Name] | set-focus
+		get-editbox -after [get-label [ t Name ] ] | set-focus
 	}
 	get-button [ t show_menu ] | click
 	get-view Codes | get-menu -path [ t btn_import ] | click
@@ -170,26 +170,30 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 		set-text KVG
 		select KVG
 		}
-		concat "Starting ReadTarmed with file: " $file | log
+		concat "ReadTarmed: Starting with file: " $file | log
 		get-button OK | click
-		concat "Done ReadTarmed with file: " $file | log
+		concat "ReadTarmed: Done with file: " $file | log
 	}
 	concat "Start wait for Import erfolgreich" | log
-	loop {
+	loop [val i 0] {
 		try {
-			get-window "Import erfolgreich" | gen-screenshot [concat $imagesDir "tarmed_done.png" ]
-			get-window "Import erfolgreich" | get-button OK | click
-			concat "Wait for Import erfolgreich done" | log
+			get-window [ t Import_erfolgreich ] | gen-screenshot [concat $imagesDir "tarmed_done.png" ]
+			get-window [ t Import_erfolgreich ] | get-button OK | click
+			concat "ReadTarmed: Wait for Import erfolgreich done" | log
 		} -error [val errorObj] -catch {
-			concat "Will wait another 10 seconds for window Import erfolgreich" | log
-		wait 10000
-		recur
+			concat "ReadTarmed: Will wait another 10 seconds for window Import erfolgreich i is "  $i | log
+			wait 10000 // Wait 10 seconds, but at most 15 minutes
+			if [ $i | lt 90 ] { recur [$i | plus 1]
+			} -else {
+				concat "ReadTarmed waited too long i is " $i | log
+				bool false | assert-true
+			}
 		}
 	}
 }
 
 proc "ReadDataImport" [ val file [ concat  [get-user-dir] "/rcptt/Universal_patienten.xls" ] ] 
-	[ val tab [ t tab_data_kontakte ] ] {
+	[ val tab [ t Kontakt_Importer ] ] {
 	concat "ReadDataImport tab " $tab " from " $file " exists? " [ get-file $file | get exists ] | log
 	get-file $file| get exists | verify-true
 	get-menu -path [ t menu_data_import ] | click
@@ -209,11 +213,11 @@ proc "ReadComplimentary" [ val file ] {
 		get-eclipse-window | gen-screenshot [concat $imagesDir "ReadComplimentary_starting.png"]
 	}
 	// get-button "Menü anzeigen" -index 2 | click
-	get-view Codes | get-menu -path "Import..." | click
+	get-view Codes | get-menu -path [ t btn_import ] | click
 	set-dialog-result File "/home/niklaus/elexis/rcptt/complementary_190101.csv"
-	get-window Datenimport | get-button "Suche..." | click
-	get-window Datenimport | get-button OK | click
-	get-view Codes | get-button "Suche jetzt ausführen" | click
+	get-window [ t view_data_import ] | get-button [ t btn_data_import_search ] | click
+	get-window [ t view_data_import ] | get-button OK | click
+	get-view Codes | get-button [ t btn_execute_search ] | click
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadComplimentary_done.png"]
 }
 // Ende
