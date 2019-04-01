@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/29/19 6:12 PM
+Save-Time: 4/1/19 11:52 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -151,14 +151,14 @@ proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val ad
 proc "FallSetVersicherungsNummer" [ val nummer 123456 ] {
 	get-view [ t view_cases ] | get-table | select ".*" | double-click
 	try {
-		// this work in german
-		get-view [ t Fall ] | get-button [ t Kopie_an_Patienten ] | check
-		get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer
-	} -catch {
-		// THis works in french wher Cas is name for view Fälle und Fall
+		// This works in french wher Cas is name for view Fälle (les cas) und Fall (le cas)
 		get-view [ t Fall ] -index 1 | get-button [ t Kopie_an_Patienten ] | check
 		 // TODO: French problem: INFO  ch.elexis.data.PersistentObject - field is not mapped Désignation
 		get-view [ t Fall ] -index 1 | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer
+	} -catch {
+		// This work in german
+		get-view [ t Fall ] | get-button [ t Kopie_an_Patienten ] | check
+		get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer
 	}
 }
 

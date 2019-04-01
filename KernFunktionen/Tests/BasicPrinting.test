@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _7B2QICqtEemYspbA8Fsyow
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/29/19 6:03 PM
+Save-Time: 4/1/19 12:39 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -29,14 +29,14 @@ if [SelectPatient Wu Luis | eq false] {
 	PatientenErstellen -familyName Wu -firstName Luis -birthDate "13.04.1980" -street "Vorderstrasse 33" -zipCode 3003 -location Bern -phone "033 323 45 67"
 }
 
-if [FallOffen -caseLaw [ t case_UVG ] -startDate "201.*"] {
-	log "Offenen Fall UVG gefunden"
+if [FallOffen -caseLaw [ t case_KVG ] -startDate "201.*"] {
+	log "Offenen Fall KVG gefunden"
 } -else {
-	FallZuPatientErstellen -caseLaw [ t case_UVG ] -caseReason [ t reason_UVG ] -startDate "20.08.2018"
-	log "Fall UVG 20.08.2018 erstellt"
+	FallZuPatientErstellen -caseLaw [ t case_KVG ] -caseReason [ t reason_KVG ] -startDate "20.08.2018"
+	log "Fall KVG 20.08.2018 erstellt"
 }
 if [ HasKonsSelected | eq false] {
-	kons-erstellen "BasisPrinting AUF mit UVG"
+	kons-erstellen "BasisPrinting AUF mit KVG"
 } -else {
 	log "HasKonsSelected returned true"
 }

@@ -6,7 +6,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _Mr6FcFFuEemrk7fLFkHFEw
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 6:00 PM
+Save-Time: 4/1/19 3:24 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -21,14 +21,16 @@ proc "CheckTarmedXml"  [ val invoiceId ] [ val searchFor ] {
 }
 
 proc "CheckTarmedFallVerrechnen"   [ val invoiceId 1 ] {
+	// Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
 	CheckTarmedXml $invoiceId LOSARTAN
 	CheckTarmedXml $invoiceId Metoprolol
-	CheckTarmedXml $invoiceId "Klinische Geruchsprüfung, beidseitig"
-	CheckTarmedXml $invoiceId "Konsultation, erste 5 Min. (Grundkonsultation)"
+	CheckTarmedXml $invoiceId "Klinische Geruchsprüfung, beidseitig" // 10.0010
+	CheckTarmedXml $invoiceId "Konsultation, erste 5 Min. (Grundkonsultation)" // BLock Kons plus (KVG)
 	CheckTarmedXml $invoiceId "Zuschlag für hausärztliche Leistungen in der Arztpraxis"
 	CheckTarmedXml $invoiceId "Konsultation bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min."
 	CheckTarmedXml $invoiceId "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
-	CheckTarmedXml $invoiceId "Ultraschalluntersuchung ganzes Abdomen (Oberbauch und Unterbauch)"
+	//  "23.0010" ] // Untersuchung der Mammae KVGSA
+	CheckTarmedXml $invoiceId "Untersuchung der Mammae"
 	concat "CheckTarmedFallVerrechnen " $invoiceId " erfolgreich" | log
 }
 

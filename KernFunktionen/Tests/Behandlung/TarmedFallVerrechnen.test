@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/29/19 6:12 PM
+Save-Time: 4/1/19 3:24 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -15,13 +15,15 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 // requires ImportSwissMediBase and BasicMandanten or demoDB run before
-
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
 global [val testPatFamilyName "Bernasconi"] -override
 global [val testPatFirstName "Antonio"] -override
 concat "TarmedFallVerrechnen " $testPatFirstName " " $testPatFamilyName | log
-/*
+
 // First we check that the tarmed and blocks are correctly imported
+open-window-by-name [ t leistungen ]
+select-tarmed-leistung | assert-true
+
 OpenAndResetStartPerspektive
 ChangeMandant [concat [ GetPraxisProperty praxis.mandant.2.Name ] ".*" ]
 
@@ -29,7 +31,6 @@ SetRightToDeleteCase
 OpenAndResetStartPerspektive
 ConfigureHilotecODF_TextVerarbeitung
 
-*/
 OpenAndResetStartPerspektive
 if [SelectPatient $testPatFamilyName $testPatFirstName | eq false] {
 	PatientenErstellen $testPatFamilyName $testPatFirstName true "30.3.1990" "Nebenstrasse 33" 3320 Elexiskon "055 323 45 67"
@@ -54,14 +55,14 @@ let [val fullName [ concat $testPatFamilyName " " $testPatFirstName ".*" ] ] {
 	get-view [ t Patientendetails ] | get-label $fullName | get-property caption | matches $fullName | verify-true
 }
 
-kons-add-block  "kons plus (KVG)"
-
-kons-add-tarmed [ concat "10.0010" ]
-kons-add-tarmed [ concat "00.0710" ]
-kons-add-tarmed [ concat "39.3240" ]
+// Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
+kons-add-tarmed [ concat "10.0010" ] // "Klinische Geruchsprüfung, beidseitig" 
+kons-add-tarmed [ concat "23.0010" ] // Untersuchung der Mammae KVGSA
 
 kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*"
 kons-add-artikelstamm -item_short Metoprolol -item_long ".*30 Stk.*"
+
+kons-add-block  -blockName "kons plus (KVG)" -expectedItemsAdded 4
 
 // kons-add-eigenleistung
 kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
@@ -76,7 +77,6 @@ ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/TR44_S2.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S1.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S2.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_EZ.odt" ]
-
 
 RechnungAusgeben
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
