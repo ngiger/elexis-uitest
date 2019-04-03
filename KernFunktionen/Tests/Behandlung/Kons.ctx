@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/1/19 3:21 PM
+Save-Time: 4/2/19 6:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -247,6 +247,36 @@ proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
 	// Not checking for this condition at the moment
 	get-eclipse-window | gen-screenshot  [concat $imagesDir "kons-add-tarmed_done_" $ziffer ".png"]
 }
+/**
+ * Adds a given complementary tarif position
+
+*/
+proc "kons-add-complementary" [ val ziffer 1255 ]  [ val expectedItemsAdded 1 ]  { // 1255 /Blutege
+	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
+		concat "kons-add-complementary: " $ziffer " have " $nrItemsBefore " items"| log
+		PressAddLeistungToKons
+		get-tab-folder | get-tab-item [ t Komplementaermedizin ] | click
+		with [get-group [ t alle_leistungen ]] {
+			get-editbox -after [get-label Code ] | set-text $ziffer
+			try {
+				get-button [ t btn_execute_search ] | click
+				get-eclipse-window | gen-screenshot [concat $imagesDir "kons-add_complementary_before_" $ziffer ".png"]
+				concat "Search for:<.*" $ziffer ".*" ">" |log 
+				get-table | select [get-item -path [ concat ".*" $ziffer ".*" ] ] | double-click
+				concat "kons-add-complementary: " $ziffer " double-click done" | log
+			} - -error [val errorObj] -catch {
+				concat "kons-add-complementary: " $ziffer " double-click failed: " $errorObj| log
+			}
+		}
+		ActivateVisibleKonsView
+		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $ziffer ".png"]
+		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ] {
+			concat "kons-add-complementary: " $ziffer " after have " $nrItemsAfter " items"| log
+			$nrItemsBefore | plus $expectedItemsAdded | equals $nrItemsAfter | assert-true -message
+				[ concat "kons-add-complementary: " $ziffer " After invoicing expected "  [$nrItemsBefore | plus $expectedItemsAdded ] " items but found " $nrItemsAfter]
+		}
+	}
+}
 
 proc "preferences-use-macros-with-TI-and-Favoriten" {
 	get-preferences-menu | click
@@ -310,12 +340,10 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] [ val expectedItems
 		get-editbox -after [get-label Name ] | set-text $blockName
 		try {
 				get-button [ t btn_execute_search ] | click
-				// wait 2000 // TODO: Why must I add this delay here?
 				get-eclipse-window | gen-screenshot [concat $imagesDir "kons-add_block_before_" $blockName ".png"]
 				get-tree | select [get-item -path $blockName ] | double-click
 				// HIer kommt die fürchterliche Warnung folgende Leistung
 				concat "kons-add-block: " $blockName " double-click done" | log
-				// wait 2000 // TODO: Why must I add this delay here?
 			} -catch {
 			concat "kons-add-block: " $blockName " double-click failed" | log
 			}

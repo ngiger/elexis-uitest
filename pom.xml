@@ -88,6 +88,7 @@
               <copy file="${myBaseDir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
               <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/praxis.properties" tofile="${rcptt-resources}/praxis.properties" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/praxis.properties" tofile="${rcptt-resources}/praxis.properties" preservelastmodified="true" />
           </target>
           </configuration>
           <goals>
@@ -174,6 +175,19 @@
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <unpack>false</unpack>
               <md5>496cfd421265f3e1a871342aa35ed528</md5>
+            </configuration>
+          </execution>
+          <execution>
+            <id>download-complementary_190101</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://medelexis.ch/wp-content/uploads/complementary_190101.csv</url>
+              <outputDirectory>${rcptt-resources}</outputDirectory>
+              <unpack>false</unpack>
+              <md5>2aa2e848653aa925f185f372e0a3e462</md5>
             </configuration>
           </execution>
           <execution>

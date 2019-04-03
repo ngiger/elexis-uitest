@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/1/19 3:24 PM
+Save-Time: 4/3/19 2:11 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -56,13 +56,14 @@ let [val fullName [ concat $testPatFamilyName " " $testPatFirstName ".*" ] ] {
 }
 
 // Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
+kons-add-complementary 1255
 kons-add-tarmed [ concat "10.0010" ] // "Klinische Geruchsprüfung, beidseitig" 
 kons-add-tarmed [ concat "23.0010" ] // Untersuchung der Mammae KVGSA
 
-kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*"
-kons-add-artikelstamm -item_short Metoprolol -item_long ".*30 Stk.*"
+kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*" //7680582930020
+kons-add-artikelstamm -item_short Metoprolol -item_long ".*30 Stk.*" //7680591310011
 
-kons-add-block  -blockName "kons plus (KVG)" -expectedItemsAdded 4
+kons-add-block  -blockName "kons plus (KVG)" -expectedItemsAdded 4 // 00.0010 00.0015 00.0026 00.0030
 
 // kons-add-eigenleistung
 kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
@@ -78,7 +79,7 @@ ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S1.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S2.odt" ]
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_EZ.odt" ]
 
-RechnungAusgeben
+RechnungAusgeben -patient $testPatFamilyName
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
 // Ende
 //
