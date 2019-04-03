@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 10:06 PM
+Save-Time: 4/3/19 1:51 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -37,33 +37,43 @@ proc "AbrechnungsSystemKonfigurieren" {
 }
 
 proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
-	[val betrag ".*" ] [val patient ".*"]  [ val status "Offen.*" ]  {
+	[val betrag ".*" ] [val patient ".*"]  {
+	concat "RechnungAusgeben starting: " $invoiceListViewName " betrag " $betrag " pat " $patient | log
 	open-window-by-name $invoiceListViewName
-	get-view  $invoiceListViewName | get-table | log
-
-	// get-view "Rechnungsliste (beta)" | get-table | select 1 | get-menu -path "Ausgeben..." | click
-	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
-	 -column "Patient"  -value [ concat ".*" $patient ".*"]  | log
-	get-view  $invoiceListViewName | get-table | select ".+" | get-menu -path "Ausgeben..." | click
-	set-dialog-result Folder $pdfDir
-	with [get-window "Rechnung ausgeben"] {
-   		get-combo | select "Als Tarmed-Rechnung ausdrucken"
-		get-group "Datei für TrustCenter" | get-button "Ändern|Verzeichnis:" | click
-		get-button OK | click
+	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
+		concat "RechnungAusgeben: before " $nrItemsBefore " items"| log
+		get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
+		 -column "Patient"  -value [ concat ".*" $patient ".*"]  | log
+		get-view  $invoiceListViewName | get-table | select ".+" | get-menu -path "Ausgeben..." | click
+		set-dialog-result Folder $pdfDir
+		with [get-window "Rechnung ausgeben"] {
+	   		get-combo | select "Als Tarmed-Rechnung ausdrucken"
+			get-group "Datei für TrustCenter" | get-button "Ändern|Verzeichnis:" | click
+			get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_start_" $patient ".png"]
+			get-button OK | click
+		}
+		try {
+			get-window "Fehler beim Drucken" | get-button "OK" | click
+			log "RechnungAusgebe: Fehler beim Drucken umgangen"
+		} -catch {
+			log "RechnungAusgebe: Kein Fehler beim Drucken. Okay"
+		}
+		get-window "Drucken beendet" | assert-non-empty
+		get-window "Drucken beendet" | close
+		with [get-view $invoiceListViewName ] {
+			get-combo -after [get-label [ t RG_Total ]] | select [ t ausstehend ]
+			get-button [ t Liste_neu_einlesen ]  | click
+		}
+		get-eclipse-window | key-type "M1+m" // Maximize
+		get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_" $patient ".png"]
+		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
+			concat "RechnungAusgeben: after have " $nrItemsAfter " items"| log
+			$nrItemsAfter | lt $nrItemsBefore | assert-true -message
+				[ concat "RechnungAusgeben: After invoicing expected " $nrItemsAfter " items lower than but found " $nrItemsBefore]
+		}
 	}
-	try {
-		get-window "Fehler beim Drucken" | get-button "OK" | click
-		log "Fehler beim Drucken umgangen"
-	} -catch {
-		log "Kein Fehler beim Drucken. Okay"
-	}
-	get-window "Drucken beendet" | assert-non-empty
-	get-window "Drucken beendet" | close
-	with [get-view $invoiceListViewName ] {
-		get-combo -after [get-label "RG Total"] | select Alle
-		get-button "Liste neu einlesen" | click
-	}
-	get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_" $patient "_" $status ".png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_" $patient "_okay.png"]
+	concat "RechnungAusgeben finished: " $invoiceListViewName " betrag " $betrag " pat " $patient | log
 }
 proc RechnungAusgeben2 {
 	// get-row-header  is not yet defined in 2.3.0
@@ -90,10 +100,10 @@ log Rechnungsliste
 	 	
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" | log
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" |
-	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file1.csv"	
+		 write-csv-file [ concat  [get-user-dir] "/rcptt/file1.csv"	]
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value ".*Duck.*"  |   select-columns "RG Nr" "Patient" |
-	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file2.csv"
+		 write-csv-file [ concat  [get-user-dir] "/rcptt/file2.csv" ]
 	with [get-view  $invoiceListViewName | get-table] {
 	// If you passs betrag 60.00 then it will show up down here as 60.0
 		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" -raw true | log
@@ -115,4 +125,29 @@ log Rechnungsliste
 	// get-view $invoiceListViewName | get-table | select 18 | get-menu -path "Ausgeben..." | click
 	log zwer
 }
+
+proc "CheckTarmedXml"  [ val invoiceId ] [ val searchFor ] {
+	let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
+		concat "CheckTarmedXml " $invoiceId " looking for '" $searchFor "'" | log
+		FileContainsString $xmlFile -searchFor $searchFor | assert-true
+	}
+}
+
+proc "GetNrOfInvoices" [ val status [ t alle_leistungen ] ] {
+	open-window-by-name [ t Rechnungsliste ]
+	with [get-view [ t Rechnungsliste ] ] {
+		get-combo -after [get-label [ t RG_Total ]] | select $status
+		get-button [ t Liste_neu_einlesen ] | click
+	}
+	let [ val textContent [ get-view  [ t Rechnungsliste ] | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
+		// concat "GetNrOfInvoices got : " $textContent " as int " [ $textContent | int ] | log
+		 $textContent | int
+	}
+}
+
+proc "GetXmlOfInvoice" [ val invoiceId 1] {
+	concat $pdfDir $invoiceId ".xml"
+}
+// Ende
+
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

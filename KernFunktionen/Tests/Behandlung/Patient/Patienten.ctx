@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/29/19 6:32 PM
+Save-Time: 4/2/19 5:28 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -37,10 +37,10 @@ log Rechnungsliste
 	 	
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" | log
 	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" |
-	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file1.csv"	
+		 write-csv-file [ concat  [get-user-dir] "/rcptt/file1.csv"	]
 	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 	 -column "Patient"  -value ".*Duck.*"  |   select-columns "RG Nr" "Patient" |
-	 	 write-csv-file "file:/home/niklaus/elexis/rcptt/file2.csv"
+		 write-csv-file [ concat  [get-user-dir] "/rcptt/file2.csv" ]
 	with [get-view  $invoiceListViewName | get-table] {
 	// If you passs betrag 60.00 then it will show up down here as 60.0
 		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" -raw true | log

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/1/19 11:52 AM
+Save-Time: 4/3/19 1:49 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -104,13 +104,21 @@ proc FallOffen [val caseLaw] [val startDate] {
 }
 
 proc AktuellenFallVerrechnen {
-	get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
-	try {
-		get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
-		log "AktuellenFallVerrechnen: Failed. See message above" -severity error
-		close-window-if-open [ t error ]
-	} -catch {
-		log "Catched error"
+	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
+		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items"| log
+		get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
+		try {
+			get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
+			log "AktuellenFallVerrechnen: Failed. See message above" -severity error
+			close-window-if-open [ t error ]
+		} -catch {
+			log "Catched error"
+		}
+		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
+			concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items"| log
+			$nrItemsBefore | plus 1 | equals $nrItemsAfter | assert-true -message
+				[ concat "AktuellenFallVerrechnen: After invoicing expected "  [$nrItemsBefore | plus 1 ] " items but found " $nrItemsAfter]
+		}
 	}
 	// get-window [ t error ] | verify-false
 }
