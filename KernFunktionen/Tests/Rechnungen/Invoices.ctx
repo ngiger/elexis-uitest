@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/3/19 1:51 PM
+Save-Time: 4/3/19 5:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -71,6 +71,9 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 			$nrItemsAfter | lt $nrItemsBefore | assert-true -message
 				[ concat "RechnungAusgeben: After invoicing expected " $nrItemsAfter " items lower than but found " $nrItemsBefore]
 		}
+	}
+	let [ val xmlFile [ GetXmlOfInvoice [GetNrOfInvoices -status [ t ausstehend ]  ] ]] {
+		concat "RechnungAusgeben " $xmlFile " exists " [ get-file $xmlFile |  get exists]| log
 	}
 	get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_" $patient "_okay.png"]
 	concat "RechnungAusgeben finished: " $invoiceListViewName " betrag " $betrag " pat " $patient | log
