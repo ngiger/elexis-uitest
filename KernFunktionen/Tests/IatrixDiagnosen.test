@@ -6,7 +6,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _HL_wsFYPEemvCbb2Y6o5tA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/3/19 5:28 PM
+Save-Time: 4/3/19 6:02 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -39,22 +39,26 @@ with [get-view "KG Iatrix"] {
     with [get-editbox -after [get-label Probleme]] {
         set-text $iatrixKonsText
     }
+ 	// The next line is necessary for unknown reason or
+ 	// RCPTT will enter text in the konsultation not the problem canvase
+ 	get-canvas -after [get-link "Rechnungsübersicht"] | type-text g
     with [get-editbox -after [get-link "Rechnungsübersicht" ]] {
         set-text $iatrixDiagnoseText
     }
-}
+ }
 
 open-window-by-name "Konsultation"
-
-get-view Konsultation | get-editbox -after [get-label ".*heute.*"] | get-property text -raw | log
-get-view Konsultation | get-editbox -after [get-label ".*heute.*"] | get-property text -raw | equals  $iatrixKonsText | verify-true
+let [val konsInPatView [ get-view Konsultation | get-editbox -after [get-label ".*heute.*"] | get-property text -raw ] ] {
+	concat "Iatrix-Konstext in Konsultation view is: <" $konsInPatView  "> expecting: <" $iatrixDiagnoseText ">" | log
+	$konsInPatView | eq $iatrixKonsText | verify-true
+	$konsInPatView | eq $iatrixDiagnoseText | verify-false
+}
 
 open-window-by-name "Patientendetails Neu"
-
 let [val diagInPatView [ get-view "Patientendetails Neu" | get-section Diagnosen | get-editbox | get-property text -raw] ] {
-
 	concat "Iatrix-Diagnose in pat view is: <" $diagInPatView  "> expecting: <" $iatrixDiagnoseText ">" | log
 	$diagInPatView | eq $iatrixDiagnoseText | verify-true
+	$diagInPatView | eq $iatrixKonsText | verify-false
 }
 // Ende
 
