@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/3/19 5:09 PM
+Save-Time: 4/4/19 10:48 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -41,6 +41,7 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 	concat "RechnungAusgeben starting: " $invoiceListViewName " betrag " $betrag " pat " $patient | log
 	open-window-by-name $invoiceListViewName
 	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
+		get-eclipse-window | key-type "M1+m" // Maximize
 		concat "RechnungAusgeben: before " $nrItemsBefore " items"| log
 		get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
 		 -column "Patient"  -value [ concat ".*" $patient ".*"]  | log
@@ -49,23 +50,26 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 		with [get-window "Rechnung ausgeben"] {
 	   		get-combo | select "Als Tarmed-Rechnung ausdrucken"
 			get-group "Datei für TrustCenter" | get-button "Ändern|Verzeichnis:" | click
-			get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_start_" $patient ".png"]
+			get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_dlg_" $patient ".png"]
 			get-button OK | click
 		}
 		try {
-			get-window "Fehler beim Drucken" | get-button "OK" | click
+			with [ get-window "Fehler beim Drucken" ] {
+				get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_Fehler_" $patient ".png"]
+				get-button "OK" | click
+			}
 			log "RechnungAusgebe: Fehler beim Drucken umgangen"
 		} -catch {
 			log "RechnungAusgebe: Kein Fehler beim Drucken. Okay"
 		}
 		get-window "Drucken beendet" | assert-non-empty
+		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_beendet_" $patient ".png"]
 		get-window "Drucken beendet" | close
 		with [get-view $invoiceListViewName ] {
 			get-combo -after [get-label [ t RG_Total ]] | select [ t ausstehend ]
 			get-button [ t Liste_neu_einlesen ]  | click
 		}
-		get-eclipse-window | key-type "M1+m" // Maximize
-		get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_" $patient ".png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient ".png"]
 		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
 			concat "RechnungAusgeben: after have " $nrItemsAfter " items"| log
 			$nrItemsAfter | lt $nrItemsBefore | assert-true -message
@@ -75,7 +79,7 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 	let [ val xmlFile [ GetXmlOfInvoice [GetNrOfInvoices -status [ t ausstehend ]  ] ]] {
 		concat "RechnungAusgeben " $xmlFile " exists " [ get-file $xmlFile |  get exists]| log
 	}
-	get-eclipse-window | gen-screenshot [concat $imagesDir "invoice_" $patient "_okay.png"]
+	get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_okay.png"]
 	concat "RechnungAusgeben finished: " $invoiceListViewName " betrag " $betrag " pat " $patient | log
 }
 proc RechnungAusgeben2 {
