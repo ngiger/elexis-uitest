@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/4/19 2:03 PM
+Save-Time: 4/4/19 2:46 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -50,7 +50,10 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 		set-dialog-result Folder $pdfDir
 		with [get-window "Rechnung ausgeben"] {
 	   		get-combo | select "Als Tarmed-Rechnung ausdrucken"
-			get-group "Datei für TrustCenter" | get-button "Ändern|Verzeichnis:" | click
+			with [get-group "Datei für TrustCenter" ] {
+				get-button "auch als XML für TrustCenter speichern" | check
+				get-button "Ändern|Verzeichnis:" | click
+			}
 			gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_dialog.png"]
 			get-button OK | click
 		}
