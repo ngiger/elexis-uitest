@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/4/19 2:46 PM
+Save-Time: 4/6/19 12:18 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -47,13 +47,16 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 		 -column "Patient"  -value [ concat ".*" $patient ".*"]  | log
 		get-view  $invoiceListViewName | get-table | select ".+" | get-menu -path "Ausgeben..." | click
 		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_start.png"]
-		set-dialog-result Folder $pdfDir
 		with [get-window "Rechnung ausgeben"] {
 	   		get-combo | select "Als Tarmed-Rechnung ausdrucken"
+			get-button "Mit ESR" | check
+			get-button "Mit Rechnungsformular" | check
+			get-button "Bei fehlenden administrativen Daten trotzdem drucken" | check
 			with [get-group "Datei für TrustCenter" ] {
 				get-button "auch als XML für TrustCenter speichern" | check
 				get-button "Ändern|Verzeichnis:" | click
 			}
+			set-dialog-result Folder $pdfDir
 			gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_dialog.png"]
 			get-button OK | click
 		}
@@ -65,10 +68,10 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 			log "RechnungAusgebe: Fehler beim Drucken umgangen"
 		} -catch {
 			log "RechnungAusgebe: Kein Fehler beim Drucken. Okay"
+			get-window "Drucken beendet" | assert-non-empty
+			get-window "Drucken beendet" | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_beendet.png"]
+			get-window "Drucken beendet" | close
 		}
-		get-window "Drucken beendet" | assert-non-empty
-		get-window "Drucken beendet" | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_beendet.png"]
-		get-window "Drucken beendet" | close
 		with [get-view $invoiceListViewName ] {
 			get-combo -after [get-label [ t RG_Total ]] | select [ t ausstehend ]
 			get-button [ t Liste_neu_einlesen ]  | click
