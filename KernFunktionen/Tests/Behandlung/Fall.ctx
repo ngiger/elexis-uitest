@@ -6,29 +6,18 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/3/19 1:49 PM
+Save-Time: 4/8/19 1:23 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 proc "set-date-picker-date" [val window ] [ val labelBefore -input ] [ val "date" ] {
-	concat "set-date-picker-date: " $date| log
+	concat "set-date-picker-date: " window ": " $labelBefore ": " $date| log
 	global [ val myCombo [  get-window $window | get-editbox -after [get-label $labelBefore ] ]] -override
-	/*
-	with [get-window "nouveau cas"] {
-	get-label[ t dlg_new_case_startDate ] | get-property caption | equals[ t dlg_new_case_startDate ] | verify-true
-	get-editbox -after [get-label "Créer un nouveau cas"] | get-property className 
-	| equals "org.eclipse.swt.widgets.Text" | verify-true
-	get-window "nouveau cas" | get-editbox -after [get-label "Créer un nouveau cas"] | get-property text 
-	| equals "19.12.18" | verify-true
-	*/
-	// Assertion of text failed: expected:<19.12.18> but was:<0.0>.
-	// get-window $window | get-editbox -after [get-label $labelBefore ] | get-property text | equals "19.12.18" | verify-true
-	// $myCombo | getObject | invoke | setText $date
-	// line above results in error: There is no open report node for command invoke "Spinner {*Wrong Thread*}"
-  //  get-window $window | get-editbox -after [get-label $labelBefore ] | get-property text | equals  $date | verify-true	
-	concat "At the moment I do not know how to set datePick date in " $window " after " $labelBefore " to " $date | log
+	get-window $window | get-editbox -after [get-label $labelBefore ] | log
+	get-window $window | get-editbox -after [get-label $labelBefore ] | set-text $date
+	get-window $window | get-editbox -after [get-label $labelBefore ] | key-type Enter
 }
 
 proc "SetRightToDeleteCase" {
@@ -42,7 +31,7 @@ proc "SetRightToDeleteCase" {
 			log "User has already the right"
 		  } -else {
 			log "Must git the user the right"
-			get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | select [ t right_delete_case ] | double-click
+			get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | select [ t right_delete_case ] | check
 		  }
 		get-button [ t apply_and_close ] | click
 	}
@@ -78,7 +67,7 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t re
 }
 
 proc SelectFall [val caseLaw] [val startDate] {
-	let [ val searchPattern [ concat $caseLaw ".*" $startDate ".*"] ] {
+	let [ val searchPattern [ concat ".*" $caseLaw ".*" $startDate ".*"] ] {
 		try {
 			get-view [ t view_cases ] | get-table | select $searchPattern | click
 		} -catch {

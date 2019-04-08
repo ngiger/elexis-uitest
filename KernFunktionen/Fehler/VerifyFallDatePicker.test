@@ -5,8 +5,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _XU6YABQDEemEb8FG0wciYA
-Runtime-Version: 2.4.0.201902121222
-Save-Time: 2/15/19 9:43 AM
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 4/8/19 2:04 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -18,9 +18,8 @@ if [SelectPatient Fall Picker| eq false] {
 }
 
 SetRightToDeleteCase
-SetRightToDeleteCase
 
-if [FallOffen [ t case_UVG ] "201."] {
+if [FallOffen [ t case_UVG ] ".*201."] {
 	log "Offenen Fall UVG gefunden"
 	DeleteSelectedCase
 } 
@@ -28,18 +27,18 @@ if [FallOffen [ t case_UVG ] "201."] {
 proc FallZuPatientErstellenWithDatePick [val caseLaw] [val startDate "30.4.2018"] [val endDate "01.08.2018"] {
 	get-view [ t view_cases ] | click
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
-	wait 100
+	// wait 100
 	
 	with [get-window [ t dlg_new_case ] ] {
 		get-combo -after [get-label [ t dlg_new_case_caseMethod ]] | select $caseLaw
-		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
-		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
+		set-date-picker-date -window [ t dlg_new_case ] -labelBefore [ t dlg_new_case_startDate ] -date $startDate
+		set-date-picker-date -window [ t dlg_new_case ] -labelBefore [ t dlg_new_case_endDate ]   -date $endDate
 		get-eclipse-window | gen-screenshot [concat $imagesDir $caseLaw "_" $startDate "_created.png"]
 		get-button  [ t ok] | click
 	}
 }
-FallZuPatientErstellenWithDatePick [ t case_UVG ] -startDate "4.1.2018"
-let [val searchPattern [concat ".*" [ t case_UVG ] ".*4.1.2018.*"]] {
+FallZuPatientErstellenWithDatePick [ t case_UVG ] -startDate "04.01.2018"
+let [val searchPattern [concat ".*" [ t case_UVG ] ".*04.01.2018.*"]] {
 	concat "searchPattern ist: " $searchPattern | log
 	get-view "Fälle" | get-table | get-item -path  $searchPattern | get-property caption
 	    | matches  $searchPattern | verify-true
