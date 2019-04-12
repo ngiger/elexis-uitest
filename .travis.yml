@@ -14,7 +14,7 @@ env:
 before_install:
   # Debian has since stretch an OCR-B font and a fonts-ocr-a
   # Xenial only has fonts-ocr-a
-  - sudo apt-get install -y librxtx-java fonts-ocr-a
+  - sudo apt-get install -y librxtx-java fonts-ocr-a libreoffice
 
 install: mvn -V --quiet clean
 
