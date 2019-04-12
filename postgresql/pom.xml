@@ -10,7 +10,7 @@
     <version>0.1</version>
   </parent>
   <properties>
-    <!--  Initial preparation to TO ONCE
+    <!--  Initial preparation to do ONCE
     create database elexis_rcptt owner elexis encoding 'utf8' template template0;
     create user elexis with UNENCRYPTED password 'elexisTest';
     ALTER USER elexis CREATEDB;
@@ -29,9 +29,7 @@
     <vmArg8>-Dch.elexis.username=mustermann</vmArg8>
     <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
     <vmArg10>-DvmArg10</vmArg10>
-    <suite2run>SmokeTestSuite</suite2run>
     <dropCreateDbScript>${project.basedir}/drop_create_db.sql</dropCreateDbScript>
-
   </properties>
   <build>
     <plugins>
@@ -128,11 +126,7 @@
                 <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
               </injection>
             </injections>
-            <!-- Use URL like this for the AUT
-            ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
-            https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
-            automatically replaced according to the current platform -->
-            <explicit> https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
+            <explicit>${autExplicit}</explicit>
             <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>

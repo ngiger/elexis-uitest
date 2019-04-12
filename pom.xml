@@ -23,6 +23,7 @@
     <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
     <unzipExe>/usr/bin/unzip</unzipExe>
+    <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</autExplicit>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
@@ -357,7 +358,7 @@
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
               <explicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
             automatically replaced according to the current platform -->
-            <explicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
+            <explicit>${autExplicit}</explicit>
           <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>

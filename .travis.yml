@@ -18,7 +18,7 @@ before_install:
 
 install: mvn -V --quiet clean
 
-script: xvfb-run -a --server-args="-screen 0 1280x1024x24" mvn -V clean verify  -f RunFromScratch/pom.xml -Dsuite2run=SmokeTestSuite
+script: xvfb-run --server-args="-screen 4 1280x1024x24" mvn -V clean install -f h2/pom.xml
 
 notifications:
   email:
