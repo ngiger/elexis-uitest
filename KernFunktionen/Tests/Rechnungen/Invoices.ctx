@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/6/19 12:18 PM
+Save-Time: 4/12/19 4:27 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -52,11 +52,11 @@ proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
 			get-button "Mit ESR" | check
 			get-button "Mit Rechnungsformular" | check
 			get-button "Bei fehlenden administrativen Daten trotzdem drucken" | check
+			set-dialog-result Folder $pdfDir
 			with [get-group "Datei für TrustCenter" ] {
 				get-button "auch als XML für TrustCenter speichern" | check
 				get-button "Ändern|Verzeichnis:" | click
 			}
-			set-dialog-result Folder $pdfDir
 			gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_dialog.png"]
 			get-button OK | click
 		}
