@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/3/19 2:11 PM
+Save-Time: 4/12/19 5:30 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -36,11 +36,11 @@ if [SelectPatient $testPatFamilyName $testPatFirstName | eq false] {
 	PatientenErstellen $testPatFamilyName $testPatFirstName true "30.3.1990" "Nebenstrasse 33" 3320 Elexiskon "055 323 45 67"
 }
 
-if [FallOffen -caseLaw [ t case_KVG ] -startDate "201.*"] {
+if [FallOffen -caseLaw [ t case_KVG ] -startDate "20.08.2018"] {
 	log "Offenen Fall KVG gefunden"
 } -else {
-	FallZuPatientErstellen -caseLaw [ t case_KVG ] -caseReason [ t reason_KVG ] -startDate "20.8.2018"
-	log "Fall KVG 20.8.2018 erstellt"
+	FallZuPatientErstellen -caseLaw [ t case_KVG ] -caseReason [ t reason_KVG ] -startDate "20.08.2018"
+	log "Fall KVG 20.08.2018 erstellt"
 }
 SelectFall  [ t case_KVG ] "201"
 if [ HasKonsSelected | eq false] {

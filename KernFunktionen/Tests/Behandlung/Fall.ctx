@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/8/19 1:23 PM
+Save-Time: 4/12/19 5:31 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -49,7 +49,7 @@ proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ va
 		FallZuPatientErstellen -caseLaw $caseLaw -caseReason $caseReason -startDate "20.04.2018"
 	}
 }
-proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "30.04.2018"] [val endDate "01.08.2018"] {
+proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate ""] [val endDate ""] {
 	open-window-by-name [ t view_cases ]
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
 	wait 100
@@ -58,8 +58,16 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t re
 		concat "caseLaw: " $caseLaw  " caseReason: " $caseReason | log
 		get-combo -after [get-label [ t dlg_new_case_caseMethod ] ] | select $caseLaw
 		get-combo -after [get-label [ t dlg_new_case_caseReason ] ] | select $caseReason
-		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
-		set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
+		if [ $startDate | eq "" ] {
+			log "Skip setting startDate as empty"
+		} -else {
+			set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
+		}
+		if [ $endDate | eq "" ] {
+			log "Skip setting endDate as empty"
+		} -else {
+			set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
+		}
 		concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
 		get-button  [ t ok] | click
@@ -151,11 +159,11 @@ proc "FallSetVersicherungsNummer" [ val nummer 123456 ] {
 		// This works in french wher Cas is name for view Fälle (les cas) und Fall (le cas)
 		get-view [ t Fall ] -index 1 | get-button [ t Kopie_an_Patienten ] | check
 		 // TODO: French problem: INFO  ch.elexis.data.PersistentObject - field is not mapped Désignation
-		get-view [ t Fall ] -index 1 | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer
+		get-view [ t Fall ] -index 1 | get-editbox -after [get-label [ t Versicherungsnummer -language de ] ] | set-text $nummer
 	} -catch {
 		// This work in german
 		get-view [ t Fall ] | get-button [ t Kopie_an_Patienten ] | check
-		get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer
+		get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer -language de ] ] | set-text $nummer
 	}
 }
 

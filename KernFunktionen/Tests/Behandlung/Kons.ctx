@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/2/19 6:09 PM
+Save-Time: 4/12/19 5:00 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -160,6 +160,7 @@ proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führer
  * "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)"
  */
 proc "select-tarmed-leistung" [ val ziffer [ concat "00.0010" ] ] {
+	open-window-by-name [ t leistungen ]
 	concat "select-tarmed-leistung " $ziffer | log
 	with [get-view [ t leistungen ] ] {
 		get-button [ t btn_show_list ] click
@@ -342,7 +343,8 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] [ val expectedItems
 				get-button [ t btn_execute_search ] | click
 				get-eclipse-window | gen-screenshot [concat $imagesDir "kons-add_block_before_" $blockName ".png"]
 				get-tree | select [get-item -path $blockName ] | double-click
-				// HIer kommt die fürchterliche Warnung folgende Leistung
+				// Hier kommt die fürchterliche Warnung folgende Leistung konnte
+				// im aktuelln Kontext Fall Konsultation Gesetz nicht verrechnet werden
 				concat "kons-add-block: " $blockName " double-click done" | log
 			} -catch {
 			concat "kons-add-block: " $blockName " double-click failed" | log
