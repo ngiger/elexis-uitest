@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _znSy0FtwEemvCbb2Y6o5tA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/10/19 12:25 PM
+Save-Time: 4/13/19 8:48 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -27,9 +27,15 @@ proc "SelectBlockInBlocks" [ val blockName "arzt_Berichte \\(KVG\\)" ] {
 }
 
 proc "DeleteBlockInBlocks" [ val blockName "arzt_Berichte \\(KVG\\)" ] {
+	concat "DeleteBlockInBlocks for " $blockName " started" | log
 	open-window-by-name Codes
+	SelectBlockInBlocks -blockName $blockName | assert-true -message
+		[ concat "DeleteBlockInBlocks PreCondition: " $blockName " must be selectable" ]
 	get-view Codes | get-tree | select $blockName | get-menu -path "Block löschen" | click
-	concat "SelectBlockInBlocks for " $blockName " returns: " [ SelectBlockInBlocks ] | log
-	SelectBlockInBlocks | not | assert-true
+	let [ val afterDelete [ SelectBlockInBlocks  -blockName $blockName ] ] {
+		concat "DeleteBlockInBlocks: SelectBlockInBlocks for " $blockName " returned: " $afterDelete | log
+		$afterDelete | not | assert-true -message
+			[ concat "DeleteBlockInBlocks Checking that " $blockName " cannot NOT been selected" ]
+	}
 }
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
