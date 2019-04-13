@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/13/19 4:08 PM
+Save-Time: 4/13/19 10:01 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -26,7 +26,6 @@ _gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: 'T
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: 'BasicMandanten.test'
 _c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBase' path: 'ImportSwissBase.test'
 _3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Hilfen/RestartElexis.test'
-_hLXDAFtwEemvCbb2Y6o5tA	// kind: 'test' name: 'Blocks' path: 'Behandlung/Blocks.test'
 _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: 'BasicKonsTests.test'
 _7B2QICqtEemYspbA8Fsyow	// kind: 'test' name: 'BasicPrinting' path: 'BasicPrinting.test'
 _mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: 'Administration/Kassenbuch.test'

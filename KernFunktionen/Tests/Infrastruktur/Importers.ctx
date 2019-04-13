@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/2/19 6:00 PM
+Save-Time: 4/13/19 10:21 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -179,7 +179,7 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 			get-window [ t Import_erfolgreich ] | get-button OK | click
 			concat "ReadTarmed: Wait for Import erfolgreich done lang: " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i |  log
 		} -error [val errorObj] -catch {
-			concat "ReadTarmed: Will wait another 10 seconds for window lang " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i | log
+			concat "ReadTarmed: Will wait another 10 seconds for window lang " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i  " max 90" | log
 			wait 10000 // Wait 10 seconds, but at most 15 minutes
 			if [ $i | lt 90 ] { recur [$i | plus 1]
 			} -else {
