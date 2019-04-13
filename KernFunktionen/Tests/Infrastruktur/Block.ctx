@@ -1,0 +1,35 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: Block
+Element-Type: context
+Element-Version: 2.0
+Id: _znSy0FtwEemvCbb2Y6o5tA
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 4/10/19 12:25 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+proc "SelectBlockInBlocks" [ val blockName "arzt_Berichte \\(KVG\\)" ] {
+	open-window-by-name Codes
+	with [ get-view Codes ]	{
+		get-tab-folder | get-tab-item "Blöcke" | click
+		try {
+			get-tree | select $blockName
+			bool true
+		} -catch {
+			concat "Failed SelectBlockInBlocks" $blockName | log
+			bool false
+		}
+	}
+}
+
+proc "DeleteBlockInBlocks" [ val blockName "arzt_Berichte \\(KVG\\)" ] {
+	open-window-by-name Codes
+	get-view Codes | get-tree | select $blockName | get-menu -path "Block löschen" | click
+	concat "SelectBlockInBlocks for " $blockName " returns: " [ SelectBlockInBlocks ] | log
+	SelectBlockInBlocks | not | assert-true
+}
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

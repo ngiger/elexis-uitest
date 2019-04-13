@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/12/19 5:00 PM
+Save-Time: 4/12/19 6:28 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -359,6 +359,23 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] [ val expectedItems
 		}
 	}
 }
-	// ENDE
+
+/**
+ * newKonsDate must have form dd.mm.yyyy (d.m.yy is NOT possible)
+ *
+ */
+proc "kons-set-date" [ val newKonsDate ] {
+	get-view [ t kons_view ] | get-menu -path "Datum..." | click
+	with [get-window "Datum eingeben"] {
+	    get-editbox | set-text $newKonsDate
+	    get-button OK | click
+	}
+	let [val myKonsDate  [ get-view [ t kons_view ] | get-label [ concat $newKonsDate ".*" ] | get-property caption -raw ] ]{
+		concat "MyKonsDate is: " $myKonsDate | log
+		get-view [ t kons_view ] | get-label [ concat $newKonsDate ".*" ] | get-property caption -raw | matches  [ concat $newKonsDate ".*" ]  | assert-true
+			-message [ concat "Konsdate should match "  $newKonsDate " but is " $myKonsDate ]
+	}
+}
+// ENDE
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

@@ -1,0 +1,158 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: Kassenbuch
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _mc14UFVdEemNNe-dXP1Xqg
+Runtime-Version: 2.4.1.201903190000
+Save-Time: 4/13/19 5:47 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+// Siehe auch
+// https://redmine.medelexis.ch/issues/14748 Kassenbuch aus Medelexis in elexis-3-base verschieben
+// https://redmine.medelexis.ch/issues/14803 RCPTT: FixDatePickerCombo
+OpenAndResetStartPerspektive
+open-window-by-name Kassenbuch
+get-view Kassenbuch | key-type "M1+m"
+
+proc "Kassenbuch-Anzahl-Buchungen" {
+	get-view Kassenbuch | get-table | get-property itemCount -raw
+}
+
+proc "Kassenbuch-Kategorien-definieren" [ val kategorien "Alles" ] {
+	get-view Kassenbuch | get-menu -path "Kategorien..." | click
+	with [get-window "Elexis-Kassenbuch"] {
+	    with [get-editbox] {
+	        set-text $kategorien
+	    }
+		get-window "Elexis-Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_Kategorien.png" ]
+	    get-button OK | click
+	}
+}
+
+proc "Kassenbuch-Zahlungsarten-definieren" [ val arten "Bar" ] {
+	get-view Kassenbuch | get-menu -path "Zahlungsart..." | click
+	with [get-window "Elexis-Kassenbuch"] {
+	    get-editbox | set-text $arten
+		get-window "Elexis-Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_Zahlungsarten.png" ]
+	    get-button OK | click
+	}
+}
+
+proc "Kassenbuch-Einnahme-verbuchen" [ val beleg ] [ val datum "" ] [ val betrag ] [ val betreff ]
+ [ val kategory "" ] [ val zahlungsart "" ] [val buchungstext "" ] {
+	concat  "Kassenbuch-Einnahme-verbuchen" $beleg " 2:" $beleg " 3:" $betrag " 4:" $betreff " 5:" $kategory " 6:" $zahlungsart " 7:" $buchungstext | log
+	let [ val itemsBefore [ Kassenbuch-Anzahl-Buchungen ] ]	{
+		get-view Kassenbuch | get-button "Einnahme verbuchen" | click
+		with [get-window "Buchung für Kassenbuch"] {
+		    // get-editbox -after [get-label "Einnahme verbuchen"] | set-focus
+		    with [get-editbox -after [get-label Beleg]] {
+		        set-text $beleg
+		        key-type "TRAVERSE_TAB_NEXT"
+		    }
+		    with [get-editbox -after [get-label Datum]] {
+		        set-text $datum
+		        key-type "TRAVERSE_TAB_NEXT"
+		    }
+		    with [get-editbox -after [get-label Betrag]] {
+		        set-text $betrag
+		        key-type "TRAVERSE_TAB_NEXT"
+		    }
+		    get-combo -after [get-label Kategorie] | select $kategory
+		    get-combo -after [get-label Zahlungsart] | select $zahlungsart
+		    get-editbox -after [get-label Buchungstext] | set-text $buchungstext
+			get-window "Buchung für Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_buchung_" $beleg ".png" ]
+		    get-button OK | click
+		}
+		let [ val itemsAfter [ get-view Kassenbuch | get-table | get-property itemCount -raw ] ]	{
+			concat "Kassenbuch-Einnahme-verbuchen should had before " $itemsBefore " items. Now we have " $itemsAfter | log
+			Kassenbuch-Anzahl-Buchungen| minus 1 | eq $itemsBefore | assert-true
+			-message
+		[ concat "Kassenbuch-Einnahme-verbuchen should had before " $itemsBefore " items. Now we have " $itemsAfter ]
+		}
+	}
+}
+
+proc "Kassenbuch-Zwischenbilanz" [ val aktuellerStand ] {
+	get-view Kassenbuch | get-button "Zwischenbilanz erstellen" | click
+	with [get-window "Kassenbestand abgleichen"] {
+	    get-editbox -after [get-label "Geben Sie bitte den abgezählten Betrag in der Kasse ein"] | set-text $aktuellerStand
+	    get-window "Kassenbestand abgleichen" | gen-screenshot [concat $imagesDir "kassenbuch_Zwischenbilanz" $aktuellerStand ".png" ]
+	    get-button OK | click
+	}
+}
+
+proc "Kassenbuch-stornieren" [ val beleg ] {
+	get-view Kassenbuch | get-table | select [ concat $beleg ".*" ] | get-menu -path Storno | click
+}
+
+proc "Kassenbuch-Zeitraum" [ val vonDate ] [ val bisDate ] {
+	get-view Kassenbuch | get-menu -path Zeitraum | click
+	with [get-window "Elexis Kassenbuch"] {
+	    get-button "<" | click
+	    get-button "<<" | click
+	    get-window "Elexis Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_zeitraum" $vonDate "-" $$bisDate ".png" ]
+	    get-button OK | click
+	}
+}
+
+Kassenbuch-Kategorien-definieren
+Kassenbuch-Kategorien-definieren "Kaffee\nBlumen\nGeburtstage"
+Kassenbuch-Zahlungsarten-definieren
+Kassenbuch-Zahlungsarten-definieren "Bar\n"
+	        + "Master-Card\n"
+	        + "PayPal"
+
+Kassenbuch-Einnahme-verbuchen -beleg 101 -betrag "25.45" -betreff "Für mich" -kategory Kaffee -zahlungsart Bar -buchungstext "Eine erste Einlage vom Chef"
+Kassenbuch-Einnahme-verbuchen -beleg 102 -betrag "24.55" -betreff "Dich mich" -kategory Blumen -zahlungsart Bar -buchungstext "die zweite Einlage vom Chef"
+Kassenbuch-Zwischenbilanz -aktuellerStand "50.00"
+Kassenbuch-stornieren -beleg 102
+Kassenbuch-Zwischenbilanz -aktuellerStand "24.00"
+
+// Noch zu Testen
+// TODO: Anzahl Einträge variiert je nach Zeitraum
+// TODO: Storno reduziert Anzahl Einträge
+// TODO: Beleg-Nr wird immer um 1 grösser
+// TODO: Falsche Kategorie
+// TODO: Falsche Zahlungsart
+// TODO: Drucken testen, wenn keine Vorlage Liste vorhanden ist.
+// TODO: Vorlage Liste einlesen und Drucken
+// TODO: Mehrmals aufrufen ermöglichen (global Variable letzteBelegNr)
+/*
+Kassenbuch-Zeitraum
+with [get-window "Elexis Kassenbuch"] {
+    get-button "<" | click
+    get-button "<<" | click
+    get-button OK | click
+}
+with [get-view Kassenbuch] {
+    get-canvas -index 1 | get-property "getText()" | matches "Anzeige: Von .* bis: .*" | verify-true
+    with [get-table] {
+        get-item -path "3 Kontrolle" | get-property caption | equals "3 Kontrolle" | verify-true
+        get-item -path "3 Kontrolle" | get-property "getData().getClassName()"
+            | equals "ch.elexis.buchhaltung.kassenbuch.KassenbuchEintrag" | verify-true
+        get-item -path "3 Kontrolle" | get-property "getData().getText()" | equals "Überschuss" | verify-true
+        get-item -path "3 Kontrolle" | get-property "getData().getLabel()" | equals "100.00 Überschuss" | verify-true
+        // get-item -path "3 Kontrolle" | get-property "getData().getDate()" | equals "02.04.2019" | verify-true
+        get-item -path "3 Kontrolle" | get-property "getData().getBelegNr()" | equals "3 Kontrolle" | verify-true
+        get-item -path "3 Kontrolle" | get-property "getData().getSaldo().toString()" | equals "200.00" | verify-true
+        get-item -path "3 Kontrolle" | get-property "getData().isValid()" | equals true | verify-true
+        get-item -path "3 Kontrolle" | get-property "getData().isAvailable()" | equals true | verify-true
+    }
+}
+
+get-button "Menü anzeigen" | click
+get-view Kassenbuch | get-menu -path Drucken | click
+get-window "Dokumentvorlage nicht gefunden" | get-button OK | click
+get-window Kassenbuch | get-button Abbrechen | click
+*/
+
+// Ende
+
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
