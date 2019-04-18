@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/12/19 6:28 PM
+Save-Time: 4/17/19 3:32 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -317,7 +317,7 @@ proc "kons-get-nr-invoiced-items" {
 proc "kons-add-macro" [ val macroName "soap" ] {
 	with [get-view [ t kons_view ]] {
 		click
-		with [get-editbox -after [get-label [ t lbl_heute ] ]] {
+		with [get-editbox ] {
 			set-text-offset 0 0
 			type-text "soap$"
 			let [ val content [ get-property text ] ] {
@@ -361,18 +361,33 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] [ val expectedItems
 }
 
 /**
- * newKonsDate must have form dd.mm.yyyy (d.m.yy is NOT possible)
+ * newKonsDate must have form dd.mm.yy (d.m.yyyy is NOT possible)
+ * <br>newKonsDate must be valid. Eg. 30.2.2010 will not be accepted
  *
  */
 proc "kons-set-date" [ val newKonsDate ] {
-	get-view [ t kons_view ] | get-menu -path "Datum..." | click
-	with [get-window "Datum eingeben"] {
+	get-view [ t kons_view ] | get-menu -path [ t Kons_Datum ] | click
+	with [get-window [ t Datum_eingeben ] ] {
+	    // get-editbox | set-text $newKonsDate
+	    /* Here we get errors
+	    8:22:46.769 [Equinox Log Thread - Equinox Container: b3e3f8fc-6e75-44bd-acc7-46eec0c6f7ba] ERROR OSGI - [org.eclipse.ui.workbench] Unhandled event loop exception
+java.lang.NullPointerException: null
+        at org.eclipse.nebula.widgets.cdatetime.CDateTime.verify(CDateTime.java:2083) ~[na:na]
+        at org.eclipse.nebula.widgets.cdatetime.CDateTime.lambda$0(CDateTime.java:309) ~[na:na]
+        at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89) ~[na:na]
+        
+        but we log correctly 18:22:45.917 [Worker-121: ECL session execute: log] INFO  PLATFORM - [org.eclipse.core.runtime] 03.07.17
+	    */
+	    get-editbox | set-focus
 	    get-editbox | set-text $newKonsDate
+     	get-editbox | get-property text -raw | log
+	    key-type Right
 	    get-button OK | click
 	}
-	let [val myKonsDate  [ get-view [ t kons_view ] | get-label [ concat $newKonsDate ".*" ] | get-property caption -raw ] ]{
+	let [val myKonsDate  [ get-view [ t kons_view ] | get-label  -index 1| get-property caption -raw  ] ]
+	{
 		concat "MyKonsDate is: " $myKonsDate | log
-		get-view [ t kons_view ] | get-label [ concat $newKonsDate ".*" ] | get-property caption -raw | matches  [ concat $newKonsDate ".*" ]  | assert-true
+		$myKonsDate | matches  [ concat $newKonsDate ".*" ]  | assert-true
 			-message [ concat "Konsdate should match "  $newKonsDate " but is " $myKonsDate ]
 	}
 }
