@@ -62,6 +62,7 @@
                     </includes>
                   </fileset>
                   <fileset>
+                      <directory>${user.home}/elexis/extern</directory>
                       <directory>${user.home}/elexis/logs</directory>
                       <directory>${user.home}/elexis/rcptt</directory>
                   </fileset>
@@ -88,8 +89,10 @@
               <copy file="${myBaseDir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
               <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
-              <copy file="${myBaseDir}/data/praxis.properties" tofile="${rcptt-resources}/praxis.properties" preservelastmodified="true" />
-              <copy file="${myBaseDir}/data/praxis.properties" tofile="${rcptt-resources}/praxis.properties" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
+              <!-- Just to ensure that "${user.home}/elexis/extern getŝ created -->
+              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern" preservelastmodified="true" />
           </target>
           </configuration>
           <goals>
@@ -351,7 +354,7 @@
                   <feature>ch.gpb.elexis.cst.feature.feature.group</feature>
                   <feature>ch.medshare.mediport.feature.feature.group</feature>
                 </features>
-                              -->
+                            -->
               </injection>
             </injections>
             <!-- Use URL like this for the AUT
