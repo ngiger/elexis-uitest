@@ -85,14 +85,15 @@
           <configuration>
             <target>
               <copy file="${myBaseDir}/save_run_from_scratch.sh" tofile="${rcptt-resources}/save_run_from_scratch.sh" preservelastmodified="true" />
-              <copy file="${myBaseDir}/data/translations.properties" tofile="${rcptt-resources}/translations.properties" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
               <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
               <!-- Just to ensure that "${user.home}/elexis/extern getŝ created -->
-              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
           </target>
           </configuration>
           <goals>

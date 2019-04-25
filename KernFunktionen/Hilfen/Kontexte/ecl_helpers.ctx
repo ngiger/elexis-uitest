@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/18/19 9:11 PM
+Save-Time: 4/25/19 1:31 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -108,7 +108,10 @@ proc "RestartElexis" {
 	}
 }
 global [ val resultsDir   [ concat  [ pwd ]  "/../results/"] ]
-global [ val translations [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations.properties"]]]
+global [ val translations [ map
+	[ entry de [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_de.properties" ] ] ]
+	[ entry fr [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_fr.properties" ] ] ]
+] ]
 global [ val imagesDir	[ concat $resultsDir "images/" ] ]
 global [ val pdfDir	[ concat $resultsDir "pdf/" ] ]
 global [ val preferencesCsvFile [ concat  $resultsDir "preferences.csv" ] ]
@@ -118,16 +121,18 @@ concat "get-user-dir returns: " [get-user-dir] |log
 concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log
 global [ val defaultLanguage [ get-java-property "user.language" "de" ] ]
 concat "defaultLanguage is now: " $defaultLanguage| log
-$translations | get "de.open"| eq "Öffnen" | verify-true
 proc "t" [val key] [val language $defaultLanguage] {
 	try {
 		// concat "Searching: " $language "." $key | log
-		$translations | get [ concat $language "." $key] 
+		$translations | get $language | get $key
 		} -catch {
-		concat "Unable to fetch key " [ concat $language "." $key] " in translation.properties"  | log -severity Error
+		concat "Unable to fetch key " $key " in translation_" $language ".properties"  | log -severity Error
 		bool false
 	}
 }
+$translations | get "de" | log
+$translations | get "fr" | log
+$translations | get "fr" | get "open" | log
 t "open" "de" | eq "Öffnen" | verify-true
 t "open" "fr" | eq "Ouvrir" | verify-true
 
