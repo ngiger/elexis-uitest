@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/28/19 5:30 PM
+Save-Time: 4/25/19 5:15 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -16,8 +16,10 @@ proc SavePreferencesToFile {
 	exec-with-options -command {
 	 get-preferences-menu | click
 	 t preferences|log
-	  	get-window [ t preferences ] | get-tree | expand-all | get-table-data | write-csv-file $preferencesCsvFile
-		wait 100
+	    // CSV file must be written in two Steps
+	 	get-window [ t preferences ] | get-tree | expand-all
+		wait 100 	
+	  	get-window [ t preferences ] | get-tree | get-table-data | write-csv-file $preferencesCsvFile
 		get-window [ t preferences ] | get-button [ t cancel ] | click
 	}
 }
@@ -44,8 +46,9 @@ proc "get-first-preference-item" {
 	}
 	close-window-if-open [ t preferences ]
 }
-global [val curSubSection "" ] -override
-global [val curPath "" ] -override
+global [val curPrefix0 "" ] -override
+global [val curLevel "-1" ] -override
+global [val savedLevel "-1" ] -override
 close-window-if-open [ t preferences ]
 
 proc "check-one-preference-item" [val prefName] {
@@ -55,50 +58,57 @@ proc "check-one-preference-item" [val prefName] {
 //  * GlobalInbox nicht vorhanden (Eurolyser, OK Änderungen nicht akzeptiert, Nur Abbrechen enables
 // * HL7 Dateien (Der Wert muss ein vorhandenes Verzeichnis sein.
 // * Datenaustausch/Omnivore: Der Wert muss ein vorhandenes Verzeichnis sein.
-
-	if [$prefName | str | matches "2,.*"] {
-		global [val curSubSection [ replaceFirst $curPath ".*/" ""] ] -override
-		global [val  curPath [ concat $curPrefSection "/" $curSubSection [ replaceFirst $prefName "2," "/"] ] ] -override
-		global [val  curPath [ concat $curPrefSection "/" $curSubSection "/" [ replaceFirst $prefName "2," ""] ] ] -override
-   		global [val  curFullPath	[ concat $curPath ".png"   ] ] -override
-	} -else {
-		global [val  curPath [ replaceFirst $prefName "0," "" ] ] -override
-		global [val  curPath [ replaceFirst $curPath "1," ".*/" ] ] -override
-		global [val  curPath [ replaceFirst $curPath "2," [concat $curPrefSection ".*" ] ] ] -override // only needed for mediport
-		if [$prefName | str | matches "^0,.*"] {
-		   		global [val  curPrefSection [ replaceFirst $prefName "0," "" ] ] -override
-		   		global [val  curFullPath	[ concat $curPrefSection ".png"   ] ] -override
-			} -else {
-		   		global [val  curFullPath	[ concat
-		   		[ $curPrefSection ]
-		   		 "/"
-		   		[ replaceAll $curPath "\W" "_" ]
-		   		".png"
-		   		]] -override
-			} -else {
-			global [val curSubSection "" ] -override
-		}
+	global [val curLevel [replaceAll $prefName ",.*" "" | int ] ] -override
+	if [ $curLevel | str | matches "0" ] {
+		global [val curPrefix0 
+			[ replaceFirst $prefName ".*," ""] ] -override
 	}
-	global [val  imgName [ 
-			concat $imagesDir
-				"preferences/"
-				[$curFullPath
-			] ] ] -override
-   
-	concat "save-screenshot: " $imgName " curPath: " $curPath | log
+	if [ $curLevel | str | matches "1" ] {
+		global [val curPrefix1 
+			[ replaceFirst $prefName ".*," ""] ] -override
+	}
+	if [ $curLevel | str | matches "2" ] {
+		global [val curPrefix2 
+			[ replaceFirst $prefName ".*," ""] ] -override
+	}
+	global [val savedLevel $curLevel ] -override
+	$curLevel | switch [ case "0" {
+		global [val curPrefMenu $curPrefix0 ] -override
+	} ]  [ case "1" {
+		global [val curPrefMenu [ concat $curPrefix0 "/" $curPrefix1 ] ] -override
+	} ]  [ case "2" {
+		global [val curPrefMenu [ concat $curPrefix0 "/" $curPrefix1 "/" $curPrefix2 ]] -override
+	} ] -default {
+		bool false | assert-true -message "Unexecptecd state for curPrefMenu!"
+	}  
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
 		with [get-tree] {
-			expand-all | select $curPath | key-type Down | log
+			expand-all | select $curPrefMenu
+			global [val curPrefMenuClean [ replaceAll $curPrefMenu "[ äöüéèàç]" "_" ] ] -override
+			if [ get-item -path $curPrefMenu | get-property childCount -raw | matches "0" ] {
+				global [val  imgName [ 
+						concat $imagesDir "preferences/" $curPrefMenuClean ".png"
+					] ] -override
+			} -else {
+				global [val  imgName [
+						concat $imagesDir "preferences/"  $curPrefMenuClean "/"
+						[ replaceFirst $curPrefMenuClean -searchPattern "/[^\\/]*$" -replaceString "" ]
+						".png"
+						] ] -override
+			}
+			concat "save-screenshot: curPrefMenu: " $curPrefMenu " img: " $imgName | log
 			get-window [ t preferences ] | get-object |save-screenshot -out [ replaceAll $imgName "/___" "/" ]
 		}
-		get-button [ t apply_and_close ] | click
+		get-button [ t apply_and_close ] | 
+			click
 	}
 }
 
 proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
 	SavePreferencesToFile
 	global [val curPrefSection [get-first-preference-item]] -override
+	concat "visit-all-preferences having: " [ read-lines $preferencesCsvFile | length ] " items" | log
 	read-lines $preferencesCsvFile | foreach [val item] {
 		concat "visit-all-preferences checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
 		if [$item | str | matches [
