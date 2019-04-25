@@ -3,7 +3,7 @@
 <booleanAttribute key="append.args" value="true"/>
 <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
 <booleanAttribute key="askclear" value="true"/>
-<stringAttribute key="aut-location" value="/opt/elexis-master/os"/>
+<stringAttribute key="aut-location" value="/opt/src/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp/linux/gtk/x86_64"/>
 <stringAttribute key="aut-target-platform" value="AUT Elexis3MasterLinuxPostgresql (Target Platform)"/>
 <booleanAttribute key="aut-target-updatable" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
@@ -25,8 +25,8 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-11-openjdk-amd64"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os linux -ws gtk -arch x86_64 -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx1024m -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 -XX:MaxPermSize=128m -Dch.elexis.dbFlavor=postgresql -Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt -Dch.elexis.dbUser=elexis -Dch.elexis.dbPw=elexisTest -Dch.elexis.firstMandantName=mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=mustermann -Dch.elexis.password=elexisTest"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/elexis-master/os"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx1024m -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 -XX:MaxPermSize=128m -Dch.elexis.dbFlavor=postgresql -Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt_de -Dch.elexis.dbUser=elexis -Dch.elexis.dbPw=elexisTest -Dch.elexis.firstMandantName=mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=mustermann -Dch.elexis.password=elexisTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/src/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp/linux/gtk/x86_64"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="ch.elexis.core.application.product"/>
 <booleanAttribute key="tracing" value="false"/>

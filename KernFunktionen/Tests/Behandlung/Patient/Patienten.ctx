@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/2/19 5:28 PM
+Save-Time: 4/16/19 3:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -133,7 +133,7 @@ proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val 
 			set-text $location
 		}
 		get-editbox -after [get-label [ t dlg_new_patient_phone ] ] | set-text $phone
-		get-eclipse-window | gen-screenshot [concat $imagesDir $familyName "_created.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir $familyName "_"n $firstName "_created.png"]
 		get-button [t ok ] | click
 	}
 	global [ val PatientenErstellenOkay true ] -override

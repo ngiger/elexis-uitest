@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/13/19 10:21 PM
+Save-Time: 4/15/19 6:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -71,6 +71,9 @@ proc "ExecuteDataImport" [ val file ] {
 proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
 	open-window-by-name [ t daten_artikel ]
 	concat "before ReadArtikelstamm file: " $file | log
+	try { get-view [ t artikel ] }  -error [val errorObj] -catch {
+		concat "Error ReadArtikelstamm view " [ t artikel ] $errorObj | log
+	}
 	with [get-view [ t artikel ]] {
 		get-tab-folder | get-tab-item Artikelstamm | click
 		get-editbox -after [get-label [ t artikelstamm_label  ]] | set-focus
@@ -141,8 +144,15 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 }
 
 proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL2019v1.csv" ] ] {
-	open-window-by-name [ t daten_artikel ]
-	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel_1.png"]
+	concat "ReadMigel started for: " $file | log
+	try {
+		open-window-by-name [ t daten_artikel ]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel_1.png"]
+	} -error [val errorObj] -catch {
+			// Seen when running ImportSwissbase with french Elexis
+			concat "Errror " $errorObj "in ReadMigel" | log
+			set-dialog-result File "/dummy"
+	}
 	get-view [ t artikel ] | get-tab-folder | get-tab-item MiGeL | click
 	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/17/19 3:32 PM
+Save-Time: 4/18/19 9:03 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -389,6 +389,14 @@ java.lang.NullPointerException: null
 		concat "MyKonsDate is: " $myKonsDate | log
 		$myKonsDate | matches  [ concat $newKonsDate ".*" ]  | assert-true
 			-message [ concat "Konsdate should match "  $newKonsDate " but is " $myKonsDate ]
+		concat $imagesDir "kons_" [ replaceAll $myKonsDate "\W" "" ] "_set.png" | log
+	 	// fails get-view Consultation | gen-screenshot -out [concat $imagesDir "kons_.png" ]
+		// works, but only display konstext get-view  gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+		get-eclipse-window| gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+		// fails too: get-view [ t kons_view ] | get-editbox | get-object | gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+		// fails too: get-view [ t kons_view ] | get-editbox | invoke getParent | gen-screenshot -out [concat $imagesDir "kons_2_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+		// fails with NPE: get-view [ t kons_view ] | get-editbox | invoke getParent| invoke getParent | gen-screenshot -out [concat $imagesDir "kons_3_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+		
 	}
 }
 // ENDE

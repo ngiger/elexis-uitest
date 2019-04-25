@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/12/19 5:31 PM
+Save-Time: 4/20/19 2:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -51,6 +51,10 @@ proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ va
 }
 proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate ""] [val endDate ""] {
 	open-window-by-name [ t view_cases ]
+	concat FallZuPatientErstellen  $caseLaw " " $caseReason " " $startDate  " " $endDate| log
+	concat FallZuPatientErstellen  [ t view_cases ] " btn. " [ t btn_create_new_case ] " dlg " [ t dlg_new_case ] | log
+	wait 100
+	
 	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
 	wait 100
 	
@@ -88,7 +92,7 @@ proc SelectFall [val caseLaw] [val startDate] {
 }
 
 proc FallOffen [val caseLaw] [val startDate] {
-	let [val searchPattern [concat ".*" $caseLaw ".*"]] {
+	let [val searchPattern [concat ".*" $caseLaw ".*" $startDate ".*"]] {
 		try {
 			concat "MySearchpattern is: " $searchPattern | log
 			get-view [ t view_cases ] | get-table | get-item $searchPattern | get-property caption
@@ -153,8 +157,8 @@ proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val ad
 	}
 }
 
-proc "FallSetVersicherungsNummer" [ val nummer 123456 ] {
-	get-view [ t view_cases ] | get-table | select ".*" | double-click
+proc "FallSetVersicherungsNummer" [ val nummer 123456 ] [ val fall ".*" ] {
+	get-view [ t view_cases ] | get-table | select [ concat $fall ".*" ] | double-click
 	try {
 		// This works in french wher Cas is name for view Fälle (les cas) und Fall (le cas)
 		get-view [ t Fall ] -index 1 | get-button [ t Kopie_an_Patienten ] | check
@@ -163,9 +167,46 @@ proc "FallSetVersicherungsNummer" [ val nummer 123456 ] {
 	} -catch {
 		// This work in german
 		get-view [ t Fall ] | get-button [ t Kopie_an_Patienten ] | check
-		get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer -language de ] ] | set-text $nummer
+		try {
+			get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer -control
+		} -catch {
+			log "Versicherungsnummer is not present for the case"
+		}
 	}
 }
+
+proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa" ]
+	[ val firstName "Antonio" ]
+	[ val male true ]
+	[ val birthDate "30.03.1990" ]
+	[ val street  "Nebenstrasse 33" ]
+	[ val plz "9876" ]
+	[ val location Elexiskon ]
+	[ val phone "055 323 45 67" ]
+	[ val caseName "kvg" ]
+	[ val caseReason [ t reason_KVG ] ]
+	[ val caseStartDate "14.10.2018" ]
+	[ val konsDate "" ] // by default will be today
+{
+	if [SelectPatient $familyName $firstName | eq false] {
+		PatientenErstellen $familyName $firstName $male $birthDate $street $plz $location $phone
+	}
+	
+	if [FallOffen -caseLaw $caseName -startDate $caseStartDate ] {
+		log "Offenen Fall KVG gefunden"
+	} -else {
+		FallZuPatientErstellen -caseLaw $caseName -caseReason $caseReason -startDate $caseStartDate
+		concat "FallZuPatientErstellen " $familyName " " $firstName  " " caseName | log
+	}
+	SelectFall  $caseName $caseStartDate
+	if [ HasKonsSelected | eq false] {
+		kons-erstellen [ concat "PatientMitFallUndKonsErstellenOderAuswaehlen "  $familyName " " $firstName " mit " $caseName  " of " $caseStartDate " kons of" $konsDate ]
+	} -else {
+		log "HasKonsSelected returned true"
+	}
+	kons-set-date $konsDate
+}
+
 
 // End
 //

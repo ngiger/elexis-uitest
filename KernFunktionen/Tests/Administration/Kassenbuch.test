@@ -6,7 +6,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _mc14UFVdEemNNe-dXP1Xqg
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/13/19 8:57 PM
+Save-Time: 4/16/19 4:11 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -22,6 +22,14 @@ OpenAndResetStartPerspektive
 open-window-by-name Kassenbuch
 get-view Kassenbuch | key-type "M1+m"
 
+proc "SetzeAlleKassenbuchRechte" {
+	get-preferences-menu | click
+	with [get-window "Préférences" | get-tree -after [get-link "<a>ändern</a>"]] {
+	    select Kassenbuch
+	    get-cell 9 7 | uncheck
+	}
+	get-window "Préférences" | get-button "Appliquer et fermer" | click
+}
 proc "Kassenbuch-Anzahl-Buchungen" {
 	get-view Kassenbuch | get-table | get-property itemCount -raw
 }

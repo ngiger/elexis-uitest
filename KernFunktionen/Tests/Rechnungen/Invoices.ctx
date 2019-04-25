@@ -6,138 +6,151 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/12/19 4:27 PM
+Save-Time: 4/23/19 7:35 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc "AbrechnungsSystemKonfigurieren" {
+proc "AbrechnungsSystemKonfigurieren" 
+	[ val abrSystem  [ t case_KVG ] ] 
+	[ val leistungsSystem  [ t TarmedLeistung ] ] 
+	[ val abrPrinter [ t Tarmed_Drucker ] ] 
+	[ val caseLaw    [ t KVG_Gesetz ] ] 
+	[ val newFactor  "0.95" ]
+	[ val startDate  "01.01.2018" ] {
 	get-preferences-menu | click
+	global [ val found_abr_system false ] -override
 	with [get-window [ t preferences ]] {
-		get-tree | select Abrechnungssysteme
-		get-table | get-item -path KVG | double-click
-		with [get-window Abrechnungssystem] {
-		get-editbox -after [get-label Name] | set-focus
-		get-combo -after [get-label "Leistungscode-System"] | select TarmedLeistung
-		get-button "Hinzufügen..." | click
-		with [get-window "Neuer Multiplikator"] {
-			get-editbox | set-text "0.89"
-		// key-type "TRAVERSE_TAB_PREVIOUS"
-		// TODO: Howto set required start date?
-		   // get-control Any -index 4 | set-text "01.02.2018"
-			// get-editbox -after [get-label "Start Datum"] | set-text "01.01.2018"
-			// Changes the label "Bitte geben Sie das Datum ein, ab dem der neue Multiplikator gilt" not the date!!!
+		get-tree | select [ t Abrechnungssysteme ]
+		try {
+			get-table | get-item -path  $abrSystem | double-click
+			// If it is already present, then the double click opened it
+		} -catch {
+			// else we must add it
+			get-label [ t Neu ] | click
+		}
+		with [get-window [ t Abrechnungssystem ]] {
+			get-editbox -after [get-label [ t Name ] ] | set-text $abrSystem
+			get-combo -after [get-label [ t Leistungscode_System ] ] | select $leistungsSystem
+	        get-combo -after [get-label [ t Standard_Rechnungsausgabe ] ] | select $abrPrinter
+	        get-combo -after [get-label [ t Gesetz ] ] | select $caseLaw
+			let [ val  nrMultiplikatoren [ get-list | get-property "getItemCount()" -raw ] ] 
+				[ val mustMatch [ concat ".*" $startDate ".*" $newFactor ] ]			{
+				loop [val idx 0] {
+					concat "AbrechnungsSystemKonfigurieren: nrMultiplikatoren ist: " $nrMultiplikatoren " idx " $idx " mustMatch " $mustMatch| log
+					try {
+						get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] -raw | log
+						// failed get-list | get-property [ concat "getItems().String[" 1 "]" ] -raw | log
+						get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] | matches $mustMatch | log
+						
+						get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] -raw| log
+						if [ get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] -raw | matches $mustMatch ] {
+								log "AbrechnungsSystemKonfigurieren: Found match"
+								global [ val found_abr_system true ] -override
+						} -else { 
+							log "AbrechnungsSystemKonfigurieren: Did not match" 
+							if [  $idx | lt $nrMultiplikatoren ] { recur [$idx | plus 1] }
+						} 
+					} -catch { 
+						log "AbrechnungsSystemKonfigurieren: Failed, noMultiplikatoren" 
+					}
+				}
+				if [ $found_abr_system ] {
+					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " multi " $mustMatch " already preset" |log		
+				} -else {
+					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " must add multi" |log		
+					get-button [ t hinzufuegen ] | click
+					with [get-window  [ t Neuer_Multiplikator ] ] {
+			           with [get-editbox -after [get-label [ t Datum ]]] {
+			                set-text $startDate
+			            }
+			            get-editbox -after [get-label [ t Multiplikator ] ] | set-text $newFactor
+						gen-screenshot [concat $imagesDir "Abrechnungs_Multiplikator_" $abrSystem "_"  $startDate " " $newFactor ".png"]
+						get-button OK | click
+					}
+				}
+
+			}
+	        get-editbox -after [get-label [ t Name ] ] | set-focus
 			get-button OK | click
 		}
-		get-button OK | click
-		}
+		gen-screenshot [concat $imagesDir "AbrechnungsSystemKonfigurieren_" $abrSystem "_"  $startDate " " $newFactor ".png"]
 		get-button [ t apply_and_close ] | click
 	}
 }
 
-proc RechnungAusgeben [ val invoiceListViewName "Rechnungsliste.*beta.*" ]
-	[val betrag ".*" ] [val patient ".*"]  {
-	concat "RechnungAusgeben starting: " $invoiceListViewName " betrag " $betrag " pat " $patient | log
-	open-window-by-name $invoiceListViewName
-	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
+proc "RechnungslisteAnzeigen" [ val status [ t Offen ] ] {
+	open-window-by-name [ t Rechnungsliste ]
+	with [get-view [ t Rechnungsliste ] ] {
+		get-combo -after [get-label [ t RG_Total ]] | select $status
+		get-button [ t Liste_neu_einlesen ] | click
+	}
+}
+
+proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
+	[ val invoiceId 1 ] 
+	[ val status [ t alle_rechnungs_stati ] ] {
+	concat "RechnungAusgeben starting: " $invoiceListViewName " invoiceId " $invoiceId | log
+	global [val RechnungAusgebenError "0" ] -override
+	let [ val logName [ concat "_invoice_" $invoiceId ] ]
+		[val nrItemsBefore [ GetNrOfInvoices -status $status ] ] {
 		get-eclipse-window | key-type "M1+m" // Maximize
+		RechnungslisteAnzeigen $status
 		concat "RechnungAusgeben: before " $nrItemsBefore " items"| log
-		get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
-		 -column "Patient"  -value [ concat ".*" $patient ".*"]  | log
-		get-view  $invoiceListViewName | get-table | select ".+" | get-menu -path "Ausgeben..." | click
-		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_start.png"]
-		with [get-window "Rechnung ausgeben"] {
-	   		get-combo | select "Als Tarmed-Rechnung ausdrucken"
-			get-button "Mit ESR" | check
-			get-button "Mit Rechnungsformular" | check
-			get-button "Bei fehlenden administrativen Daten trotzdem drucken" | check
+		get-view  $invoiceListViewName | get-table | select  $invoiceId | get-menu -path [ t Rechnung_ausgeben ] | click
+		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_start.png"]
+		with [get-window [ t View_Rechnung_ausgeben] ] {
+	   		get-combo | select [ t Als_Tarmed_Rechnung_ausdrucken ]
+			get-button [ t Mit_ESR ] | check
+			get-button [ t Mit_Rechnungsformular ] | check
+			get-button [ t Trotzdem_drucken ] | check
 			set-dialog-result Folder $pdfDir
-			with [get-group "Datei für TrustCenter" ] {
-				get-button "auch als XML für TrustCenter speichern" | check
-				get-button "Ändern|Verzeichnis:" | click
+			with [get-group [ t Datei_Fuer_TrustCenter ] ] {
+				get-button [ t auch_als_XML_speichern ]| check
+				get-button [ t Aendern_oder_Verzeichnis ] | click
 			}
-			gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_dialog.png"]
+			global [val RechnungAusgebenError "1" ] -override
+			gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_dialog.png"]
 			get-button OK | click
-		}
+		}    
 		try {
-			with [ get-window "Fehler beim Drucken" ] {
-				gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_Fehler.png"]
+			with [ get-window [ t Fehler_beim_Drucken ] ] {
+			    get-property title -raw | log
+				gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_Fehler.png"]
+				// bool false | assert-true -message [concat "RechnungAusgeben Fehler beim Drucken von " $logName ]
 				get-button "OK" | click
 			}
 			log "RechnungAusgebe: Fehler beim Drucken umgangen"
-		} -catch {
-			log "RechnungAusgebe: Kein Fehler beim Drucken. Okay"
-			get-window "Drucken beendet" | assert-non-empty
-			get-window "Drucken beendet" | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_beendet.png"]
-			get-window "Drucken beendet" | close
+		} -error [val errorObj] -catch {
+			try {
+				get-window [ t Drucken_beendet ]| assert-non-empty
+				log "RechnungAusgebe: Kein Fehler beim Drucken. Okay"
+				get-window [ t Drucken_beendet ]| gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_beendet.png"]
+				get-window [ t Drucken_beendet ]| close
+			}
 		}
 		with [get-view $invoiceListViewName ] {
 			get-combo -after [get-label [ t RG_Total ]] | select [ t ausstehend ]
 			get-button [ t Liste_neu_einlesen ]  | click
 		}
-		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_liste.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_liste.png"]
 		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
-			concat "RechnungAusgeben: after have " $nrItemsAfter " items"| log
+			concat "RechnungAusgeben: " $nrItemsAfter " after have " $nrItemsAfter " items"| log
 			$nrItemsAfter | lt $nrItemsBefore | assert-true -message
 				[ concat "RechnungAusgeben: After invoicing expected " $nrItemsAfter " items lower than but found " $nrItemsBefore]
 		}
+
+		let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
+			concat "RechnungAusgeben " $xmlFile " exists " [ get-file $xmlFile |  get exists]| log
+			get-file $xmlFile |  get exists | assert-true
+		}
+		if [ $RechnungAusgebenError | eq "1" ] {
+			bool false | assert-true -message [ concat "RechnungAusgebe: Fehler beim Drucken der Rechnung " $invoiceId  ". Wahrscheinlich kein PDF erstellt"]
+		}
+		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_okay.png"]
+		concat "RechnungAusgeben finished: " $invoiceListViewName " log " $logName | log
 	}
-	let [ val xmlFile [ GetXmlOfInvoice [GetNrOfInvoices -status [ t ausstehend ]  ] ]] {
-		concat "RechnungAusgeben " $xmlFile " exists " [ get-file $xmlFile |  get exists]| log
-	}
-	get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $patient "_okay.png"]
-	concat "RechnungAusgeben finished: " $invoiceListViewName " betrag " $betrag " pat " $patient | log
-}
-proc RechnungAusgeben2 {
-	// get-row-header  is not yet defined in 2.3.0
-	// get-view  $invoiceListViewName | get-table | get-row-header | log
-	get-view  $invoiceListViewName | get-table | get-table-data | log
-	log Duck
-	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp  -column "Patient"  -value ".*Duck.*" |log
-	// get-column-header not yet defined in 2.3.0
-	get-view  $invoiceListViewName | get-table | get-column-header | log
-	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
-	 -column "Patient"  -value ".*Duck.*"  | log
-	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
-	 -column "Patient"  -value ".*Duck.*"
-//	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
-//		 -column "Patient"  -value ".*Duck.*" | get-property "columns[8]" | log  
-log Rechnungsliste	  
-	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 8 | log
-	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1  | log	   
-	log second 
-	get-view  $invoiceListViewName | get-table | get-cell -row 1 -column 1 | get-property text   | log	
-	 	log sss
-	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
-	 -column "Patient"  -value ".*Duck.*" | select-columns "RG Nr" "Patient" | log
-	 	
-	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" | log
-	get-view  $invoiceListViewName | get-table | get-table-data | select-columns "RG Nr" "Patient" |
-		 write-csv-file [ concat  [get-user-dir] "/rcptt/file1.csv"	]
-	get-view  $invoiceListViewName | get-table | get-table-data | select-rows  -match regexp
-	 -column "Patient"  -value ".*Duck.*"  |   select-columns "RG Nr" "Patient" |
-		 write-csv-file [ concat  [get-user-dir] "/rcptt/file2.csv" ]
-	with [get-view  $invoiceListViewName | get-table] {
-	// If you passs betrag 60.00 then it will show up down here as 60.0
-		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" -raw true | log
-		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[8]" -raw true | log
-		get-item  -column "Patient"  -path [ concat $patient ".*"]   | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-		get-item  -column "Patient"  -path [ concat $patient ".*"]  | get-property "columns[8]" |  matches $betrag | verify-true
-	}
-	with [get-view  $invoiceListViewName | get-table] {
-	// If you passs betrag 60.00 then it will show up down here as 60.0
-		get-item -path 18 | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-		get-item -path 18 | get-property "columns[8]" | matches $betrag | verify-true
-	   }
-	   /*
-		 get-item -path 18 | log
-		 get-item -path [ concat ".*" $patient ".*" ] | log
- 		get-item -path  [ concat ".*" $patient ".*" ]  | get-property "columns[3]" | matches [ concat $patient ".*"]  | verify-true
-		 
-	} */
-	// get-view $invoiceListViewName | get-table | select 18 | get-menu -path "Ausgeben..." | click
-	log zwer
 }
 
 proc "CheckTarmedXml"  [ val invoiceId ] [ val searchFor ] {
@@ -146,13 +159,27 @@ proc "CheckTarmedXml"  [ val invoiceId ] [ val searchFor ] {
 		FileContainsString $xmlFile -searchFor $searchFor | assert-true
 	}
 }
+proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
+	global [val highestInvoiceNr 0 ] -override
 
-proc "GetNrOfInvoices" [ val status [ t alle_leistungen ] ] {
-	open-window-by-name [ t Rechnungsliste ]
+	RechnungslisteAnzeigen -status $status
 	with [get-view [ t Rechnungsliste ] ] {
-		get-combo -after [get-label [ t RG_Total ]] | select $status
-		get-button [ t Liste_neu_einlesen ] | click
+		loop [val idx 0] {
+		get-view [ t Rechnungsliste ] | get-table | get-items | foreach [val item]  {
+			if [ $item | get-property caption -raw | gt $highestInvoiceNr ]{
+					// concat "GetHighestInvoiceNrOf Higher " [ $item | get-property caption -raw ] | log
+		    		global [val highestInvoiceNr [  $item | get-property caption -raw ] ] -override
+				}
+			}
+		}
 	}
+	
+	concat "GetHighestInvoiceNrOf set highestInvoiceNr to: " $highestInvoiceNr | log
+	$highestInvoiceNr | str
+}
+
+proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] {
+	RechnungslisteAnzeigen -status $status
 	let [ val textContent [ get-view  [ t Rechnungsliste ] | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
 		// concat "GetNrOfInvoices got : " $textContent " as int " [ $textContent | int ] | log
 		 $textContent | int
@@ -162,6 +189,29 @@ proc "GetNrOfInvoices" [ val status [ t alle_leistungen ] ] {
 proc "GetXmlOfInvoice" [ val invoiceId 1] {
 	concat $pdfDir $invoiceId ".xml"
 }
+
+proc "CheckTarmedFallVerrechnen"   [ val invoiceId 0 ] {
+	if [ $invoiceId  | eq 0 ] {
+		global [val CheckTarmedFallId [ GetNrOfInvoices -status [ t ausstehend ] ] ] -override
+	} -else {
+		global [val CheckTarmedFallId $invoiceId] -override
+	}
+
+	// Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
+	CheckTarmedXml $CheckTarmedFallId LOSARTAN
+	CheckTarmedXml $CheckTarmedFallId Metoprolol
+	CheckTarmedXml $CheckTarmedFallId "code=\"10.0010\"" // "Klinische Geruchsprüfung, beidseitig" // 10.0010
+	//  00.0010 00.0015 00.0026 00.0030
+	CheckTarmedXml $CheckTarmedFallId "code=\"00.0010\"" //  "Konsultation, erste 5 Min. (Grundkonsultation)" // BLock Kons plus (KVG)
+	CheckTarmedXml $CheckTarmedFallId "code=\"00.0015\"" // "Zuschlag für hausärztliche Leistungen in der Arztpraxis"
+	CheckTarmedXml $CheckTarmedFallId "code=\"00.0026\"" // "Konsultation bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min."
+	CheckTarmedXml $CheckTarmedFallId "code=\"00.0030\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
+	//  "23.0010" ] // Untersuchung der Mammae KVGSA
+	CheckTarmedXml $CheckTarmedFallId "code=\"23.0010\"" // "Untersuchung der Mammae"
+	CheckTarmedXml $CheckTarmedFallId "<invoice:diagnosis type=\"by_contract\" code=\"A3\" />"
+	concat "CheckTarmedFallVerrechnen " $CheckTarmedFallId " erfolgreich" | log
+}
+
 // Ende
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

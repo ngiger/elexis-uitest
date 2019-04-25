@@ -1,40 +1,36 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _QPqdkBNIEemmeedSb1JQew
+Contexts: _QPqdkBNIEemmeedSb1JQew,_LkBSkBsDEembU9g-6bJhVg
 Element-Name: CheckTarmedFallVerrechnen
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _Mr6FcFFuEemrk7fLFkHFEw
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/3/19 2:11 PM
+Save-Time: 4/23/19 7:49 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-proc "CheckTarmedFallVerrechnen"   [ val invoiceId 0 ] {
-	if [ $invoiceId  | eq 0 ] {
-		global [val CheckTarmedFallId [ GetNrOfInvoices -status [ t ausstehend ] ] ] -override
-	} -else {
-		global [val CheckTarmedFallId $invoiceId] -override
-	}
 
-	// Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
-	CheckTarmedXml $CheckTarmedFallId LOSARTAN
-	CheckTarmedXml $CheckTarmedFallId Metoprolol
-	CheckTarmedXml $CheckTarmedFallId "code=\"10.0010\"" // "Klinische Geruchsprüfung, beidseitig" // 10.0010
-	//  00.0010 00.0015 00.0026 00.0030
-	CheckTarmedXml $CheckTarmedFallId "code=\"00.0010\"" //  "Konsultation, erste 5 Min. (Grundkonsultation)" // BLock Kons plus (KVG)
-	CheckTarmedXml $CheckTarmedFallId "code=\"00.0015\"" // "Zuschlag für hausärztliche Leistungen in der Arztpraxis"
-	CheckTarmedXml $CheckTarmedFallId "code=\"00.0026\"" // "Konsultation bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min."
-	CheckTarmedXml $CheckTarmedFallId "code=\"00.0030\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
-	//  "23.0010" ] // Untersuchung der Mammae KVGSA
-	CheckTarmedXml $CheckTarmedFallId "code=\"23.0010\"" // "Untersuchung der Mammae"
-	CheckTarmedXml $CheckTarmedFallId "<invoice:diagnosis type=\"by_contract\" code=\"A3\" />"
-	concat "CheckTarmedFallVerrechnen " $CheckTarmedFallId " erfolgreich" | log
+// AbrechnungsSystemKonfigurieren
+// Des muss eine Bankverbindung mit einem Kontakt erstellt werden!!
+OpenAndResetStartPerspektive
+
+ConfigureHilotecODF_TextVerarbeitung
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/TR44_S1.odt" ]
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/TR44_S2.odt" ]
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Tarmedrechnung_S1.odt" ]
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S2.odt" ] // only hilotec
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Tarmedrechnung_EZ.odt" ]
+
+global [val testPatFamilyName [ concat "Bernasconi-" $defaultLanguage ] ] -override
+global [val testPatFirstName "Emil"] -override
+
+let [ val invoiceId [ GetHighestInvoiceNrOf ] ] {
+	RechnungAusgeben -invoiceId $invoiceId
+	CheckTarmedFallVerrechnen -invoiceId $invoiceId
 }
-
-CheckTarmedFallVerrechnen 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

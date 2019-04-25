@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/13/19 10:01 PM
+Save-Time: 4/16/19 3:22 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -23,9 +23,9 @@ __ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: 'I
 _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: 'Infrastruktur/NoViewWithPercent.test'
 _NbvRkFILEemrk7fLFkHFEw	// kind: 'test' name: 'CreateFemalePatient' path: 'CreateFemalePatient.test'
 _gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: 'Textverarbeitung/LOwriterMustBeInstalled.test'
-_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: 'BasicMandanten.test'
 _c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBase' path: 'ImportSwissBase.test'
 _3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Hilfen/RestartElexis.test'
+_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: 'BasicMandanten.test'
 _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: 'BasicKonsTests.test'
 _7B2QICqtEemYspbA8Fsyow	// kind: 'test' name: 'BasicPrinting' path: 'BasicPrinting.test'
 _mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: 'Administration/Kassenbuch.test'

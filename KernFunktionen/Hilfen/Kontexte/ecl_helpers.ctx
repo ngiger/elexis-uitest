@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/29/19 9:33 AM
+Save-Time: 4/18/19 9:11 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -28,6 +28,14 @@ proc "pwd" {
 proc "get-default-locale" {
 	invoke-static "org.eclipse.rcptt.util" "java.util.Locale" getDefault
 }
+
+/*
+global [val today [ invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now | get-object | invoke toString  ] ]
+global [val today [ invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now | invoke format ] ]
+concat "Today is " $today | log
+invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now | replaceAll -searchPattern "-" -replacePattern "." | log
+// invoke-static java.time.LocalDate.now().minusDays(1).format(java.time.format.DateTimeFormatter.ISO_DATE).replaceAll("-", "."))
+*/
 
 proc "get-user-dir" {
 	if [ get-by-os  -win true -macosx false -linux false ] {
@@ -123,7 +131,7 @@ proc "t" [val key] [val language $defaultLanguage] {
 t "open" "de" | eq "Öffnen" | verify-true
 t "open" "fr" | eq "Ouvrir" | verify-true
 
-global [ val praxisProperties [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/praxis.properties"]]]
+global [ val praxisProperties [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/praxis_" $defaultLanguage ".properties"]]]
 
 proc "GetPraxisProperty" [val key]  {
 	try {
@@ -159,8 +167,14 @@ proc resetPerspective {
 }
 
 proc OpenAndResetStartPerspektive {
-	if [ get-button [ t btn_start_perspective ] | get-property enablement -raw | equals true ] {
-    	get-button [ t btn_start_perspective ] | click
+	try {
+		if [ get-button [ t btn_start_perspective ] | get-property enablement -raw | equals true ] {
+			get-button [ t btn_start_perspective ] | click
+			}
+		} -error [val errorObj] -catch {
+			// Seen when running ImportSwissbase with french Elexis
+			concat "Errror " $errorObj "in btn_start_perspective" | log
+			set-dialog-result File "/dummy"
 	}
 	handleResetPerspectiveDialog
 	resetPerspective
@@ -170,8 +184,8 @@ proc OpenAndResetStartPerspektive {
  * Logs and creates a snapshot of the passed graphical object
  */
 proc "gen-screenshot" [ val parent -input ] [ val out [concat $imagesDir "dest.png"] ] {
-	concat "gen-screenshot: " $out | log
 	$parent | get-object | save-screenshot $out
+	concat "gen-screenshot: " $out | log
 }
 
 //

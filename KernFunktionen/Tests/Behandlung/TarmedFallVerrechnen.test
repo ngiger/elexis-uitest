@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/12/19 5:30 PM
+Save-Time: 4/23/19 7:49 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,44 +16,22 @@ Entry-Name: .content
 
 // requires ImportSwissMediBase and BasicMandanten or demoDB run before
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
-global [val testPatFamilyName "Bernasconi"] -override
-global [val testPatFirstName "Antonio"] -override
+global [val testPatFamilyName [ concat "Bernasconi-" $defaultLanguage ] ] -override
+global [val testPatFirstName "Emil"] -override
+global [val test_abr [ concat [ t case_KVG ] "-" $defaultLanguage ] ] -override
 concat "TarmedFallVerrechnen " $testPatFirstName " " $testPatFamilyName | log
-
-// First we check that the tarmed and blocks are correctly imported
-open-window-by-name [ t leistungen ]
-select-tarmed-leistung | assert-true
-
-OpenAndResetStartPerspektive
 ChangeMandant [concat [ GetPraxisProperty praxis.mandant.2.Name ] ".*" ]
-
-SetRightToDeleteCase
-OpenAndResetStartPerspektive
-ConfigureHilotecODF_TextVerarbeitung
+AbrechnungsSystemKonfigurieren -abrSystem $test_abr -startDate "01.09.2018" -newFactor "0.95" 
 
 OpenAndResetStartPerspektive
-if [SelectPatient $testPatFamilyName $testPatFirstName | eq false] {
-	PatientenErstellen $testPatFamilyName $testPatFirstName true "30.3.1990" "Nebenstrasse 33" 3320 Elexiskon "055 323 45 67"
-}
+AbrechnungsSystemKonfigurieren -abrSystem LaMal -newFactor "0.96" -startDate "01.06.2018"
 
-if [FallOffen -caseLaw [ t case_KVG ] -startDate "20.08.2018"] {
-	log "Offenen Fall KVG gefunden"
-} -else {
-	FallZuPatientErstellen -caseLaw [ t case_KVG ] -caseReason [ t reason_KVG ] -startDate "20.08.2018"
-	log "Fall KVG 20.08.2018 erstellt"
-}
-SelectFall  [ t case_KVG ] "201"
-if [ HasKonsSelected | eq false] {
-	kons-erstellen [ concat "BasisTests für " $testPatFamilyName " mit KVG" ]
-} -else {
-	log "HasKonsSelected returned true"
-}
+ChangeMandant [concat [ GetPraxisProperty praxis.mandant.2.Name ] ".*" ]
+// Des muss eine Bankverbindung mit einem Kontakt erstellt werden!!
 
-let [val fullName [ concat $testPatFamilyName " " $testPatFirstName ".*" ] ] {
-	get-view [ t Patientendetails ] | get-editbox  | set-focus
-	get-eclipse-window | gen-screenshot [ concat $imagesDir "TarmedFallVerrechnen_" $fullName ".png"]
-	get-view [ t Patientendetails ] | get-label $fullName | get-property caption | matches $fullName | verify-true
-}
+OpenAndResetStartPerspektive
+
+PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $testPatFamilyName -firstName $testPatFirstName -caseName $test_abr
 
 // Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
 kons-add-complementary 1255
@@ -68,18 +46,10 @@ kons-add-block  -blockName "kons plus (KVG)" -expectedItemsAdded 4 // 00.0010 00
 // kons-add-eigenleistung
 kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 
-FallSetVersicherungsNummer
+FallSetVersicherungsNummer -fall $test_abr
+
 AktuellenFallVerrechnen
 
-// AbrechnungsSystemKonfigurieren
-// Des muss eine Bankverbindung mit einem Kontakt erstellt werden!!
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/TR44_S1.odt" ]
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/TR44_S2.odt" ]
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S1.odt" ]
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S2.odt" ]
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_EZ.odt" ]
-
-RechnungAusgeben -patient $testPatFamilyName
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
 // Ende
 //

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/29/19 11:54 AM
+Save-Time: 4/23/19 7:48 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -19,9 +19,18 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	with [get-window [ t preferences ]] {
 		get-tree | select [ t Textverarbeitung ]
 		// Button name various on number of installed text plugins!
-		// There reaplce 0 :, etc by .*
+		// There replace 0 :, etc by .*
 	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "select-hilotecODF.png" ]
-		get-button ".*Hilotec-OpenDocument" | check
+		get-button ".*Hilotec-OpenDocument" | click
+	    with [get-button "Brief extern speichern (gleicher UNC Pfad auf allen Stationen)"] {
+	        check
+	    }
+	    with [get-editbox -after [get-label "Externes Textprogramm"]] {
+	        set-text "/home/niklaus/elexis/extern"
+	    }
+	    with [get-button "Dokumente lokal in externem Editor editieren (bei Änderung Neustart nötig)"] {
+	        check
+	    }
 		get-tree | select "Hilotec-OpenDocument"
 		with [get-editbox -after [get-label "OpenDocument Editor"]] {
 			set-text "/usr/bin/lowriter"
@@ -41,7 +50,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	}
 }
 
-proc ImportHilotecODF_Vorlagen [ val vorlagen [ concat $rcpttDir "vorlagen/AUF-Zeugnis.odt" ] ] {
+proc ImportHilotecODF_Vorlagen [ val vorlagen [ concat $rcpttDir "openoffice/AUF-Zeugnis.odt" ] ] {
 	concat "ImportHilotecODF_Vorlagen should import: " $vorlagen | log
 	get-file $vorlagen | get exists | assert-true
 	open-window-by-name [ t Dokumente_Textvorlagen_Management ]
