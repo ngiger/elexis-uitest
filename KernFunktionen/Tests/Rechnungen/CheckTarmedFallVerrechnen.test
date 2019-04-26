@@ -7,30 +7,39 @@ Element-Version: 3.0
 External-Reference: 
 Id: _Mr6FcFFuEemrk7fLFkHFEw
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/23/19 7:49 PM
+Save-Time: 4/26/19 11:49 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-
 // AbrechnungsSystemKonfigurieren
 // Des muss eine Bankverbindung mit einem Kontakt erstellt werden!!
-OpenAndResetStartPerspektive
 
-ConfigureHilotecODF_TextVerarbeitung
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/TR44_S1.odt" ]
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/TR44_S2.odt" ]
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Tarmedrechnung_S1.odt" ]
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S2.odt" ] // only hilotec
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Tarmedrechnung_EZ.odt" ]
-
-global [val testPatFamilyName [ concat "Bernasconi-" $defaultLanguage ] ] -override
-global [val testPatFirstName "Emil"] -override
-
-let [ val invoiceId [ GetHighestInvoiceNrOf ] ] {
-	RechnungAusgeben -invoiceId $invoiceId
-	CheckTarmedFallVerrechnen -invoiceId $invoiceId
+let [ val hiloFile [ concat [get-user-dir] "rcptt/hilotec_configured" ] ] {
+	if [ get-file $hiloFile | get exists ] {
+		log "ConfigureHilotecODF_TextVerarbeitung already done"
+	} -else {
+		ConfigureHilotecODF_TextVerarbeitung
+		ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/TR44_S1.odt" ]
+		ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/TR44_S2.odt" ]
+		ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Tarmedrechnung_S1.odt" ]
+		ImportHilotecODF_Vorlagen  [ concat $rcpttDir "vorlagen/Tarmedrechnung_S2.odt" ] // only hilotec
+		ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Tarmedrechnung_EZ.odt" ]
+		str "Configured ConfigureHilotecODF_TextVerarbeitung" | write-lines $hiloFile
+	}
 }
+
+let [ val keyId patient.100. ] {
+	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
+	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
+	    [ val invoiceId  [ GetHighestInvoiceNrOf ] ]
+    {
+		OpenAndResetStartPerspektive
+		RechnungAusgeben		  -invoiceId $invoiceId
+		CheckTarmedFallVerrechnen -invoiceId $invoiceId
+	}
+}
+
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

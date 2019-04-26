@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/18/19 9:03 PM
+Save-Time: 4/26/19 1:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -63,6 +63,7 @@ proc "PressAddDiagnosisToKons" {
 }
 
 proc "PressAddLeistungToKons" {
+	KonsCloseCannotBeChangedError
 	// TODO: This button should get a toolbar
 	try {
 		with [get-view [ t kons_view ] | get-button -after [ get-label [ t btn_accounting ] ] ] {
@@ -153,6 +154,14 @@ proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führer
 	ActivateVisibleKonsView 
 }
 
+proc "toggle-tarmed-kontext" {
+	open-window-by-name [ t leistungen ]
+	with [get-view [ t leistungen ] ] {
+		with [ get-group [ t alle_leistungen ] ] {
+			get-button [ t tarmed_kontext_aktivieren ] | click
+		}
+	}
+}
 /**
  * Select a tarmed by it position. As RCPTT replace a leading 00.0 by 0.0
  * you must enter values like %00.0010 as we will strip all %
@@ -166,10 +175,16 @@ proc "select-tarmed-leistung" [ val ziffer [ concat "00.0010" ] ] {
 		get-button [ t btn_show_list ] click
 		get-tab-folder | get-tab-item Tarmed | click
 		with [ get-group [ t alle_leistungen ] ] {
-			// disable automatic search if necessary
-			if [ get-button [ t btn_automatic_search ] | get-property enablement -raw ] {
-				get-button [ t btn_automatic_search ] | click
+			// Ensure that we really see all tarmed items for the kontext
+			get-button [ t btn_automatic_search ] | check
+			if [ get-tree | get-property itemCount -raw | matches "0" ] {
+				// get-button [ t tarmed_kontext_aktivieren ] | click
+				get-button [ t btn_execute_search ] | click
+				get-tree | get-property itemCount -raw | log
 			}
+			// disable automatic search if necessary
+			get-button [ t btn_automatic_search ] | uncheck
+			get-tree | get-property itemCount -raw | log
 			if [ $ziffer | matches "[0-9][0-9]\..*" ] {
 				with [get-editbox -after [get-label Ziffer]] {
 					set-text $ziffer
@@ -235,7 +250,14 @@ proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
 		concat "kons-add-tarmed: " $ziffer " have " $nrItemsBefore " items"| log
 		PressAddLeistungToKons
 		select-tarmed-leistung $ziffer
-		get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-tree | double-click
+		try {
+			get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-tree | double-click
+		} -catch {
+			log "kons-add-tarmed must toggle-tarmed-kontext"
+			toggle-tarmed-kontext
+			select-tarmed-leistung $ziffer
+			get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-tree | double-click
+		}
 		// Close Leistungen
 		ActivateVisibleKonsView 
 		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ] {
@@ -384,19 +406,32 @@ java.lang.NullPointerException: null
 	    key-type Right
 	    get-button OK | click
 	}
-	let [val myKonsDate  [ get-view [ t kons_view ] | get-label  -index 1| get-property caption -raw  ] ]
-	{
-		concat "MyKonsDate is: " $myKonsDate | log
-		$myKonsDate | matches  [ concat $newKonsDate ".*" ]  | assert-true
-			-message [ concat "Konsdate should match "  $newKonsDate " but is " $myKonsDate ]
-		concat $imagesDir "kons_" [ replaceAll $myKonsDate "\W" "" ] "_set.png" | log
-	 	// fails get-view Consultation | gen-screenshot -out [concat $imagesDir "kons_.png" ]
-		// works, but only display konstext get-view  gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
-		get-eclipse-window| gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
-		// fails too: get-view [ t kons_view ] | get-editbox | get-object | gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
-		// fails too: get-view [ t kons_view ] | get-editbox | invoke getParent | gen-screenshot -out [concat $imagesDir "kons_2_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
-		// fails with NPE: get-view [ t kons_view ] | get-editbox | invoke getParent| invoke getParent | gen-screenshot -out [concat $imagesDir "kons_3_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
-		
+	try {
+		let [val myKonsDate  [ get-view [ t kons_view ] | get-label  -index 1| get-property caption -raw  ] ]
+		{
+			concat "MyKonsDate is: " $myKonsDate | log
+			$myKonsDate | matches  [ concat $newKonsDate ".*" ]  | assert-true
+				-message [ concat "Konsdate should match "  $newKonsDate " but is " $myKonsDate ]
+			concat $imagesDir "kons_" [ replaceAll $myKonsDate "\W" "" ] "_set.png" | log
+			// fails get-view Consultation | gen-screenshot -out [concat $imagesDir "kons_.png" ]
+			// works, but only display konstext get-view  gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+			get-eclipse-window| gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+			// fails too: get-view [ t kons_view ] | get-editbox | get-object | gen-screenshot -out [concat $imagesDir "kons_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+			// fails too: get-view [ t kons_view ] | get-editbox | invoke getParent | gen-screenshot -out [concat $imagesDir "kons_2_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+			// fails with NPE: get-view [ t kons_view ] | get-editbox | invoke getParent| invoke getParent | gen-screenshot -out [concat $imagesDir "kons_3_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
+		}
+	}  -error [val errorObj] -catch {
+		concat "kons-set-date failed: " $newKonsDate " err: " $errorObj | log
+		KonsCloseCannotBeChangedError
+	}
+}
+
+proc "KonsCloseCannotBeChangedError" {
+	try {
+		get-window [ t kons_kann_nicht_geaendert_werde ] | gen-screenshot -out [concat $imagesDir "KonsCloseCannotBeChangedError.png"]
+		get-window [ t kons_kann_nicht_geaendert_werde ] | close
+	} -error [val errorObj] -catch {
+		concat "KonsCloseCannotBeChangedError err: " $errorObj | log
 	}
 }
 // ENDE

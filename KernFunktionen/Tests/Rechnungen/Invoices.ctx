@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/23/19 7:35 PM
+Save-Time: 4/26/19 1:31 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -16,7 +16,7 @@ proc "AbrechnungsSystemKonfigurieren"
 	[ val abrSystem  [ t case_KVG ] ] 
 	[ val leistungsSystem  [ t TarmedLeistung ] ] 
 	[ val abrPrinter [ t Tarmed_Drucker ] ] 
-	[ val caseLaw    [ t KVG_Gesetz ] ] 
+	[ val caseLaw	 [ t KVG_Gesetz ] ] 
 	[ val newFactor  "0.95" ]
 	[ val startDate  "01.01.2018" ] {
 	get-preferences-menu | click
@@ -33,8 +33,8 @@ proc "AbrechnungsSystemKonfigurieren"
 		with [get-window [ t Abrechnungssystem ]] {
 			get-editbox -after [get-label [ t Name ] ] | set-text $abrSystem
 			get-combo -after [get-label [ t Leistungscode_System ] ] | select $leistungsSystem
-	        get-combo -after [get-label [ t Standard_Rechnungsausgabe ] ] | select $abrPrinter
-	        get-combo -after [get-label [ t Gesetz ] ] | select $caseLaw
+			get-combo -after [get-label [ t Standard_Rechnungsausgabe ] ] | select $abrPrinter
+			get-combo -after [get-label [ t Gesetz ] ] | select $caseLaw
 			let [ val  nrMultiplikatoren [ get-list | get-property "getItemCount()" -raw ] ] 
 				[ val mustMatch [ concat ".*" $startDate ".*" $newFactor ] ]			{
 				loop [val idx 0] {
@@ -43,7 +43,6 @@ proc "AbrechnungsSystemKonfigurieren"
 						get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] -raw | log
 						// failed get-list | get-property [ concat "getItems().String[" 1 "]" ] -raw | log
 						get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] | matches $mustMatch | log
-						
 						get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] -raw| log
 						if [ get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] -raw | matches $mustMatch ] {
 								log "AbrechnungsSystemKonfigurieren: Found match"
@@ -62,17 +61,15 @@ proc "AbrechnungsSystemKonfigurieren"
 					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " must add multi" |log		
 					get-button [ t hinzufuegen ] | click
 					with [get-window  [ t Neuer_Multiplikator ] ] {
-			           with [get-editbox -after [get-label [ t Datum ]]] {
-			                set-text $startDate
-			            }
-			            get-editbox -after [get-label [ t Multiplikator ] ] | set-text $newFactor
+			   		with [get-editbox -after [get-label [ t Datum ]]] { set-text $startDate }
+						get-editbox -after [get-label [ t Multiplikator ] ] | set-text $newFactor
 						gen-screenshot [concat $imagesDir "Abrechnungs_Multiplikator_" $abrSystem "_"  $startDate " " $newFactor ".png"]
 						get-button OK | click
 					}
 				}
 
 			}
-	        get-editbox -after [get-label [ t Name ] ] | set-focus
+			get-editbox -after [get-label [ t Name ] ] | set-focus
 			get-button OK | click
 		}
 		gen-screenshot [concat $imagesDir "AbrechnungsSystemKonfigurieren_" $abrSystem "_"  $startDate " " $newFactor ".png"]
@@ -88,67 +85,92 @@ proc "RechnungslisteAnzeigen" [ val status [ t Offen ] ] {
 	}
 }
 
-proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
-	[ val invoiceId 1 ] 
-	[ val status [ t alle_rechnungs_stati ] ] {
-	concat "RechnungAusgeben starting: " $invoiceListViewName " invoiceId " $invoiceId | log
-	global [val RechnungAusgebenError "0" ] -override
-	let [ val logName [ concat "_invoice_" $invoiceId ] ]
-		[val nrItemsBefore [ GetNrOfInvoices -status $status ] ] {
-		get-eclipse-window | key-type "M1+m" // Maximize
-		RechnungslisteAnzeigen $status
-		concat "RechnungAusgeben: before " $nrItemsBefore " items"| log
-		get-view  $invoiceListViewName | get-table | select  $invoiceId | get-menu -path [ t Rechnung_ausgeben ] | click
-		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_start.png"]
-		with [get-window [ t View_Rechnung_ausgeben] ] {
-	   		get-combo | select [ t Als_Tarmed_Rechnung_ausdrucken ]
+proc RechnungSelektieren [ val invoiceId 1 ] {
+	RechnungslisteAnzeigen [ t alle_rechnungs_stati ]
+	get-view $invoiceListViewName | get-table | select  $invoiceId
+	global [val invoiceStatus
+		[ get-view $invoiceListViewName | get-table | get-item -path $invoiceId |
+		  get-property "getData().getInvoiceState().toString()" -raw ]
+	] -override
+	concat "Rechnung " $invoiceId " hat status: " $invoiceStatus | log
+}
+
+proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
+	str "Created pdfDir" | write-lines [ concat $pdfDir "/dummy.txt" ]
+	set-dialog-result Folder $pdfDir
+	with [get-window [ t View_Rechnung_ausgeben] ] {
+   		get-combo | select $druckTyp
+   		if [ $druckTyp | matches [ t Als_Tarmed_Rechnung_ausdrucken ] ] {
 			get-button [ t Mit_ESR ] | check
 			get-button [ t Mit_Rechnungsformular ] | check
 			get-button [ t Trotzdem_drucken ] | check
-			set-dialog-result Folder $pdfDir
 			with [get-group [ t Datei_Fuer_TrustCenter ] ] {
 				get-button [ t auch_als_XML_speichern ]| check
 				get-button [ t Aendern_oder_Verzeichnis ] | click
 			}
-			global [val RechnungAusgebenError "1" ] -override
-			gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_dialog.png"]
-			get-button OK | click
-		}    
+		}
+   		if [ $druckTyp | matches [ t Tarmed_XML_Datei ] ] {
+   			set-dialog-result Folder $pdfDir
+   			wait 1000
+			get-button [ t Tarmed_XML_Directory_Change ] | click
+		}
+		gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_dialog.png"]
+		get-button OK | click
+	}
+	// get-window [ t View_Rechnung_ausgeben] | get-button OK | click
+}
+
+
+proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
+	[ val invoiceId 1 ]
+	[ val status [ t alle_rechnungs_stati ] ]
+	[ val druckTyp [ t Tarmed_XML_Datei ] ] {
+	global [val RechnungAusgebenError "0" ] -override
+	let [ val logName [ concat "_invoice_" $invoiceId ] ]
+		[val nrItemsBefore [ GetNrOfInvoices -status [ t alle_rechnungs_stati ] ] ] {
+		get-eclipse-window | key-type "M1+m" // Maximize
+		RechnungSelektieren $invoiceId
+		get-view $invoiceListViewName | get-table | get-item -path $invoiceId | get-menu -path [ t Rechnung_ausgeben ] | click
+		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_start.png"]
+		RechnungsAusgabeDefinieren $druckTyp
 		try {
 			with [ get-window [ t Fehler_beim_Drucken ] ] {
-			    get-property title -raw | log
+				get-property title -raw | log
 				gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_Fehler.png"]
+				global [val RechnungAusgebenError "1" ] -override
 				// bool false | assert-true -message [concat "RechnungAusgeben Fehler beim Drucken von " $logName ]
 				get-button "OK" | click
 			}
 			log "RechnungAusgebe: Fehler beim Drucken umgangen"
 		} -error [val errorObj] -catch {
 			try {
-				get-window [ t Drucken_beendet ]| assert-non-empty
-				log "RechnungAusgebe: Kein Fehler beim Drucken. Okay"
-				get-window [ t Drucken_beendet ]| gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_beendet.png"]
-				get-window [ t Drucken_beendet ]| close
+				if [ $invoiceStatus | matches ".*ERROR.*" ] {
+					get-window [ t Drucken_beendet ]| assert-non-empty
+					log "RechnungAusgebe: Kein Fehler beim Drucken. Okay"
+					get-window [ t Drucken_beendet ]| gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_" $invoiceStatus ".png"]
+					get-window [ t Drucken_beendet ]| close
+				}
 			}
 		}
-		with [get-view $invoiceListViewName ] {
-			get-combo -after [get-label [ t RG_Total ]] | select [ t ausstehend ]
-			get-button [ t Liste_neu_einlesen ]  | click
-		}
+		RechnungSelektieren $invoiceId
+
 		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_liste.png"]
-		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
+/*
+		let [val nrItemsAfter [ GetNrOfInvoices -status [ t alle_rechnungs_stati ] ] ] {
 			concat "RechnungAusgeben: " $nrItemsAfter " after have " $nrItemsAfter " items"| log
 			$nrItemsAfter | lt $nrItemsBefore | assert-true -message
 				[ concat "RechnungAusgeben: After invoicing expected " $nrItemsAfter " items lower than but found " $nrItemsBefore]
 		}
-
-		let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
-			concat "RechnungAusgeben " $xmlFile " exists " [ get-file $xmlFile |  get exists]| log
-			get-file $xmlFile |  get exists | assert-true
+*/
+		if [ and [ $druckTyp | matches [ t Tarmed_XML_Datei ] ] [ $invoiceStatus | matches ".*PRINTED.*" ] ] {
+			let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
+				concat "RechnungAusgeben " $xmlFile " exists " [ get-file $xmlFile |  get exists]| log
+				get-file $xmlFile |  get exists | assert-true
+			}
 		}
 		if [ $RechnungAusgebenError | eq "1" ] {
 			bool false | assert-true -message [ concat "RechnungAusgebe: Fehler beim Drucken der Rechnung " $invoiceId  ". Wahrscheinlich kein PDF erstellt"]
 		}
-		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_okay.png"]
 		concat "RechnungAusgeben finished: " $invoiceListViewName " log " $logName | log
 	}
 }
@@ -168,7 +190,7 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 		get-view [ t Rechnungsliste ] | get-table | get-items | foreach [val item]  {
 			if [ $item | get-property caption -raw | gt $highestInvoiceNr ]{
 					// concat "GetHighestInvoiceNrOf Higher " [ $item | get-property caption -raw ] | log
-		    		global [val highestInvoiceNr [  $item | get-property caption -raw ] ] -override
+			 		global [val highestInvoiceNr [  $item | get-property caption -raw ] ] -override
 				}
 			}
 		}
@@ -190,7 +212,7 @@ proc "GetXmlOfInvoice" [ val invoiceId 1] {
 	concat $pdfDir $invoiceId ".xml"
 }
 
-proc "CheckTarmedFallVerrechnen"   [ val invoiceId 0 ] {
+proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] {
 	if [ $invoiceId  | eq 0 ] {
 		global [val CheckTarmedFallId [ GetNrOfInvoices -status [ t ausstehend ] ] ] -override
 	} -else {

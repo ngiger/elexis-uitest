@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _GbaREP_HEeiXxf0UDvXYOw
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/20/19 1:43 PM
+Save-Time: 4/26/19 1:26 PM
 Testcase-Type: ecl
 Verifications: _GcdboAX2Eemcp9WoDsgIvA
 
@@ -15,27 +15,40 @@ Verifications: _GcdboAX2Eemcp9WoDsgIvA
 Content-Type: text/ecl
 Entry-Name: .content
 
-// requires ImportSwissBase and BasicMandanten or demoDB run before
+// requires ImportSwissBase, BasicMandanten, BasicAbrechnungssystems run before
 get-eclipse-window | get-object | invoke setSize 1280 1024
-resetPerspective
-global [val test_abr [ concat [ t case_KVG ] "-" $defaultLanguage ] ] -override
 
-// Keep AbrechnungsSystemKonfigurieren synced between BasicKonsTests, BasicPrinting and TarmedFallVerrechnen
-AbrechnungsSystemKonfigurieren -abrSystem $test_abr -startDate "01.09.2018" -newFactor "0.95" 
-PatientMitFallUndKonsErstellenOderAuswaehlen -caseName $test_abr
-PatientMitFallUndKonsErstellenOderAuswaehlen -familyName "Armes Wesen" -firstName Manuel -caseName  $test_abr
-PatientMitFallUndKonsErstellenOderAuswaehlen -familyName "Berset" -firstName Alain -caseName $test_abr
-kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
-
-kons-add-block  -blockName "kons plus (KVG)" -expectedItemsAdded 4
-kons-add-tarmed [ concat "10.0010" ]
-kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*"
-
-// TODO: The next two tests work only with the demoDB. We must change them to be able to run them
-// via RunFromScratch or a new demoDB initialized with all data
-// kons-add-eigenleistung
-kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
-
+emit 1 2 3 4 5 | foreach [val idx]{
+// emit 1 | foreach [val idx]{
+	let [ val keyId [ concat "patient." $idx "." ] ] {
+		let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
+		    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
+		    [ val birthDate  [ GetTestProperty [ concat $keyId birthDate ] ] ]
+		    [ val male		 [ GetTestProperty [ concat $keyId male ] ] ]
+		    [ val caseName	 [ GetTestProperty [ concat $keyId caseName ] ] ]
+		    [ val tarmed	 [ GetTestProperty [ concat $keyId tarmed  ] [ concat "10.0010" ] ] ]
+		    [ val blockName	 [ GetTestProperty [ concat $keyId blockName ] "kons plus (KVG)" ] ]
+		    [ val blockNr	 [ GetTestProperty [ concat $keyId blockNr ] 4 ] ]
+		    {
+			OpenAndResetStartPerspektive
+			PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $familyName
+			 -firstName $firstName -birthDate $birthDate -male $male
+			 -caseName $caseName
+			kons-add-tarmed [ concat $tarmed ]
+			kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*"
+			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
+			kons-add-block  -blockName $blockName -expectedItemsAdded $blockNr
+			AktuellenFallVerrechnen
+			/*
+			// TODO: The next two tests work only with the demoDB. We must change them to be able to run them
+			// via RunFromScratch or a new demoDB initialized with all data
+			// kons-add-eigenleistung
+			// RechnungAusgeben		  -invoiceId $invoiceId
+			// CheckTarmedFallVerrechnen -invoiceId $invoiceId
+			*/
+		}
+	}
+}
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
 
 // Ende

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/25/19 1:31 PM
+Save-Time: 4/26/19 10:16 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -24,7 +24,6 @@ proc "get-env" [val name] {
 proc "pwd" {
   get-java-property "user.dir"
 }
-
 proc "get-default-locale" {
 	invoke-static "org.eclipse.rcptt.util" "java.util.Locale" getDefault
 }
@@ -112,6 +111,9 @@ global [ val translations [ map
 	[ entry de [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_de.properties" ] ] ]
 	[ entry fr [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_fr.properties" ] ] ]
 ] ]
+
+global [ val test_properties [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/test.properties" ] ] ]
+
 global [ val imagesDir	[ concat $resultsDir "images/" ] ]
 global [ val pdfDir	[ concat $resultsDir "pdf/" ] ]
 global [ val preferencesCsvFile [ concat  $resultsDir "preferences.csv" ] ]
@@ -130,9 +132,6 @@ proc "t" [val key] [val language $defaultLanguage] {
 		bool false
 	}
 }
-$translations | get "de" | log
-$translations | get "fr" | log
-$translations | get "fr" | get "open" | log
 t "open" "de" | eq "Öffnen" | verify-true
 t "open" "fr" | eq "Ouvrir" | verify-true
 
@@ -147,6 +146,16 @@ proc "GetPraxisProperty" [val key]  {
 			concat ""
 	}
 }
+
+proc "GetTestProperty" [val key] [val default "" ] {
+	try {
+		$test_properties | get $key
+		} -catch {
+			concat "Unable to fetch key " $key " in test.properties"  | log -severity Error
+			concat $default
+	}
+}
+GetTestProperty patient.1.familyName | matches Testarossa | assert-true
 
 proc handleResetPerspectiveDialog {
 	try {

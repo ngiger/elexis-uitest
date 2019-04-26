@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/20/19 2:09 PM
+Save-Time: 4/26/19 11:44 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -157,6 +157,17 @@ proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val ad
 	}
 }
 
+proc "FallSetCostBearer" [ val name "AEROSANA" ] [ val fall ".*" ] {
+	get-view [ t view_cases ] | get-table | select [ concat $fall ".*" ] | double-click
+	get-view  [ t Fall ]  | get-link [ t fall_cost_bearer ] | click
+	with [get-window [t select_contact ] ] {
+	    with [get-editbox -after [get-label [ t select_andere_kontakte ] ] -index 1] {
+	        set-text $name
+	    }
+	    get-table | select [ concat ".*" $name ".*" ]
+	    get-button OK | click
+	}
+}
 proc "FallSetVersicherungsNummer" [ val nummer 123456 ] [ val fall ".*" ] {
 	get-view [ t view_cases ] | get-table | select [ concat $fall ".*" ] | double-click
 	try {

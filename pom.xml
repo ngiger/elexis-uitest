@@ -85,6 +85,7 @@
           <configuration>
             <target>
               <copy file="${myBaseDir}/save_run_from_scratch.sh" tofile="${rcptt-resources}/save_run_from_scratch.sh" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/test.properties" tofile="${rcptt-resources}/test.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
