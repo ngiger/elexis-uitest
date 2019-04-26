@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/26/19 11:44 AM
+Save-Time: 4/26/19 10:42 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -92,7 +92,7 @@ proc SelectFall [val caseLaw] [val startDate] {
 }
 
 proc FallOffen [val caseLaw] [val startDate] {
-	let [val searchPattern [concat ".*" $caseLaw ".*" $startDate ".*"]] {
+	let [val searchPattern [concat $caseLaw ".*" $startDate ".*"]] {
 		try {
 			concat "MySearchpattern is: " $searchPattern | log
 			get-view [ t view_cases ] | get-table | get-item $searchPattern | get-property caption
@@ -104,6 +104,14 @@ proc FallOffen [val caseLaw] [val startDate] {
 	}
 }
 
+proc AktuellenFallSchliessen [ val endDate "" ] {
+	get-view [ t view_cases ] | get-table | get-menu -path [ t mnu_close_case ] | click
+	with [get-window [ t fall_abschlssdatum ] ] {
+	    get-editbox | set-focus
+	    get-editbox | set-text $endDate
+	    get-button OK | click
+	}
+}
 proc AktuellenFallVerrechnen {
 	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
 		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items"| log
@@ -112,8 +120,8 @@ proc AktuellenFallVerrechnen {
 			get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
 			log "AktuellenFallVerrechnen: Failed. See message above" -severity error
 			close-window-if-open [ t error ]
-		} -catch {
-			log "Catched error"
+		} -error [val errorObj]  -catch {
+			// concat "Catched error: " $errorObj
 		}
 		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
 			concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items"| log

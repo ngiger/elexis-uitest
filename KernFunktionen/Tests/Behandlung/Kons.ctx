@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/26/19 1:12 PM
+Save-Time: 4/26/19 10:44 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -110,6 +110,25 @@ proc "kons-neue-diagnose" [ val reiter ] [ val item ] {
 	concat "kons-neue-diagnose added " $reiter " " $item | log
 }
 
+proc "kons-check-expected-items" [ val caller ]
+	[ val item "" ]
+	[ val expectedItemsAdded 1 ]
+	[ val nrItemsBefore 0 ]  {
+		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ]
+			[val nrItemsSoll [  $nrItemsBefore | plus $expectedItemsAdded ] ] {
+			let [ val infoMsg
+				[ concat $caller " expectedItemsAdded failed: Added " $item  " nrItemsBefore " $nrItemsBefore " now we have " $nrItemsAfter " <> " $nrItemsSoll " items. expectedItemsAdded "  $expectedItemsAdded
+				] ]
+			{
+				$infoMsg | log
+				if [ $nrItemsBefore | plus $expectedItemsAdded | equals $nrItemsAfter ] {
+					concat $caller " expectedItemsAdded passed" | log
+				} -else {
+					$infoMsg | log
+				}
+			}
+		}
+}
 /**
  * Das geht eine Ewigkeit, weil rcptt sich den ganzen Artikelstamm ins Memory lädt!!
  * <br>Der Name muss so gewählt werden, dass kein hellblau eingefärbter Artikel als erster in der
@@ -132,11 +151,8 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expected
 		concat "kons-neuen-artikelstamm item added " $item_short " " $item_long | log
 		ActivateVisibleKonsView
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $item_short ".png"]
-		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ] {
-			concat "kons-add-artikelstamm: " $item_short " after have " $nrItemsAfter " items"| log
-			$nrItemsBefore | plus $expectedItemsAdded | equals $nrItemsAfter | assert-true -message
-				[ concat "kons-add-artikelstamm: " $item_short " After invoicing expected "  [$nrItemsBefore | plus $expectedItemsAdded ] " items but found " $nrItemsAfter]
-		}
+		kons-check-expected-items -caller "kons-add-artikelstamm" -item $item_short
+			-nrItemsBefore $nrItemsBefore -expectedItemsAdded $expectedItemsAdded
 	}
 }
 
@@ -259,12 +275,9 @@ proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
 			get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-tree | double-click
 		}
 		// Close Leistungen
-		ActivateVisibleKonsView 
-		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ] {
-			concat "kons-add-tarmed: " $ziffer " after have " $nrItemsAfter " items"| log
-			$nrItemsBefore | plus $expectedItemsAdded | equals $nrItemsAfter | assert-true -message
-				[ concat "kons-add-tarmed: " $ziffer " : After invoicing expected "  [$nrItemsBefore | plus $expectedItemsAdded ] " items but found " $nrItemsAfter]
-		}
+		ActivateVisibleKonsView
+		kons-check-expected-items -caller "kons-add-tarmed" -item $ziffer
+			-nrItemsBefore $nrItemsBefore -expectedItemsAdded $expectedItemsAdded
 	}
 	// TODO: This fails with NullPointerException and does not populate the Verrechnung
 	// Not checking for this condition at the moment
@@ -354,7 +367,9 @@ proc "kons-add-macro" [ val macroName "soap" ] {
 	}
 }
 
-proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] [ val expectedItemsAdded 1 ] {
+proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ]
+	[ val expectedItemsAdded 1 ]
+	[ val info "Für Fehlermeldungen" ] {
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
 		concat "kons-add-block: " $blockName " have " $nrItemsBefore " items"| log
 		PressAddLeistungToKons
@@ -373,12 +388,10 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ] [ val expectedItems
 			}
 		}
 		ActivateVisibleKonsView
+		wait 100
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $blockName ".png"]
-		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ] {
-			concat "kons-add-block: " $blockName " after have " $nrItemsAfter " items"| log
-			$nrItemsBefore | plus $expectedItemsAdded | equals $nrItemsAfter | assert-true -message
-				[ concat "kons-add-block: " $blockName " After invoicing expected "  [$nrItemsBefore | plus $expectedItemsAdded ] " items but found " $nrItemsAfter]
-		}
+		kons-check-expected-items -caller [ concat "kons-add-block: for " $info ] -item $blockName
+			-nrItemsBefore $nrItemsBefore -expectedItemsAdded $expectedItemsAdded
 	}
 }
 
@@ -432,6 +445,44 @@ proc "KonsCloseCannotBeChangedError" {
 		get-window [ t kons_kann_nicht_geaendert_werde ] | close
 	} -error [val errorObj] -catch {
 		concat "KonsCloseCannotBeChangedError err: " $errorObj | log
+	}
+}
+
+proc "ImportPatFallKonsFromProperty" [ val keyId ] {
+	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
+	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
+	    [ val male		 [ GetTestProperty [ concat $keyId male      ] ] ]
+	    [ val caseName	 [ GetTestProperty [ concat $keyId caseName  ] ] ]
+	    [ val blockNr	 [ GetTestProperty [ concat $keyId blockNr   ] 4 ] ]
+	    [ val tarmed	 [ GetTestProperty [ concat $keyId tarmed    ] [ concat "10.0010" ] ] ]
+	    [ val birthDate  [ GetTestProperty [ concat $keyId birthDate ] "29.02.1984" ] ]
+	    [ val blockName	 [ GetTestProperty [ concat $keyId blockName ] "kons plus (KVG)" ] ]
+    {
+		if [ $firstName | equals "" ] {
+			concat "ImportPatFallKonsFromProperty found no entry with key " $keyId | log
+		} -else {
+			concat "ImportPatFallKonsFromProperty started with key " $keyId " " $firstName " " $familyName | log
+			OpenAndResetStartPerspektive
+			PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $familyName
+			 -firstName $firstName -birthDate $birthDate -male $male
+			 -caseName $caseName
+			kons-add-tarmed [ concat $tarmed ]
+			kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*"
+			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
+			kons-add-block  -blockName $blockName -expectedItemsAdded $blockNr -info [ concat  $firstName " " $familyName ]
+			FallSetVersicherungsNummer -fall $caseName
+			FallSetCostBearer -fall $caseName -name "Aquilana"
+			AktuellenFallVerrechnen
+			AktuellenFallSchliessen
+
+			/*
+			// TODO: The next two tests work only with the demoDB. We must change them to be able to run them
+			// via RunFromScratch or a new demoDB initialized with all data
+			// kons-add-eigenleistung
+			// RechnungAusgeben		  -invoiceId $invoiceId
+			// CheckTarmedFallVerrechnen -invoiceId $invoiceId
+			*/
+		}
 	}
 }
 // ENDE

@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gN-zEBNWEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/26/19 1:31 PM
+Save-Time: 4/26/19 7:06 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,45 +16,7 @@ Entry-Name: .content
 
 // requires ImportSwissMediBase and BasicMandanten or demoDB run before
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
-
-let [ val keyId patient.100. ] {
-	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
-	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
-	    [ val birthDate  [ GetTestProperty [ concat $keyId birthDate ] ] ]
-	    [ val male		 [ GetTestProperty [ concat $keyId male ] ] ]
-	    [ val caseName   [ GetTestProperty [ concat $keyId caseName ] ] ]
-	    [ val tarmed	 [ GetTestProperty [ concat $keyId tarmed  ] "10.0010" ] ]
-	    [ val blockName	 [ GetTestProperty [ concat $keyId blockName ] "kons plus (KVG)" ] ]
-	    [ val blockNr	 [ GetTestProperty [ concat $keyId blockNr ] 4 ] ]
-	    {
-		OpenAndResetStartPerspektive
-		concat "TarmedFallVerrechnen " $familyName " " $firstName " " $caseName| log
-		ChangeMandant [concat [ GetPraxisProperty praxis.mandant.2.Name ] ".*" ]
-		AbrechnungsSystemKonfigurieren -abrSystem $caseName -startDate "01.09.2018" -newFactor "0.95"
-		PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $familyName
-		 -firstName $firstName -birthDate $birthDate -male $male
-		 -caseName $caseName
-		kons-add-complementary 1255
-		kons-add-tarmed [ concat "10.0010" ] // "Klinische Geruchsprüfung, beidseitig"
-		kons-add-tarmed [ concat "23.0010" ] // Untersuchung der Mammae KVGSA
-		kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*" //7680582930020
-		kons-add-artikelstamm -item_short Metoprolol -item_long ".*30 Stk.*" //7680591310011
-		kons-add-block  -blockName "kons plus (KVG)" -expectedItemsAdded 4 // 00.0010 00.0015 00.0026 00.0030
-
-		// kons-add-eigenleistung
-		kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
-		FallSetVersicherungsNummer -fall $caseName
-		FallSetCostBearer -fall $caseName -name "Aquilana"
-		AktuellenFallVerrechnen
-		/*
-		// TODO: The next two tests work only with the demoDB. We must change them to be able to run them
-		// via RunFromScratch or a new demoDB initialized with all data
-		// kons-add-eigenleistung
-		// RechnungAusgeben		  -invoiceId $invoiceId
-		// CheckTarmedFallVerrechnen -invoiceId $invoiceId
-		*/
-	}
-}
+ImportPatFallKonsFromProperty patient.100.
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
 // Ende
 //

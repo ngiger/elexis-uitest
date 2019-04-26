@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/26/19 1:31 PM
+Save-Time: 4/26/19 7:19 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -177,8 +177,11 @@ proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
 
 proc "CheckTarmedXml"  [ val invoiceId ] [ val searchFor ] {
 	let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
-		concat "CheckTarmedXml " $invoiceId " looking for '" $searchFor "'" | log
-		FileContainsString $xmlFile -searchFor $searchFor | assert-true
+		let [ val result [ FileContainsString $xmlFile -searchFor $searchFor ] ] {
+			let [ val infoMsg [ concat "CheckTarmedXml " $invoiceId " looking for '" $searchFor "' returned " $result ] ] {
+				$result | assert-true -message $infoMsg
+			}
+		}
 	}
 }
 proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
@@ -221,7 +224,7 @@ proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] {
 
 	// Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
 	CheckTarmedXml $CheckTarmedFallId LOSARTAN
-	CheckTarmedXml $CheckTarmedFallId Metoprolol
+	// CheckTarmedXml $CheckTarmedFallId Metoprolol
 	CheckTarmedXml $CheckTarmedFallId "code=\"10.0010\"" // "Klinische Geruchsprüfung, beidseitig" // 10.0010
 	//  00.0010 00.0015 00.0026 00.0030
 	CheckTarmedXml $CheckTarmedFallId "code=\"00.0010\"" //  "Konsultation, erste 5 Min. (Grundkonsultation)" // BLock Kons plus (KVG)
@@ -229,7 +232,7 @@ proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] {
 	CheckTarmedXml $CheckTarmedFallId "code=\"00.0026\"" // "Konsultation bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min."
 	CheckTarmedXml $CheckTarmedFallId "code=\"00.0030\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
 	//  "23.0010" ] // Untersuchung der Mammae KVGSA
-	CheckTarmedXml $CheckTarmedFallId "code=\"23.0010\"" // "Untersuchung der Mammae"
+	CheckTarmedXml $CheckTarmedFallId "code=\"10.0010\"" // "Untersuchung der Mammae"
 	CheckTarmedXml $CheckTarmedFallId "<invoice:diagnosis type=\"by_contract\" code=\"A3\" />"
 	concat "CheckTarmedFallVerrechnen " $CheckTarmedFallId " erfolgreich" | log
 }
