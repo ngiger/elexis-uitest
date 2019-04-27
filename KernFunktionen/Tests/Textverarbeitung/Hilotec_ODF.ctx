@@ -6,13 +6,19 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/26/19 10:46 AM
+Save-Time: 4/27/19 10:16 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 global [val hilotecOdfOutDir $pdfDir ] -override
+
+proc CloseLibreOffice {
+	exec-process -command killall -args oosplash -ignoreExitCode -ignoreStderr
+}
+
+CloseLibreOffice // Ensure that we have no LibreOffice process open when running our tests
 
 proc ConfigureHilotecODF_TextVerarbeitung {
 	get-preferences-menu | click
@@ -24,10 +30,10 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    with [get-button "Brief extern speichern (gleicher UNC Pfad auf allen Stationen)"] {
 	        check
 	    }
-	    with [get-editbox -after [get-label "Externes Textprogramm"]] {
+	    with [get-editbox -after [get-label [ t pref_externes_textprogramm ] ] ] {
 	        set-text [ concat  [get-user-dir] "/extern" ]
 	    }
-	    with [get-button "Dokumente lokal in externem Editor editieren (bei Änderung Neustart nötig)"] {
+	    with [get-button [ t pref_texte_lokal_editieren ] ] {
 	        check
 	    }
 		get-tree | select "Hilotec-OpenDocument"

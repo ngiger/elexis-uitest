@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/26/19 10:42 PM
+Save-Time: 4/27/19 10:12 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -163,6 +163,7 @@ proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val ad
 		get-table | select  [ concat ".*" $adrName ".*"  $adrPostalcode ".*" ]
 		get-button OK | click
 	}
+	CloseLibreOffice
 }
 
 proc "FallSetCostBearer" [ val name "AEROSANA" ] [ val fall ".*" ] {
