@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/29/19 3:13 PM
+Save-Time: 4/29/19 3:44 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -85,10 +85,6 @@ proc SelectFall [val caseLaw] [val startDate] [ val isOpen [ t fall_offen_part ]
 			get-view [ t view_cases ] | get-table | select $searchPattern | click
 			bool true
 		} -catch {
-			// TODO: Why is this workaround necessary?
-			get-view [ t view_cases ] | close
-			open-window-by-name [ t view_cases ]
-			get-view [ t view_cases ] | get-table | select $searchPattern | click
 			bool false
 		}
 	}
