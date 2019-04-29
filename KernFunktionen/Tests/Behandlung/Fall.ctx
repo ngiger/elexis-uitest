@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/27/19 10:12 AM
+Save-Time: 4/29/19 3:13 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -78,23 +78,26 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t re
 	}
 }
 
-proc SelectFall [val caseLaw] [val startDate] {
-	let [ val searchPattern [ concat ".*" $caseLaw ".*" $startDate ".*"] ] {
+proc SelectFall [val caseLaw] [val startDate] [ val isOpen [ t fall_offen_part ] ] {
+	let [ val searchPattern [ concat ".*" $caseLaw ".*" $startDate ".*" $isOpen ".*" ] ] {
+		concat "SelectFall: " [ GetActPatPersonalia ] " searching for: " $searchPattern | log
 		try {
 			get-view [ t view_cases ] | get-table | select $searchPattern | click
+			bool true
 		} -catch {
 			// TODO: Why is this workaround necessary?
 			get-view [ t view_cases ] | close
 			open-window-by-name [ t view_cases ]
 			get-view [ t view_cases ] | get-table | select $searchPattern | click
+			bool false
 		}
 	}
 }
 
 proc FallOffen [val caseLaw] [val startDate] {
-	let [val searchPattern [concat $caseLaw ".*" $startDate ".*"]] {
+	let [val searchPattern [concat $caseLaw ".*" $startDate ".*" ] ] {
 		try {
-			concat "MySearchpattern is: " $searchPattern | log
+			concat "FallOffen: " [ GetActPatPersonalia ] " searching for: " $searchPattern | log
 			get-view [ t view_cases ] | get-table | get-item $searchPattern | get-property caption
 			get-view [ t view_cases ] | get-table | get-item $searchPattern | select-item
 			bool true  // 0 stands for true
@@ -211,14 +214,16 @@ proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa
 	if [SelectPatient $familyName $firstName | eq false] {
 		PatientenErstellen $familyName $firstName $male $birthDate $street $plz $location $phone
 	}
+
 	
-	if [FallOffen -caseLaw $caseName -startDate $caseStartDate ] {
-		log "Offenen Fall KVG gefunden"
+	if [SelectFall -caseLaw $caseName -startDate $caseStartDate ] {
+		concat "Offenen Fall " $caseName " " $caseStartDate " gefunden" | log
 	} -else {
 		FallZuPatientErstellen -caseLaw $caseName -caseReason $caseReason -startDate $caseStartDate
 		concat "FallZuPatientErstellen " $familyName " " $firstName  " " caseName | log
 	}
-	SelectFall  $caseName $caseStartDate
+	SelectFall -caseLaw $caseName -startDate $caseStartDate
+	FallOffen -caseLaw $caseName -startDate $caseStartDate | assert-true
 	if [ HasKonsSelected | eq false] {
 		kons-erstellen [ concat "PatientMitFallUndKonsErstellenOderAuswaehlen "  $familyName " " $firstName " mit " $caseName  " of " $caseStartDate " kons of" $konsDate ]
 	} -else {
