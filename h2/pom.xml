@@ -21,7 +21,6 @@
     <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
     <vmArg10>-DvmArg10</vmArg10>
     <suite2run>SmokeTestSuite</suite2run>
-    <dropCreateDbScript>${project.basedir}/drop_create_db.sql</dropCreateDbScript>
   </properties>
   <build>
     <plugins>
@@ -39,9 +38,11 @@
                   </fileset>                  <fileset>
                       <directory>${user.home}/elexis</directory>
                       <includes>
-                        <include>h2_elexis_rcptt.*</include>
                         <include>elexislock.*</include>
-                      </includes>
+                    </includes>
+                  </fileset>
+                  <fileset>
+                    <directory>${user.home}/elexis/h2_elexis_rcptt</directory>
                   </fileset>
                   <fileset>
                     <directory>${user.home}/elexis</directory>
@@ -70,13 +71,8 @@
           <projects>
               <project>${project.basedir}/../KernFunktionen</project>
           </projects>
+          <!-- injections are by default specified in the main pom.xml -->
           <aut>
-            <injections>
-              <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
-              <injection>
-                <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
-              </injection>
-            </injections>
             <!-- Use URL like this for the AUT
             ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
             https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
@@ -95,7 +91,8 @@
               <vmArg>-Dlanguage=${language}</vmArg>
               <vmArg>-Duser.language=${language}</vmArg>
               <vmArg>${vmArg1}</vmArg>
-              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt</vmArg>
+              <!-- Somehow we cannot pass the AUTO_SERVER=TRUE option to the h2, as I do not know howto bypass the quoting -->
+              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db</vmArg>
               <vmArg>${vmArg3}</vmArg>
               <vmArg>${vmArg4}</vmArg>
               <vmArg>${vmArg5}</vmArg>
@@ -118,6 +115,34 @@
                  </suites>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+              <id>dump-database-elexis-rcptt</id>
+              <phase>install</phase>
+              <configuration>
+                <target>
+                  <exec executable="java"  >
+                    <arg value="-cp"/>
+                    <arg value="${project.build.directory}/aut/plugins/org.h2_1.3.170.jar"/>
+                    <arg value="org.h2.tools.Script"/>
+                    <arg value="-url"/>
+                    <arg value="jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db"/>
+                    <arg value="-user"/>
+                    <arg value="sa"/>
+                    <arg value="-script"/>
+                    <arg value="${project.build.directory}/results/h2_elexis_rcptt_${language}.sql"/>
+                  </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
     </plugins>
   </build>
 </project>
