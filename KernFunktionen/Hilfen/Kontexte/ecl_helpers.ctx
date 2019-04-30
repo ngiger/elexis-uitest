@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/29/19 3:15 PM
+Save-Time: 4/30/19 10:59 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -180,6 +180,9 @@ proc resetPerspective {
 	}
 }
 
+/**
+ * Resets to the default perspectives an
+ */
 proc OpenAndResetStartPerspektive {
 	try {
 		if [ get-button [ t btn_start_perspective ] | get-property enablement -raw | equals true ] {
@@ -192,6 +195,9 @@ proc OpenAndResetStartPerspektive {
 	}
 	handleResetPerspectiveDialog
 	resetPerspective
+	// we need reproducable conditions else labels etc suddenly vanish
+	get-eclipse-window | get-object | invoke setSize 1280 1024
+	concat "OpenAndResetStartPerspektive: Size is " [ get-eclipse-window | get-object | invoke getSize ] | log
 }
 
 /**
