@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/25/19 5:15 PM
+Save-Time: 4/27/19 12:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -37,10 +37,7 @@ proc "get-first-preference-item" {
 	close-window-if-open [ t preferences ]
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
-		// get-tree | select ".*" | get-property path -raw | log
 		get-tree | select ".*" | click
-		// get-item -index 1 | log
-		// get-item -index 1 | click
 		get-tree | get-item -path Bezugskontakt | get-property "getParent().getSelection().TreeItem[0].getText()" | log
 		get-tree | get-item -path Bezugskontakt | get-property "getParent().getSelection().TreeItem[0].getText()" -raw
 	}
@@ -92,10 +89,11 @@ proc "check-one-preference-item" [val prefName] {
 					] ] -override
 			} -else {
 				global [val  imgName [
-						concat $imagesDir "preferences/"  $curPrefMenuClean "/"
+						concat $imagesDir "preferences/"  $curPrefMenuClean "/_"
 						[ replaceFirst $curPrefMenuClean -searchPattern "/[^\\/]*$" -replaceString "" ]
 						".png"
 						] ] -override
+				concat "imgName now " $imagesDir | log
 			}
 			concat "save-screenshot: curPrefMenu: " $curPrefMenu " img: " $imgName | log
 			get-window [ t preferences ] | get-object |save-screenshot -out [ replaceAll $imgName "/___" "/" ]
