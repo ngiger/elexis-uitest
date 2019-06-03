@@ -78,7 +78,7 @@
               <phase>process-sources</phase>
               <configuration>
                 <target> 
-                  <exec executable="/bin/bash" >
+                  <exec executable="/bin/bash" failonerror="true" >
                     <arg value="${dropCreateDbScript}"/>
                   </exec>
                 </target>
@@ -93,7 +93,7 @@
               <configuration>
                 <target>
                   <!-- /usr/bin/pg_dump - -host=localhost - -user=elexis - -encoding=UTF-8 - -clean  - -dbname elexis_rcptt - -create >pg_dump_de.sql -->
-                  <exec executable="/usr/bin/pg_dump" output="./target/results/pg_dump_${language}.sql" >
+                  <exec executable="/usr/bin/pg_dump" output="./target/results/pg_dump_${language}.sql" failonerror="true" >
                     <env key="PGPASSWORD" value="elexisTest"/>
                     <arg value="--host=localhost"/>
                     <arg value="--user=elexis"/>

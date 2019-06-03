@@ -25,38 +25,6 @@
   <build>
     <plugins>
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>2.4.1</version>
-          <configuration>
-              <filesets>
-                  <fileset>
-                      <directory>/tmp</directory>
-                      <includes>
-                        <include>elexis*db</include>
-                      </includes>
-                  </fileset>                  <fileset>
-                      <directory>${user.home}/elexis</directory>
-                      <includes>
-                        <include>elexislock.*</include>
-                    </includes>
-                  </fileset>
-                  <fileset>
-                    <directory>${user.home}/elexis/h2_elexis_rcptt</directory>
-                  </fileset>
-                  <fileset>
-                      <directory>${user.home}/elexis/logs</directory>
-                  </fileset>
-                  <fileset>
-                    <directory>${user.home}/elexis/demoDB</directory>
-                  </fileset>
-                  <fileset>
-                    <directory>${rcptt-resources}</directory>
-                 </fileset>
-              </filesets>
-          </configuration>
-        </plugin>
-        <plugin>
         <groupId>org.eclipse.rcptt</groupId>
         <artifactId>rcptt-maven-plugin</artifactId>
         <version>${rcptt-maven-version}</version>
@@ -118,7 +86,7 @@
               <phase>install</phase>
               <configuration>
                 <target>
-                  <exec executable="java"  >
+                  <exec executable="java" failonerror="true">
                     <arg value="-cp"/>
                     <arg value="${project.build.directory}/aut/plugins/org.h2_1.3.170.jar"/>
                     <arg value="org.h2.tools.Script"/>

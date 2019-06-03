@@ -58,12 +58,17 @@
                   <fileset>
                     <directory>${user.home}/elexis</directory>
                    <includes>
-                      <include>localCfg_rpctt*.xml</include>
+                      <include>elexislock.*</include>
+                      <include>localCfg*rcptt*xml</include>
                     </includes>
                   </fileset>
                   <fileset>
                       <directory>${user.home}/elexis/extern</directory>
+                  </fileset>
+                  <fileset>
                       <directory>${user.home}/elexis/logs</directory>
+                  </fileset>
+                  <fileset>
                       <directory>${user.home}/elexis/rcptt</directory>
                   </fileset>
                   <fileset>
@@ -106,7 +111,7 @@
           <phase>process-sources</phase>
           <configuration>
             <target>
-              <exec executable="${unzipExe}">
+              <exec executable="${unzipExe}" failonerror="true">
                 <arg value="-j"/>
                 <arg value="-d"/>
                 <arg value="${rcptt-resources}/vorlagen"/>
@@ -124,7 +129,7 @@
           <phase>process-sources</phase>
           <configuration>
             <target>
-              <exec executable="${unzipExe}">
+              <exec executable="${unzipExe}" failonerror="true">
                 <arg value="-j"/>
                 <arg value="-d"/>
                 <arg value="${rcptt-resources}/openoffice"/>

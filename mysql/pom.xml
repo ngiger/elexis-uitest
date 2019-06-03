@@ -78,7 +78,7 @@
               <phase>process-sources</phase>
               <configuration>
                 <target> 
-                  <exec executable="/bin/bash" >
+                  <exec executable="/bin/bash" failonerror="true" >
                     <arg value="${dropCreateDbScript}"/>
                   </exec>
                 </target>
@@ -92,7 +92,7 @@
               <phase>install</phase>
               <configuration>
                 <target>
-                  <exec executable="/usr/bin/mysqldump" >
+                  <exec executable="/usr/bin/mysqldump" failonerror="true" >
                     <arg value="--host=localhost"/>
                     <arg value="--user=elexis"/>
                     <arg value="--password=elexisTest"/>
