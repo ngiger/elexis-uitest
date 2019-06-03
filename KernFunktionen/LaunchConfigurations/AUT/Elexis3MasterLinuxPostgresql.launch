@@ -14,7 +14,6 @@
 <stringAttribute key="com.xored.launching.common.attrArch" value="x86_64"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterLinuxPostgresql"/>
 <stringAttribute key="location" value="${workspace_loc}/../aut-Elexis3MasterLinuxPostgresql"/>
-<booleanAttribute key="org.eclipse.debug.core.capture_output" value="false"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
 <mapEntry key="SWT_GTK3" value="0"/>
 </mapAttribute>
@@ -22,7 +21,7 @@
 <stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterLinuxPostgresql/console.log"/>
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-11-openjdk-amd64"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-openjdk-amd64"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os linux -ws gtk -arch x86_64 -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx1024m -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 -XX:MaxPermSize=128m -Dch.elexis.dbFlavor=postgresql -Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt_de -Dch.elexis.dbUser=elexis -Dch.elexis.dbPw=elexisTest -Dch.elexis.firstMandantName=mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=mustermann -Dch.elexis.password=elexisTest"/>

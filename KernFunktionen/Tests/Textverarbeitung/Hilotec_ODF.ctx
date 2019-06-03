@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/29/19 3:56 PM
+Save-Time: 6/3/19 8:47 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -78,6 +78,23 @@ proc ImportHilotecODF_Vorlagen [ val vorlage [ concat $rcpttDir "openoffice/AUF-
 	}
 	OpenAndResetStartPerspektive
 }
+/* Mit /ohne Adresse
+with [get-view "Textvorlagen Management" | get-table] {
+    select Liste -column "Name der Vorlage"
+    get-cell 1 4 | uncheck
+}
+with [get-view "Textvorlagen Management" | get-table] {
+    select Liste -column "Name der Vorlage"
+    get-cell 1 4 | check
+}
+*/
+proc TextVorlagenEntfernen [ val name Liste ] {
+	open-window-by-name [ t Textvorlagen_Management ]
+	get-view [ t Textvorlagen_Management ] | get-table |
+		select $name -column [ t Name_der_Vorlage ] |
+		get-menu [ t Delete_template ]
+}
+
 // Ende
 //
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

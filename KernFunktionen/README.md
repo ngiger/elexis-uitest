@@ -4,15 +4,23 @@ GUI-Tests für Elexis
 
 ## Ziele
 
-Wir möchten folgende Ziele (Reihenfolge unten ist im Moment nur ein Vorschlag!) erreichen:
+Unter https://srv.elexis.info/jenkins/view/UI-Test/ laufen CI (Continuos Integration)-Jobs, welche jeden Tag am frühen Morgen angestossen werden.
+
+* Aufbauend auf einer leeren DB wird das Aufsetzen einer Praxis mit dem Import von Artikelstamm, Tarmed, EAL, Hilotech-TextPlugin + Vorlagen simuliert. Dann werden die wichtigsten Funktionen getestet (ohne Agenda) und eine Tarmed-XML-Rechnung erzeugt und eine AUF mit hilfe des hilotec ODF Textplugins erstellt
+* Das selbe mit der französischen Version von Elexis
+* Mit verschiedenen Datenbanken (PostgreSQL, H2)
+* Zweig f11106 mit der neuen Persistenz basierend auf JPA
+
+### Noch nicht verwirklichte Ideen
 
 * Nach jeder Anpassung des Quellcode innerhalb von 15 Minuten eine Rückmeldung haben, falls einer oder mehrere wichtigsten Abläufe von Elexis nicht mehr laufen (Smoketest, z.B. Benutzer, Patient, Fall, Kons anlegen und verrechnen).
+* Tests unter Windows
+* Mit MySQL Datenbank
+* Mit Datenbank-Zugriff via Elexis-Server
 * Ausführliche Tests regelmässig (täglich/wöchentlich) mit verschiedenen Betriebssystem durchführen.
 * Updates verschiedener Kombination von Features von der Vorgängerversion auf die aktuelle automatisch testen können.
 * Erfahrene Elexis-Anwender sollen mit maximal 1/2 Tag Aufwand ermächtigt werden können, Testfälle in ihrer eigenen Umgebung (DB) so aufzuzeichnen, dass diese von den Entwicklern übernommen und paramatrisiert werden können.
 * Hilotec-Text-Plugin mit LibreOffice und mit allen Hilotec-Textvorlagen + 1 Test-Vorlage (z.B mit allen Platzhalter) PDFs erzeugen und Inhalt testen.
-* Eine Testvariante soll aufbauend von einer leeren DB (RunFromScratch) eine verbesserte DemoDB (mit Artikelstamm, Tarmed, EAL, Hilotech-TextPlugin + Vorlagen) erzeugen und dumpen (Mehrere DBs?).
-* Ausführliche Tests regelmässig (täglich/wöchentlich) mit Sprachen durchführen.
 
 ## Flexibilität
 
@@ -20,7 +28,6 @@ Niklaus machte folgende Schritte, damit das Testen auf lange Sicht mit der DemoD
 
 * Vorbedingen testen [Preconditions](KernFunktionen/Hilfen/Kontexte/Preconditions.ctx)
 * Funktionen für häufig gebrauchtes, wie z.B. get-user-dir, welches den Wert ch.elexis.core.data.activator.CoreHub.getWritableUserDir() zurückgibt.  [ecl_helpers](KernFunktionen/Hilfen/Kontexte/ecl_helpers.ctx)
-* Regulärer Ausdruck für verantwortlichen Arzt definiert
 
 ## Testfälle auf Kommandozeile ausführen lassen
 
