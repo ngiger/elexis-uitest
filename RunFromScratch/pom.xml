@@ -35,12 +35,6 @@
                       </includes>
                   </fileset>
                   <fileset>
-                    <directory>${user.home}/elexis</directory>
-                   <includes>
-                      <include>localCfg_rpctt-RunFromScratch.xml</include>
-                    </includes>
-                  </fileset>
-                  <fileset>
                       <directory>${user.home}/elexis/logs</directory>
                   </fileset>
                   <fileset>

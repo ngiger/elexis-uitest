@@ -45,12 +45,6 @@
                     <directory>${user.home}/elexis/h2_elexis_rcptt</directory>
                   </fileset>
                   <fileset>
-                    <directory>${user.home}/elexis</directory>
-                   <includes>
-                      <include>localCfg_rpctt-h2.xml</include>
-                    </includes>
-                  </fileset>
-                  <fileset>
                       <directory>${user.home}/elexis/logs</directory>
                   </fileset>
                   <fileset>
