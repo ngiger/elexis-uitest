@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 3/29/19 9:42 AM
+Save-Time: 6/4/19 4:24 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -230,6 +230,41 @@ proc "create-user" [ val idMandant 1 ]
 	}
 	concat "create-user" $userName " starting" | log
 }
+/**
+ * Setze Benutzerrecht<br>
+ *
+ *  @recht: Der Name des Rechtes. Nur Top-Element können im Moment ausgewählt werden
+ *   z.B Administration und nicht Administration/Zugriff/Rechte. Niklaus weiss nicht
+ *   wie dieser Dialog für Unter-Elemente via RCPTT bedient werden könnte<br>
+ *
+ *  @wert: Zustand des Rechts, Entweder " ", "A" oder "x"<br>
+ *
+ *  @rolle: Der Index in den Einstellungen, z.B.<br>
+ *  1: patient<br>2: user_external<br>3: assistant<br>4: doctor<br>
+ *  5: esadmin<br> 6: fhir<br> 7: user<br> 8 executive_doctor
+ */
+proc "SetzeBenutzerRecht" [ val recht ] [ val wert "A" ] [ val rolle 7 ] {
+	// concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle | log
+	get-preferences-menu | click
+	get-window  [ t preferences ] | get-tree | select [ t select_roles_right ]
+	let [ val rechte_index [
+		get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
+	    | get-property index -raw] ] {
+		if [ get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
+		    | get-property [ concat "columns[" $rolle "]"] -raw | eq $wert ] {
+				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle " schon gesetzt. Index " $rechte_index | log
+		    } -else {
+				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle " wird gesetzt. Index " $rechte_index | log
+				with [get-window Benutzervorgaben | get-tree -after [get-link "<a>ändern</a>"]] {
+					get-cell $rechte_index $rolle | click
+				}
+			}
+    }
+	with [ get-window  [ t preferences ]  ] {
+		get-button [ t apply_and_close ] | click
+	}
+}
+
 // Ende
 //
 

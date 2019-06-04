@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _mc14UFVdEemNNe-dXP1Xqg
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/3/19 8:44 PM
+Save-Time: 6/4/19 4:19 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -20,13 +20,17 @@ Entry-Name: .content
 
 // Either you add ConfigureHilotecODF_TextVerarbeitung as next line or BasicPrinting test was run befor
 OpenAndResetStartPerspektive
+// SetzeBenutzerRecht
+SetzeBenutzerRecht -recht "Kassenbuch" -wert "A" -rolle 7
+close-window-if-open "Kassenbuch" // We must close it, or the ACE change does not apply
 ConfigureHilotecODF_TextVerarbeitung
 TextVorlagenEntfernen Liste
 ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Liste.odt" ]
 
+OpenAndResetStartPerspektive
+
 open-window-by-name Kassenbuch
 get-view Kassenbuch | key-type "M1+m"
-
 Kassenbuch-Kategorien-definieren
 Kassenbuch-Kategorien-definieren "Kaffee\nBlumen\nGeburtstage"
 Kassenbuch-Zahlungsarten-definieren

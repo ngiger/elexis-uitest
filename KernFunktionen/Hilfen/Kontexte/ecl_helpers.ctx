@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/30/19 10:59 AM
+Save-Time: 6/4/19 11:56 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -213,6 +213,21 @@ proc "GetActPatPersonalia" {
 		invoke getPersonalia
 }
 
+/**
+ * Return the windows title, eg.
+ *    Elexis 3.8.0.20190529-1746 -  Mustermann Max / Mustermann Max  / Armes-de Wesen (w), 15.02.1990 (29) - [6]
+ */
+proc "GetWindowTitle" {
+	get-button[t zur_startperspektive] | get-object  | invoke getParent  | invoke getParent | invoke getParent | invoke getParent | invoke getText
+}
+
+proc "GetMainToolbar" {
+	get-button[t zur_startperspektive] | get-object  | invoke getParent  | invoke getParent | invoke getParent
+}
+
+proc "GetBottomToolbar" {
+	get-button Restore | get-object | invoke getParent | invoke getParent | invoke getParent
+}
 //
 // Ende
 

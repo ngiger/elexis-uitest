@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _fxEOwIYvEemIZK08LadI4A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/3/19 8:43 PM
+Save-Time: 6/4/19 4:18 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -24,14 +24,6 @@ proc "KassenbuchDrucken" {
     }
 }
 
-proc "SetzeAlleKassenbuchRechte" {
-	get-preferences-menu | click
-	with [get-window "Préférences" | get-tree -after [get-link "<a>ändern</a>"]] {
-	    select Kassenbuch
-	    get-cell 9 7 | uncheck
-	}
-	get-window "Préférences" | get-button "Appliquer et fermer" | click
-}
 proc "Kassenbuch-Anzahl-Buchungen" {
 	get-view Kassenbuch | get-table | get-property itemCount -raw
 }
@@ -84,10 +76,10 @@ proc "Kassenbuch-Einnahme-verbuchen" [ val beleg ] [ val datum "" ] [ val betrag
 		    get-button OK | click
 		}
 		let [ val itemsAfter [ get-view Kassenbuch | get-table | get-property itemCount -raw ] ]	{
-			concat "Kassenbuch-Einnahme-verbuchen should had before " $itemsBefore " items. Now we have " $itemsAfter | log
+			concat "Kassenbuch-Einnahme-verbuchen should one item more than " $itemsBefore " before. Now we have " $itemsAfter | log
 			Kassenbuch-Anzahl-Buchungen| minus 1 | eq $itemsBefore | assert-true
 			-message
-		[ concat "Kassenbuch-Einnahme-verbuchen should had before " $itemsBefore " items. Now we have " $itemsAfter ]
+		[ concat "Kassenbuch-Einnahme-verbuchen should one item more than " $itemsBefore " before. Now we have " $itemsAfter ]
 		}
 	}
 }
