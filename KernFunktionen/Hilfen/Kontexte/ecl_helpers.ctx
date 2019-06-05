@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/4/19 11:56 AM
+Save-Time: 6/5/19 2:30 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -28,21 +28,34 @@ proc "get-default-locale" {
 	invoke-static "org.eclipse.rcptt.util" "java.util.Locale" getDefault
 }
 
-/*
-global [val today [ invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now | get-object | invoke toString  ] ]
-global [val today [ invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now | invoke format ] ]
-concat "Today is " $today | log
-invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now | replaceAll -searchPattern "-" -replacePattern "." | log
-// invoke-static java.time.LocalDate.now().minusDays(1).format(java.time.format.DateTimeFormatter.ISO_DATE).replaceAll("-", "."))
-*/
+global [ val today [invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now  |
+			invoke format [invoke-static  "org.eclipse.rcptt.util"  "java.time.format.DateTimeFormatter" "ofPattern" "dd.MM.yyyy" ]
+	 ] ]
+global [ val tomorrow [invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now  |
+			invoke plusDays "+1" |
+			invoke format [invoke-static  "org.eclipse.rcptt.util"  "java.time.format.DateTimeFormatter" "ofPattern" "dd.MM.yyyy" ]
+	 ] ]
+global [ val yesterday [invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now  |
+			invoke plusDays "-1" |
+			invoke format [invoke-static  "org.eclipse.rcptt.util"  "java.time.format.DateTimeFormatter" "ofPattern" "dd.MM.yyyy" ]
+	 ] ]
+global [ val aWeekAhead [invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now  |
+			invoke plusDays "+7" |
+			invoke format [invoke-static  "org.eclipse.rcptt.util"  "java.time.format.DateTimeFormatter" "ofPattern" "dd.MM.yyyy" ]
+	 ] ]
+global [ val aWeekAgo [invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now  |
+			invoke plusDays "-7" |
+			invoke format [invoke-static  "org.eclipse.rcptt.util"  "java.time.format.DateTimeFormatter" "ofPattern" "dd.MM.yyyy" ]
+	 ] ]
+concat "today ist " $today " tomorrow " $tomorrow " yesterday: " $yesterday
+	 " aWeekAhead: " $aWeekAhead  " aWeekAgo: " $aWeekAgo | log
 
 proc "get-user-dir" {
 	if [ get-by-os  -win true -macosx false -linux false ] {
 		global [val myUserDir [ concat  [get-java-property user.home] "/elexis" | str ] ] -override
-		// concat "global1 myUserDir: " $myUserDir |log
-		global [val myUserDir [ replaceAll  -replaceString  "/" -searchPattern  "C:" -inString $myUserDir] ] -override
+		concat "getWritableUserDir returns: " [ invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir ] | log
+		global [val myUserDir [ replaceAll  -replaceString  "c" -searchPattern  "C:" -inString $myUserDir] ] -override
 		global [val myUserDir [ replaceAll  -replaceString  "/" -searchPattern  "\\\\" -inString $myUserDir] ] -override
-		// concat "global3 myUserDir: " $myUserDir |log
 		global [val myUserDir [ replaceAll  -replaceString  "\\\\ " -searchPattern  " " -inString $myUserDir] ] -override
 		concat "get-user-dir return: " $myUserDir |log
 		$myUserDir | str
@@ -107,6 +120,8 @@ proc "RestartElexis" {
 	}
 }
 global [ val resultsDir   [ concat  [ pwd ]  "/../results/"] ]
+concat "translations_de uri is: " [concat "file:" [get-user-dir] "/rcptt/translations_de.properties" ] | log
+
 global [ val translations [ map
 	[ entry de [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_de.properties" ] ] ]
 	[ entry fr [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_fr.properties" ] ] ]
