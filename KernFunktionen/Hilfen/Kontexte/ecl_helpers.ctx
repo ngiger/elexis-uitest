@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/5/19 2:30 PM
+Save-Time: 6/5/19 3:03 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -49,6 +49,8 @@ global [ val aWeekAgo [invoke-static  "org.eclipse.rcptt.util"  "java.time.Local
 	 ] ]
 concat "today ist " $today " tomorrow " $tomorrow " yesterday: " $yesterday
 	 " aWeekAhead: " $aWeekAhead  " aWeekAgo: " $aWeekAgo | log
+
+concat "user.home: " [get-java-property user.home]  ": getWritableUserDir returns: " [ invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir ] | log
 
 proc "get-user-dir" {
 	if [ get-by-os  -win true -macosx false -linux false ] {
@@ -98,7 +100,7 @@ proc "FileContainsString"  [ val fileName ] [ val searchFor  ] {
 }
 
 proc "elexisLogMayNotContain"  [ val searchFor  ] {
- 	FileContainsString -fileName [ concat [ get-user-dir] "/logs/elexis-3.log" ] -searchFor $searchFor | not | assert-true
+	FileContainsString -fileName [ concat [get-java-property user.home] "/elexis/logs/elexis-3.log" ] -searchFor $searchFor | not | assert-true
 }
 
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
@@ -120,14 +122,14 @@ proc "RestartElexis" {
 	}
 }
 global [ val resultsDir   [ concat  [ pwd ]  "/../results/"] ]
-concat "translations_de uri is: " [concat "file:" [get-user-dir] "/rcptt/translations_de.properties" ] | log
+concat "translations_de uri is: " [concat [get-java-property user.home] "/elexis//rcptt/translations_de.properties" ] | log
 
 global [ val translations [ map
-	[ entry de [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_de.properties" ] ] ]
-	[ entry fr [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/translations_fr.properties" ] ] ]
+	[ entry de [ read-properties -uri [concat [get-java-property user.home]"/elexis/rcptt/translations_de.properties" ] ] ]
+	[ entry fr [ read-properties -uri [concat [get-java-property user.home] "/elexis//rcptt/translations_fr.properties" ] ] ]
 ] ]
 
-global [ val test_properties [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/test.properties" ] ] ]
+global [ val test_properties [ read-properties -uri [concat [get-java-property user.home] "/elexis/rcptt/test.properties" ] ] ]
 
 global [ val imagesDir	[ concat $resultsDir "images/" ] ]
 global [ val pdfDir	[ concat $resultsDir "pdf/" ] ]
@@ -150,7 +152,7 @@ proc "t" [val key] [val language $defaultLanguage] {
 t "open" "de" | eq "Öffnen" | verify-true
 t "open" "fr" | eq "Ouvrir" | verify-true
 
-global [ val praxisProperties [ read-properties -uri [concat "file:" [get-user-dir] "/rcptt/praxis_" $defaultLanguage ".properties"]]]
+global [ val praxisProperties [ read-properties -uri [concat [get-java-property user.home] "/elexis/rcptt/praxis_" $defaultLanguage ".properties"]]]
 
 proc "GetPraxisProperty" [val key]  {
 	try {

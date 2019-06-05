@@ -154,13 +154,6 @@
               <vmArg>${vmArg10}</vmArg>
             </vmArgs>
           </aut>
-          <runner>
-            <version>${rcptt-maven-version}</version>
-            <vmArgs>
-              <vmArg>-Xmx2048m</vmArg>
-              <vmArg>-Xms2048m</vmArg>
-            </vmArgs>
-          </runner>
                  <suites>
                        <suite>${suite2run}</suite>
                  </suites>

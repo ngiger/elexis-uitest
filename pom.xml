@@ -22,7 +22,7 @@
     <useBranch>master</useBranch>
     <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
-    <unzipExe>/usr/bin/unzip</unzipExe>
+    <unzipExe>unzip</unzipExe>
     <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</autExplicit>
   </properties>
 
@@ -388,8 +388,8 @@
           <runner>
             <version>${rcptt-maven-version}</version>
             <vmArgs>
-              <vmArg>-Xmx2048m</vmArg>
-              <vmArg>-Xms2048m</vmArg>
+              <vmArg>-Xmx1024m</vmArg>
+              <vmArg>-Xms1024m</vmArg>
             </vmArgs>
           </runner>
                  <suites>
