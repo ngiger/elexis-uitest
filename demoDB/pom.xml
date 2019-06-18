@@ -60,7 +60,7 @@
             <configuration>
               <url>http://download.elexis.info/demoDB/ImportSwissBase-3.8.0.zip</url>
               <unpack>true</unpack>
-              <outputDirectory>${user.home}/elexis/</outputDirectory>
+              <outputDirectory>${env.HOME}/elexis/</outputDirectory>
               <md5>186b829a5916e2e7ee2e566f46c555c0</md5>
             </configuration>
           </execution>
@@ -74,7 +74,7 @@
             <configuration>
               <url>http://download.elexis.info/demoDB/demoDB_elexis_3.7.0.zip</url>
               <unpack>true</unpack>
-              <outputDirectory>${user.home}/elexis/</outputDirectory>
+              <outputDirectory>${env.HOME}/elexis/</outputDirectory>
               <md5>f8adb8a630e480e96f67c40b8b327745</md5>
             </configuration>
           </execution>
@@ -136,7 +136,7 @@
             <argument>-script</argument>
             <argument>${localeSqlScript}</argument>
             <argument>-url</argument>
-            <argument>jdbc:h2:${user.home}/elexis/demoDB/db</argument>
+            <argument>jdbc:h2:${env.HOME}/elexis/demoDB/db</argument>
             <argument>-user</argument>
             <argument>sa</argument>
             <argument>-showResults</argument>
@@ -187,7 +187,7 @@
               <vmArg>-Dch.elexis.dbUser=sa</vmArg>
               <vmArg>-Dch.elexis.dbPw=</vmArg>
               <vmArg>-Dch.elexis.dbFlavor=h2</vmArg>
-              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:"${user.home}/elexis/db_for_rcptt/demoDB/db;AUTO_SERVER=TRUE"</vmArg>
+              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:"${env.HOME}/elexis/db_for_rcptt/demoDB/db;AUTO_SERVER=TRUE"</vmArg>
               -->
               <vmArg>-Dch.elexis.username=test</vmArg>
               <vmArg>-Dch.elexis.password=test</vmArg>

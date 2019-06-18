@@ -5,8 +5,8 @@ Element-Name: Hilotec_ODF
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/3/19 8:47 PM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 6/15/19 3:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -15,7 +15,11 @@ Entry-Name: .ecl.context
 global [val hilotecOdfOutDir $pdfDir ] -override
 
 proc CloseLibreOffice {
-	exec-process -command killall -args oosplash -ignoreExitCode -ignoreStderr
+	if [ get-by-os  -win false -macosx false -linux true ] {
+		exec-process -command killall -args oosplash -ignoreExitCode -ignoreStderr
+	} -else {
+		log "I do not now howto close CloseLibreOffice under windows or macosx"
+	}
 }
 
 CloseLibreOffice // Ensure that we have no LibreOffice process open when running our tests
@@ -36,6 +40,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    with [get-button [ t pref_texte_lokal_editieren ] ] {
 	        check
 	    }
+	    get-button ".*Hilotec-OpenDocument" | click
 		get-tree | select "Hilotec-OpenDocument"
 		with [get-editbox -after [get-label "OpenDocument Editor"]] {
 			set-text "/usr/bin/lowriter"

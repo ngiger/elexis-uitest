@@ -56,10 +56,10 @@
                       </includes>
                   </fileset>
                   <fileset>
-                      <directory>${user.home}/elexis/logs</directory>
+                      <directory>${env.HOME}/elexis/logs</directory>
                   </fileset>
                   <fileset>
-                    <directory>${user.home}/elexis/demoDB</directory>
+                    <directory>${env.HOME}/elexis/demoDB</directory>
                   </fileset>
                   <fileset>
                     <directory>${rcptt-resources}</directory>
@@ -89,7 +89,7 @@
               <!-- the next line should be seen early the log info for prepare-agent phase
                       -javaagent:/home/niklaus/.m2/repository/org/jacoco/org.jacoco.agent/0.8.3/org.jacoco.agent-0.8.3-runtime.jar=destfile?/opt/rm/elexis-master/elexis-uitest/jacoco/target/jacoco.exec 
               -->
-              <vmArg>-javaagent:${user.home}/.m2/repository/org/jacoco/org.jacoco.agent/${jacocoVersion}/org.jacoco.agent-${jacocoVersion}-runtime.jar=destfile=${project.build.directory}/jacoco.exec</vmArg>
+              <vmArg>-javaagent:${env.HOME}/.m2/repository/org/jacoco/org.jacoco.agent/${jacocoVersion}/org.jacoco.agent-${jacocoVersion}-runtime.jar=destfile=${project.build.directory}/jacoco.exec</vmArg>
               <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
               <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
               <vmArg>-Dlanguage=${language}</vmArg>

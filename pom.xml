@@ -16,7 +16,7 @@
     <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
     <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
     <rcptt-maven-version>2.4.2</rcptt-maven-version>
-    <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
+    <rcptt-resources>${env.HOME}/elexis/rcptt</rcptt-resources>
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
     <useBranch>master</useBranch>
@@ -56,23 +56,23 @@
                       </includes>
                   </fileset>
                   <fileset>
-                    <directory>${user.home}/elexis</directory>
+                    <directory>${env.HOME}/elexis</directory>
                    <includes>
                       <include>elexislock.*</include>
                       <include>localCfg*rcptt*xml</include>
                     </includes>
                   </fileset>
                   <fileset>
-                      <directory>${user.home}/elexis/extern</directory>
+                      <directory>${env.HOME}/elexis/extern</directory>
                   </fileset>
                   <fileset>
-                      <directory>${user.home}/elexis/logs</directory>
+                      <directory>${env.HOME}/elexis/logs</directory>
                   </fileset>
                   <fileset>
-                      <directory>${user.home}/elexis/rcptt</directory>
+                      <directory>${env.HOME}/elexis/rcptt</directory>
                   </fileset>
                   <fileset>
-                    <directory>${user.home}/elexis/demoDB</directory>
+                    <directory>${env.HOME}/elexis/demoDB</directory>
                   </fileset>
                   <fileset>
                     <directory>${rcptt-resources}</directory>
@@ -95,11 +95,11 @@
               <copy file="${myBaseDir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
-              <copy file="${user.dir}/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
+              <copy file="${myBaseDir}/data/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
-              <!-- Just to ensure that "${user.home}/elexis/extern getŝ created -->
-              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
+              <!-- Just to ensure that "${env.HOME}/elexis/extern getŝ created -->
+              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${env.HOME}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
           </target>
           </configuration>
           <goals>

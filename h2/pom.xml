@@ -54,7 +54,7 @@
               <vmArg>-Duser.language=${language}</vmArg>
               <vmArg>${vmArg1}</vmArg>
               <!-- Somehow we cannot pass the AUTO_SERVER=TRUE option to the h2, as I do not know howto bypass the quoting -->
-              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db</vmArg>
+              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:${env.HOME}/elexis/h2_elexis_rcptt/db</vmArg>
               <vmArg>${vmArg3}</vmArg>
               <vmArg>${vmArg4}</vmArg>
               <vmArg>${vmArg5}</vmArg>
@@ -84,7 +84,7 @@
                     <arg value="${project.build.directory}/aut/plugins/org.h2_1.3.170.jar"/>
                     <arg value="org.h2.tools.Script"/>
                     <arg value="-url"/>
-                    <arg value="jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db"/>
+                    <arg value="jdbc:h2:${env.HOME}/elexis/h2_elexis_rcptt/db"/>
                     <arg value="-user"/>
                     <arg value="sa"/>
                     <arg value="-script"/>

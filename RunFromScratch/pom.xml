@@ -35,10 +35,10 @@
                       </includes>
                   </fileset>
                   <fileset>
-                      <directory>${user.home}/elexis/logs</directory>
+                      <directory>${env.HOME}/elexis/logs</directory>
                   </fileset>
                   <fileset>
-                    <directory>${user.home}/elexis/demoDB</directory>
+                    <directory>${env.HOME}/elexis/demoDB</directory>
                   </fileset>
                   <fileset>
                     <directory>${rcptt-resources}</directory>
