@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _mc14UFVdEemNNe-dXP1Xqg
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/5/19 10:57 AM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 6/20/19 1:03 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -25,13 +25,12 @@ SetzeBenutzerRecht -recht "Kassenbuch" -wert "A" -rolle 7
 close-window-if-open "Kassenbuch" // We must close it, or the ACE change does not apply
 ConfigureHilotecODF_TextVerarbeitung
 TextVorlagenEntfernen Liste
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Liste.odt" ]
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "elexis-vorlagen-master/openoffice/Liste.odt" ]
 
 OpenAndResetStartPerspektive
 
 open-window-by-name Kassenbuch
 get-view Kassenbuch | key-type "M1+m"
-KassenbuchDrucken
 Kassenbuch-Kategorien-definieren
 Kassenbuch-Kategorien-definieren "Kaffee\nBlumen\nGeburtstage"
 Kassenbuch-Zahlungsarten-definieren
@@ -82,7 +81,7 @@ with [get-view Kassenbuch] {
 }
 
 get-button "Menü anzeigen" | click
-ImportHilotecODF_Vorlagen  [ concat $rcpttDir "openoffice/Liste.odt" ]
+ImportHilotecODF_Vorlagen  [ concat $rcpttDir "elexis-vorlagen-master/openofficeListe.odt" ]
 get-view Kassenbuch | get-menu -path Drucken | click
 get-window "Dokumentvorlage nicht gefunden" | get-button OK | click
 get-window Kassenbuch | get-button Abbrechen | click

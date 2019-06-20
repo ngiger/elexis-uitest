@@ -35,11 +35,7 @@ Dazu wird Maven verwendet [Download](https://maven.apache.org/download.cgi). Die
 
 Da verschiedenen Datenbank-Setup verwendet werden können, muss man angeben, welches man verwenden will. Hier zum Testen mit dem DemoDB
 
-    mvn -V clean verify -f demoDB/pom.xml
-    
-Unter Windows muss noch der Pfad zu unzip.exe [Download](https://sourceforge.net/projects/gnuwin32/), z.B.
-
-     mvn -V clean verify -f demoDB/pom.xml -DunzipExe C:/Downloads/unzip/bin/unzip.exe
+    mvn -V clean verify -f demoDB/pom.xml$
 
 ## Neue Testfälle erstellen
 

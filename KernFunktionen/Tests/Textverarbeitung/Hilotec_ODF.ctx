@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/20/19 11:17 AM
+Save-Time: 6/20/19 12:59 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -69,7 +69,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	}
 }
 
-proc ImportHilotecODF_Vorlagen [ val vorlage [ concat $rcpttDir "openoffice/AUF-Zeugnis.odt" ] ] {
+proc ImportHilotecODF_Vorlagen [ val vorlage [ concat $rcpttDir "elexis-vorlagen-master/openoffice/AUF-Zeugnis.odt" ] ] {
 	concat "ImportHilotecODF_Vorlagen should import: " $vorlage | log
 	get-file $vorlage | get exists | assert-true -message [ concat "File " $vorlage " not found" ]
 	open-window-by-name [ t Dokumente_Textvorlagen_Management ]

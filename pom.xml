@@ -22,7 +22,6 @@
     <useBranch>master</useBranch>
     <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
-    <unzipExe>unzip</unzipExe>
     <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</autExplicit>
   </properties>
 
@@ -106,42 +105,6 @@
             <goal>run</goal>
           </goals>
         </execution>
-         <execution>
-          <id>unpack-vorlagen-hilotec</id>
-          <phase>process-sources</phase>
-          <configuration>
-            <target>
-              <exec executable="${unzipExe}" failonerror="true">
-                <arg value="-j"/>
-                <arg value="-d"/>
-                <arg value="${rcptt-resources}/vorlagen"/>
-                <arg value="${rcptt-resources}/master.zip"/>
-¨                <arg value="elexis-vorlagen-master/hilotec-odt/*"/>
-              </exec>
-            </target>
-          </configuration>
-          <goals>
-            <goal>run</goal>
-          </goals>
-        </execution>
-       <execution>
-          <id>unpack-vorlagen-openoffice</id>
-          <phase>process-sources</phase>
-          <configuration>
-            <target>
-              <exec executable="${unzipExe}" failonerror="true">
-                <arg value="-j"/>
-                <arg value="-d"/>
-                <arg value="${rcptt-resources}/openoffice"/>
-                <arg value="${rcptt-resources}/master.zip"/>
-                <arg value="elexis-vorlagen-master/openoffice/*"/>
-              </exec>
-            </target>
-          </configuration>
-          <goals>
-            <goal>run</goal>
-          </goals>
-        </execution>
       </executions>
     </plugin>
     <plugin>
@@ -184,7 +147,7 @@
             <configuration>
               <url>https://github.com/ngiger/elexis-vorlagen/archive/master.zip</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
-              <unpack>false</unpack>
+              <unpack>true</unpack>
               <md5>496cfd421265f3e1a871342aa35ed528</md5>
             </configuration>
           </execution>
