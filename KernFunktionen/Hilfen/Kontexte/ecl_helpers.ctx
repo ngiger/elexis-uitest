@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/5/19 3:03 PM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 6/20/19 11:59 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -55,11 +55,8 @@ concat "user.home: " [get-java-property user.home]  ": getWritableUserDir return
 proc "get-user-dir" {
 	if [ get-by-os  -win true -macosx false -linux false ] {
 		global [val myUserDir [ concat  [get-java-property user.home] "/elexis" | str ] ] -override
-		concat "getWritableUserDir returns: " [ invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir ] | log
-		global [val myUserDir [ replaceAll  -replaceString  "c" -searchPattern  "C:" -inString $myUserDir] ] -override
 		global [val myUserDir [ replaceAll  -replaceString  "/" -searchPattern  "\\\\" -inString $myUserDir] ] -override
 		global [val myUserDir [ replaceAll  -replaceString  "\\\\ " -searchPattern  " " -inString $myUserDir] ] -override
-		concat "get-user-dir return: " $myUserDir |log
 		$myUserDir | str
 	} -else {
 		invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir
@@ -93,9 +90,15 @@ proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
 
 
 proc "FileContainsString"  [ val fileName ] [ val searchFor  ] {
-	let [ val result [ exec-process "grep" $searchFor $fileName -ignoreExitCode ] ] {
-		concat "FileContainsString " $fileName " returned " [ $result | get  exitCode ] | log
-		$result | get  exitCode | equals 0 | bool
+	if [ get-by-os  -win true -macosx false -linux false ] {
+		log "FileContainsString ignored on windows"
+		// We ignore this command on windows, as we grep is not installed by default on Windows
+		bool false
+	} -else {
+		let [ val result [ exec-process "grep" $searchFor $fileName -ignoreExitCode true  ] ] {
+			concat "FileContainsString " $fileName " returned " [ $result | get  exitCode ] | log
+			$result | get  exitCode | equals 0 | bool
+		}
 	}
 }
 
@@ -116,12 +119,13 @@ proc "RestartElexis" {
 	} -else {
 		log "RestartElexis: Trying to restart Elexis"
 		restart-aut
-		log "RestartElexis: Calling wait-until-eclipse-is-ready"
+		wait 1000
 		wait-until-eclipse-is-ready
 		log "RestartElexis successfull"
 	}
 }
-global [ val resultsDir   [ concat  [ pwd ]  "/../results/"] ]
+// global [ val resultsDir [ concat [ get-env PWD ] "/../results/"] ]
+global [ val resultsDir [ concat [pwd ] "/../results/"] ]
 concat "translations_de uri is: " [concat [get-java-property user.home] "/elexis//rcptt/translations_de.properties" ] | log
 
 global [ val translations [ map
@@ -135,6 +139,8 @@ global [ val imagesDir	[ concat $resultsDir "images/" ] ]
 global [ val pdfDir	[ concat $resultsDir "pdf/" ] ]
 global [ val preferencesCsvFile [ concat  $resultsDir "preferences.csv" ] ]
 global [ val viewsCsvFile	   [ concat  $resultsDir "views.csv" ] ]
+concat "get-env HOME returns: " [get-env HOME ] |log
+concat "resultsDir returns: " $resultsDir |log
 concat "get-default-locale returns: " [get-default-locale] |log
 concat "get-user-dir returns: " [get-user-dir] |log
 concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log

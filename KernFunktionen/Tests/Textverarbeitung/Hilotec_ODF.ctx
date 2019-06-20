@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/15/19 3:09 PM
+Save-Time: 6/20/19 11:17 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -42,8 +42,17 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    }
 	    get-button ".*Hilotec-OpenDocument" | click
 		get-tree | select "Hilotec-OpenDocument"
+		if [ get-by-os  -win true -macosx false -linux true ] {
+			global [val lowriter "C:\\Program Files\\LibreOffice\\program\\swriter" ] -override
+		}
+		if [ get-by-os  -win false -macosx true -linux false ] {
+			global [val lowriter "swriter"  ] -override
+		}
+		if [ get-by-os  -win false -macosx false -linux true ] {
+			global [val lowriter "/usr/bin/lowriter" ] -override
+		}
 		with [get-editbox -after [get-label "OpenDocument Editor"]] {
-			set-text "/usr/bin/lowriter"
+			set-text $lowriter
 		}
 		with [get-editbox -after [get-label "Argumente zum Drucken"]] {
 			set-text [ concat "--headless --convert-to pdf --outdir " $hilotecOdfOutDir ]
@@ -52,7 +61,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 			set-text [ concat "--headless --convert-to pdf --outdir " $hilotecOdfOutDir ]
 		}
 		with [get-editbox -after [get-label "PDF-Konverter"]] {
-			set-text "/usr/bin/lowriter"
+			set-text $lowriter
 		}
 		get-button "Wrapper Skript aktivieren" | uncheck
 	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "config-hilotecODF.png" ]

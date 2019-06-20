@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/15/19 6:20 PM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 6/20/19 11:27 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -68,7 +68,7 @@ proc "ExecuteDataImport" [ val file ] {
 	elexisLogMayNotContain "java.lang.OutOfMemoryError"
 }
 
-proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm_Short_v5.xml" ] ] {
+proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xml" ] ] {
 	open-window-by-name [ t daten_artikel ]
 	concat "before ReadArtikelstamm file: " $file | log
 	try { get-view [ t artikel ] }  -error [val errorObj] -catch {
@@ -97,7 +97,7 @@ proc "ReadArtikelstamm" [ val file [ concat  [get-user-dir] "/rcptt/Artikelstamm
 	concat "ReadArtikelstamm done: " $file |log
 }
 
-proc "ReadBlocksExchange" [ val file  [ concat  [get-user-dir] "/rcptt/blocks_landarztpraxis_sevelen.xchange"] ] {
+proc "ReadBlocksExchange" [ val file  [ concat $rcpttDir "/blocks_landarztpraxis_sevelen.xchange"] ] {
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange_0.png"]
 	OpenLeistungen
 	concat "ReadBlocksExchange file is: " $file | log
@@ -130,7 +130,7 @@ proc "AssertNoErrorInProgress" {
 	}
 }
 
-proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_01012019.xlsx" ] ] {
+proc "ReadAnalysenListe" [ val file [ concat $rcpttDir "/EAL_01012019.xlsx" ] ] {
 	OpenLeistungen
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadEAL_1.png"]
 	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
@@ -143,7 +143,7 @@ proc "ReadAnalysenListe" [ val file [ concat  [get-user-dir] "/rcptt/EAL_0101201
 	// AssertNoErrorInProgress
 }
 
-proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL2019v1.csv" ] ] {
+proc "ReadMigel" [ val file [ concat $rcpttDir "/MiGeL2019v1.csv" ] ] {
 	concat "ReadMigel started for: " $file | log
 	try {
 		open-window-by-name [ t daten_artikel ]
@@ -161,7 +161,7 @@ proc "ReadMigel" [ val file [ concat  [get-user-dir] "/rcptt/MiGeL2019v1.csv" ] 
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel.png"]
 }
 
-proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
+proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
 	OpenLeistungen
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_1.png"]
 	with [get-view Codes] {
@@ -174,6 +174,8 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	set-dialog-result File $file
 	with [get-window [ t view_data_import ]] {
 		get-button [ t btn_data_import_search ] | click
+		get-window Datenimport | get-editbox -after [get-label [ t view_data_select_file ] ] 
+    		| set-text  [ replaceAll -replaceString  "" -searchPattern  "file:/" -inString $file ] 
 		with [get-combo -after [get-label [ t relevant_tarmed_caselaw ] ] ] {
 		set-text KVG
 		select KVG
@@ -200,7 +202,7 @@ proc "ReadTarmed" [ val file  [ concat  [get-user-dir] "/rcptt/TARMED__Datenbank
 	}
 }
 
-proc "ReadDataImport" [ val file [ concat  [get-user-dir] "/rcptt/Universal_patienten.xls" ] ] 
+proc "ReadDataImport" [ val file [ concat $rcpttDir "/Universal_patienten.xls" ] ] 
 	[ val tab [ t Kontakt_Importer ] ] {
 	concat "ReadDataImport tab " $tab " from " $file " exists? " [ get-file $file | get exists ] | log
 	get-file $file| get exists | verify-true
@@ -222,7 +224,7 @@ proc "ReadComplimentary" [ val file ] {
 	}
 	// get-button "Menü anzeigen" -index 2 | click
 	get-view Codes | get-menu -path [ t btn_import ] | click
-	set-dialog-result File [ concat  [get-user-dir] "/rcptt/complementary_190101.csv" ]
+	set-dialog-result File [ concat $rcpttDir "/complementary_190101.csv" ]
 	get-window [ t view_data_import ] | get-button [ t btn_data_import_search ] | click
 	get-window [ t view_data_import ] | get-button OK | click
 	get-view Codes | get-button [ t btn_execute_search ] | click
