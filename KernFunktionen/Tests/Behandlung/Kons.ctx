@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/30/19 12:54 PM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 6/26/19, 3:31 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -397,7 +397,8 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ]
  * <br>newKonsDate must be valid. Eg. 30.2.2010 will not be accepted
  *
  */
-proc "kons-set-date" [ val newKonsDate ] {
+proc "kons-set-date" [ val newKonsDate $aWeekAgo ] {
+	concat "kons-set-date must set : " $newKonsDate | log
 	get-view [ t kons_view ] | get-menu -path [ t Kons_Datum ] | click
 	with [get-window [ t Datum_eingeben ] ] {
 	    // get-editbox | set-text $newKonsDate
@@ -439,9 +440,13 @@ java.lang.NullPointerException: null
 proc "KonsCloseCannotBeChangedError" {
 	try {
 		get-window [ t kons_kann_nicht_geaendert_werde ] | gen-screenshot -out [concat $imagesDir "KonsCloseCannotBeChangedError.png"]
-		get-window [ t kons_kann_nicht_geaendert_werde ] | close
+		concat "KonsCloseCannotBeChangedError Pressing OK" | log
+		get-window [ t kons_kann_nicht_geaendert_werde ] | get-button OK | click
+		concat "KonsCloseCannotBeChangedError Done" | log
+		bool true
 	} -error [val errorObj] -catch {
 		concat "KonsCloseCannotBeChangedError err: " $errorObj | log
+		bool false
 	}
 }
 

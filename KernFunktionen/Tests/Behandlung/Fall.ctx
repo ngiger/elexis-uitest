@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/29/19 3:44 PM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 6/26/19, 3:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -205,7 +205,7 @@ proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa
 	[ val caseName "kvg" ]
 	[ val caseReason [ t reason_KVG ] ]
 	[ val caseStartDate "14.10.2018" ]
-	[ val konsDate "" ] // by default will be today
+	[ val konsDate $today ]
 {
 	if [SelectPatient $familyName $firstName | eq false] {
 		PatientenErstellen $familyName $firstName $male $birthDate $street $plz $location $phone
