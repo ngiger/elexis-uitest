@@ -119,7 +119,6 @@ proc "RestartElexis" {
 	} -else {
 		log "RestartElexis: Trying to restart Elexis"
 		restart-aut
-		wait 1000
 		wait-until-eclipse-is-ready
 		log "RestartElexis successfull"
 	}
