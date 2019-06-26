@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/26/19, 4:03 PM
+Save-Time: 6/26/19, 4:16 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -14,6 +14,7 @@ Entry-Name: .ecl.context
 
 proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 	if [ HasKonsSelected | eq false] {
+		concat "KonsErstellen: text2enter " $text2enter | log
 		kons-erstellen -text2enter $text2enter
 	} -else {
 		log "KonsErstellenFallsNichtVorhanden: HasKonsSelected returned true"
