@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/26/19, 3:31 PM
+Save-Time: 6/26/19, 4:03 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -398,7 +398,7 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ]
  *
  */
 proc "kons-set-date" [ val newKonsDate $aWeekAgo ] {
-	concat "kons-set-date must set : " $newKonsDate | log
+	concat "kons-set-date must set: " $newKonsDate | log
 	get-view [ t kons_view ] | get-menu -path [ t Kons_Datum ] | click
 	with [get-window [ t Datum_eingeben ] ] {
 	    // get-editbox | set-text $newKonsDate
