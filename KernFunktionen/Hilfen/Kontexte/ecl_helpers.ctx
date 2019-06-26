@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/20/19 1:10 PM
+Save-Time: 6/26/19, 4:41 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -228,6 +228,19 @@ proc OpenAndResetStartPerspektive {
 proc "gen-screenshot" [ val parent -input ] [ val out [concat $imagesDir "dest.png"] ] {
 	$parent | get-object | save-screenshot $out
 	concat "gen-screenshot: " $out | log
+}
+
+proc "create-entire-screenshot" [ val out [concat $imagesDir "screen.png"] ] {
+	if [ get-by-os  -win true -macosx false -linux false ] {
+		log "create-entire-screenshot ignored on windows"
+		// We ignore this command on windows, as we grep is not installed by default on Windows
+		bool false
+	} -else {
+		concat "create-entire-screenshot " $out | log
+		let [ val result [ exec-process "import" "-window" "root" $out -ignoreExitCode true  ] ] {
+			concat "create-entire-screenshot " $out " returned " [ $result | get  exitCode ] | log
+		}
+	}
 }
 
 proc "GetActPatPersonalia" {

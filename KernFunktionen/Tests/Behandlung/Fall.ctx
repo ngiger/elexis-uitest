@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/26/19, 4:17 PM
+Save-Time: 6/26/19, 4:42 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -226,6 +226,7 @@ proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa
 		log "HasKonsSelected returned true"
 	}
 	wait -ms 200 // give Elexis some time. TODO: Is this needed?
+	create-entire-screenshot [concat $imagesDir "kons-set-date-" $caseName "-" $konsDate "-" $familyName "_" $firstName ".png"]
 	kons-set-date $konsDate
 }
 
