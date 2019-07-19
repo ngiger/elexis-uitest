@@ -123,8 +123,9 @@ Nachdem zuerst Tests mit der DemoDB liefen, habe ich im Januar 2019 Unterverzeic
 
 Hier bin ich mir noch nicht klar, wie diese strukturiert sein sollen und ggf via properties gesteurt (z.B: für Matrix-Projekte von Jenkins).
 
-Für Linux-Buils muss die Bibliothek librxtx-java installiert.
+Für Linux-Builds muss die Bibliothek librxtx-java installiert.
 
+Für Linux muss z.B. openbox installiert sein, damit ein Window-Manager die Titelleiste anzeigt. Siehe z.B. run_h2.sh
 
 # Gemachte Anpassungen an Elexis
 
@@ -173,7 +174,7 @@ Die Screenshots sehen hässlich aus, wenn nicht eine volle Gnome/KDE-Umgebung in
 
 Niklaus fehlt die Zeit um genau herauszufinden, welche Pakte (wahrschein nur Fonts) fehlen. (fonts-freefont-otf fonts-linuxlibertine fonts-lmodern fonts-texgyre xfonts-scalable xfonts-unifont libfonts-java xfonts-100dpi xfonts-75dpi ttf-unifont) scheinen zu reichen.
 
-Lokal lässt Niklaus dann die Builds wie folgt laufen: `xvfb-run -screen 0 1280x1024x24 -a mvn clean verify 2>&1 | tee maven.log`. The dimension of the screen are important or the images are very ugly (at least when running via Jenkins).
+Lokal lässt Niklaus dann die Builds wie folgt laufen: `xvfb-run -screen 0 1400x1024x24 -a mvn clean verify 2>&1 | tee maven.log`. The dimension of the screen are important or the images are very ugly (at least when running via Jenkins).
 
 ## Neuaufsetzen einer Praxis-DB
 

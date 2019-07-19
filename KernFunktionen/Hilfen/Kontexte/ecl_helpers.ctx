@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/26/19, 4:41 PM
+Save-Time: 6/26/19, 5:27 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -218,7 +218,7 @@ proc OpenAndResetStartPerspektive {
 	handleResetPerspectiveDialog
 	resetPerspective
 	// we need reproducable conditions else labels etc suddenly vanish
-	get-eclipse-window | get-object | invoke setSize 1280 1024
+	get-eclipse-window | get-object | invoke setSize 1400 1024
 	concat "OpenAndResetStartPerspektive: Size is " [ get-eclipse-window | get-object | invoke getSize ] | log
 }
 
@@ -231,10 +231,10 @@ proc "gen-screenshot" [ val parent -input ] [ val out [concat $imagesDir "dest.p
 }
 
 proc "create-entire-screenshot" [ val out [concat $imagesDir "screen.png"] ] {
-	if [ get-by-os  -win true -macosx false -linux false ] {
-		log "create-entire-screenshot ignored on windows"
-		// We ignore this command on windows, as we grep is not installed by default on Windows
-		bool false
+	if [ get-by-os  -win true -macosx true -linux false ] {
+		// We create normal screenshot on windows and macOSX as we do not run under openbox
+		// and we get the windows titles anyway
+		get-eclipse-window | gen-screenshot $out
 	} -else {
 		concat "create-entire-screenshot " $out | log
 		let [ val result [ exec-process "import" "-window" "root" $out -ignoreExitCode true  ] ] {
