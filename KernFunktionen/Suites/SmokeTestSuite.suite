@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/19/19, 9:45 AM
+Save-Time: 7/27/19, 12:04 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -23,7 +23,14 @@ __ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '.
 _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../Tests/Infrastruktur/NoViewWithPercent.test'
 _NbvRkFILEemrk7fLFkHFEw	// kind: 'test' name: 'CreateFemalePatient' path: '../Tests/CreateFemalePatient.test'
 _gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
-_c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBase' path: '../Tests/ImportSwissBase.test'
+_ddB9ELBUEemub6f3erWwag	// kind: 'test' name: 'ImportAnalysenListe' path: '../Tests/Infrastruktur/SingleImportTests/ImportAnalysenListe.test'
+_UCxVwGBKEem4h8rctksNbQ	// kind: 'test' name: 'ImportBlocks' path: '../Tests/Infrastruktur/SingleImportTests/ImportBlocks.test'
+_gZfZELBSEemub6f3erWwag	// kind: 'test' name: 'ImportComplementary' path: '../Tests/Infrastruktur/SingleImportTests/ImportComplementary.test'
+_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
+_d0UGkLBSEemub6f3erWwag	// kind: 'test' name: 'ImportTarmed' path: '../Tests/Infrastruktur/SingleImportTests/ImportTarmed.test'
+_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
+_kd4wsLBUEemub6f3erWwag	// kind: 'test' name: 'ImportArtikelstamm' path: '../Tests/Infrastruktur/SingleImportTests/ImportArtikelstamm.test'
+_lqzhsLBSEemub6f3erWwag	// kind: 'test' name: 'ImportMigel' path: '../Tests/Infrastruktur/SingleImportTests/ImportMigel.test'
 _3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Hilfen/RestartElexis.test'
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
 _ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/BasicAbrechnungssytems.test'

@@ -1,13 +1,13 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Contexts: _7pLWIBQVEemEb8FG0wciYA,_jOjx0CCAEem06Mv2pVmYtA
-Element-Name: ImportSwissBase
+Element-Name: ImportSwissBaseAll
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _c13msBQlEemEb8FG0wciYA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/30/19 8:18 AM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 7/27/19, 11:39 AM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa

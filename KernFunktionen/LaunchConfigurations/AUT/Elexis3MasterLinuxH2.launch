@@ -3,7 +3,7 @@
 <booleanAttribute key="append.args" value="true"/>
 <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
 <booleanAttribute key="askclear" value="true"/>
-<stringAttribute key="aut-location" value="/opt/src/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp/linux/gtk/x86_64"/>
+<stringAttribute key="aut-location" value="/opt/src/elexis-3-core/os"/>
 <stringAttribute key="aut-target-platform" value="AUT Elexis3MasterLinuxH2 (Target Platform)"/>
 <booleanAttribute key="aut-target-updatable" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
@@ -14,7 +14,6 @@
 <stringAttribute key="com.xored.launching.common.attrArch" value="x86_64"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterLinuxH2"/>
 <stringAttribute key="location" value="${workspace_loc}/../aut-Elexis3MasterLinuxH2"/>
-<booleanAttribute key="org.eclipse.debug.core.capture_output" value="false"/>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
 <mapEntry key="SWT_GTK3" value="0"/>
 </mapAttribute>
@@ -22,11 +21,11 @@
 <stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterLinuxH2/console.log"/>
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-11-openjdk-amd64"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-openjdk-amd64"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os linux -ws gtk -arch x86_64 -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx1024m -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 -XX:MaxPermSize=128m -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec=jdbc:h2:~/elexis/h2_elexis_rcptt -Dch.elexis.dbUser=sa -Dch.elexis.dbPw= -Dch.elexis.firstMandantName=mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=mustermann -Dch.elexis.password=elexisTest"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/src/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp/linux/gtk/x86_64"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx1024m -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 -XX:MaxPermSize=128m &#10;-Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec=jdbc:h2:~/elexis/h2_elexis_rcptt;AUTO_SERVER=TRUE&#10;-Dch.elexis.dbUser=sa -Dch.elexis.dbPw=&#10;-Dch.elexis.firstMandantName=mustermann -Dch.elexis.firstMandantPassword=elexisTest &#10;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=mustermann -Dch.elexis.password=elexisTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/src/elexis-3-core/os"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="ch.elexis.core.application.product"/>
 <booleanAttribute key="tracing" value="false"/>
