@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/27/19, 3:58 PM
+Save-Time: 7/27/19, 6:14 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -174,7 +174,7 @@ proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR
 	set-dialog-result File $file
 	with [get-window [ t view_data_import ]] {
 		get-button [ t btn_data_import_search ] | click
-		get-window Datenimport | get-editbox -after [get-label [ t view_data_select_file ] ] 
+		get-window [ t view_data_import ] | get-editbox -after [get-label [ t view_data_select_file ] ]
     		| set-text  [ replaceAll -replaceString  "" -searchPattern  "file:/" -inString $file ] 
 		with [get-combo -after [get-label [ t relevant_tarmed_caselaw ] ] ] {
 		set-text KVG

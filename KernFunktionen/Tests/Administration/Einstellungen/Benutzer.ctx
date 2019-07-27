@@ -5,8 +5,8 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/4/19 4:24 PM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 7/27/19, 6:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -255,7 +255,7 @@ proc "SetzeBenutzerRecht" [ val recht ] [ val wert "A" ] [ val rolle 7 ] {
 				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle " schon gesetzt. Index " $rechte_index | log
 		    } -else {
 				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle " wird gesetzt. Index " $rechte_index | log
-				with [get-window Benutzervorgaben | get-tree -after [get-link "<a>ändern</a>"]] {
+				with [get-window [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"]] {
 					get-cell $rechte_index $rolle | click
 				}
 			}
