@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/27/19, 6:14 PM
+Save-Time: 11/6/19, 4:14 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -30,6 +30,26 @@ proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 		get-tree | select [ t System_Allgemein ]
 		get-button $language | click
 		get-button [ t apply_and_close] | click
+	}
+}
+
+proc "WaitImportFinished" [ val importerName "ZZZ" ] [ val maxWait 90 ] {
+	loop [val i 0] {
+		try {
+			with [get-button "Zeigt Hintergrundoperationen in der Sicht 'Fortschritt' an."] {
+				// concat "ReadTarmed: Must wait another 10 seconds for window lang " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i  " max " $maxWait | log
+			    concat "WaitImportFinished: " $importerName [ get-property tooltip -raw ] " " $i " of " $maxWait | log
+				wait 10000 // Wait 10 seconds, but at most 5 minutes
+				if [ $i | lt $maxWait ] { recur [$i | plus 1]
+				} -else {
+					concat "WaitImportFinished " $importerName " waited too long i is " $i " max is " $maxWait | log
+					bool false | assert-true -message [ concat "ReadTarmed waited too long i is " $i ]
+				}
+			}
+		} -error [val errorObj] -catch {
+			concat "WaitImportFinished: " $importerName " Wait for Import erfolgreich done lang: " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i |  log
+			concat "WaitImportFinished: " $importerName " errorObj " $errorObj | log
+		}
 	}
 }
 
@@ -151,7 +171,7 @@ proc "ReadMigel" [ val file [ concat $rcpttDir "/MiGeL2019v1.csv" ] ] {
 	} -error [val errorObj] -catch {
 			// Seen when running ImportSwissbase with french Elexis
 			concat "Errror " $errorObj "in ReadMigel" | log
-			set-dialog-result File "/dummy"
+			set-dialog-result File "/dummy_migel"
 	}
 	get-view [ t artikel ] | get-tab-folder | get-tab-item MiGeL | click
 	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
@@ -161,7 +181,8 @@ proc "ReadMigel" [ val file [ concat $rcpttDir "/MiGeL2019v1.csv" ] ] {
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel.png"]
 }
 
-proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ]  ] {
+proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ] ] {
+	WaitImportFinished "Before Tarmed" // Just in case there is still another import running
 	OpenLeistungen
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_1.png"]
 	with [get-view Codes] {
@@ -184,21 +205,8 @@ proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR
 		get-button OK | click
 		concat "ReadTarmed: Done with file: " $file | log
 	}
-	concat "Start wait for Import erfolgreich" | log
-	loop [val i 0] {
-		try {
-			get-window [ t Import_erfolgreich ] | gen-screenshot [concat $imagesDir "tarmed_done.png" ]
-			get-window [ t Import_erfolgreich ] | get-button OK | click
-			concat "ReadTarmed: Wait for Import erfolgreich done lang: " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i |  log
-		} -error [val errorObj] -catch {
-			concat "ReadTarmed: Will wait another 10 seconds for window lang " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i  " max 90" | log
-			wait 10000 // Wait 10 seconds, but at most 15 minutes
-			if [ $i | lt 90 ] { recur [$i | plus 1]
-			} -else {
-				concat "ReadTarmed waited too long i is " $i | log
-				bool false | assert-true -message [ concat "ReadTarmed waited too long i is " $i ] }
-		}
-	}
+	concat "ReadTarmed: Start wait for Import erfolgreich" | log
+	WaitImportFinished "Tarmed"
 }
 
 proc "ReadDataImport" [ val file [ concat $rcpttDir "/Universal_patienten.xls" ] ] 
