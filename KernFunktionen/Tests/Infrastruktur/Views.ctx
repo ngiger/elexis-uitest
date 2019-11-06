@@ -5,8 +5,8 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/15/19 5:55 PM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 11/5/19 3:56 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -28,7 +28,7 @@ proc "open-window-by-name" [ val windowName ] {
 	try {
 		get-view $windowName
 	} -catch {
-		set-dialog-result File "/dummy"
+		set-dialog-result File [ concat "/dummy_" $windowName ]
 		get-menu -path [ t menu_select_view ]| click
 		with [get-window [ t show_view ]] {
 			if [ matches $windowName ".*/.*" ] {

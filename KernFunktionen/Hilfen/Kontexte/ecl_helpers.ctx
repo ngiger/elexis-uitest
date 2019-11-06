@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/27/19, 11:48 AM
+Save-Time: 11/6/19 10:11 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -217,7 +217,7 @@ proc OpenAndResetStartPerspektive {
 		} -error [val errorObj] -catch {
 			// Seen when running ImportSwissbase with french Elexis
 			concat "Errror " $errorObj "in btn_start_perspective" | log
-			set-dialog-result File "/dummy"
+			set-dialog-result File "/dummy_ecl_helpers"
 	}
 	handleResetPerspectiveDialog
 	resetPerspective

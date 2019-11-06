@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _tFxLkBNbEemKBfY3bI9wrQ
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/28/19, 9:12 AM
+Save-Time: 11/6/19, 12:26 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -101,7 +101,7 @@ kons-add-artikelstamm LOSARTAN "LOSARTAN.*12.5.*"
 EnsurePatientChanged // Is needed if it is the first time we downloaded the interaction. TODO: FIX IT!
 VerifyInteractionStatus [ t interaction_no_relevant ]
 get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
-	gen-screenshot[concat $imagesDir "EphaInteractions/probably_no_interaction.png"]
+	gen-screenshot [concat $imagesDir "EphaInteractions/probably_no_interaction.png"]
 
 kons-add-artikelstamm METOPROLOL "Metoprolol.*100 Stk.*"
 VerifyInteractionStatus [ t interaction_periodic_control ]
