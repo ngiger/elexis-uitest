@@ -15,7 +15,7 @@
     <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
     <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
     <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
-    <rcptt-maven-version>2.4.2</rcptt-maven-version>
+    <rcptt-maven-version>2.4.3</rcptt-maven-version>
     <rcptt-resources>${env.HOME}/elexis/rcptt</rcptt-resources>
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
@@ -176,7 +176,7 @@
               <url>https://www.bag.admin.ch/dam/bag/de/dokumente/kuv-leistungen/Mittel-%20und%20Gegenst%C3%A4ndeliste/migel-gesamtliste-01012019-excel.xlsx.download.xlsx/Mittel%20und%20Gegenst%C3%A4ndeliste%20vom%2001.01.2019%20in%20Excel-Format.xlsx</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <outputFileName>MiGeL-01012019.xlsx</outputFileName>
-              <md5>18f9c8bf0ad6b364a89c30cfe3da8cd3</md5>
+              <md5>d83a5a08fb5a79a0218557cdbcf75339</md5>
             </configuration>
           </execution>
           <execution>
