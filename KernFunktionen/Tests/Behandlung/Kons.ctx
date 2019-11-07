@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.4.2.201905080442
-Save-Time: 11/6/19, 7:50 PM
+Save-Time: 11/7/19, 12:11 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -82,11 +82,6 @@ proc "ActivateVisibleKonsView" {
 	}  -error [val errorObj]  -catch {
 		concat "ActivateVisibleKonsView " [ t kons_view ]  " has problems." $errorObj " Trying to close warning" | log
 		close-window-if-open "Warnung.*|"
-		log "Second try"
-		try {
-			get-window "" | get-button OK | click
-			log "Second try succeeded"
-		}
 		get-view [ t kons_view ] | get-editbox | set-focus
 		bool false
 	}
@@ -132,6 +127,41 @@ proc "kons-check-expected-items" [ val caller ]
 			}
 		}
 }
+
+proc "GetItemsInTable" [ val table "NotableGiven" ] {
+	$table | get-property itemCount -raw
+}
+
+proc "ArtikelstammExecuteSearch"  {
+    let [ val table [ get-view [ t artikel ] | get-table ] ] {
+		let	[ val nrItemsBefore [ GetItemsInTable $table | int ] ] {
+			get-button [ t btn_execute_search ] | click
+			loop {
+			    if [ GetItemsInTable $table | eq $nrItemsBefore ] {
+					// concat "GetItemsInTable returned " [ GetItemsInTable $table ] " for " $table | log
+					wait 500
+					recur
+			    }
+			}
+		}
+	}
+}
+
+proc "LeistungenExecuteSearch"  {
+    let [ val table [ get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-table ] ] {
+		let	[ val nrItemsBefore [ GetItemsInTable $table | int ] ] {
+			get-button [ t btn_execute_search ] | click
+			loop {
+			// concat "GetItemsInTable returned " [ GetItemsInTable $table ] " for " $table | log
+			if [ GetItemsInTable $table | eq $nrItemsBefore ] {
+				wait 500
+			    recur
+			}
+			}
+		}
+	}
+}
+
 /**
  * Das geht eine Ewigkeit, weil rcptt sich den ganzen Artikelstamm ins Memory lädt!!
  * <br>Der Name muss so gewählt werden, dass kein hellblau eingefärbter Artikel als erster in der
@@ -146,9 +176,9 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expected
 			get-tab-folder | get-tab-item Artikelstamm | click
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
-			log  "before double-click"
-			get-button [ t btn_execute_search ] | click
+			LeistungenExecuteSearch
 			get-group  [ t alle_leistungen ] | get-table | select $item_long | double-click
+			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter_" $item_short ".png"]
 			key-type Enter
 		}
 		concat "kons-neuen-artikelstamm item added " $item_short " " $item_long | log
