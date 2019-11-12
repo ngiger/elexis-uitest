@@ -5,8 +5,8 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/27/19, 6:09 PM
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 11/12/19, 2:50 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -239,32 +239,53 @@ proc "create-user" [ val idMandant 1 ]
  *
  *  @wert: Zustand des Rechts, Entweder " ", "A" oder "x"<br>
  *
- *  @rolle: Der Index in den Einstellungen, z.B.<br>
- *  1: patient<br>2: user_external<br>3: assistant<br>4: doctor<br>
- *  5: esadmin<br> 6: fhir<br> 7: user<br> 8 executive_doctor
+ *  @rolle: Tooltip-Name, one of the following.<br>
  */
-proc "SetzeBenutzerRecht" [ val recht ] [ val wert "A" ] [ val rolle 7 ] {
+proc "SetzeBenutzerRecht" [ val recht ] [ val wert "A" ] [ val role "user" ] {
 	// concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle | log
 	get-preferences-menu | click
 	get-window  [ t preferences ] | get-tree | select [ t select_roles_right ]
-	let [ val rechte_index [
-		get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
-	    | get-property index -raw] ] {
-		if [ get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
-		    | get-property [ concat "columns[" $rolle "]"] -raw | eq $wert ] {
-				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle " schon gesetzt. Index " $rechte_index | log
-		    } -else {
-				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle " wird gesetzt. Index " $rechte_index | log
-				with [get-window [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"]] {
-					get-cell $rechte_index $rolle | click
+    with [get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"]] {
+	    let [ val nrItems [ get-item -path Administration | get-property "getParent().getColumns().length" -raw ] ] {
+			with [ get-item -path Administration ] {
+				// Next few lines is a hack, as I cannot loop and set values inside. Don't know why.
+				global [ val BenutzerRechteIndex "-1" ] -override
+				global [ val BenutzerRechteIndex1  [ get-property "getParent().getColumns().TreeColumns[1].getToolTipText()" -raw ] ]
+				global [ val BenutzerRechteIndex2  [ get-property "getParent().getColumns().TreeColumns[2].getToolTipText()" -raw ] ]
+				global [ val BenutzerRechteIndex3  [ get-property "getParent().getColumns().TreeColumns[3].getToolTipText()" -raw ] ]
+				global [ val BenutzerRechteIndex4  [ get-property "getParent().getColumns().TreeColumns[4].getToolTipText()" -raw ] ]
+				global [ val BenutzerRechteIndex5  [ get-property "getParent().getColumns().TreeColumns[5].getToolTipText()" -raw ] ]
+				global [ val BenutzerRechteIndex6  [ get-property "getParent().getColumns().TreeColumns[6].getToolTipText()" -raw ] ]
+				if [ $role | eq $BenutzerRechteIndex1 ] { global [ val BenutzerRechteIndex 1 ] -override}
+				if [ $role | eq $BenutzerRechteIndex2 ] { global [ val BenutzerRechteIndex 2 ] -override}
+				if [ $role | eq $BenutzerRechteIndex3 ] { global [ val BenutzerRechteIndex 3 ] -override}
+				if [ $role | eq $BenutzerRechteIndex4 ] { global [ val BenutzerRechteIndex 4 ] -override}
+				if [ $role | eq $BenutzerRechteIndex5 ] { global [ val BenutzerRechteIndex 5 ] -override}
+				if [ $role | eq $BenutzerRechteIndex6 ] { global [ val BenutzerRechteIndex 6 ] -override}
+				if [$BenutzerRechteIndex | eq "-1" ] {
+					bool false | assert-true -message [ concat "No valid ID found for role " $role ]
 				}
-			}
-    }
+				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $role " mit index "  $BenutzerRechteIndex | log
+		    }
+		}
+		let [ val rechte_index [
+			get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
+		    | get-property index -raw] ] {
+			if [ get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
+			    | get-property [ concat "columns[" $BenutzerRechteIndex "]"] -raw | eq $wert ] {
+					concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $BenutzerRechteIndex " schon gesetzt. Index " $rechte_index | log
+			    } -else {
+					concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $BenutzerRechteIndex " wird gesetzt. Index " $rechte_index | log
+					with [get-window [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"]] {
+						get-cell $rechte_index $BenutzerRechteIndex | click
+					}
+				}
+		}
+	}
 	with [ get-window  [ t preferences ]  ] {
 		get-button [ t apply_and_close ] | click
 	}
 }
-
 // Ende
 //
 
