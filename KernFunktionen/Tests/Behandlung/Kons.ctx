@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 11/7/19, 12:11 PM
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 11/14/19 9:34 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -81,7 +81,7 @@ proc "ActivateVisibleKonsView" {
 		bool true
 	}  -error [val errorObj]  -catch {
 		concat "ActivateVisibleKonsView " [ t kons_view ]  " has problems." $errorObj " Trying to close warning" | log
-		close-window-if-open "Warnung.*|"
+		close-window-if-open "Warnung.*"
 		get-view [ t kons_view ] | get-editbox | set-focus
 		bool false
 	}
@@ -486,7 +486,7 @@ proc "KonsCloseCannotBeChangedError" {
 	}
 }
 
-proc "ImportPatFallKonsFromProperty" [ val keyId ] {
+proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
 	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
 	    [ val male		 [ GetTestProperty [ concat $keyId male      ] ] ]
@@ -504,22 +504,24 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] {
 			PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $familyName
 			 -firstName $firstName -birthDate $birthDate -male $male
 			 -caseName $caseName
+			with [get-view [ t kons_view ] ] {
+				try { with [get-table -after [get-label [ t btn_accounting ] ]] {
+					get-cell 0 2 | click
+					get-menu -path "Alle entfernen" | click
+				} } -catch { log -message "No drugs to remove"}
+			    try { with [get-table] {
+					get-cell 0 2 | click
+				    get-menu -path "Diagnose entfernen" | click
+				} } -catch { log -message "No diagnosis to remove"}
+			}
 			kons-add-tarmed [ concat $tarmed ]
 			kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*"
 			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 			kons-add-block  -blockName $blockName -expectedItemsAdded $blockNr -info [ concat  $firstName " " $familyName ]
 			FallSetVersicherungsNummer -fall $caseName
 			FallSetCostBearer -fall $caseName -name "Aquilana"
-			AktuellenFallVerrechnen
+			AktuellenFallVerrechnen -abortOnError $abortOnError
 			AktuellenFallSchliessen
-
-			/*
-			// TODO: The next two tests work only with the demoDB. We must change them to be able to run them
-			// via RunFromScratch or a new demoDB initialized with all data
-			// kons-add-eigenleistung
-			// RechnungAusgeben		  -invoiceId $invoiceId
-			// CheckTarmedFallVerrechnen -invoiceId $invoiceId
-			*/
 		}
 	}
 }

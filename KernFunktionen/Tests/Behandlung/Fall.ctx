@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/26/19, 4:42 PM
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 11/14/19 9:52 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -111,24 +111,29 @@ proc AktuellenFallSchliessen [ val endDate "" ] {
 	    get-button OK | click
 	}
 }
-proc AktuellenFallVerrechnen {
+proc AktuellenFallVerrechnen [ val abortOnError true ] {
+	global [val AktuellenFallVerrechnenHadError false] -override
+
 	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
 		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items"| log
 		get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
 		try {
 			get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
 			log "AktuellenFallVerrechnen: Failed. See message above" -severity error
+			global [val AktuellenFallVerrechnenHadError true] -override
 			close-window-if-open [ t error ]
-		} -error [val errorObj]  -catch {
-			// concat "Catched error: " $errorObj
 		}
-		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
-			concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items"| log
-			$nrItemsBefore | plus 1 | equals $nrItemsAfter | assert-true -message
-				[ concat "AktuellenFallVerrechnen: After invoicing expected "  [$nrItemsBefore | plus 1 ] " items but found " $nrItemsAfter]
+		if [ and $abortOnError $AktuellenFallVerrechnenHadError ] {
+			bool false | assert-true -message "AktuellenFallVerrechnen: Failed and aborting"
+		} -else {
+			log "AktuellenFallVerrechnen was okay"
+			let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
+				concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items"| log
+				$nrItemsBefore | plus 1 | equals $nrItemsAfter | assert-true -message
+					[ concat "AktuellenFallVerrechnen: After invoicing expected "  [$nrItemsBefore | plus 1 ] " items but found " $nrItemsAfter]
+			}
 		}
 	}
-	// get-window [ t error ] | verify-false
 }
 
 global [val auf_id 1 ] -override
