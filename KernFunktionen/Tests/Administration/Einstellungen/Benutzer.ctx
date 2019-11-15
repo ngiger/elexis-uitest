@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.3.201909171500
-Save-Time: 11/12/19, 2:50 PM
+Save-Time: 11/15/19 11:57 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -77,9 +77,15 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			concat "Selecting " $idMandant " failed. We just use the first one, eg. James Bond"
 			get-combo -after [get-label "Tarmed.*"] | select ".+"
 		}
+		global [val AbrNameFirst [ concat
+			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name"] ] " "
+			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Vorname"] ]
+		] ] -override
+		concat "AbrNameFirst: <" $AbrNameFirst "> Tarmed_Rechnungen <" [ t Tarmed_Rechnungen ] "> label <" [ t responsible_doctor ] ">" | log
+		get-combo -after [get-label [ t Tarmed_Rechnungen ] ] | select $AbrNameFirst
+		get-group [ t responsible_doctor ] | get-combo | select  $AbrNameFirst
 		get-group [ t Detailangaben ]| get-button "Bills electronically" | check
 		get-group [ t Detailangaben ]| get-link [ t Leistungserbringer ] | click
-		t Identifikationselemente | log
 		with [get-window [ t Identifikationselemente ]] {
 			str "tarmed_anrede tarmed_ean tarmed_ksk tarmed_kanton1 tarmed_kanton2 tarmed_rolle tarmed_nif tarmed_diag_system tarmed_esr5oresr9 tarmed_esrplus tarmed_erbringungsort tarmed_speziality tarmed_tg_or_tg"  |
 			split -sep " " | foreach [val item]  {
@@ -89,9 +95,22 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_details.png"]
 			get-button OK | click
 		}
-		with [get-group [ t Trustcenter ]] {
-			get-combo | select "TC test"
-			get-button [ t edDA_Vertrag_mit_Trustcenter ] | check
+		let  [val AbrTrustCenter [ concat
+			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".trustcenter"] ]
+		] ] {
+			if [ 	$AbrTrustCenter | eq "" ] {
+				concat "no trustcenter for : <" $AbrNameFirst "> " | log
+				with [get-group [ t Trustcenter ] ] {
+					get-button [ t edDA_Vertrag_mit_Trustcenter ] | uncheck
+				}
+			} -else {
+				concat "set trustcenter for " $AbrNameFirst " <" $AbrTrustCenter "> " | log
+				with [get-group [ t Trustcenter ] ] {
+					get-combo | select $AbrTrustCenter
+					get-button [ t edDA_Vertrag_mit_Trustcenter ] | check
+				}
+			}
+			get-button [ t Anwenden ] | click
 		}
 		
 		if [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ] {

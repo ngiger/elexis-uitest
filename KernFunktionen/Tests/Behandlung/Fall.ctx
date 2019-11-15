@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.4.3.201909171500
-Save-Time: 11/14/19 9:52 AM
+Save-Time: 11/15/19 12:00 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -122,7 +122,7 @@ proc AktuellenFallVerrechnen [ val abortOnError true ] {
 			log "AktuellenFallVerrechnen: Failed. See message above" -severity error
 			global [val AktuellenFallVerrechnenHadError true] -override
 			close-window-if-open [ t error ]
-		}
+		} -catch { log "AktuellenFallVerrechnen: No Error WIndow"}
 		if [ and $abortOnError $AktuellenFallVerrechnenHadError ] {
 			bool false | assert-true -message "AktuellenFallVerrechnen: Failed and aborting"
 		} -else {
@@ -189,16 +189,35 @@ proc "FallSetVersicherungsNummer" [ val nummer 123456 ] [ val fall ".*" ] {
 		 // TODO: French problem: INFO  ch.elexis.data.PersistentObject - field is not mapped Désignation
 		get-view [ t Fall ] -index 1 | get-editbox -after [get-label [ t Versicherungsnummer -language de ] ] | set-text $nummer
 	} -catch {
-		// This work in german
-		get-view [ t Fall ] | get-button [ t Kopie_an_Patienten ] | check
-		try {
-			get-view [ t Fall ] | get-editbox -after [get-label [ t Versicherungsnummer ] ] | set-text $nummer -control
-		} -catch {
-			log "Versicherungsnummer is not present for the case"
+		with [ get-view [ t Fall ] ] {
+			get-button [ t Kopie_an_Patienten ] | check
+			try {
+				with [get-editbox -after [get-label [ t Versicherungsnummer ] ] ] {
+					set-text $nummer
+			        key-type Enter
+					concat "FallSetVersicherungsNummer " $fall " to " $nummer " done" | log
+				}
+			} -error  [val errorObj] -catch {
+				concat "Versicherungsnummer is not present for the case" $errorObj | log
+			}
 		}
 	}
 }
-
+/*
+with [get-view Fall] {
+    with [get-editbox -after [get-label Versicherungsnummer]] {
+        set-text 1234
+        key-type Enter
+    }
+    get-link "Kostenträger" | click
+}
+with [get-window "Kontakt auswählen"] {
+    get-list | select "Testarossa-KVG-de Emilio (m), 29.02.1984 (29.02.1984)"
+    get-editbox -after [get-label "Andere Kontakte"] -index 1 | set-text Testa
+    get-table | select "Testarossa-KVG-de Emilio, Nebenstrasse 33, 9876 Elexiskon \\(29.02.1984\\)"
+    get-button OK | click
+}
+*/
 proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa" ]
 	[ val firstName "Antonio" ]
 	[ val male true ]
@@ -226,7 +245,8 @@ proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa
 	SelectFall -caseLaw $caseName -startDate $caseStartDate
 	FallOffen -caseLaw $caseName -startDate $caseStartDate | assert-true
 	if [ HasKonsSelected | eq false] {
-		kons-erstellen [ concat "PatientMitFallUndKonsErstellenOderAuswaehlen "  $familyName " " $firstName " mit " $caseName  " of " $caseStartDate " kons of" $konsDate ]
+		kons-erstellen [ concat "PatientMitFallUndKonsErstellenOderAuswaehlen "  $familyName " " $firstName " mit " $caseName  " of " $caseStartDate 
+			" kons of " $konsDate " seconds " [ get-seconds ] ]
 	} -else {
 		log "HasKonsSelected returned true"
 	}
