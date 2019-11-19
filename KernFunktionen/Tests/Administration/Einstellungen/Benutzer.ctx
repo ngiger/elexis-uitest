@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.4.3.201909171500
-Save-Time: 11/15/19 11:57 AM
+Save-Time: 11/19/19 3:04 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -95,24 +95,6 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_details.png"]
 			get-button OK | click
 		}
-		let  [val AbrTrustCenter [ concat
-			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".trustcenter"] ]
-		] ] {
-			if [ 	$AbrTrustCenter | eq "" ] {
-				concat "no trustcenter for : <" $AbrNameFirst "> " | log
-				with [get-group [ t Trustcenter ] ] {
-					get-button [ t edDA_Vertrag_mit_Trustcenter ] | uncheck
-				}
-			} -else {
-				concat "set trustcenter for " $AbrNameFirst " <" $AbrTrustCenter "> " | log
-				with [get-group [ t Trustcenter ] ] {
-					get-combo | select $AbrTrustCenter
-					get-button [ t edDA_Vertrag_mit_Trustcenter ] | check
-				}
-			}
-			get-button [ t Anwenden ] | click
-		}
-		
 		if [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ] {
 			log "PC-Konto definiert"
 			with [get-group [ t Detailangaben ]] |  get-link [ t Postkonto ] | click
@@ -167,6 +149,24 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			get-window [ t preferences ] | get-window [ t select_Zahlungsinstitut ]| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
 			get-window [ t preferences ] | get-window [ t select_Zahlungsinstitut ] | get-button OK | click
 		}
+		let  [val AbrTrustCenter [ concat
+			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".trustcenter"] ]
+		] ] {
+			if [ 	$AbrTrustCenter | eq "" ] {
+				concat "no trustcenter for : <" $AbrNameFirst "> " | log
+				with [get-group [ t Trustcenter ] ] {
+					get-button [ t edDA_Vertrag_mit_Trustcenter ] | uncheck
+				}
+			} -else {
+				concat "set trustcenter for " $AbrNameFirst " <" $AbrTrustCenter "> " | log
+				with [get-group [ t Trustcenter ] ] {
+					get-combo | select $AbrTrustCenter
+					get-button [ t edDA_Vertrag_mit_Trustcenter ] | check
+				}
+			}
+			get-button [ t Anwenden ] | click
+		}
+		
 		get-window [ t preferences ] | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant ".png"]
 		get-button [ t apply_and_close ] | click
 	}
