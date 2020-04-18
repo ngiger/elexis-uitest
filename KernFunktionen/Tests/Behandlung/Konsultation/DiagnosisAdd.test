@@ -1,0 +1,28 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: DiagnosisAdd
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _OU_CEP4qEeiuqdAcgkHVvQ
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/12/18 7:36 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+
+with [get-view Diagnosen] {
+    get-group Alle | get-editbox | set-focus
+    get-tab-folder | get-tab-item "ICD-10" | click
+    get-group Alle | get-editbox | set-focus
+    get-tab-folder | get-tab-item "TI-Code" | click
+    with [get-group Alle] {
+        get-editbox | set-focus
+        get-tree | select "A Herz/A1 Vitien, Herzklappen" | double-click
+    }
+}
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

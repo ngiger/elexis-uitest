@@ -1,0 +1,51 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: MediVerrechnen
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _6zQkUP4oEeiuqdAcgkHVvQ
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/12/18 5:16 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+with [get-view Patienten] {
+    get-link Name | click
+    get-table | select "Absolut Erfunden \\(w\\), 18.11.1933"
+}
+with [get-view Konsultation] {
+    click
+    get-button "Neue Konsultation erstellen" | click
+}
+get-window "Zweite Konsultation für heute?" | get-button Ja | click
+with [get-view Konsultation] {
+    get-editbox -after [get-label "12.12.2018 (heute)"] | type-text "Epha 2"
+    get-button -index 5 | click
+}
+
+get-view Konsultation | get-button -index 5 | click
+with [get-view Leistungen | get-group Alle] {
+    get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-text Marcoum
+    with [get-button "Suche jetzt ausführen"] {
+        click
+    }
+}
+with [get-view Leistungen] {
+    get-tab-folder | get-tab-item Artikelstamm | click
+    with [get-group Alle] {
+        with [get-editbox -after [get-label "Artikel oder Wirkstoff"]] {
+            set-text ASPIRIN
+            set-text ASPIRINA
+            set-text ASPIRINAASP
+            set-text ASPIRIN
+        }
+        get-table | select "ASPIRIN CARDIO Filmtabl 100 mg 28 Stk <6.5> " | double-click
+    }
+    get-table | select "MARCOUMAR Tabl 3 mg Fl 100 Stk <20.8> " | double-click
+}
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

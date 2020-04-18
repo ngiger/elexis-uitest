@@ -1,0 +1,42 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: SavePreferences2csvWorks
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _n-Y-wPx1Eei-7bw0vNfpxQ
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/11/18 8:30 AM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+log "Started ccc"
+try {
+    get-window Benutzervorgaben | get-button Abbrechen | click
+} -catch {
+    // Verify that the window was missing (and not some other problem)
+    verify-error -command {get-window Benutzervorgaben}
+}
+
+// we need to be able to get-workspace-location or workspace: will not work
+get-workspace-location | str | log
+
+get-preferences-menu | click
+
+with [ get-window Benutzervorgaben ] {
+	// get-tree | expand-all
+	log --message "Benutzervorgaben message"
+	get-tree | select Labor
+	log --message "Labor"
+  	get-table | get-table-data | write-csv-file "workspace:preferences3.csv" 
+    get-table | get-table-data | write-csv-file "/opt/rm/elexis-master/elexis-uitest/preferences2.csv" 
+	log "wrote CSV"
+	read-file "/opt/rm/elexis-master/elexis-uitest/preferences2.csv"  | log
+}
+
+log "done"
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

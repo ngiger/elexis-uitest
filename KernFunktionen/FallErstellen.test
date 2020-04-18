@@ -1,0 +1,56 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: FallErstellen
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _cVqwsP79EeiFyvHqIglmCA
+Runtime-Version: 2.3.0.201806262310
+Save-Time: 12/13/18 6:41 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Fälle" | get-button "Einen neuen Fall erstellen" | click
+with [get-window "Neuer Fall"] {
+    get-combo -after [get-label Abrechnungsmethode] | select UVG
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | click-text 1 9
+    with [get-control Any -after [get-label Startdatum]] {
+        key-type BackSpace -times 2
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
+    with [get-control Any -after [get-label Enddatum]] {
+        key-type Tab
+        key-type "TRAVERSE_TAB_PREVIOUS"
+    }
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
+    with [get-control Any -after [get-label Startdatum]] {
+        key-type "M2+TAB"
+        key-type BackSpace -times 4
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
+    get-control Any -after [get-label Enddatum] | key-type Tab
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | click-text
+    with [get-control Any -after [get-label Unfalldatum]] {
+        key-type BackSpace -times 2
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-window -from "DatePickerCombo.<init>()"] {
+        get-canvas | double-click
+        get-control Any | double-click
+    }
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | click-text
+    with [get-window -from "DatePickerCombo.<init>()"] {
+        get-canvas | double-click
+        get-control Any | double-click
+    }
+    get-editbox -after [get-label "Einen neuen Fall erstellen"] | set-focus
+    get-button OK | click
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
