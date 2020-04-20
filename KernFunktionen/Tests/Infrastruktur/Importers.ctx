@@ -160,7 +160,7 @@ proc "AssertNoErrorInProgress" {
 	}
 }
 
-proc "ReadAnalysenListe" [ val file [ concat $rcpttDir "/EAL_01012019.xlsx" ] ] {
+proc "ReadAnalysenListe" [ val file [ concat $rcpttDir "/EAL_01.04.2020.xlsx" ] ] {
 	OpenLeistungen
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadEAL_1.png"]
 	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click

@@ -15,7 +15,7 @@
     <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
     <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
     <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
-    <rcptt-maven-version>2.4.3</rcptt-maven-version>
+    <rcptt-maven-version>2.5.1</rcptt-maven-version>
     <rcptt-resources>${env.HOME}/elexis/rcptt</rcptt-resources>
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
@@ -167,16 +167,16 @@
             </configuration>
           </execution>
           <execution>
-            <id>download-MiGeL-01012019.xlsx</id>
+            <id>download-MiGeL-01.04.20.xlsx</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://www.bag.admin.ch/dam/bag/de/dokumente/kuv-leistungen/Mittel-%20und%20Gegenst%C3%A4ndeliste/migel-gesamtliste-01012019-excel.xlsx.download.xlsx/Mittel%20und%20Gegenst%C3%A4ndeliste%20vom%2001.01.2019%20in%20Excel-Format.xlsx</url>
+              <url>https://wiki.elexis.info/images/d/db/MiGel-01.04.20.xlsx</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
-              <outputFileName>MiGeL-01012019.xlsx</outputFileName>
-              <md5>d83a5a08fb5a79a0218557cdbcf75339</md5>
+              <outputFileName>MiGeL-01.04.20.xlsx</outputFileName>
+              <md5>5c4c349d210e9fb6ee1befa69676cb5c</md5>
             </configuration>
           </execution>
           <execution>
@@ -238,10 +238,10 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://www.bag.admin.ch/dam/bag/de/dokumente/kuv-leistungen/leistungen-und-tarife/Analysenliste/analysenliste-01012019-excel.xlsx.download.xlsx/Analysenliste%20vom%2001.01.2019%20in%20Excel-Format.xlsx</url>
-              <outputFileName>EAL_01012019.xlsx</outputFileName>
+              <url>https://wiki.elexis.info/images/2/23/EAL_01.04.2020.xlsx</url>
+              <outputFileName>EAL_01.04.2020.xlsx</outputFileName>
               <outputDirectory>${rcptt-resources}</outputDirectory>
-              <md5>1b2ad66e742ea3bd7479040d45cf7373</md5>
+              <md5>5e0d9c02d95e78d81b136f1d6f3da1f7</md5>
             </configuration>
           </execution>
           <execution>
@@ -264,7 +264,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://central.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar</url>
+              <url>https://repo1.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <md5>f9893acfa22b7fe1492dd9c515af2e5b</md5>
             </configuration>
@@ -276,7 +276,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://sourceforge.net/p/elexis/mailman/attachment/VI1P190MB0062201ADBD6CCA8C6BC290E96040%40VI1P190MB0062.EURP190.PROD.OUTLOOK.COM/1/</url>
+              <url>https://wiki.elexis.info/images/1/1f/Tarmed_Blocks_109.txt</url>
               <outputFileName>blocks_landarztpraxis_sevelen.xchange</outputFileName>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <md5>b9f436fdbbb8b8f107215bf48a004d20</md5>
