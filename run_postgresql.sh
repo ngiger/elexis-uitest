@@ -1,4 +1,4 @@
-#!/bin/bash -v
+#!/usr/bin/env bash
 logger "cron: $0 started"
 cd `dirname $0`
 # other useful definitions are:

@@ -11,6 +11,7 @@
   </parent>
   <properties>
     <!--  Initial preparation to TO ONCE
+    mysql -u root -p 33062 -h 127.0.0.1
     create database elexis_rcptt;
     create user elexis with UNENCRYPTED password 'elexisTest';
     grant all on elexis_rcptt.* to elexis@'%';
@@ -18,9 +19,11 @@
    flush privileges;
 
     -->
+    <mysqlPort>33062</mysqlPort>
+    <mysqlHost>127.0.0.1</mysqlHost>
     <myBaseDir>${project.basedir}/..</myBaseDir>
     <vmArg1>-Dch.elexis.dbFlavor=mysql</vmArg1>
-    <vmArg2>-Dch.elexis.dbSpec=jdbc:mysql://localhost/elexis_rcptt</vmArg2>
+    <vmArg2>-Dch.elexis.dbSpec=jdbc:mysql://${mysqlHost}:${mysqlPort}/elexis_rcptt</vmArg2>
     <vmArg3>-Dch.elexis.dbUser=elexis</vmArg3>
     <vmArg4>-Dch.elexis.dbPw=elexisTest</vmArg4>
     <vmArg5>-Dch.elexis.firstMandantName=mustermann</vmArg5>
@@ -51,9 +54,10 @@
                   <script><![CDATA[
       file = new File("${dropCreateDbScript}")
       System.out.println("# Created ${dropCreateDbScript}")
+      System.out.println("/usr/bin/env mysql --host=${mysqlHost} --port=${mysqlPort} --user=elexis --password=elexisTest --execute=\"drop database if exists elexis_rcptt;")
       file.write("# Created by elexis-uitest/dbSpec/pom.xml as ${dropCreateDbScript}\n")
-      file.append("/usr/bin/mysql --host=localhost --user=elexis --password=elexisTest --execute=\"drop database if exists elexis_rcptt;\"\n")
-      file.append("/usr/bin/mysql --host=localhost --user=elexis --password=elexisTest --execute=\"create database elexis_rcptt;\"\n")
+      file.append("/usr/bin/env mysql --host=${mysqlHost} --port=${mysqlPort} --user=elexis --password=elexisTest --execute=\"drop database if exists elexis_rcptt;\"\n")
+      file.append("/usr/bin/env mysql --host=${mysqlHost} --port=${mysqlPort} --user=elexis --password=elexisTest --execute=\"create database elexis_rcptt;\"\n")
   ]]></script>
   </scripts>
             </configuration>
@@ -78,7 +82,8 @@
               <phase>process-sources</phase>
               <configuration>
                 <target> 
-                  <exec executable="/bin/bash" failonerror="true" >
+                  <exec executable="/usr/bin/env" failonerror="true" >
+                    <arg value="bash"/>
                     <arg value="${dropCreateDbScript}"/>
                   </exec>
                 </target>
@@ -92,9 +97,11 @@
               <phase>install</phase>
               <configuration>
                 <target>
-                  <exec executable="/usr/bin/mysqldump" failonerror="true" >
-                    <arg value="--host=localhost"/>
+                  <exec executable="/usr/bin/env" failonerror="true" >
+                    <arg value="mysqldump"/>
+                    <arg value="--host=${mysqlHost}"/>
                     <arg value="--user=elexis"/>
+                    <arg value="--port=${mysqlPort}"/>
                     <arg value="--password=elexisTest"/>
                     <arg value="--add-drop-database"/>
                     <arg value="--single-transaction"/>
@@ -109,56 +116,7 @@
             </execution>
           </executions>
         </plugin>
-        <plugin>
-        <groupId>org.eclipse.rcptt</groupId>
-        <artifactId>rcptt-maven-plugin</artifactId>
-        <version>${rcptt-maven-version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <projects>
-              <project>${project.basedir}/../KernFunktionen</project>
-          </projects>
-          <aut>
-            <injections>
-              <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
-              <injection>
-                <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
-              </injection>
-            </injections>
-            <!-- Use URL like this for the AUT
-            ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
-            https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
-            automatically replaced according to the current platform -->
-            <explicit> https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
-            <args>
-              <arg>-nl</arg>
-              <arg>${language}_CH</arg>
-              <arg>-nosplash</arg>
-              <arg>-noregtool</arg>
-              <arg>--use-config=rpctt</arg>
-           </args>
-            <vmArgs>
-              <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
-              <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
-              <vmArg>-Dlanguage=${language}</vmArg>
-              <vmArg>-Duser.language=${language}</vmArg>
-              <vmArg>${vmArg1}</vmArg>
-              <vmArg>${vmArg2}</vmArg>
-              <vmArg>${vmArg3}</vmArg>
-              <vmArg>${vmArg4}</vmArg>
-              <vmArg>${vmArg5}</vmArg>
-              <vmArg>${vmArg6}</vmArg>
-              <vmArg>${vmArg7}</vmArg>
-              <vmArg>${vmArg8}</vmArg>
-              <vmArg>${vmArg9}</vmArg>
-              <vmArg>${vmArg10}</vmArg>
-            </vmArgs>
-          </aut>
-                 <suites>
-                       <suite>${suite2run}</suite>
-                 </suites>
-        </configuration>
-      </plugin>
+
     </plugins>
   </build>
 </project>

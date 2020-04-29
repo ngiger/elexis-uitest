@@ -52,8 +52,8 @@
       System.out.println("# Created ${dropCreateDbScript}")
       file.write("# Created by elexis-uitest/dbSpec/pom.xml as ${dropCreateDbScript}\n")
       file.append("export PGPASSWORD=elexisTest\n")
-      file.append("/usr/bin/psql --host=localhost --user=elexis --command=\"drop database if exists elexis_rcptt_${language};\"\n")
-      file.append("/usr/bin/psql --host=localhost --user=elexis --command=\"create database elexis_rcptt_${language} encoding 'utf8' template template0;\"\n")
+      file.append("/usr/bin/env psql --host=localhost --user=elexis --command=\"drop database if exists elexis_rcptt_${language};\"\n")
+      file.append("/usr/bin/env psql --host=localhost --user=elexis --command=\"create database elexis_rcptt_${language} encoding 'utf8' template template0;\"\n")
   ]]></script>
   </scripts>
             </configuration>
@@ -78,7 +78,8 @@
               <phase>process-sources</phase>
               <configuration>
                 <target> 
-                  <exec executable="/bin/bash" failonerror="true" >
+                  <exec executable="/usr/bin/env" failonerror="true" >
+                    <arg value="bash"/>
                     <arg value="${dropCreateDbScript}"/>
                   </exec>
                 </target>
@@ -93,8 +94,9 @@
               <configuration>
                 <target>
                   <!-- /usr/bin/pg_dump - -host=localhost - -user=elexis - -encoding=UTF-8 - -clean  - -dbname elexis_rcptt - -create >pg_dump_de.sql -->
-                  <exec executable="/usr/bin/pg_dump" output="./target/results/pg_dump_${language}.sql" failonerror="true" >
+                  <exec executable="/usr/bin/env" output="./target/results/pg_dump_${language}.sql" failonerror="true" >
                     <env key="PGPASSWORD" value="elexisTest"/>
+                    <arg value="psql"/>
                     <arg value="--host=localhost"/>
                     <arg value="--user=elexis"/>
                     <arg value="--encoding=UTF-8"/>
@@ -110,46 +112,6 @@
             </execution>
           </executions>
         </plugin>
-        <plugin>
-        <groupId>org.eclipse.rcptt</groupId>
-        <artifactId>rcptt-maven-plugin</artifactId>
-        <version>${rcptt-maven-version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <projects>
-              <project>${project.basedir}/../KernFunktionen</project>
-          </projects>
-          <aut>
-            <explicit>${autExplicit}</explicit>
-            <args>
-              <arg>-nl</arg>
-              <arg>${language}_CH</arg>
-              <arg>-nosplash</arg>
-              <arg>-noregtool</arg>
-              <arg>--use-config=rpctt</arg>
-           </args>
-            <vmArgs>
-              <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
-              <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
-              <vmArg>-Dlanguage=${language}</vmArg>
-              <vmArg>-Duser.language=${language}</vmArg>
-              <vmArg>${vmArg1}</vmArg>
-              <vmArg>${vmArg2}</vmArg>
-              <vmArg>${vmArg3}</vmArg>
-              <vmArg>${vmArg4}</vmArg>
-              <vmArg>${vmArg5}</vmArg>
-              <vmArg>${vmArg6}</vmArg>
-              <vmArg>${vmArg7}</vmArg>
-              <vmArg>${vmArg8}</vmArg>
-              <vmArg>${vmArg9}</vmArg>
-              <vmArg>${vmArg10}</vmArg>
-            </vmArgs>
-          </aut>
-                 <suites>
-                       <suite>${suite2run}</suite>
-                 </suites>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
