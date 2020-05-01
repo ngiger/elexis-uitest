@@ -19,7 +19,7 @@
    flush privileges;
 
     -->
-    <mysqlPort>33062</mysqlPort>
+    <mysqlPort>3306</mysqlPort>
     <mysqlHost>127.0.0.1</mysqlHost>
     <myBaseDir>${project.basedir}/..</myBaseDir>
     <vmArg1>-Dch.elexis.dbFlavor=mysql</vmArg1>
