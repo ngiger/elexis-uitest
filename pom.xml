@@ -22,7 +22,7 @@
     <useBranch>master</useBranch>
     <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
-    <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</autExplicit>
+    <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/Elexis3-[classifier].zip</autExplicit>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->

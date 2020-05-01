@@ -23,54 +23,8 @@
     <suite2run>SmokeTestSuite</suite2run>
   </properties>
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.rcptt</groupId>
-        <artifactId>rcptt-maven-plugin</artifactId>
-        <version>${rcptt-maven-version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <projects>
-              <project>${project.basedir}/../KernFunktionen</project>
-          </projects>
-          <!-- injections are by default specified in the main pom.xml -->
-          <aut>
-            <!-- Use URL like this for the AUT
-            ${project.basedir}/my_aut/ch.elexis.core.application.ElexisApp-[classifier].zip
-            https://download.elexis.info/elexis/master/products/ch.elexis.core.application.ElexisApp-[classifier].zip
-            automatically replaced according to the current platform -->
-            <explicit> https://download.elexis.info/elexis/${useBranch}/products/ch.elexis.core.application.ElexisApp-[classifier].zip</explicit>
-            <args>
-              <arg>-nl</arg>
-              <arg>${language}_CH</arg>
-              <arg>-nosplash</arg>
-              <arg>-noregtool</arg>
-              <arg>--use-config=rpctt_h2</arg>
-           </args>
-            <vmArgs>
-              <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
-              <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
-              <vmArg>-Dlanguage=${language}</vmArg>
-              <vmArg>-Duser.language=${language}</vmArg>
-              <vmArg>${vmArg1}</vmArg>
-              <!-- Somehow we cannot pass the AUTO_SERVER=TRUE option to the h2, as I do not know howto bypass the quoting -->
-              <vmArg>-Dch.elexis.dbSpec=jdbc:h2:${env.HOME}/elexis/h2_elexis_rcptt/db</vmArg>
-              <vmArg>${vmArg3}</vmArg>
-              <vmArg>${vmArg4}</vmArg>
-              <vmArg>${vmArg5}</vmArg>
-              <vmArg>${vmArg6}</vmArg>
-              <vmArg>${vmArg7}</vmArg>
-              <vmArg>${vmArg8}</vmArg>
-              <vmArg>${vmArg9}</vmArg>
-              <vmArg>${vmArg10}</vmArg>
-            </vmArgs>
-          </aut>
-                 <suites>
-                       <suite>${suite2run}</suite>
-                 </suites>
-        </configuration>
-      </plugin>
-      <plugin>
+      <plugins>
+       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.8</version>
         <executions>
