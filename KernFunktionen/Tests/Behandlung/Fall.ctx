@@ -5,8 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.4.3.201909171500
-Save-Time: 11/15/19 12:00 PM
+Save-Time: 5/2/20 5:08 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -118,19 +117,30 @@ proc AktuellenFallVerrechnen [ val abortOnError true ] {
 		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items"| log
 		get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
 		try {
-			get-window [ t error ] | get-label -index 1 |  get-property caption -raw | log
+			get-window [ t invoice_error ] | get-label -index 1 |  get-property caption -raw | log
 			log "AktuellenFallVerrechnen: Failed. See message above" -severity error
+			get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung-" $nrItemsBefore "-failed.png"]
 			global [val AktuellenFallVerrechnenHadError true] -override
-			close-window-if-open [ t error ]
+			close-window-if-open [ t invoice_error ]
+			close-window-if-open [ t invoice_error ]
+			close-window-if-open [ t invoice_error ]
 		} -catch { log "AktuellenFallVerrechnen: No Error WIndow"}
 		if [ and $abortOnError $AktuellenFallVerrechnenHadError ] {
+			concat "AktuellenFallVerrechnen failed and abortOnError" $abortOnError " AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
 			bool false | assert-true -message "AktuellenFallVerrechnen: Failed and aborting"
 		} -else {
-			log "AktuellenFallVerrechnen was okay"
-			let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
-				concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items"| log
-				$nrItemsBefore | plus 1 | equals $nrItemsAfter | assert-true -message
-					[ concat "AktuellenFallVerrechnen: After invoicing expected "  [$nrItemsBefore | plus 1 ] " items but found " $nrItemsAfter]
+			if [ not $AktuellenFallVerrechnenHadError ] {
+				concat "AktuellenFallVerrechnen was considered okay abortOnError" $abortOnError " AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
+				// Clean up errors
+				get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung-" $nrItemsBefore "-considered-okay.png"]
+				close-window-if-open [ t Fehler_bei_Mandant_Definition ]
+				close-window-if-open [ t Fehler_beim_Drucken ]
+				close-window-if-open [ t Fehler_beim_Drucken ]
+				let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
+					concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items"| log
+					$nrItemsBefore | plus 1 | equals $nrItemsAfter | assert-true -message
+						[ concat "AktuellenFallVerrechnen: After invoicing expected "  [$nrItemsBefore | plus 1 ] " items but found " $nrItemsAfter]
+				}
 			}
 		}
 	}
