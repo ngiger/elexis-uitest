@@ -64,6 +64,9 @@
                     </includes>
                   </fileset>
                   <fileset>
+                      <directory>${env.HOME}/.java/.userPrefs/ch/elexis</directory>
+                  </fileset>
+                  <fileset>
                       <directory>${env.HOME}/elexis/extern</directory>
                   </fileset>
                   <fileset>
