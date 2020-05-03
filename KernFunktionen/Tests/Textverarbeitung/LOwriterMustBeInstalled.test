@@ -18,6 +18,10 @@ if [ get-by-os  -win false -macosx false -linux true ] {
 		concat "libreoffice version returned " [ $result | get  exitCode ] " out " 
 			[ $result | get  stdout ] | log
 		$result | get  exitCode | equals 0 | assert-true
+		let [ val result [ exec-process -command "which" --args "libreoffice"  ] ] {
+			global [val lowriter [ $result | get  stdout ]  ] -override
+			concat "lowriter is now set to: " $lowriter| log
+		}
 	}
 	log "libreoffice ist installed (LINUX)"
 }

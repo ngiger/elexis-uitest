@@ -44,13 +44,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 		get-tree | select "Hilotec-OpenDocument"
 		if [ get-by-os  -win true -macosx false -linux true ] {
 			global [val lowriter "C:\\Program Files\\LibreOffice\\program\\swriter" ] -override
-		}
-		if [ get-by-os  -win false -macosx true -linux false ] {
-			global [val lowriter "swriter"  ] -override
-		}
-		if [ get-by-os  -win false -macosx false -linux true ] {
-			global [val lowriter "/usr/bin/lowriter" ] -override
-		}
+		} // else lowriter variable set mby LOWriterMustBeInstalled
 		with [get-editbox -after [get-label "OpenDocument Editor"]] {
 			set-text $lowriter
 		}
