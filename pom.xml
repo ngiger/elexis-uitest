@@ -16,12 +16,16 @@
     <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
     <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
     <rcptt-maven-version>2.5.1</rcptt-maven-version>
-    <rcptt-resources>${env.HOME}/elexis/rcptt</rcptt-resources>
+    <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
     <useBranch>master</useBranch>
     <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
+    <maven.test.failure.ignore>true</maven.test.failure.ignore>
+    <!--
+    <autExplicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/Elexis3-linux.gtk.x86_64.zip</autExplicit>
+    -->
     <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/Elexis3-[classifier].zip</autExplicit>
   </properties>
 
@@ -55,7 +59,7 @@
                       </includes>
                   </fileset>
                   <fileset>
-                    <directory>${env.HOME}/elexis</directory>
+                    <directory>${user.home}/elexis</directory>
                    <includes>
                       <include>elexislock.*</include>
                       <include>localCfg*rcptt*xml</include>
@@ -64,19 +68,19 @@
                     </includes>
                   </fileset>
                   <fileset>
-                      <directory>${env.HOME}/.java/.userPrefs/ch/elexis</directory>
+                      <directory>${user.home}/.java/.userPrefs/ch/elexis</directory>
                   </fileset>
                   <fileset>
-                      <directory>${env.HOME}/elexis/extern</directory>
+                      <directory>${user.home}/elexis/extern</directory>
                   </fileset>
                   <fileset>
-                      <directory>${env.HOME}/elexis/logs</directory>
+                      <directory>${user.home}/elexis/logs</directory>
                   </fileset>
                   <fileset>
-                      <directory>${env.HOME}/elexis/rcptt</directory>
+                      <directory>${user.home}/elexis/rcptt</directory>
                   </fileset>
                   <fileset>
-                    <directory>${env.HOME}/elexis/demoDB</directory>
+                    <directory>${user.home}/elexis/demoDB</directory>
                   </fileset>
                   <fileset>
                     <directory>${rcptt-resources}</directory>
@@ -102,8 +106,8 @@
               <copy file="${myBaseDir}/data/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
               <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
-              <!-- Just to ensure that "${env.HOME}/elexis/extern getŝ created -->
-              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${env.HOME}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
+              <!-- Just to ensure that "${user.home}/elexis/extern getŝ created -->
+              <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
           </target>
           </configuration>
           <goals>
@@ -350,6 +354,29 @@
                  <suites>
                        <suite>${suite2run}</suite>
                  </suites>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
+          <execution>
+            <id>cp-elexis-logs-to-${project.basedir}/target/results</id>
+            <phase>install</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>cp</executable>
+          <outputFile>${project.basedir}/output.log</outputFile>
+         <arguments>
+            <argument>-rpv</argument>
+            <argument>${user.home}/elexis/logs/</argument>
+            <argument>${project.basedir}/target/results/</argument>
+          </arguments>
         </configuration>
       </plugin>
     </plugins>

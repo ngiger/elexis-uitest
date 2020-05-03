@@ -11,6 +11,8 @@
   </parent>
   <properties>
     <myBaseDir>${project.basedir}/..</myBaseDir>
+    <!-- missing AUTO_SERVER=TRUE" -->
+    <vmArg2>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db</vmArg2>
     <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
     <vmArg3>-Dch.elexis.dbUser=sa</vmArg3>
     <vmArg4>-Dch.elexis.dbPw=</vmArg4>
@@ -29,7 +31,7 @@
         <version>1.8</version>
         <executions>
           <execution>
-              <id>dump-database-elexis-rcptt</id>
+              <id>dump-${user.home}/elexis/h2_elexis_rcptt/db</id>
               <phase>install</phase>
               <configuration>
                 <target>
@@ -38,7 +40,7 @@
                     <arg value="${project.build.directory}/aut/plugins/org.h2_1.3.170.jar"/>
                     <arg value="org.h2.tools.Script"/>
                     <arg value="-url"/>
-                    <arg value="jdbc:h2:${env.HOME}/elexis/h2_elexis_rcptt/db"/>
+                    <arg value="jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db"/>
                     <arg value="-user"/>
                     <arg value="sa"/>
                     <arg value="-script"/>

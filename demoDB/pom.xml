@@ -111,7 +111,7 @@
           </execution>
         </executions>
         <configuration>
-          <exec executable="java" failonerror="true">
+          <executable="java" failonerror="true">
           <arguments>
             <argument>-classpath</argument>
             <argument>${rcptt-resources}/h2-1.4.197.jar</argument>

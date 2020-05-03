@@ -88,30 +88,37 @@
                 <goal>run</goal>
               </goals>
             </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <executions>
           <execution>
-              <id>dump-database elexis_rcptt_${language}</id>
-              <phase>install</phase>
-              <configuration>
-                <target>
-                  <!-- /usr/bin/pg_dump - -host=localhost - -user=elexis - -encoding=UTF-8 - -clean  - -dbname elexis_rcptt - -create >pg_dump_de.sql -->
-                  <exec executable="/usr/bin/env" output="./target/results/pg_dump_${language}.sql" failonerror="true" >
-                    <env key="PGPASSWORD" value="elexisTest"/>
-                    <arg value="psql"/>
-                    <arg value="--host=localhost"/>
-                    <arg value="--user=elexis"/>
-                    <arg value="--encoding=UTF-8"/>
-                    <arg value="--clean"/>
-                    <arg value="--dbname=elexis_rcptt_${language}"/>
-                    <arg value="--create"/>
-                  </exec>
-                </target>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+              <id>pg_dump-database elexis_rcptt_${language}</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>pg_dump</executable>
+          <environmentVariables>
+            <PGPASSWORD>elexisTest</PGPASSWORD>
+          </environmentVariables>
+          <outputFile>${project.basedir}/target/results/pg_dump_${language}.sql</outputFile>
+          <arguments>
+            <argument>--host=localhost</argument>
+            <argument>--user=elexis</argument>
+            <argument>--encoding=UTF-8</argument>
+            <argument>--clea</argument>
+            <argument>--dbname=elexis_rcptt_${language}</argument>
+            <argument>--create</argument>
+          </arguments>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
