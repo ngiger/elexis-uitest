@@ -5,7 +5,7 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Save-Time: 4/20/20, 3:00 PM
+Save-Time: 5/3/20 12:15 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -112,6 +112,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			with [get-window [ t Postkonto ]] {
 				get-editbox -after [get-label TarmedESRParticipantNumber] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ]
 						get-window [ t Postkonto ] | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_pc.png"]
+				get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_PC_detail.png"]
 				get-button OK | click
 			}
 		} -else {
@@ -131,6 +132,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 					EnterOneFinanzDetail TarmedESRIdentity
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 		}
+		get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
 		get-button OK | click
 	}
 	// TODO: Why is the work-around necessary in RCPTT???

@@ -5,8 +5,7 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 11/5/19 4:10 PM
+Save-Time: 5/4/20 12:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -124,22 +123,24 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
 	[ val invoiceId 1 ]
 	[ val status [ t alle_rechnungs_stati ] ]
-	[ val druckTyp [ t Tarmed_XML_Datei ] ] {
+	[ val druckTyp [ t Als_Tarmed_Rechnung_ausdrucken ] ] {
 	global [val RechnungAusgebenError "0" ] -override
 	let [ val logName [ concat "_invoice_" $invoiceId ] ]
-		[val nrItemsBefore [ GetNrOfInvoices -status [ t alle_rechnungs_stati ] ] ] {
+		[val nrItemsBefore [ GetNrOfInvoices -status [ t Offen_und_gedruckt ] ] ] {
 		get-eclipse-window | key-type "M1+m" // Maximize
 		RechnungSelektieren $invoiceId
 		get-view $invoiceListViewName | get-table | get-item -path $invoiceId | get-menu -path [ t Rechnung_ausgeben ] | click
 		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_start.png"]
 		RechnungsAusgabeDefinieren $druckTyp
 		try {
-			with [ get-window [ t Fehler_beim_Drucken ] ] {
+			with [ get-window [ t invoice_error ] ] {
 				get-property title -raw | log
 				gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_Fehler.png"]
 				global [val RechnungAusgebenError "1" ] -override
 				// bool false | assert-true -message [concat "RechnungAusgeben Fehler beim Drucken von " $logName ]
 				get-button "OK" | click
+				close-window-if-open [ t invoice_error ]
+				close-window-if-open [ t invoice_error ]
 			}
 			log "RechnungAusgebe: Fehler beim Drucken umgangen"
 		} -error [val errorObj] -catch {
@@ -152,16 +153,12 @@ proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
 				}
 			}
 		}
+		get-window [ t Drucken_beendet ]| assert-non-empty
+		get-window [ t Drucken_beendet ]| gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_" $invoiceStatus ".png"]
+		get-window [ t Drucken_beendet ]| close
 		RechnungSelektieren $invoiceId
 
 		get-eclipse-window | gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_liste.png"]
-/*
-		let [val nrItemsAfter [ GetNrOfInvoices -status [ t alle_rechnungs_stati ] ] ] {
-			concat "RechnungAusgeben: " $nrItemsAfter " after have " $nrItemsAfter " items"| log
-			$nrItemsAfter | lt $nrItemsBefore | assert-true -message
-				[ concat "RechnungAusgeben: After invoicing expected " $nrItemsAfter " items lower than but found " $nrItemsBefore]
-		}
-*/
 		if [ and [ $druckTyp | matches [ t Tarmed_XML_Datei ] ] [ $invoiceStatus | matches ".*PRINTED.*" ] ] {
 			let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
 				concat "RechnungAusgeben " $xmlFile " exists " [ get-file $xmlFile |  get exists]| log
@@ -171,6 +168,11 @@ proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
 		if [ $RechnungAusgebenError | eq "1" ] {
 			bool false | assert-true -message [ concat "RechnungAusgebe: Fehler beim Drucken der Rechnung " $invoiceId  ". Wahrscheinlich kein PDF erstellt"]
 		}
+		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen_und_gedruckt ] ] ] {
+			concat "RechnungAusgeben: " $nrItemsAfter " after have " $nrItemsAfter " items Offen_und_gedruckt"| log
+			$nrItemsBefore | lt $nrItemsAfter | assert-true -message
+				[ concat "RechnungAusgeben: After invoicing expected Offen_und_gedruckt " $nrItemsBefore " items lower than but found " $nrItemsAfter]
+		}
 		concat "RechnungAusgeben finished: " $invoiceListViewName " log " $logName | log
 	}
 }
@@ -178,7 +180,8 @@ proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
 proc "CheckTarmedXml"  [ val invoiceId ] [ val searchFor ] {
 	let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
 		let [ val result [ FileContainsString $xmlFile -searchFor $searchFor ] ] {
-			let [ val infoMsg [ concat "CheckTarmedXml " $invoiceId " looking for '" $searchFor "' returned " $result ] ] {
+			let [ val infoMsg [ concat "CheckTarmedXml: " $invoiceId " in " infoMsg " looking for '" $searchFor "' returned " $result ] ] {
+				log $infoMsg
 				$result | assert-true -message $infoMsg
 			}
 		}

@@ -5,14 +5,30 @@ Element-Name: Hilotec_ODF
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/20/19 12:59 PM
+Save-Time: 5/4/20 9:05 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 global [val hilotecOdfOutDir $pdfDir ] -override
+
+proc EnsureLibreOffficIsInstalled {
+	log "EnsureLibreOffficIsInstalled: Check whether libreoffice ist installed"
+	if [ get-by-os  -win false -macosx false -linux true ] {
+		let [ val result [ exec-process -command "libreoffice" --args "--version"  ] ] {
+			concat "EnsureLibreOffficIsInstalled: libreoffice version returned " [ $result | get  exitCode ] " out " 
+				[ $result | get  stdout ] | log
+			concat "EnsureLibreOffficIsInstalled: libreoffice version returned " [ $result | get  exitCode ] " out " 
+			$result | get  exitCode | equals 0 | assert-true
+			let [ val result [ exec-process -command "which" --args "libreoffice"  ] ] {
+				global [val lowriter [ invoke-static "org.apache.commons.lang3" "org.apache.commons.lang3.StringUtils" "chop" [ $result | get  stdout ] ]  ] -override
+				concat "EnsureLibreOffficIsInstalled: lowriter is now set to: " $lowriter ": done"| log
+			}
+		}
+		log "EnsureLibreOffficIsInstalled: libreoffice ist installed (LINUX)"
+	}
+}
 
 proc CloseLibreOffice {
 	if [ get-by-os  -win false -macosx false -linux true ] {
@@ -25,6 +41,7 @@ proc CloseLibreOffice {
 CloseLibreOffice // Ensure that we have no LibreOffice process open when running our tests
 
 proc ConfigureHilotecODF_TextVerarbeitung {
+	EnsureLibreOffficIsInstalled
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
 		get-tree | select [ t Textverarbeitung ]
@@ -42,7 +59,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    }
 	    get-button ".*Hilotec-OpenDocument" | click
 		get-tree | select "Hilotec-OpenDocument"
-		if [ get-by-os  -win true -macosx false -linux true ] {
+		if [ get-by-os  -win true -macosx false -linux false ] {
 			global [val lowriter "C:\\Program Files\\LibreOffice\\program\\swriter" ] -override
 		} // else lowriter variable set mby LOWriterMustBeInstalled
 		with [get-editbox -after [get-label "OpenDocument Editor"]] {

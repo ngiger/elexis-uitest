@@ -1,29 +1,18 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
+Contexts: _LkBSkBsDEembU9g-6bJhVg
 Element-Name: LOwriterMustBeInstalled
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gg2CoCopEem_RqgHWcTlRA
-Save-Time: 4/29/20 9:01 PM
+Save-Time: 5/4/20 8:42 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-log "Check whether libreoffice ist installed"
-if [ get-by-os  -win false -macosx false -linux true ] {
-	let [ val result [ exec-process -command "libreoffice" --args "--version"  ] ] {
-		concat "libreoffice version returned " [ $result | get  exitCode ] " out " 
-			[ $result | get  stdout ] | log
-		$result | get  exitCode | equals 0 | assert-true
-		let [ val result [ exec-process -command "which" --args "libreoffice"  ] ] {
-			global [val lowriter [ $result | get  stdout ]  ] -override
-			concat "lowriter is now set to: " $lowriter| log
-		}
-	}
-	log "libreoffice ist installed (LINUX)"
-}
+EnsureLibreOffficIsInstalled
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
