@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 5/2/20 5:08 PM
+Save-Time: 5/4/20 4:21 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -112,9 +112,9 @@ proc AktuellenFallSchliessen [ val endDate "" ] {
 }
 proc AktuellenFallVerrechnen [ val abortOnError true ] {
 	global [val AktuellenFallVerrechnenHadError false] -override
-
 	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
 		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items"| log
+		get-eclipse-window | gen-screenshot [concat $imagesDir "AktuellenFallVerrechnen" $nrItemsBefore ".png"]			
 		get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
 		try {
 			get-window [ t invoice_error ] | get-label -index 1 |  get-property caption -raw | log
@@ -188,6 +188,7 @@ proc "FallSetCostBearer" [ val name "AEROSANA" ] [ val fall ".*" ] {
 	        set-text $name
 	    }
 	    get-table | select [ concat ".*" $name ".*" ]
+	    get-window [t select_contact ] | gen-screenshot [concat $imagesDir "Fall_" $fall "_costBearer_" $name ".png"]
 	    get-button OK | click
 	}
 }

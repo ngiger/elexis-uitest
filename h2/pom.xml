@@ -16,10 +16,10 @@
     <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
     <vmArg3>-Dch.elexis.dbUser=sa</vmArg3>
     <vmArg4>-Dch.elexis.dbPw=</vmArg4>
-    <vmArg5>-Dch.elexis.firstMandantName=mustermann</vmArg5>
+    <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
     <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
     <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
-    <vmArg8>-Dch.elexis.username=mustermann</vmArg8>
+    <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
     <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
     <vmArg10>-DvmArg10</vmArg10>
     <suite2run>SmokeTestSuite</suite2run>

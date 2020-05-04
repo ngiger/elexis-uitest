@@ -5,7 +5,7 @@ Element-Name: Hilotec_ODF
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 5/4/20 9:05 AM
+Save-Time: 5/4/20 3:39 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -28,6 +28,8 @@ proc EnsureLibreOffficIsInstalled {
 		}
 		log "EnsureLibreOffficIsInstalled: libreoffice ist installed (LINUX)"
 	}
+    create-entire-screenshot [concat $imagesDir "EnsureLibreOffficIsInstalled.png"]
+
 }
 
 proc CloseLibreOffice {

@@ -87,7 +87,7 @@ Zum Umgegehen des Ersten Mandator dialogs
 
     -Duser.language=de -Duser.region=CH
     -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec=jdbc:h2:~/elexis/first;AUTO_SERVER=TRUE -Dch.elexis.dbUser=sa -Dch.elexis.dbPw= 
-    -Dch.elexis.firstMandantName=mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=mustermann -Dch.elexis.password=elexisTest
+    -Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest
 
 ## Test aufnehmen
 
