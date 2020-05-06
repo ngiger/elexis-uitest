@@ -63,6 +63,7 @@
                    <includes>
                       <include>elexislock.*</include>
                       <include>localCfg*rcptt*xml</include>
+                      <include>localCfg_default.xml</include>
                       <include>h2_elexis_rcptt*</include>
                       <include>h2_elexis_rcptt/*</include>
                     </includes>
