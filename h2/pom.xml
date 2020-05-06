@@ -12,8 +12,8 @@
   <properties>
     <myBaseDir>${project.basedir}/..</myBaseDir>
     <!-- missing AUTO_SERVER=TRUE" -->
-    <vmArg2>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db</vmArg2>
     <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
+    <vmArg2>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt/db</vmArg2>
     <vmArg3>-Dch.elexis.dbUser=sa</vmArg3>
     <vmArg4>-Dch.elexis.dbPw=</vmArg4>
     <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
@@ -32,7 +32,7 @@
         <executions>
           <execution>
               <id>dump-${user.home}/elexis/h2_elexis_rcptt/db</id>
-              <phase>install</phase>
+              <phase>verify</phase>
               <configuration>
                 <target>
                   <exec executable="java" failonerror="true">
@@ -45,6 +45,22 @@
                     <arg value="sa"/>
                     <arg value="-script"/>
                     <arg value="${project.build.directory}/results/h2_elexis_rcptt_${language}.sql"/>
+                  </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>copy-${user.home}/elexis/h2_elexis_rcptt</id>
+              <phase>install</phase>
+              <configuration>
+                <target>
+                  <exec executable="cp" failonerror="true">
+                    <arg value="-rpv"/>
+                    <arg value="${user.home}/elexis/h2_elexis_rcptt"/>
+                    <arg value="${project.build.directory}/results/"/>
                   </exec>
                 </target>
               </configuration>
