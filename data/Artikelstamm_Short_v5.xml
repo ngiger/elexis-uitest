@@ -4,6 +4,22 @@
 <ARTIKELSTAMM xmlns="http://elexis.ch/Elexis_Artikelstamm_v5" CREATION_DATETIME="2018-11-12T09:47:58.534+01:00" BUILD_DATETIME="2018-11-12T09:47:58.534+01:00" DATA_SOURCE="oddb2xml">
     <PRODUCTS>
         <PRODUCT>
+            <PRODNO>5788503</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Co-Losartan Sandoz Filmtabl 100/12.5mg (neu)</DSCR>
+            <DSCRF>Co-Losartan Sandoz cpr pell 100/12.5mg (nouv)</DSCRF>
+            <ATC>C09DA01</ATC>
+            <SUBSTANCE>Verschiedene Kombinationen</SUBSTANCE>
+        </PRODUCT>
+        <PRODUCT>
+            <PRODNO>5829305</PRODNO>
+            <SALECD>A</SALECD>
+            <DSCR>Losartan Sandoz Filmtabl 100 mg</DSCR>
+            <DSCRF>Losartan Sandoz cpr pell 100 mg</DSCRF>
+            <ATC>C09CA01</ATC>
+            <SUBSTANCE>Losartanum kalicum</SUBSTANCE>
+        </PRODUCT>
+        <PRODUCT>
             <PRODNO>6291101</PRODNO>
             <SALECD>A</SALECD>
             <DSCR>Aspirin S, überzogene Tabletten</DSCR>
@@ -25,28 +41,6 @@
             <DSCRF>Metoprolol Helvepharm</DSCRF>
             <ATC>C07AB02</ATC>
             <SUBSTANCE>Metoprololi tartras (2:1)</SUBSTANCE>
-        </PRODUCT>
-        <PRODUCT>
-            <PRODNO>5829301</PRODNO>
-            <SALECD>A</SALECD>
-            <DSCR>Losartan Sandoz 12.5 mg, Filmtabletten</DSCR>
-            <DSCRF>Losartan Sandoz 12.5 mg, Filmtabletten</DSCRF>
-            <ATC>C09CA01</ATC>
-        </PRODUCT>
-        <PRODUCT>
-            <PRODNO>5829302</PRODNO>
-            <SALECD>A</SALECD>
-            <DSCR>Losartan Sandoz 25 mg, Filmtabletten</DSCR>
-            <DSCRF/>
-            <ATC>C09CA01</ATC>
-        </PRODUCT>
-        <PRODUCT>
-            <PRODNO>5829303</PRODNO>
-            <SALECD>A</SALECD>
-            <DSCR>Losartan Sandoz</DSCR>
-            <DSCRF>Losartan Sandoz</DSCRF>
-            <ATC>C09CA01</ATC>
-            <SUBSTANCE>Losartanum kalicum</SUBSTANCE>
         </PRODUCT>
         <PRODUCT>
             <PRODNO>5863601</PRODNO>
@@ -169,6 +163,52 @@ Les patients atteints de TRAPS, HIDS/MKD et FMF doivent être répertoriés dans
       </LIMITATIONS>
       <ITEMS>
         <ITEM PHARMATYPE="P">
+            <GTIN>7680582930181</GTIN>
+            <PHAR>4290733</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Losartan Sandoz Filmtabl 100 mg 98 Stk</DSCR>
+            <DSCRF>Losartan Sandoz cpr pell 100 mg 98 pce</DSCRF>
+            <COMP>
+                <NAME>Sandoz Pharmaceuticals AG</NAME>
+                <GLN>7601001029439</GLN>
+            </COMP>
+            <PEXF>41</PEXF>
+            <PPUB>63.45</PPUB>
+            <PKG_SIZE>98</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>B</IKSCAT>
+            <GENERIC_TYPE>G</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5829305</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
+            <GTIN>7680578850073</GTIN>
+            <PHAR>6443023</PHAR>
+            <SALECD>A</SALECD>
+            <DSCR>Co-Losartan Sandoz Filmtabl 100/12.5mg (neu) 28 Stk</DSCR>
+            <DSCRF>Co-Losartan Sandoz cpr pell 100/12.5mg (nouv) 28 pce</DSCRF>
+            <COMP>
+                <NAME>Sandoz Pharmaceuticals AG</NAME>
+                <GLN>7601001029439</GLN>
+            </COMP>
+            <PEXF>15.32</PEXF>
+            <PPUB>34</PPUB>
+            <PKG_SIZE>28</PKG_SIZE>
+            <MEASURE>Tablette(n)</MEASURE>
+            <MEASUREF>Tablette(n)</MEASUREF>
+            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
+            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
+            <SL_ENTRY>true</SL_ENTRY>
+            <IKSCAT>B</IKSCAT>
+            <GENERIC_TYPE>G</GENERIC_TYPE>
+            <DEDUCTIBLE>10</DEDUCTIBLE>
+            <PRODNO>5788503</PRODNO>
+        </ITEM>
+        <ITEM PHARMATYPE="P">
             <GTIN>7680629110019</GTIN>
             <PHAR>6132151</PHAR>
             <SALECD>A</SALECD>
@@ -234,58 +274,6 @@ Les patients atteints de TRAPS, HIDS/MKD et FMF doivent être répertoriés dans
             <PRODNO>3905302</PRODNO>
         </ITEM>
         <ITEM PHARMATYPE="P">
-            <GTIN>7680582930020</GTIN>
-            <PHAR>4290578</PHAR>
-            <SALECD>A</SALECD>
-            <DSCR>LOSARTAN Sandoz Filmtabl 12.5 mg 7 Stk</DSCR>
-            <DSCRF>LOSARTAN Sandoz cpr pell 12.5 mg 7 pce</DSCRF>
-            <COMP>
-                <NAME>Sandoz Pharmaceuticals AG</NAME>
-                <GLN>7601001029439</GLN>
-            </COMP>
-            <PKG_SIZE>7</PKG_SIZE>
-            <MEASURE>Tablette(n)</MEASURE>
-            <MEASUREF>Tablette(n)</MEASUREF>
-            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
-            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
-            <IKSCAT>B</IKSCAT>
-            <PRODNO>5829301</PRODNO>
-        </ITEM>
-        <ITEM PHARMATYPE="P">
-            <GTIN>7680582930044</GTIN>
-            <SALECD>A</SALECD>
-            <DSCR>Losartan Sandoz 25 mg, Filmtabletten</DSCR>
-            <DSCRF>--missing--</DSCRF>
-            <COMP>
-                <NAME>Sandoz Pharmaceuticals AG</NAME>
-                <GLN/>
-            </COMP>
-            <PKG_SIZE>28</PKG_SIZE>
-            <MEASURE>Tablette(n)</MEASURE>
-            <MEASUREF>Tablette(n)</MEASUREF>
-            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
-            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
-            <IKSCAT>B</IKSCAT>
-            <PRODNO>5829302</PRODNO>
-        </ITEM>
-        <ITEM PHARMATYPE="P">
-            <GTIN>7680582930068</GTIN>
-            <SALECD>A</SALECD>
-            <DSCR>Losartan Sandoz 25 mg, Filmtabletten</DSCR>
-            <DSCRF>--missing--</DSCRF>
-            <COMP>
-                <NAME>Sandoz Pharmaceuticals AG</NAME>
-                <GLN/>
-            </COMP>
-            <PKG_SIZE>98</PKG_SIZE>
-            <MEASURE>Tablette(n)</MEASURE>
-            <MEASUREF>Tablette(n)</MEASUREF>
-            <DOSAGE_FORM>Filmtabletten</DOSAGE_FORM>
-            <DOSAGE_FORMF>Comprimés filmés</DOSAGE_FORMF>
-            <IKSCAT>B</IKSCAT>
-            <PRODNO>5829302</PRODNO>
-        </ITEM>
-                <ITEM PHARMATYPE="P">
             <GTIN>7680586360069</GTIN>
             <PHAR>5829571</PHAR>
             <SALECD>A</SALECD>

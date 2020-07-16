@@ -5,11 +5,13 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 5/4/20 4:20 PM
+Save-Time: 7/16/20 9:33 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+global [ val Losartan "Losartan Sandoz Filmtabl 100 mg 98 Stk <63.45> " ] -override
 
 proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 	if [ HasKonsSelected | eq false] {
@@ -176,7 +178,7 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expected
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
 			LeistungenExecuteSearch
-			get-group  [ t alle_leistungen ] | get-table | select $item_long | double-click
+			get-group  [ t alle_leistungen ] | get-table | select $item_long | click -default
 			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter_" $item_short ".png"]
 			key-type Enter
 		}
@@ -514,7 +516,7 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 				} } -catch { log -message "No diagnosis to remove"}
 			}
 			kons-add-tarmed [ concat $tarmed ]
-			kons-add-artikelstamm -item_short Losartan -item_long "LOSARTAN.*7 Stk.*"
+			kons-add-artikelstamm -item_short Losartan -item_long $Losartan
 			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 			kons-add-block  -blockName $blockName -expectedItemsAdded $blockNr -info [ concat  $firstName " " $familyName ]
 			FallSetVersicherungsNummer -fall $caseName

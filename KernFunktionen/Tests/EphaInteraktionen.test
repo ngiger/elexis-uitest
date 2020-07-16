@@ -6,8 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _tFxLkBNbEemKBfY3bI9wrQ
-Runtime-Version: 2.4.3.201909171500
-Save-Time: 11/14/19 9:55 AM
+Save-Time: 7/16/20 9:26 AM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -103,7 +102,7 @@ proc "CheckEphaInKons" {
 	get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
 		gen-screenshot [concat $imagesDir "EphaInteractions/no_interaction.png"]
 
-	kons-add-artikelstamm LOSARTAN "LOSARTAN.*12.5.*"
+	kons-add-artikelstamm LOSARTAN $Losartan
 	EnsurePatientChanged // Is needed if it is the first time we downloaded the interaction. TODO: FIX IT!
 	VerifyInteractionStatus [ t interaction_no_relevant ]
 	get-view [ t kons_view ] | get-control Any -after [get-label [ t btn_diagnosis ]] -index 8 |
@@ -141,9 +140,9 @@ proc "CheckEphaInMediListe" {
 get-view Medikationsliste | get-button "Medikation hinzufügen" | click
 with [get-view Leistungen | get-group Alle] {
     get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-text LOSART
-    get-table | select "LOSARTAN Sandoz Filmtabl 12.5 mg 7 Stk" | select "LOSARTAN Sandoz Filmtabl 12.5 mg 7 Stk"
-        | select "LOSARTAN Sandoz Filmtabl 12.5 mg 7 Stk" | select "LOSARTAN Sandoz Filmtabl 12.5 mg 7 Stk"
-        | select "LOSARTAN Sandoz Filmtabl 12.5 mg 7 Stk" | double-click
+    get-table | select $Losartan | select $Losartan
+        | select $Losartan | select $Losartan
+        | select $Losartan | double-click
 }
 with [get-window -class PrescriptionSignatureTitleAreaDialog] {
     get-button "Als standard Signatur hinterlegen." | check
