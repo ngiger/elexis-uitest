@@ -14,7 +14,7 @@
     -->
     <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
     <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
-    <!--rcptt-maven-version>2.3.0</rcptt-maven-version-->
+    <!--rcptt-maven-version>2.5.2-SNAPSHOT</rcptt-maven-version-->
     <rcptt-maven-version>2.5.1</rcptt-maven-version>
     <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
     <suite2run>SmokeTestSuite</suite2run>
@@ -24,9 +24,11 @@
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
     <!--
-    <autExplicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/Elexis3-linux.gtk.x86_64.zip</autExplicit>
+    <autExplicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/Elexis3-[classifier].zip</autExplicit>
+    <autExplicit>/opt/rm/elexis-master/elexis-3-base/ch.elexis.base.p2site/target/products/ElexisAllOpenSourceApp-[classifier].zip</autExplicit>
+    <autExplicit>https://download.elexis.info/elexis/master/products/ElexisAllOpenSourceApp-l[classifier].zip</autExplicit>
     -->
-    <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/Elexis3-[classifier].zip</autExplicit>
+    <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/ElexisAllOpenSourceApp-[classifier].zip</autExplicit>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->
@@ -321,12 +323,6 @@
               <project>${project.basedir}/../KernFunktionen</project>
           </projects>
           <aut>
-            <injections>
-              <!-- Only installl ch.elexis.base.ch to minimize startup time <!-->
-              <injection>
-                <site>https://download.elexis.info/elexis/${useBranch}/p2/elexis-3-base</site>
-              </injection>
-            </injections>
             <explicit>${autExplicit}</explicit>
             <args>
               <arg>-nl</arg>
