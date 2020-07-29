@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 5/4/20 4:21 PM
+Save-Time: 7/29/20 5:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -41,6 +41,7 @@ proc DeleteSelectedCase {
 	get-view [ t view_cases ] | get-table | get-menu -path  [ t btn_delete_case ] | click
 }
 
+// startDate and endDate should be like 01.03.2018 with two digit month and day values
 proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "201.*"] [val endDate "01.08.2018"] {
 	if [FallOffen -caseLaw $caseLaw -startDate $startDate ] {
 		concat  "Offenen Fall " $caseLaw " gefunden für Startatum " $startDate
@@ -48,6 +49,16 @@ proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ va
 		FallZuPatientErstellen -caseLaw $caseLaw -caseReason $caseReason -startDate "20.04.2018"
 	}
 }
+
+proc FallZuPatientExistiert [ val text ".*KVG:.*offen.*" ] {
+	with [ get-view [ t view_cases ] ] {
+		get-table | gen-screenshot [concat $imagesDir "Fall_check_" $text ".png"]
+		get-table | get-item -path $text | get-property caption -raw | matches $text | log
+		get-table | get-item -path $text
+		    | get-property caption -raw | matches $text | assert-true -message [ concat "Case " $text " not found" ]
+	}
+}
+
 proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate ""] [val endDate ""] {
 	open-window-by-name [ t view_cases ]
 	concat FallZuPatientErstellen  $caseLaw " " $caseReason " " $startDate  " " $endDate| log
@@ -75,6 +86,13 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t re
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
 		get-button  [ t ok] | click
 	}
+	with [get-view [ t view_cases ] ] {
+		with [get-button [ t FaelleView_ShowOnlyOpenCase ] ] {
+			click -metaKeys ""
+			click -metaKeys ""
+		}
+	 }
+	FallZuPatientExistiert [concat $caseLaw ".*"  $startDate ".*" [ t fall_offen_part ] ".*" ]
 }
 
 proc SelectFall [val caseLaw] [val startDate] [ val isOpen [ t fall_offen_part ] ] {
@@ -254,7 +272,7 @@ proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa
 		concat "FallZuPatientErstellen " $familyName " " $firstName  " " caseName | log
 	}
 	SelectFall -caseLaw $caseName -startDate $caseStartDate
-	FallOffen -caseLaw $caseName -startDate $caseStartDate | assert-true
+	FallOffen -caseLaw $caseName -startDate $caseStartDate | assert-true -message [ concat "Case " $caseName " " $caseStartDate " must be open" ]
 	if [ HasKonsSelected | eq false] {
 		kons-erstellen [ concat "PatientMitFallUndKonsErstellenOderAuswaehlen "  $familyName " " $firstName " mit " $caseName  " of " $caseStartDate 
 			" kons of " $konsDate " seconds " [ get-seconds ] ]
