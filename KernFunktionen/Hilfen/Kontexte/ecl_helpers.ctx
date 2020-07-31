@@ -5,8 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 11/6/19 10:11 AM
+Save-Time: 7/31/20 12:59 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -185,8 +184,8 @@ GetTestProperty patient.1.familyName | matches Testarossa | assert-true
 
 proc handleResetPerspectiveDialog {
 	try {
-		concat "handleResetPerspectiveDialog via "  [ t reset_perspective ] " and "  [ t btn_reset_perspective ]  | log
-		get-window [ t reset_perspective ] | get-button [ t btn_reset_perspective ]  | click
+		concat "handleResetPerspectiveDialog via "  [ t window_reset_perspective ] " and "  [ t btn_reset_perspective ]  | log
+		get-window [ t window_reset_perspective ] | get-button [ t btn_reset_perspective ]  | click
 		log "handleResetPerspectiveDialog done"
 	} -catch {
 		log "handleResetPerspectiveDialog failed"
@@ -195,11 +194,8 @@ proc handleResetPerspectiveDialog {
 proc resetPerspective {
 // get-button "Perspektive zurücksetzen" | click
 // get-window "Perspektive zurücksetzen" | get-button "Reset Perspective" | click
-	if [ get-button [ t reset_perspective ] | get-property enablement -raw | equals true ] {
-		get-button [ t reset_perspective ] | click
-		if [ get-button [ t reset_perspective ]  | get-property enablement | equals true ] {
-			get-menu -path [ t menu_reset_perspective ] | click
-		}
+	if [ get-button [ t global_btn_reset_perspective ] | get-property enablement -raw | equals true ] {
+		get-button [ t global_btn_reset_perspective ] | click
 		handleResetPerspectiveDialog
 	} -else {
 		log "Button reset_perspective is disabled"
@@ -209,14 +205,13 @@ proc resetPerspective {
 /**
  * Resets to the default perspectives an
  */
+
 proc OpenAndResetStartPerspektive {
 	try {
-		if [ get-button [ t btn_start_perspective ] | get-property enablement -raw | equals true ] {
-			get-button [ t btn_start_perspective ] | click
-			}
+		get-button [ t btn_start_perspective ] | click
 		} -error [val errorObj] -catch {
 			// Seen when running ImportSwissbase with french Elexis
-			concat "Errror " $errorObj "in btn_start_perspective" | log
+			concat "Errror " $errorObj "in btn_start_perspective " [ t btn_start_perspective ]  | log
 			set-dialog-result File "/dummy_ecl_helpers"
 	}
 	handleResetPerspectiveDialog
