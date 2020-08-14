@@ -5,8 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 11/6/19, 6:25 PM
+Save-Time: 8/14/20 1:32 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -39,7 +38,7 @@ proc "HandleMissingInvoiceSystems" {
 		// get-window [ t update_invoice_systems ] | get-button OK | click
 	} -error [val errorObj] -catch {
 			// Seen when running ImportSwissbase with french Elexis
-			// concat "HandleMissingInvoiceSystems window not found " $errorObj | log
+			// concat "HandleMissingInvoiceSystems window not found " [$errorObj | get message] | log
 	}
 }
 
@@ -58,7 +57,7 @@ proc "WaitImportFinished" [ val importerName "ZZZ" ] [ val maxWait 90 ] {
 			}
 		} -error [val errorObj] -catch {
 			concat "WaitImportFinished: " $importerName " Wait for Import erfolgreich done lang: " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i |  log
-			concat "WaitImportFinished: " $importerName " errorObj " $errorObj | log
+			concat "WaitImportFinished: " $importerName " errorObj " [$errorObj | get message] | log
 		}
 	}
 }
@@ -102,7 +101,7 @@ proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xm
 	open-window-by-name [ t daten_artikel ]
 	concat "before ReadArtikelstamm file: " $file | log
 	try { get-view [ t artikel ] }  -error [val errorObj] -catch {
-		concat "Error ReadArtikelstamm view " [ t artikel ] $errorObj | log
+		concat "Error ReadArtikelstamm view " [ t artikel ] [$errorObj | get message] | log
 	}
 	with [get-view [ t artikel ]] {
 		get-tab-folder | get-tab-item Artikelstamm | click
@@ -152,7 +151,7 @@ proc "AssertNoErrorInProgress" {
 			get-link "Fehler beim Import.*"
 			global [val errorInImport "true"] -override
 	} -error [ val errorObj ] -catch {
-			concat  " While checking for Fehler: error " $errorObj | log
+			concat  " While checking for Fehler: error " [$errorObj | get message] | log
 	}
 	if [ $errorInImport | matches "true" ] {
 			$errorInImport | verify-false
@@ -180,7 +179,7 @@ proc "ReadMigel" [ val file [ concat $rcpttDir "/MiGeL2019v1.csv" ] ] {
 		get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel_1.png"]
 	} -error [val errorObj] -catch {
 			// Seen when running ImportSwissbase with french Elexis
-			concat "Errror " $errorObj "in ReadMigel" | log
+			concat "Errror " [$errorObj | get message] "in ReadMigel" | log
 			set-dialog-result File "/dummy_migel"
 	}
 	get-view [ t artikel ] | get-tab-folder | get-tab-item MiGeL | click

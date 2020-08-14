@@ -5,8 +5,7 @@ Element-Name: Preferences
 Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/27/19 12:33 PM
+Save-Time: 8/14/20 2:45 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -29,8 +28,8 @@ proc "close-window-if-open" [val windowName] {
 
 	try {
 		get-window $windowName | close
-	} -catch {
-		log [concat "close-window-if-open: Window " $windowName " not open"]
+	}  -error [val errorObj] -catch {
+		concat "close-window-if-open: Window " $windowName " not open: "  [$errorObj | get message] | log
 	}
 }
 proc "get-first-preference-item" {

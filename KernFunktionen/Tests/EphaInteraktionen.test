@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _tFxLkBNbEemKBfY3bI9wrQ
-Save-Time: 7/29/20 5:04 PM
+Save-Time: 8/14/20 1:31 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -57,7 +57,7 @@ proc "ReadArtikelstammIfNecessary" {
 				| equals "ASPIRIN S Tabl 500 mg 20 Stk <8.7>" | verify-true
 		}
 	} -error [val errorObj] -catch {
-		concat "Must read Artikelstamm: " $errorObj | log
+		concat "Must read Artikelstamm: " [$errorObj | get message] | log
 		SetArtikelstammOrigin2oddb2ml
 		ReadArtikelstamm
 	}

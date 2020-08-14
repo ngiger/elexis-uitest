@@ -6,8 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _c13msBQlEemEb8FG0wciYA
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/27/19, 11:39 AM
+Save-Time: 8/14/20 1:33 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -91,7 +90,7 @@ try {
 	}
 	log "select-tarmed-leistung passed in ImportSwissBase"
 } -error [val errorObj] -catch {
-	concat "select-tarmed-leistung failed in ImportSwissBase. " $errorObj  " But we want to continue anyway" | log
+	concat "select-tarmed-leistung failed in ImportSwissBase. " [$errorObj | get message]  " But we want to continue anyway" | log
     get-eclipse-window | gen-screenshot [concat $imagesDir "TarmedImported-select-tarmed-00.01.01-failed.png"]
 }
 OpenAndResetStartPerspektive

@@ -5,8 +5,7 @@ Element-Name: Interactions
 Element-Type: context
 Element-Version: 2.0
 Id: _-OHP8BOEEemEb8FG0wciYA
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 7/28/19, 9:11 AM
+Save-Time: 8/14/20 3:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -37,17 +36,6 @@ proc VerifyInteractionLink {
 	  }
 	}
 	$foundEphaUrl  | verify-true
-	}
-}
-
-proc AllVerrechnungenEntfernen { $resultsDir
-	with [get-view [ t kons_view ] | get-table -after [ get-label [ t btn_accounting ] ] ] {
-		try {
-			select 1 | get-menu -path [ t path_remove_all  ] | click
-			log "AllVerrechnungenEntfernen. Done"
-		} -catch {
-			log "AllVerrechnungenEntfernen Nix zu tun!"
-		}
 	}
 }
 

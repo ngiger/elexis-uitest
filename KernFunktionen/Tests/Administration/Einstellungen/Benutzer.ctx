@@ -5,7 +5,7 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Save-Time: 8/7/20 4:14 PM
+Save-Time: 8/14/20 1:35 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -205,7 +205,7 @@ proc "create-user" [ val idMandant 1 ]
 		concat "Benutzer, " $userName " already exists" | log
 		get-window [ t preferences ] | get-button [ t cancel ] | click
 	} -error  [val errorObj]  -catch {
-		// concat "EError was: " $errorObj | log
+		// concat "EError was: " [$errorObj | get message] | log
 		concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password " $plainPW | log
 		with [get-window [ t preferences ]] {
 			get-button -after [get-label [t btn_user_admin] ] -index 3 | click

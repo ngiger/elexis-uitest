@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 8/13/20 10:23 AM
+Save-Time: 8/14/20 3:34 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -51,7 +51,7 @@ proc "HasKonsSelected" {
 		get-view [ t kons_view ]  | get-link "\(.*\)" | get-property caption  | equals "\(.*\)" | verify-true
 		bool true
 	} -error [val errorObj] -catch {
-		log [$errorObj | get message]
+		log "HasKonsSelected: " [$errorObj | get message]
 		bool false
 	}   
 }
@@ -69,7 +69,7 @@ proc "PressAddLeistungToKons" {
 		with [get-view  [ t kons_view ] | get-button [ t btn_add_invoicable_item ] ] {
 			click
 	}	} -error [val errorObj] -catch {
-		concat "PressAddLeistungToKons failed: " $errorObj | log
+		concat "PressAddLeistungToKons failed: " [$errorObj | get message] | log
 		close-window-if-open [ t window_warning ]
 	}
 }
@@ -81,7 +81,10 @@ proc "ActivateVisibleKonsView" {
 		log "ActivateVisibleKonsView no problems"
 		bool true
 	}  -error [val errorObj]  -catch {
-		concat "ActivateVisibleKonsView " [ t kons_view ]  " has problems." $errorObj " Trying to close warning" | log
+		concat "ActivateVisibleKonsView " [ t kons_view ]  " has problems." [$errorObj | get message] " Trying to close warning" | log
+		close-window-if-open [ t window_warning ]
+		close-window-if-open [ t window_warning ]
+		close-window-if-open [ t window_warning ]
 		close-window-if-open [ t window_warning ]
 		get-view [ t kons_view ] | get-editbox | set-focus
 		bool false
@@ -153,7 +156,7 @@ proc "LeistungenExecuteSearch"  {
 		let	[ val nrItemsBefore [ GetItemsInTable $table | int ] ] {
 			get-button [ t btn_execute_search ] | click
 			loop {
-			// concat "GetItemsInTable returned " [ GetItemsInTable $table ] " for " $table | log
+			concat "GetItemsInTable " $nrItemsBefore " returned " [ GetItemsInTable $table ] " for " $table | log
 			if [ GetItemsInTable $table | eq $nrItemsBefore ] {
 				wait 500
 			    recur
@@ -172,14 +175,17 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expected
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
 		concat "kons-add-artikelstamm: " $item_short " have " $nrItemsBefore " items"| log
 		PressAddLeistungToKons
-		log "PressAddLeistungToKons done"
+		concat "PressAddLeistungToKons "  $item_short " done" | log
+		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $item_short ".png"]
+		concat "PressAddLeistungToKons "  $item_short " after screenshot" | log
 		with [get-view [t leistungen ] ] {
 			get-tab-folder | get-tab-item Artikelstamm | click
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
 			LeistungenExecuteSearch
+			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter1_" $item_short ".png"]
 			get-group  [ t alle_leistungen ] | get-table | select $item_long | click -default
-			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter_" $item_short ".png"]
+			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter2_" $item_short ".png"]
 			key-type Enter
 		}
 		concat "kons-neuen-artikelstamm item added " $item_short " " $item_long | log
@@ -265,18 +271,18 @@ proc "select-tarmed-leistung" [ val ziffer [ concat "00.0010" ] ] {
 					bool true
 				} -error [ val errorObj ] -catch {
 					try {
-						concat "select-tarmed-leistung try 2: " $errorObj " " $ziffer ".*" | log
+						concat "select-tarmed-leistung try 2: " [$errorObj | get message] " " $ziffer ".*" | log
 						get-tree | select [ concat ".*/.*/.*/" $ziffer ".*" ] | double-click
 						log "select-tarmed-leistung done 2"
 						bool true
 					} -error [ val errorObj2 ] -catch {
 						try {
-							concat "select-tarmed-leistung try 3: " $errorObj2 " " $ziffer ".*" | log
+							concat "select-tarmed-leistung try 3: " [$errorObj2 | get message] " " $ziffer ".*" | log
 							get-tree | select [ concat ".*/.*/.*/.*/" $ziffer ".*" ] | double-click
 							log "select-tarmed-leistung done 3"
 							bool true
 						} -error [ val errorObj3 ] -catch {
-							concat "select-tarmed-leistung failed adding " $ziffer " " $errorObj3| log
+							concat "select-tarmed-leistung failed adding " $ziffer " " [$errorObj3 | get message]| log
 							bool false
 						}
 					}
@@ -340,7 +346,7 @@ proc "kons-add-complementary" [ val ziffer 1255 ]  [ val expectedItemsAdded 1 ] 
 				get-table | select [get-item -path [ concat ".*" $ziffer ".*" ] ] | double-click
 				concat "kons-add-complementary: " $ziffer " double-click done" | log
 			} - -error [val errorObj] -catch {
-				concat "kons-add-complementary: " $ziffer " double-click failed: " $errorObj| log
+				concat "kons-add-complementary: " $ziffer " double-click failed: " $[$errorObj | get message]| log
 			}
 		}
 		ActivateVisibleKonsView
@@ -461,7 +467,7 @@ proc "kons-set-date" [ val newKonsDate $aWeekAgo ] {
 		    get-button OK | click
 		}
 	} -error [val errorObj] -catch {
-		concat "kons-set-date: " $errorObj " could not open menu " [ t Kons_Datum ]  | log 
+		concat "kons-set-date: " [$errorObj | get message] " could not open menu " [ t Kons_Datum ]  | log 
 	}
 	try {
 		let [val myKonsDate  [ get-view [ t kons_view ] | get-label  -index 1| get-property caption -raw  ] ]
@@ -478,7 +484,7 @@ proc "kons-set-date" [ val newKonsDate $aWeekAgo ] {
 			// fails with NPE: get-view [ t kons_view ] | get-editbox | invoke getParent| invoke getParent | gen-screenshot -out [concat $imagesDir "kons_3_"  [ replaceAll $myKonsDate "\W" "_" ] "_set.png"]
 		}
 	}  -error [val errorObj] -catch {
-		concat "kons-set-date failed: " $newKonsDate " err: " $errorObj | log
+		concat "kons-set-date failed: " $newKonsDate " err: "  [$errorObj | get message] | log
 		KonsCloseCannotBeChangedError
 	}
 }
@@ -491,7 +497,7 @@ proc "KonsCloseCannotBeChangedError" {
 		concat "KonsCloseCannotBeChangedError Done" | log
 		bool true
 	} -error [val errorObj] -catch {
-		concat "KonsCloseCannotBeChangedError err: " $errorObj | log
+		concat "KonsCloseCannotBeChangedError err: "  [$errorObj | get message] | log
 		bool false
 	}
 }
@@ -514,16 +520,8 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 			PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $familyName
 			 -firstName $firstName -birthDate $birthDate -male $male
 			 -caseName $caseName
-			with [get-view [ t kons_view ] ] {
-				try { with [get-table -after [get-label [ t btn_accounting ] ]] {
-					get-cell 0 2 | click
-					get-menu -path "Alle entfernen" | click
-				} } -catch { log -message "No drugs to remove"}
-			    try { with [get-table] {
-					get-cell 0 2 | click
-				    get-menu -path "Diagnose entfernen" | click
-				} } -catch { log -message "No diagnosis to remove"}
-			}
+			AllVerrechnungenEntfernen
+			DiagnoseEntfernen
 			kons-add-tarmed [ concat $tarmed ]
 			kons-add-artikelstamm -item_short Losartan -item_long $Losartan
 			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
@@ -535,6 +533,34 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 		}
 	}
 }
+
+proc AllVerrechnungenEntfernen {
+	with [get-view [ t kons_view ] | get-table -after [ get-label [ t btn_accounting ] ] ] {
+		try {
+		 t path_remove_all | log
+			get-cell 0 2 |  mouse down Right -count 1
+			get-menu -path [ t path_remove_all  ] | click
+			log "AllVerrechnungenEntfernen. Done"
+		} -error [val errorObj] -catch {
+			concat "AllVerrechnungenEntfernen Nix zu tun!"  [$errorObj | get message] | log
+		}
+	}
+}
+
+proc DiagnoseEntfernen { 
+	with [get-view [ t kons_view ] ] {
+			    try { with [get-table] {
+					get-cell 0 2 | click
+				    get-menu -path [ t path_remove_diagnosis ] | click
+	    			log "DiagnoseEntfernen. Done"
+				    
+				} 
+			} -catch { 
+				log -message "No diagnosis to remove"
+			}
+		}
+}
+
 // ENDE
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
