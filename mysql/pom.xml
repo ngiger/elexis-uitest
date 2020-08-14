@@ -11,7 +11,9 @@
   </parent>
   <properties>
     <!--  Initial preparation to TO ONCE
-    mysql -u root -p 33062 -h 127.0.0.1
+      mariadb 
+       create user elexis identified by 'elexisTest';
+    mysql -u root -p 3306 -h 127.0.0.1
     create database elexis_rcptt;
     create user elexis with UNENCRYPTED password 'elexisTest';
     grant all on elexis_rcptt.* to elexis@'%';

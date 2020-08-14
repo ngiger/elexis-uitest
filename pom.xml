@@ -37,14 +37,14 @@
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-    <!--pluginRepository>
+    <pluginRepository>
       <id>rcptt-snapshots</id>
       <name>RCPTT Maven Snapshots repository</name>
       <snapshots>
         <updatePolicy>always</updatePolicy>
       </snapshots>
       <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
-    </pluginRepository!-->
+    </pluginRepository>
   </pluginRepositories>
   <build>
     <plugins>
@@ -66,8 +66,6 @@
                       <include>elexislock.*</include>
                       <include>localCfg*rcptt*xml</include>
                       <include>localCfg_default.xml</include>
-                      <include>h2_elexis_rcptt*</include>
-                      <include>h2_elexis_rcptt/*</include>
                     </includes>
                   </fileset>
                   <fileset>
@@ -84,6 +82,15 @@
                   </fileset>
                   <fileset>
                     <directory>${user.home}/elexis/demoDB</directory>
+                  </fileset>
+                  <fileset>
+                    <directory>${user.home}/elexis/h2_elexis_rcptt_${language}</directory>
+                  </fileset>
+                  <fileset>
+                    <directory>${user.home}/elexis/h2_elexis_rcptt_de</directory>
+                  </fileset>
+                  <fileset>
+                    <directory>${user.home}/elexis/h2_elexis_rcptt_fr</directory>
                   </fileset>
                   <fileset>
                     <directory>${rcptt-resources}</directory>
