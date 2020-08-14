@@ -5,7 +5,7 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Save-Time: 5/3/20 12:15 PM
+Save-Time: 8/7/20 4:14 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -50,13 +50,13 @@ proc EnterOneFinanzDetail [ val key ] [ val idMandant 1 ]  {
 
 proc SetStandard4Cases {
 	get-preferences-menu | click
-	with [get-window [ t preferences ]] {
-		get-tree | select "Anwender/Fälle"
-	    get-editbox -after [get-label "Standard-Grund"] | set-text "ist krank"
-	    get-editbox -after [get-label "Standard-Abrechnungssystem"] | set-text KVG
-	    get-editbox -after [get-label "Standard-Diagnose"] | click-text
-	    get-button Diagnose | click -metaKeys ""
-	    get-editbox -after [get-label "Standard-Diagnose"] | click-text
+	with [get-window [ t preferences ] ] {
+		get-tree | select [ t preferences_users_cases ]
+	    get-editbox -after [get-label [ t preferences_cases_standard ] ] | set-text "ist krank"
+	    get-editbox -after [get-label [ t preferences_cases_invoicesystem ] ] | set-text KVG
+	    get-editbox -after [get-label [ t preferences_cases_standard_diagnosis ] ] | click-text
+	    get-button [ t preferences_cases_diagnosis ] | click -metaKeys ""
+	    get-editbox -after [get-label  [ t preferences_cases_standard_diagnosis ] ] | click-text
 	    get-button [ t apply_and_close ] | click -metaKeys ""
 	}
 }

@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 7/16/20 9:33 AM
+Save-Time: 8/13/20 10:23 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -70,7 +70,7 @@ proc "PressAddLeistungToKons" {
 			click
 	}	} -error [val errorObj] -catch {
 		concat "PressAddLeistungToKons failed: " $errorObj | log
-		close-window-if-open "Warnung.*"
+		close-window-if-open [ t window_warning ]
 	}
 }
 
@@ -82,7 +82,7 @@ proc "ActivateVisibleKonsView" {
 		bool true
 	}  -error [val errorObj]  -catch {
 		concat "ActivateVisibleKonsView " [ t kons_view ]  " has problems." $errorObj " Trying to close warning" | log
-		close-window-if-open "Warnung.*"
+		close-window-if-open [ t window_warning ]
 		get-view [ t kons_view ] | get-editbox | set-focus
 		bool false
 	}
@@ -217,6 +217,8 @@ proc "toggle-tarmed-kontext" {
  * you must enter values like %00.0010 as we will strip all %
  * RCPTT is only to able to select a single item if the full path is given, eg.
  * "00 Grundleistungen \\(KVG\\)/00.01 Allgemeine Grundleistungen \\(KVG\\)/00.01.01 Konsultation, Besuch, Wegentschädigung u.a. \\(KVG\\)/00.0025 \\+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min. \\(KVG\\)"
+ * 
+ * Double-clicks on the selected tarmed to add it
  */
 proc "select-tarmed-leistung" [ val ziffer [ concat "00.0010" ] ] {
 	open-window-by-name [ t leistungen ]
@@ -300,6 +302,7 @@ proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
 		concat "kons-add-tarmed: " $ziffer " have " $nrItemsBefore " items"| log
 		PressAddLeistungToKons
 		select-tarmed-leistung $ziffer
+		close-window-if-open [ t window_warning ]
 		try {
 			get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-tree | double-click
 		} -catch {
@@ -308,6 +311,8 @@ proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
 			select-tarmed-leistung $ziffer
 			get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-tree | double-click
 		}
+		close-window-if-open [ t window_warning ]
+		
 		// Close Leistungen
 		ActivateVisibleKonsView
 		kons-check-expected-items -caller "kons-add-tarmed" -item $ziffer
@@ -436,23 +441,27 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ]
  */
 proc "kons-set-date" [ val newKonsDate $aWeekAgo ] {
 	concat "kons-set-date must set: " $newKonsDate | log
-	get-view [ t kons_view ] | get-menu -path [ t Kons_Datum ] | click
-	with [get-window [ t Datum_eingeben ] ] {
-	    // get-editbox | set-text $newKonsDate
-	    /* Here we get errors
-	    8:22:46.769 [Equinox Log Thread - Equinox Container: b3e3f8fc-6e75-44bd-acc7-46eec0c6f7ba] ERROR OSGI - [org.eclipse.ui.workbench] Unhandled event loop exception
-java.lang.NullPointerException: null
-        at org.eclipse.nebula.widgets.cdatetime.CDateTime.verify(CDateTime.java:2083) ~[na:na]
-        at org.eclipse.nebula.widgets.cdatetime.CDateTime.lambda$0(CDateTime.java:309) ~[na:na]
-        at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89) ~[na:na]
-        
-        but we log correctly 18:22:45.917 [Worker-121: ECL session execute: log] INFO  PLATFORM - [org.eclipse.core.runtime] 03.07.17
-	    */
-	    get-editbox | set-focus
-	    get-editbox | set-text $newKonsDate
-     	get-editbox | get-property text -raw | log
-	    key-type Right
-	    get-button OK | click
+	try {
+		get-view [ t kons_view ] | get-menu -path [ t Kons_Datum ] | click
+		with [get-window [ t Datum_eingeben ] ] {
+		    // get-editbox | set-text $newKonsDate
+		    /* Here we get errors
+		    8:22:46.769 [Equinox Log Thread - Equinox Container: b3e3f8fc-6e75-44bd-acc7-46eec0c6f7ba] ERROR OSGI - [org.eclipse.ui.workbench] Unhandled event loop exception
+	java.lang.NullPointerException: null
+	        at org.eclipse.nebula.widgets.cdatetime.CDateTime.verify(CDateTime.java:2083) ~[na:na]
+	        at org.eclipse.nebula.widgets.cdatetime.CDateTime.lambda$0(CDateTime.java:309) ~[na:na]
+	        at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89) ~[na:na]
+	        
+	        but we log correctly 18:22:45.917 [Worker-121: ECL session execute: log] INFO  PLATFORM - [org.eclipse.core.runtime] 03.07.17
+		    */
+		    get-editbox | set-focus
+		    get-editbox | set-text $newKonsDate
+	     	get-editbox | get-property text -raw | log
+		    key-type Right
+		    get-button OK | click
+		}
+	} -error [val errorObj] -catch {
+		concat "kons-set-date: " $errorObj " could not open menu " [ t Kons_Datum ]  | log 
 	}
 	try {
 		let [val myKonsDate  [ get-view [ t kons_view ] | get-label  -index 1| get-property caption -raw  ] ]
