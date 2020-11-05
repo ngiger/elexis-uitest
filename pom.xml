@@ -6,6 +6,10 @@
   <version>0.1</version>
   <packaging>pom</packaging>
   <properties>
+    <tycho.version>1.7.0</tycho.version>
+    <tycho-groupid>org.eclipse.tycho</tycho-groupid>
+    <git.target.branch>3.8</git.target.branch>
+    <git.core.branch>${git.target.branch}</git.core.branch>
     <!-- we need a version > 2.3.0 because we need the proc find-all to extract the language from the nl parameter
     commit 265067eb1ce14428ea4d33e97606934a6238d9e8
     Author: Alexander Dudaev <aleksandr.dudayev@xored.com>
@@ -46,9 +50,42 @@
       <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
     </pluginRepository>
   </pluginRepositories>
+  <modules>
+    <module>ch.elexis.base.p2site</module>
+  </modules>
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-p2-repository-plugin</artifactId>
+          <version>${tycho.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
-      <plugin>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-maven-plugin</artifactId>
+          <version>${tycho.version}</version>
+          <extensions>true</extensions>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>target-platform-configuration</artifactId>
+          <version>${tycho.version}</version>
+          <configuration>
+            <pomDependencies>consider</pomDependencies>
+            <environments>
+              <environment>
+                <os>linux</os>
+                <ws>gtk</ws>
+                <arch>x86_64</arch>
+              </environment>
+            </environments>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>2.4.1</version>
@@ -330,7 +367,8 @@
               <project>${project.basedir}/../KernFunktionen</project>
           </projects>
           <aut>
-            <explicit>${autExplicit}</explicit>
+            <!-- use the product build in ch.elexis.base.p2site -->
+            <explicit>${project.parent.basedir}/ch.elexis.base.p2site/target/products/ElexisAllOpenSourceApp-[classifier].zip</explicit>
             <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>

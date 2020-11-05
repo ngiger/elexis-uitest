@@ -9,7 +9,7 @@
     <artifactId>common</artifactId>
     <version>0.1</version>
   </parent>
-  <properties>
+   <properties>
     <myBaseDir>${project.basedir}/..</myBaseDir>
     <!-- missing AUTO_SERVER=TRUE" -->
     <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
