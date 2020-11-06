@@ -33,9 +33,10 @@ Niklaus machte folgende Schritte, damit das Testen auf lange Sicht mit der DemoD
 
 Dazu wird Maven verwendet [Download](https://maven.apache.org/download.cgi). Die Versionen 3.5.2 und 3.6 liefen ohne Probleme (3.3.9 führte zu Problemen).
 
-Da verschiedenen Datenbank-Setup verwendet werden können, muss man angeben, welches man verwenden will. Hier zum Testen mit dem DemoDB
+Da verschiedenen Elexis- und Datenbank-Setup verwendet werden können, muss man angeben, welches man verwenden will. Hier zum Testen mit elexis-3.8 und h2
 
-    mvn -V clean verify -f demoDB/pom.xml$
+    mvn -V clean verify -f elexis-3.8/pom.xml
+    mvn -V clean verify -f h2/pom.xml -DuseBranch=3.8 
 
 ## Neue Testfälle erstellen
 

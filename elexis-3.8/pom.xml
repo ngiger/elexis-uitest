@@ -7,6 +7,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <version>0.1</version>
   </parent>
   <version>3.8</version>
+  <artifactId>elexis-3.8</artifactId>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,21 +17,20 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <repositories>
     <repository>
       <id>elexis.3.core</id>
-      <url>https://download.elexis.info/elexis/${git.core.branch}/p2/elexis-3-core</url>
+      <url>https://download.elexis.info/elexis/3.8/p2/elexis-3-core</url>
       <layout>p2</layout>
     </repository>
     <repository>
       <id>elexis.3.base</id>
-      <url>https://download.elexis.info/elexis/${git.core.branch}/p2/elexis-3-base</url>
+      <url>https://download.elexis.info/elexis/3.8/p2/elexis-3-base</url>
       <layout>p2</layout>
     </repository>
     <repository>
       <id>elexis-3-target</id>
-      <url>https://download.elexis.info/elexis/${git.target.branch}/p2/target</url>
+      <url>https://download.elexis.info/elexis/3.8/p2/target</url>
       <layout>p2</layout>
     </repository>
   </repositories>
-  <artifactId>ch.elexis.base.p2site</artifactId>
   <packaging>eclipse-repository</packaging>
   <build>
     <plugins>
