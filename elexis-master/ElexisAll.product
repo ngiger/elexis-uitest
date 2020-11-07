@@ -113,6 +113,7 @@
       <feature id="ch.elexis.notes.feature" installMode="root"/>
       <feature id="ch.elexis.omnivore.feature" installMode="root"/>
       <feature id="ch.elexis.privatrechnung.feature" installMode="root"/>
+      <feature id="ch.elexis.base.solr.feature" installMode="root"/>
       <feature id="ch.elexis.stickynotes.feature" installMode="root"/>
       <feature id="ch.elexis.support.dbshaker.feature" installMode="root"/>
       <feature id="ch.gpb.elexis.cst.feature" installMode="root"/>
@@ -134,7 +135,7 @@
       <feature id="com.hilotec.elexis.opendocument2omnivore.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.pluginstatistiken.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.stickerprefix.feature" installMode="root"/>
-      <feature id="com.hilotec.elexis.toolbar.feature" installMode="root"/>
+      <!--feature id="com.hilotec.elexis.toolbar.feature" installMode="root"/ Missing for the moment, as Niklaus does not know, whether this one is compatible with Elexis 3.9-->
       <feature id="net.medshare.connector.aerztekasse.feature" installMode="root"/>
       <feature id="net.medshare.connector.viollier.feature" installMode="root"/>
       <feature id="org.iatrix.bestellung.rose.feature" installMode="root"/>
