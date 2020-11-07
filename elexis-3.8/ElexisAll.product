@@ -134,7 +134,7 @@
       <feature id="com.hilotec.elexis.opendocument2omnivore.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.pluginstatistiken.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.stickerprefix.feature" installMode="root"/>
-      <feature id="com.hilotec.elexis.toolbar.feature" installMode="root"/>
+      <!-- not at the moment, see issue 19887 feature id="com.hilotec.elexis.toolbar.feature" installMode="root"/-->
       <feature id="net.medshare.connector.aerztekasse.feature" installMode="root"/>
       <feature id="net.medshare.connector.viollier.feature" installMode="root"/>
       <feature id="org.iatrix.bestellung.rose.feature" installMode="root"/>
