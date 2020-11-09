@@ -36,7 +36,7 @@ Dazu wird Maven verwendet [Download](https://maven.apache.org/download.cgi). Die
 Da verschiedenen Elexis- und Datenbank-Setup verwendet werden können, muss man angeben, welches man verwenden will. Hier zum Testen mit elexis-3.8 und h2
 
     mvn -V clean verify -f elexis-3.8/pom.xml
-    mvn -V clean verify -f h2/pom.xml -DuseBranch=3.8 
+    mvn -V clean verify -f h2/pom.xml -DuseBranch=3.8 install # use install to copy the ~/elexis/logs/ directory to the results
 
 ## Neue Testfälle erstellen
 
