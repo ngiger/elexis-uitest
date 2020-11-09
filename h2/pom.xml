@@ -4,12 +4,22 @@
   <groupId>ch.elexis.rcptt</groupId>
   <artifactId>h2</artifactId>
   <packaging>rcpttTest</packaging>
+  <version>0.1</version>
   <parent>
     <groupId>ch.elexis.rcptt</groupId>
     <artifactId>common</artifactId>
     <version>0.1</version>
   </parent>
-   <properties>
+  <!--dependencies>
+    <dependency>
+        <groupId>ch.elexis.rcptt</groupId>
+        <artifactId>common</artifactId>
+        <version>0.1</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/target/setup-0.1.jar</systemPath>
+    </dependency>
+  </dependencies-->
+  <properties>
     <myBaseDir>${project.basedir}/..</myBaseDir>
     <!-- missing AUTO_SERVER=TRUE" -->
     <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
