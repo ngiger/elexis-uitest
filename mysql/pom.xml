@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.elexis.rcptt</groupId>
   <artifactId>mysql</artifactId>
-  <packaging>rcpttTest</packaging>
+  <packaging>pom</packaging>
   <parent>
     <groupId>ch.elexis.rcptt</groupId>
     <artifactId>common</artifactId>
@@ -15,110 +15,47 @@
        create user elexis identified by 'elexisTest';
     mysql -u root -p 3306 -h 127.0.0.1
     create database elexis_rcptt;
-    create user elexis with UNENCRYPTED password 'elexisTest';
+    create user elexis identified by 'elexisTest';
     grant all on elexis_rcptt.* to elexis@'%';
     grant all on elexis_rcptt.* to 'elexis'@'%' with grant option;
    flush privileges;
-
     -->
-    <mysqlPort>3306</mysqlPort>
-    <mysqlHost>127.0.0.1</mysqlHost>
-    <myBaseDir>${project.basedir}/..</myBaseDir>
-    <vmArg1>-Dch.elexis.dbFlavor=mysql</vmArg1>
-    <vmArg2>-Dch.elexis.dbSpec=jdbc:mysql://${mysqlHost}:${mysqlPort}/elexis_rcptt</vmArg2>
-    <vmArg3>-Dch.elexis.dbUser=elexis</vmArg3>
-    <vmArg4>-Dch.elexis.dbPw=elexisTest</vmArg4>
-    <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
-    <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
-    <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
-    <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
-    <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
-    <vmArg10>-DvmArg10</vmArg10>
-    <dropCreateDbScript>${project.basedir}/drop_create_db.sql</dropCreateDbScript>
-
   </properties>
+  <modules>
+    <module>../setup</module>
+    <module>../elexis-${useBranch}</module>
+    <module>../KernFunktionen</module>
+  </modules>
   <build>
     <plugins>
-      <plugin>
-        <!--https://books.sonatype.com/mcookbook/reference/ch02s03.html#ex-groovy-script-ex -->
-        <!-- Create a script to change the locale used by the db -->
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>1.5</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase> <!-- is after generate-sources -->
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <scripts>
-                  <script><![CDATA[
-      file = new File("${dropCreateDbScript}")
-      System.out.println("# Created ${dropCreateDbScript}")
-      System.out.println("/usr/bin/env mysql --host=${mysqlHost} --port=${mysqlPort} --user=elexis --password=elexisTest --execute=\"drop database if exists elexis_rcptt;")
-      file.write("# Created by elexis-uitest/dbSpec/pom.xml as ${dropCreateDbScript}\n")
-      file.append("/usr/bin/env mysql --host=${mysqlHost} --port=${mysqlPort} --user=elexis --password=elexisTest --execute=\"drop database if exists elexis_rcptt;\"\n")
-      file.append("/usr/bin/env mysql --host=${mysqlHost} --port=${mysqlPort} --user=elexis --password=elexisTest --execute=\"create database elexis_rcptt;\"\n")
-  ]]></script>
-  </scripts>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.5.4</version>
-            <type>pom</type>
-            <scope>runtime</scope>
-          </dependency>
-        </dependencies>
-      </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.8</version>
         <executions>
           <execution>
-              <id>drop-create-database-elexis-rcptt</id>
-              <phase>process-sources</phase>
-              <configuration>
-                <target> 
-                  <exec executable="/usr/bin/env" failonerror="true" >
-                    <arg value="bash"/>
-                    <arg value="${dropCreateDbScript}"/>
-                  </exec>
-                </target>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-          <execution>
-              <id>dump-database-elexis-rcptt</id>
-              <phase>install</phase>
-              <configuration>
-                <target>
-                  <exec executable="/usr/bin/env" failonerror="true" >
-                    <arg value="mysqldump"/>
-                    <arg value="--host=${mysqlHost}"/>
-                    <arg value="--user=elexis"/>
-                    <arg value="--port=${mysqlPort}"/>
-                    <arg value="--password=elexisTest"/>
-                    <arg value="--add-drop-database"/>
-                    <arg value="--single-transaction"/>
-                    <arg value="--result-file=./target/results/mysql_dump.sql" />
-                     <arg value="elexis_rcptt"/>
-                 </exec>
-                </target>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
+            <id>dump-database-elexis-rcptt-${project.basedir}/../KernFunktionen/target/results</id>
+            <phase>verify</phase>
+            <configuration>
+              <target>
+                <exec executable="/usr/bin/env" failonerror="true" >
+                  <arg value="mysqldump"/>
+                  <arg value="--host=${mysqlHost}"/>
+                  <arg value="--user=elexis"/>
+                  <arg value="--port=${mysqlPort}"/>
+                  <arg value="--password=elexisTest"/>
+                  <arg value="--add-drop-database"/>
+                  <arg value="--single-transaction"/>
+                  <arg value="--result-file=${project.basedir}/../KernFunktionen/target/results/mysql_dump.sql" />
+                  <arg value="elexis_rcptt"/>
+                </exec>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

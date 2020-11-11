@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <profiles>
+    <profile>
+      <id>postgresql</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+      <properties>
+          <vmArg1>-Dch.elexis.dbFlavor=postgresql</vmArg1>
+          <vmArg2>-Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt_${language}</vmArg2>
+          <vmArg3>-Dch.elexis.dbUser=elexis</vmArg3>
+          <vmArg4>-Dch.elexis.dbPw=elexisTest</vmArg4>
+          <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
+          <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
+          <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
+          <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
+          <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
+          <vmArg10>-DvmArg10</vmArg10>
+          <autExplicit>${project.basedir}/elexis-${useBranch}/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip</autExplicit>
+          <!-- dropCreateDbScript will be used in project Kernfunktionen!! Therefore we must point it to ../postgresql --> 
+          <dropCreateDbScript>${project.basedir}/../postgresql/drop_create_db.sh</dropCreateDbScript>
+      </properties>
+    </profile>
+  </profiles>
+</settings>

@@ -8,7 +8,7 @@
     <artifactId>common</artifactId>
     <version>0.1</version>
   </parent>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <build>
       <plugins>
         <plugin>
@@ -70,17 +70,17 @@
               <phase>generate-sources</phase>
               <configuration>
                 <target>
-                  <copy file="${myBaseDir}/save_run_from_scratch.sh" tofile="${rcptt-resources}/save_run_from_scratch.sh" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/test.properties" tofile="${rcptt-resources}/test.properties" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
-                  <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/save_run_from_scratch.sh" tofile="${rcptt-resources}/save_run_from_scratch.sh" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/test.properties" tofile="${rcptt-resources}/test.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
                   <!-- Just to ensure that "${user.home}/elexis/extern getŝ created -->
-                  <copy file="${myBaseDir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
               </target>
               </configuration>
               <goals>
