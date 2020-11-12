@@ -99,7 +99,7 @@
           </testOptions>
           <aut>
             <!-- use the product build in elexis-${useBranch} -->
-            <explicit>${project.parent.basedir}/elexis-${useBranch}/target/products/ElexisAllOpenSourceApp-[classifier].zip</explicit>
+            <explicit>${autExplicit}</explicit>
             <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>

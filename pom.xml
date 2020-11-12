@@ -25,12 +25,6 @@
     <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
-    <!--
-    <autExplicit>/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/Elexis3-[classifier].zip</autExplicit>
-    <autExplicit>/opt/rm/elexis-master/elexis-3-base/ch.elexis.base.p2site/target/products/ElexisAllOpenSourceApp-[classifier].zip</autExplicit>
-    <autExplicit>https://download.elexis.info/elexis/master/products/ElexisAllOpenSourceApp-l[classifier].zip</autExplicit>
-    -->
-    <autExplicit>https://download.elexis.info/elexis/${useBranch}/products/ElexisAllOpenSourceApp-[classifier].zip</autExplicit>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->

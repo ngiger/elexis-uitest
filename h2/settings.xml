@@ -4,7 +4,7 @@
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
   <profiles>
     <profile>
-      <id>postgresql</id>
+      <id>h2</id>
     <activation>
       <activeByDefault>true</activeByDefault>
     </activation>
@@ -20,8 +20,7 @@
         <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
         <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
         <vmArg10>-DvmArg10</vmArg10>
-        <autExplicit>${project.basedir}/elexis-${useBranch}/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip</autExplicit>
-        <dropCreateDbScript>${project.basedir}/../postgresql/drop_create_db.sh</dropCreateDbScript>
+        <autExplicit>${project.basedir}/../elexis-${useBranch}/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip</autExplicit>
       </properties>
     </profile>
   </profiles>
