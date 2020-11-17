@@ -1,17 +1,45 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Context-Type: org.eclipse.rcptt.ctx.ecl
-Element-Name: Hilotec_ODF
+Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 5/4/20 3:39 PM
+Save-Time: 8/17/20 5:51 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 global [val hilotecOdfOutDir $pdfDir ] -override
+global [val MsOOOutDir $pdfDir ] -override
+global [val ConfiguredTextPlugin "" ] -override
+
+proc TextPluginSelect [ val useTextPlugin  "hilotec_odf"] {
+	global [val ConfiguredTextPlugin "useTextPlugin" ] -override
+	if [$useTextPlugin | equals "hilotec_odf" ] {
+		ConfigureHilotecODF_TextVerarbeitung
+	} -else {
+		ConfigureMsOO_TextVerarbeitung
+	}
+}
+proc SetupTextPlugins {
+	// requires ImportSwissBase, BasicMandanten, BasicAbrechnungssystems run before
+	OpenAndResetStartPerspektive
+	
+	// To print an AUF we need a text plugin. list of krankenkasse, AUF vorlagen
+	// The krankenkass comes in via ImportSwissBase
+	if [ SelectKontakt -bezeichnung1 "Aquilana" ] {
+		log "KK Aquilana schon vorhanden"
+	} -else {
+		ReadDataImport -file [ concat  [get-user-dir] "/rcptt/Universal_krankenkasse.xls" ]
+		SelectKontakt -bezeichnung1 "Aquilana"
+	}
+	get-eclipse-window | gen-screenshot [concat $imagesDir "Aquilana_imported.png"]	
+	ConfigureHilotecODF_TextVerarbeitung
+	ConfigureMsOO_TextVerarbeitung
+	ImportHilotecODF_Vorlagen
+}
 
 proc EnsureLibreOffficIsInstalled {
 	log "EnsureLibreOffficIsInstalled: Check whether libreoffice ist installed"
@@ -50,7 +78,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 		// Button name various on number of installed text plugins!
 		// There replace 0 :, etc by .*
 	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "select-hilotecODF.png" ]
-	    with [get-button "Brief extern speichern (gleicher UNC Pfad auf allen Stationen)"] {
+	    with [get-button [ t print_save_letter_extern ] ] {
 	        check
 	    }
 	    with [get-editbox -after [get-label [ t pref_externes_textprogramm ] ] ] {
@@ -120,6 +148,65 @@ proc TextVorlagenEntfernen [ val name Liste ] {
 	get-view [ t Textvorlagen_Management ] | get-table |
 		select $name -column [ t Name_der_Vorlage ] |
 		get-menu [ t Delete_template ]
+}
+
+
+proc EnsureOpenOfficeIsInstalled {
+	log "EnsureOpenOfficeIsInstalled: Check whether openoffice ist installed"
+	// we used the DEBS from
+	// https://netcologne.dl.sourceforge.net/project/openofficeorg.mirror/4.1.7/binaries/de/Apache_OpenOffice_4.1.7_Linux_x86-64_install-deb_de.tar.gz
+	if [ get-by-os  -win false -macosx false -linux true ] {
+		let [ val result [ exec-process -command "test" --args "-f /opt/openoffice4/program/swriter" ] ] {
+			concat "EnsureOpenOfficeIsInstalled: openoffice version returned " [ $result | get  exitCode ] " out " 
+				[ $result | get  stdout ] | log
+			$result | get  exitCode | equals 0 | assert-true
+		}
+		log "EnsureOpenOfficeIsInstalled: openoffice ist installed (LINUX)"
+	}
+}
+
+proc ConfigureMsOO_TextVerarbeitung {
+	EnsureOpenOfficeIsInstalled
+	get-preferences-menu | click
+	with [get-window [ t preferences ]] {
+		get-tree | select [ t Textverarbeitung ]
+		// Button name various on number of installed text plugins!
+		// There replace 0 :, etc by .*
+	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "select-MsOO.png" ]
+	    with [get-button [ t print_save_letter_extern ] ] {
+	    	uncheck // Must be unchecked for OpenOffice Text plugin
+	    }
+	    with [get-button [ t pref_texte_lokal_editieren ] ] {
+	    	uncheck // Must be unchecked for OpenOffice Text plugin
+	    }
+	    get-button ".*OpenOffice 3.x" | click
+   		get-tree | select "Textverarbeitung/OpenOffice.org"
+		with [get-editbox -after [get-label "Application home"]] {
+		    click-text
+		    set-text "/opt/openoffice4/program"
+		}
+		get-link ".*Define.*" | click-link
+		with [get-window "OpenOffice.org application"] {
+		    get-section "Available OpenOffice.org applications" | get-table | select "OpenOffice 4.1.7"
+		    get-button Fertigstellen | click -metaKeys ""
+		}
+	    with [get-button "Prevent termination of OpenOffice.org application"  ] {
+	    	check // Must be checked for OpenOffice Text plugin
+	    	// , so verhindert diese Einstellung, dass das OpenOffice Programm mit Elexis geschlossen wird. 
+	    }
+	  	take-screenshot "PreferencesTextOpenOffice.png"
+		get-tree | select "System/Druckereinstellungen"
+		$MsOOOutDir | log
+		set-dialog-result Folder $MsOOOutDir		
+//		get-button "->" -after [get-label "Drucker mit A4-Papier mit ESR"] | click -metaKeys ""
+	    get-editbox -after [get-label "Drucker mit A4-Papier mit ESR"] | set-text PDF1
+	    get-editbox -after [get-label "Drucker mit A4-Papier standard"] | set-text PDF2
+	    get-editbox -after [get-label "Drucker mit A5-Papier" ] | set-text PDF3
+	    get-editbox -after [get-label "Drucker mit Einzelblatteinzug"] | set-text PDF4
+	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "config-MsOO.png" ]
+	  	take-screenshot "PreferencesSystemPrinters.png"
+		get-button [ t apply_and_close ] | click
+	}
 }
 
 // Ende

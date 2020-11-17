@@ -1,0 +1,81 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.ecl
+Element-Name: medelexis_openoffice
+Element-Type: context
+Element-Version: 2.0
+Id: _LkBSkBsDEembU9g-99999
+Save-Time: 8/14/20 6:48 PM
+
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
+Content-Type: text/ecl
+Entry-Name: .ecl.context
+
+global [val MsOOOutDir $pdfDir ] -override
+
+proc EnsureOpenOfficeIsInstalled {
+	log "EnsureOpenOfficeIsInstalled: Check whether openoffice ist installed"
+	if [ get-by-os  -win false -macosx false -linux true ] {
+		let [ val result [ exec-process -command "test" --args "-f /opt/openoffice4/program/swriter" ] ] {
+			concat "EnsureOpenOfficeIsInstalled: openoffice version returned " [ $result | get  exitCode ] " out " 
+				[ $result | get  stdout ] | log
+			$result | get  exitCode | equals 0 | assert-true
+		}
+		log "EnsureOpenOfficeIsInstalled: openoffice ist installed (LINUX)"
+	}
+    create-entire-screenshot [concat $imagesDir "EnsureOpenOfficeIsInstalled.png"]
+
+}
+
+proc Closeopenoffice {
+// exec path is /opt/openoffice4/program/soffice, but at the momen we do not want to kill it
+	if [ get-by-os  -win false -macosx false -linux true ] {
+		exec-process -command killall -args oosplash -ignoreExitCode -ignoreStderr
+	} -else {
+		log "I do not now howto close Closeopenoffice under windows or macosx"
+	}
+}
+
+Closeopenoffice // Ensure that we have no openoffice process open when running our tests
+
+proc ConfigureMsOO_TextVerarbeitung {
+	EnsureOpenOfficeIsInstalled
+	get-preferences-menu | click
+	with [get-window [ t preferences ]] {
+		get-tree | select [ t Textverarbeitung ]
+		// Button name various on number of installed text plugins!
+		// There replace 0 :, etc by .*
+	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "select-MsOO.png" ]
+	    with [get-button "Brief extern speichern (gleicher UNC Pfad auf allen Stationen)"] {
+	    	uncheck
+	        check
+	    }
+	    with [get-editbox -after [get-label [ t pref_externes_textprogramm ] ] ] {
+	        set-text [ concat  [get-user-dir] "/extern" ]
+	    }
+	    with [get-button [ t pref_texte_lokal_editieren ] ] {
+	        check
+	    }
+	    get-button ".*OpenOffice 3.x" | click
+   		get-tree | select "Textverarbeitung/OpenOffice.org"
+		with [get-editbox -after [get-label "Application home"]] {
+		    click-text 17
+		}
+		get-link ".*Define.*" | click-link
+		with [get-window "OpenOffice.org application"] {
+		    get-section "Available OpenOffice.org applications" | get-table | select "OpenOffice 4.1.7"
+		    get-button Fertigstellen | click -metaKeys ""
+		}
+		get-tree | select "System/Druckereinstellungen"
+		$MsOOOutDir | log
+		set-dialog-result Folder $MsOOOutDir		
+//		get-button "->" -after [get-label "Drucker mit A4-Papier mit ESR"] | click -metaKeys ""
+	    get-editbox -after [get-label "Drucker mit A4-Papier mit ESR"] | set-text PDF
+	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "config-MsOO.png" ]
+		get-button [ t apply_and_close ] | click
+	}
+}
+
+// Ende
+//
+------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

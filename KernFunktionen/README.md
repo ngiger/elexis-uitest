@@ -127,6 +127,8 @@ Für Linux-Builds muss die Bibliothek librxtx-java installiert.
 
 Für Linux muss z.B. openbox installiert sein, damit ein Window-Manager die Titelleiste anzeigt. Siehe z.B. run_h2.sh
 
+Für das Testen des OpenOffice Text plugins braucht es einen PDF-Printer, z.B. das Debian Paket printer-driver-cups-pdf
+
 # Gemachte Anpassungen an Elexis
 
 * Patch von Marco, nicht sicher ob das notwendig/gut ist. [14722] ElEvDispatcher move from Eclipse Job to SchdldExecutorService Siehe https://github.com/elexis/elexis-3-core/commit/d1020e0cff157bf074d4a7e4a62869249e9fd93a

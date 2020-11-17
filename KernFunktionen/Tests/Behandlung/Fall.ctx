@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 8/14/20 1:34 PM
+Save-Time: 8/17/20 4:54 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -185,17 +185,18 @@ proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [
 		get-button OK | click
 	}
 }
-proc "ErzeugeBriefZuAUT" [ val reason ".+" ] [ val adrName "Aquilana" ] [ val adrPostalcode "5401" ] {
+
+proc "DruckeBriefZuAut" [ val adrName "Aquilana" ] [ val adrPostalcode "5401" ] {
 	with [get-view [ t AUF ]] {
 		// Select first matching
-		get-table | select [ concat ".*" $reason ".*" ]
-		get-button [ t open_window_for_AUF ] | click
+		get-table | select ".*"
+		t print_AUF | log
+		get-button [ t print_AUF ] | click
 	}
 	with [get-window [ t select_contact ]] {
 		get-table | select  [ concat ".*" $adrName ".*"  $adrPostalcode ".*" ]
 		get-button OK | click
 	}
-	CloseLibreOffice
 }
 
 proc "FallSetCostBearer" [ val name "AEROSANA" ] [ val fall ".*" ] {
