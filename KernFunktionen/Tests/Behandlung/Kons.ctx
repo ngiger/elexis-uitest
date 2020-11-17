@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 8/14/20 3:34 PM
+Save-Time: 11/17/20 12:56 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -136,34 +136,48 @@ proc "GetItemsInTable" [ val table "NotableGiven" ] {
 	$table | get-property itemCount -raw
 }
 
-proc "ArtikelstammExecuteSearch"  {
+proc "ArtikelstammExecuteSearch"  [ val level 1 ] {
+	concat "ArtikelstammExecuteSearch level " $level " started" | log
     let [ val table [ get-view [ t artikel ] | get-table ] ] {
 		let	[ val nrItemsBefore [ GetItemsInTable $table | int ] ] {
 			get-button [ t btn_execute_search ] | click
 			loop {
+				$level | plus 1
+				concat "GetItemsInTable level " $level " before " $nrItemsBefore " now " [ GetItemsInTable $table ] " for " [  t artikel ] | log
 			    if [ GetItemsInTable $table | eq $nrItemsBefore ] {
-					// concat "GetItemsInTable returned " [ GetItemsInTable $table ] " for " $table | log
-					wait 500
-					recur
+					if [ $level | eq 50 ] {
+					  concat "ArtikelstammExecuteSearch level " $level " too high" | log
+					} -else {
+						wait 500
+						recur
+					}
 			    }
 			}
 		}
 	}
+	concat "ArtikelstammExecuteSearch level " $level " finished" | log
 }
 
-proc "LeistungenExecuteSearch"  {
+proc "LeistungenExecuteSearch" [ val level 1 ] {
+	concat "LeistungenExecuteSearch level " $level " started" | log
     let [ val table [ get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-table ] ] {
 		let	[ val nrItemsBefore [ GetItemsInTable $table | int ] ] {
 			get-button [ t btn_execute_search ] | click
 			loop {
-			concat "GetItemsInTable " $nrItemsBefore " returned " [ GetItemsInTable $table ] " for " $table | log
+			$level | plus 1
+			concat "GetItemsInTable level " $level " before " $nrItemsBefore " now " [ GetItemsInTable $table ] " for " [  t leistungen ] | log
 			if [ GetItemsInTable $table | eq $nrItemsBefore ] {
-				wait 500
-			    recur
-			}
+				if [ $level | eq 50 ] {
+				  concat "LeistungenExecuteSearch level " $level " too high" | log
+				} -else {
+					wait 500
+				    recur
+				    }
+				}
 			}
 		}
 	}
+	concat "LeistungenExecuteSearch level " $level " finished" | log
 }
 
 /**
