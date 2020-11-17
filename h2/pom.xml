@@ -3,7 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.elexis.rcptt</groupId>
   <artifactId>h2</artifactId>
-  <packaging>rcpttTest</packaging>
+  <packaging>pom</packaging>
+  <version>0.1</version>
   <parent>
     <groupId>ch.elexis.rcptt</groupId>
     <artifactId>common</artifactId>
@@ -12,18 +13,13 @@
   <properties>
     <myBaseDir>${project.basedir}/..</myBaseDir>
     <!-- missing AUTO_SERVER=TRUE" -->
-    <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
-    <vmArg2>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt_${language}/db</vmArg2>
-    <vmArg3>-Dch.elexis.dbUser=sa</vmArg3>
-    <vmArg4>-Dch.elexis.dbPw=</vmArg4>
-    <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
-    <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
-    <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
-    <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
-    <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
-    <vmArg10>-DvmArg10</vmArg10>
     <suite2run>SmokeTestSuite</suite2run>
   </properties>
+  <modules>
+    <module>../setup</module>
+    <module>../elexis-${useBranch}</module>
+    <module>../KernFunktionen</module>
+  </modules>
   <build>
       <plugins>
        <plugin>
@@ -34,6 +30,7 @@
               <id>dump-${user.home}/elexis/h2_elexis_rcptt_${language}/db</id>
               <phase>verify</phase>
               <configuration>
+                <verbose>true</verbose>
                 <target>
                   <exec executable="java" failonerror="true">
                     <arg value="-cp"/>
@@ -44,7 +41,7 @@
                     <arg value="-user"/>
                     <arg value="sa"/>
                     <arg value="-script"/>
-                    <arg value="${project.build.directory}/results/h2_elexis_rcptt_${language}.sql"/>
+                    <arg value="${myBaseDir}/KernFunktionen/target/results/h2_elexis_rcptt_${language}.sql"/>
                   </exec>
                 </target>
               </configuration>
@@ -54,13 +51,14 @@
             </execution>
             <execution>
               <id>copy-${user.home}/elexis/h2_elexis_rcptt_${language}</id>
-              <phase>install</phase>
+              <phase>verify</phase>
               <configuration>
+                <verbose>true</verbose>
                 <target>
                   <exec executable="cp" failonerror="true">
                     <arg value="-rpv"/>
                     <arg value="${user.home}/elexis/h2_elexis_rcptt_${language}"/>
-                    <arg value="${project.build.directory}/results/"/>
+                    <arg value="${myBaseDir}/KernFunktionen/target/results/"/>
                   </exec>
                 </target>
               </configuration>

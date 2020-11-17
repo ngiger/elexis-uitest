@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <profiles>
+    <profile>
+      <id>h2</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+      <properties>
+        <myBaseDir>${project.basedir}/..</myBaseDir>
+        <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
+        <vmArg2>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt_${language}/db</vmArg2>
+        <vmArg3>-Dch.elexis.dbUser=sa</vmArg3>
+        <vmArg4>-Dch.elexis.dbPw=</vmArg4>
+        <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
+        <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
+        <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
+        <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
+        <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
+        <vmArg10>-DvmArg10</vmArg10>
+        <autExplicit>${project.basedir}/../elexis-${useBranch}/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip</autExplicit>
+      </properties>
+    </profile>
+  </profiles>
+</settings>

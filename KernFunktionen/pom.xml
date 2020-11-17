@@ -1,10 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>ch.elexis.core</groupId>
-	<artifactId>KernFunktionen</artifactId>
-	<version>0.1</version>
-	<packaging>rcpttTest</packaging>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ch.elexis.rcptt</groupId>
+  <artifactId>KernFunktionen</artifactId>
+  <version>0.1</version>
+  <packaging>rcpttTest</packaging>
+  <parent>
+    <groupId>ch.elexis.rcptt</groupId>
+    <artifactId>common</artifactId>
+    <version>0.1</version>
+  </parent>
+  <properties>
+    <!-- these are the default for the h2 database, for
+         mysql and postgreSQL we override these values via settings.xml
+    -->
+    <myBaseDir>${project.basedir}/..</myBaseDir>
+    <!-- missing AUTO_SERVER=TRUE" -->
+    <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
+    <vmArg2>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt_${language}/db</vmArg2>
+    <vmArg3>-Dch.elexis.dbUser=sa</vmArg3>
+    <vmArg4>-Dch.elexis.dbPw=</vmArg4>
+    <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
+    <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
+    <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
+    <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
+    <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
+    <vmArg10>-DvmArg10</vmArg10>
+    <suite2run>SmokeTestSuite</suite2run>
+    <dropCreateDbScript>${project.basedir}/drop_create_db.sh</dropCreateDbScript>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+              <id>drop-create-database ${dropCreateDbScript}</id>
+              <phase>process-sources</phase>
+              <configuration>
+                    <properties>
+                        <language>${language}</language>
+                    </properties>
+                  <target> 
+                  <exec executable="/usr/bin/env" failonerror="true" >
+                    <arg value="bash"/>
+                    <arg value="${dropCreateDbScript}"/>
+                    <arg value="${language}"/>
+                    <arg value="${mysqlHost}"/>
+                    <arg value="${mysqlPort}"/>
+                  </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+        </executions>
+      </plugin>
+      <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.1.0</version>
+          <executions>
+              <execution>
+                  <id>runtest-copy-elexis-3-log-to-${project.build.directory}/results</id>
+                  <phase>verify</phase>
+                  <goals>
+                      <goal>copy-resources</goal>
+                  </goals>
+                  <configuration>
+                      <outputDirectory>${project.build.directory}/results/</outputDirectory>
+                      <resources>
+                          <resource>
+                              <directory>${user.home}/elexis/logs</directory>
+                              <includes>
+                                  <include>*</include>
+                              </includes>
+                          </resource>
+                      </resources>
+                  </configuration>
+              </execution>
+          </executions>
+      </plugin>
+        <plugin>
+        <groupId>org.eclipse.rcptt</groupId>
+        <artifactId>rcptt-maven-plugin</artifactId>
+        <version>${rcptt-maven-version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <timeout>5402</timeout>
+          <testOptions>
+            <!-- the default value of 300 for testExecTimeout was not long enough for VisitAllViews -->
+            <!-- full list given http://rcptt.xored.com/arguments, s.a. sets timeout options for the whole test suite and for a single test:-->
+            <testExecTimeout>5410</testExecTimeout>
+            <contextRunnableTimeout>5403000</contextRunnableTimeout>
+          </testOptions>
+          <aut>
+            <!-- use the product build in elexis-${useBranch} -->
+            <explicit>${autExplicit}</explicit>
+            <args>
+              <arg>-nl</arg>
+              <arg>${language}_CH</arg>
+              <arg>-nosplash</arg>
+              <arg>-noregtool</arg>
+              <arg>--use-config=rpctt</arg>
+           </args>
+            <vmArgs>
+              <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
+              <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
+              <vmArg>-Dlanguage=${language}</vmArg>
+              <vmArg>-Duser.language=${language}</vmArg>
+              <vmArg>${vmArg1}</vmArg>
+              <vmArg>${vmArg2}</vmArg>
+              <vmArg>${vmArg3}</vmArg>
+              <vmArg>${vmArg4}</vmArg>
+              <vmArg>${vmArg5}</vmArg>
+              <vmArg>${vmArg6}</vmArg>
+              <vmArg>${vmArg7}</vmArg>
+              <vmArg>${vmArg8}</vmArg>
+              <vmArg>${vmArg9}</vmArg>
+              <vmArg>${vmArg10}</vmArg>
+            </vmArgs>
+          </aut>
+                 <suites>
+                       <suite>${suite2run}</suite>
+                 </suites>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

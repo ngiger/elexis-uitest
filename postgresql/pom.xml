@@ -3,12 +3,23 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.elexis.rcptt</groupId>
   <artifactId>postgresql</artifactId>
-  <packaging>rcpttTest</packaging>
+  <packaging>pom</packaging>
   <parent>
     <groupId>ch.elexis.rcptt</groupId>
     <artifactId>common</artifactId>
     <version>0.1</version>
   </parent>
+  <profiles>
+    <profile>
+      <id>postgres</id>
+      <activation>
+        <activeByDefault/>
+      </activation>
+      <properties>
+        <vmArg3>vmArg3_from_postgresql</vmArg3>
+      </properties>
+    </profile>
+  </profiles>
   <properties>
     <!--  Initial preparation to do ONCE
     create database elexis_rcptt owner elexis encoding 'utf8' template template0;
@@ -19,76 +30,63 @@
     ALTER DATABASE elexis_rcptt OWNER TO elexis;
     -->
     <myBaseDir>${project.basedir}/..</myBaseDir>
-    <vmArg1>-Dch.elexis.dbFlavor=postgresql</vmArg1>
-    <vmArg2>-Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt_${language}</vmArg2>
-    <vmArg3>-Dch.elexis.dbUser=elexis</vmArg3>
-    <vmArg4>-Dch.elexis.dbPw=elexisTest</vmArg4>
-    <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
-    <vmArg6>-Dch.elexis.firstMandantPassword=elexisTest</vmArg6>
-    <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
-    <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
-    <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
-    <vmArg10>-DvmArg10</vmArg10>
-    <dropCreateDbScript>${project.basedir}/drop_create_db.sql</dropCreateDbScript>
   </properties>
+  <modules>
+    <module>../setup</module>
+    <module>../elexis-${useBranch}</module>
+    <!--
+    -->
+    <module>../KernFunktionen</module>
+  </modules>
   <build>
     <plugins>
-      <plugin>
-        <!--https://books.sonatype.com/mcookbook/reference/ch02s03.html#ex-groovy-script-ex -->
-        <!-- Create a script to change the locale used by the db -->
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>1.5</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase> <!-- is after generate-sources -->
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <scripts>
-                  <script><![CDATA[
-      file = new File("${dropCreateDbScript}")
-      System.out.println("# Created ${dropCreateDbScript}")
-      file.write("# Created by elexis-uitest/dbSpec/pom.xml as ${dropCreateDbScript}\n")
-      file.append("export PGPASSWORD=elexisTest\n")
-      file.append("/usr/bin/env psql --host=localhost --user=elexis --command=\"drop database if exists elexis_rcptt_${language};\"\n")
-      file.append("/usr/bin/env psql --host=localhost --user=elexis --command=\"create database elexis_rcptt_${language} encoding 'utf8' template template0;\"\n")
-  ]]></script>
-  </scripts>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.5.4</version>
-            <type>pom</type>
-            <scope>runtime</scope>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
-        <executions>
-          <execution>
-              <id>drop-create-database elexis_rcptt_${language}</id>
-              <phase>process-sources</phase>
-              <configuration>
-                <target> 
-                  <exec executable="/usr/bin/env" failonerror="true" >
-                    <arg value="bash"/>
-                    <arg value="${dropCreateDbScript}"/>
-                  </exec>
-                </target>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-        </executions>
+        <plugin>
+        <groupId>org.eclipse.rcptt</groupId>
+        <artifactId>rcptt-maven-plugin</artifactId>
+        <version>2.5.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <timeout>5402</timeout>
+          <testOptions>
+            <!-- the default value of 300 for testExecTimeout was not long enough for VisitAllViews -->
+            <!-- full list given http://rcptt.xored.com/arguments, s.a. sets timeout options for the whole test suite and for a single test:-->
+            <testExecTimeout>5410</testExecTimeout>
+            <contextRunnableTimeout>5403000</contextRunnableTimeout>
+          </testOptions>
+          <projects>
+              <project>${project.basedir}/../KernFunktionen</project>
+          </projects>
+          <aut>
+            <!-- use the product build in elexis-${useBranch} -->
+            <explicit>${autExplicit}</explicit>
+            <args>
+              <arg>-nl</arg>
+              <arg>${language}_CH</arg>
+              <arg>-nosplash</arg>
+              <arg>-noregtool</arg>
+              <arg>--use-config=rpctt</arg>
+           </args>
+            <vmArgs>
+              <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
+              <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
+              <vmArg>-Dlanguage=${language}</vmArg>
+              <vmArg>-Duser.language=${language}</vmArg>
+              <vmArg>${vmArg1}</vmArg>
+              <vmArg>${vmArg2}</vmArg>
+              <vmArg>${vmArg3}</vmArg>
+              <vmArg>${vmArg4}</vmArg>
+              <vmArg>${vmArg5}</vmArg>
+              <vmArg>${vmArg6}</vmArg>
+              <vmArg>${vmArg7}</vmArg>
+              <vmArg>${vmArg8}</vmArg>
+              <vmArg>${vmArg9}</vmArg>
+              <vmArg>${vmArg10}</vmArg>
+            </vmArgs>
+          </aut>
+                 <suites>
+                       <suite>${suite2run}</suite>
+                 </suites>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

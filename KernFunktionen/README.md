@@ -15,7 +15,6 @@ Unter https://srv.elexis.info/jenkins/view/UI-Test/ laufen CI (Continuos Integra
 
 * Nach jeder Anpassung des Quellcode innerhalb von 15 Minuten eine Rückmeldung haben, falls einer oder mehrere wichtigsten Abläufe von Elexis nicht mehr laufen (Smoketest, z.B. Benutzer, Patient, Fall, Kons anlegen und verrechnen).
 * Tests unter Windows
-* Mit MySQL Datenbank
 * Mit Datenbank-Zugriff via Elexis-Server
 * Ausführliche Tests regelmässig (täglich/wöchentlich) mit verschiedenen Betriebssystem durchführen.
 * Updates verschiedener Kombination von Features von der Vorgängerversion auf die aktuelle automatisch testen können.
@@ -33,9 +32,22 @@ Niklaus machte folgende Schritte, damit das Testen auf lange Sicht mit der DemoD
 
 Dazu wird Maven verwendet [Download](https://maven.apache.org/download.cgi). Die Versionen 3.5.2 und 3.6 liefen ohne Probleme (3.3.9 führte zu Problemen).
 
-Da verschiedenen Datenbank-Setup verwendet werden können, muss man angeben, welches man verwenden will. Hier zum Testen mit dem DemoDB
+Da verschiedenen Elexis- und Datenbank-Setup verwendet werden sollen, können die verschiedenen Parameter (aka Maven properties) in einem settings.xml angegeben werden. Dies wurde für die folgenden DBs gemacht
 
-    mvn -V clean verify -f demoDB/pom.xml$
+* h2 (Vorgabewert)
+* mysql
+* postresql
+
+Dazu gibt es in jedem entsprechenen Unterverzeichnis, ein Maven pom.xml und settings.xml. Um den Ablauf zu testen,
+verwende ich eine spezielle Test-Suite QuickTestSuite (Vorgabewert ist SmokeTestSuite), welche viel weniger Zeit braucht. Via Kommandozeile gebe
+ich an, ob ich die den Zweig master (Vorgabewert) oder 3.8 testen will. Andere Zweige werden im Moment nicht unterstützt.
+
+In den Verzeichnissen elexis-master und elexis-3.8 wird für die aktuelle target runtime ein RCP-Produkt erstellt,
+welches alle OpenSource-Features aus den repositories elexis-3-core und elexis-3-base.
+
+So sieht am Schluss ein Aufruf zum erstellen eine elexis-3.8 RCP-Applikation für eine mysql-Datenbank testet
+
+    mvn -V clean verify -f mysql/pom.xml --settings mysql/settings.xml -DuseBranch=3.8 -Dsuite2run=QuickTestSuite  
 
 ## Neue Testfälle erstellen
 
