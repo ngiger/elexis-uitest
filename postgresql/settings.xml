@@ -19,7 +19,7 @@
           <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
           <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
           <vmArg10>-DvmArg10</vmArg10>
-          <autExplicit>${project.basedir}/../elexis-${useBranch}/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip</autExplicit>
+          <autExplicit>${project.basedir}/../elexis-${useBranch}/target/products/ElexisAllOpenSourceApp-[platform].zip</autExplicit>
           <!-- dropCreateDbScript will be used in project Kernfunktionen!! Therefore we must point it to ../postgresql -->
           <dropCreateDbScript>${project.basedir}/../postgresql/drop_create_db.sh</dropCreateDbScript>
       </properties>
