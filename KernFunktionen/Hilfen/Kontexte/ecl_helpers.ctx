@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 11/19/20 12:41 PM
+Save-Time: 11/19/20 5:41 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -146,6 +146,9 @@ concat "get-user-dir returns: " [get-user-dir] |log
 concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log
 global [ val defaultLanguage [ get-java-property "user.language" "de" ] ]
 concat "defaultLanguage is now: " $defaultLanguage| log
+str "Created eHC/input by RCPTT" | write-lines [ concat [get-user-dir] "/elexis/eHC/input/dummy_input.txt" ]
+str "Created eHC/output by RCPTT" | write-lines [ concat [get-user-dir] "/elexis/eHC/output/dummy_output.txt" ]
+
 proc "t" [val key] [val language $defaultLanguage] {
 	try {
 		// concat "Searching: " $language "." $key | log

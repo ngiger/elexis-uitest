@@ -5,7 +5,7 @@ Element-Name: Preferences
 Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
-Save-Time: 8/14/20 2:45 PM
+Save-Time: 11/19/20 10:41 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -48,6 +48,7 @@ global [val savedLevel "-1" ] -override
 close-window-if-open [ t preferences ]
 
 proc "check-one-preference-item" [val prefName] {
+
    // prefName as seen in the CSV file
 // Todo: Workarounds für
 //  * keine rxtxt library gefunden wird /(AbacusJunior) set error message if Log-Eintrag mit java.lang.UnsatisfiedLinkError: no rxtxSerial in java.library.path
@@ -55,6 +56,7 @@ proc "check-one-preference-item" [val prefName] {
 // * HL7 Dateien (Der Wert muss ein vorhandenes Verzeichnis sein.
 // * Datenaustausch/Omnivore: Der Wert muss ein vorhandenes Verzeichnis sein.
 	global [val curLevel [replaceAll $prefName ",.*" "" | int ] ] -override
+	concat "check-one-preference-item: " $curLevel " " $prefName | log
 	if [ $curLevel | str | matches "0" ] {
 		global [val curPrefix0 
 			[ replaceFirst $prefName ".*," ""] ] -override
@@ -80,6 +82,7 @@ proc "check-one-preference-item" [val prefName] {
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
 		with [get-tree] {
+			concat "check-one-preference-item: curPrefMenu is" $curPrefMenu | log
 			expand-all | select $curPrefMenu
 			global [val curPrefMenuClean [ replaceAll $curPrefMenu "[ äöüéèàç]" "_" ] ] -override
 			if [ get-item -path $curPrefMenu | get-property childCount -raw | matches "0" ] {
@@ -97,9 +100,9 @@ proc "check-one-preference-item" [val prefName] {
 			concat "save-screenshot: curPrefMenu: " $curPrefMenu " img: " $imgName | log
 			get-window [ t preferences ] | get-object |save-screenshot -out [ replaceAll $imgName "/___" "/" ]
 		}
-		get-button [ t apply_and_close ] | 
-			click
+		get-button [ t apply_and_close ] | click
 	}
+	concat "check-one-preference-item: " $curLevel " " $prefName  " done" | log
 }
 
 proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
@@ -108,9 +111,8 @@ proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
 	concat "visit-all-preferences having: " [ read-lines $preferencesCsvFile | length ] " items" | log
 	read-lines $preferencesCsvFile | foreach [val item] {
 		concat "visit-all-preferences checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
-		if [$item | str | matches [
-			concat  "^_indent.*" $addToIgnorePattern] ] {
-			concat "Skipping first line and " $addToIgnorePattern | log
+		if [$item | str | matches [ concat  "^_indent.*" $addToIgnorePattern] ] {
+			concat "visit-all-preferences: line to ignore is '" $item "'" | log
 		} -else {
 			check-one-preference-item $item
 		}
