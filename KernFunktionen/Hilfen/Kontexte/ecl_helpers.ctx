@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 8/14/20 1:35 PM
+Save-Time: 11/19/20 12:41 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -116,7 +116,7 @@ elexisLogMayNotContain "java.lang.OutOfMemoryError"
  */
 proc "RestartElexis" {
 	concat "RestartElexis: Run-Mode is " [ safe-get-java-property "elexis-run-mode" ] | log
-	wait-until-eclipse-is-ready
+	trace "RestartElexis"
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 		log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
 	} -else {

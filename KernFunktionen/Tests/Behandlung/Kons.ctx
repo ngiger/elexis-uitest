@@ -5,13 +5,13 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 11/17/20 2:45 PM
+Save-Time: 11/19/20 3:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-global [ val Losartan "Losartan Sandoz Filmtabl 100 mg 98 Stk <63.45> " ] -override
+global [ val Losartan "Losartan Sandoz Filmtabl 100 mg 98 Stk.*" ] -override
 
 proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 	if [ HasKonsSelected | eq false] {
@@ -144,7 +144,7 @@ proc "ArtikelstammExecuteSearch" {
 			loop  [ val level 0 ] {
 				concat "GetItemsInTable level " $level " before " $nrItemsBefore " now " [ GetItemsInTable $table ] " for " [  t artikel ] | log
 			    if [ GetItemsInTable $table | eq $nrItemsBefore ] {
-					if [ $level | eq 50 ] {
+					if [ $level | eq 10 ] {
 					  concat "ArtikelstammExecuteSearch level " $level " too high" | log
 					} -else {
 						wait 500
@@ -160,17 +160,18 @@ proc "ArtikelstammExecuteSearch" {
 proc "LeistungenExecuteSearch" {
 	concat "LeistungenExecuteSearch started" | log
     let [ val table [ get-view [ t leistungen ] | get-group [ t alle_leistungen ] | get-table ] ] {
-		let	[ val nrItemsBefore [ GetItemsInTable $table | int ] ] {
-			get-button [ t btn_execute_search ] | click
-			loop [ val level 0 ] {
-				concat "GetItemsInTable level " $level " before " $nrItemsBefore " now " [ GetItemsInTable $table ] " for " [  t leistungen ] | log
-				if [ GetItemsInTable $table | eq $nrItemsBefore ] {
-					if [ $level | eq 50 ] {
-					  concat "LeistungenExecuteSearch level " $level " too high" | log
-					} -else {
-						wait 500
-						recur [$level | plus 1]
-				    }
+		get-button [ t btn_execute_search ] | click -metaKeys ""
+		loop [ val level 0 ] {
+			concat "GetItemsInTable level " $level " kons " $nrItemsBefore " leistungen " [ GetItemsInTable $table ] " for " [  t leistungen ] | log
+			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_" $level "_" $item_short ".png"]
+			try {
+			get-group  [ t alle_leistungen ] | get-table | select $item_long | click -default
+			} -catch {
+				if [ $level | eq 10 ] {
+				  concat "LeistungenExecuteSearch level " $level " too high" | log
+				} -else {
+					wait 500
+					recur [$level | plus 1]
 			    }
 			}
 		}
@@ -185,19 +186,18 @@ proc "LeistungenExecuteSearch" {
 */
 proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expectedItemsAdded 1 ] {
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
-		concat "kons-add-artikelstamm: " $item_short " have " $nrItemsBefore " items"| log
+		concat "kons-add-artikelstamm: " $item_short " have " $nrItemsBefore " items. " $item_long | log
 		PressAddLeistungToKons
 		concat "PressAddLeistungToKons "  $item_short " done" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $item_short ".png"]
 		concat "PressAddLeistungToKons "  $item_short " after screenshot" | log
 		with [get-view [t leistungen ] ] {
-			get-tab-folder | get-tab-item Artikelstamm | click
+			get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+			log "kons-add-artikelstamm LeistungenExecuteSearch short"
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
 			log "kons-add-artikelstamm LeistungenExecuteSearch"
 			LeistungenExecuteSearch
-			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter1_" $item_short ".png"]
-			get-group  [ t alle_leistungen ] | get-table | select $item_long | click -default
 			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter2_" $item_short ".png"]
 			key-type Enter
 		}
@@ -435,11 +435,11 @@ proc "kons-add-block" [ val blockName "arzt_Besuch.*KVG.*" ]
 		with [get-group [ t alle_leistungen ]] {
 		get-editbox -after [get-label Name ] | set-text $blockName
 		try {
-				get-button [ t btn_execute_search ] | click
+				get-button [ t btn_execute_search ] | click -metaKeys ""
 				get-eclipse-window | gen-screenshot [concat $imagesDir "kons-add_block_before_" $blockName ".png"]
 				get-tree | select [get-item -path $blockName ] | double-click
 				// Hier kommt die fürchterliche Warnung folgende Leistung konnte
-				// im aktuelln Kontext Fall Konsultation Gesetz nicht verrechnet werden
+				// im aktuellen Kontext Fall Konsultation Gesetz nicht verrechnet werden
 				concat "kons-add-block: " $blockName " double-click done" | log
 			} -catch {
 			concat "kons-add-block: " $blockName " double-click failed" | log
