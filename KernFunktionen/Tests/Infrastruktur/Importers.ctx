@@ -5,7 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Save-Time: 11/20/20 3:47 PM
+Save-Time: 11/20/20 5:55 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -96,7 +96,6 @@ proc "ExecuteDataImport" [ val file ] {
 	concat "ExecuteDataImport with "  $file " done" | log
 	elexisLogMayNotContain "java.lang.OutOfMemoryError"
 }
-
 proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xml" ] ] {
 	open-window-by-name [ t daten_artikel ]
 	concat "ReadArtikelstamm before reading file: " $file | log
@@ -116,14 +115,26 @@ proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xm
 			get-button [ t btn_data_import_search ] | click
 			// TODO: Wait that pull request 174 for Tickets 14745 gets merged
 			// get-button "Pharma-Artikel" | check
+			get-eclipse-window | gen-screenshot [concat $imagesDir "artikelstamm_OS_imported.png"]
 			get-button OK | click
 		}
 		concat "ReadArtikelstamm OpenSource from " $file | log
 	} -catch {
 		log "Could not click on import, checking Medelexis Datei..Referenzdaten aktualisieren"
-		get-menu -path "Datei/Referenzdaten aktualisieren" | click
+		get-menu -path "Datei/Referenzdaten aktualisieren" | click -metaKeys ""
+		try {
+			with [get-window "Auswahl erforderlich"] {
+			    get-button "Alles auswählen" | click -metaKeys ""
+				log "ReadArtikelstamm Referenzdaten must be imported"
+				get-eclipse-window | gen-screenshot [concat $imagesDir "refdata2import.png"]
+			    get-button OK | click -metaKeys ""
+			}
+		} -catch {
+			log "ReadArtikelstamm Referenzdaten scheinen uptodate zu sein"
+			get-eclipse-window | gen-screenshot [concat $imagesDir "refdata_okay.png"]
+			get-window "Referenzdaten Update Service" | get-button OK | click -metaKeys ""
+		}
 	}
-	
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	get-view [ t artikel ] | get-button [ t btn_automatic_search ] | uncheck
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
