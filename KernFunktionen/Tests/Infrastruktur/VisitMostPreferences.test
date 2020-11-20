@@ -5,14 +5,27 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _EwDAgAYfEemcp9WoDsgIvA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/26/19 1:21 PM
+Save-Time: 11/20/20 1:15 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-visit-all-preferences -addToIgnorePattern "|.*Konfigurationen|.*iWork Pages Proces.*|.*Barcode Scanner.*|.*Eingangsfach.*|.*HL7 Dateien.*|.*Omnivore.*|.*Externe Dokumente|.*Hilotec-OpenDocument.*"
+visit-all-preferences -addToIgnorePattern "1,Eingangsfach|2,CST Einstellungen|1,Schriftarten|1,Ansicht|0,Barcode Scanner"
+// For testing use something like
+// elements found via grep CST ./KernFunktionen/target/results/preferences.csv
+/*
+check-one-preference-item "1,Agenda-Farben"
+check-one-preference-item "1,Agenda-Ansicht"
+check-one-preference-item "1,Ansicht"
+check-one-preference-item "1,Schriftarten"
+check-one-preference-item "1,Fälle"
+check-one-preference-item "1,Icons für die Agenda"
+check-one-preference-item "1,Eingangsfach"
+check-one-preference-item "1,Inbox"
+check-one-preference-item "1,1,Leistungen - Diagnosen"
+check-one-preference-item "2,CST Einstellungen"
+*/
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

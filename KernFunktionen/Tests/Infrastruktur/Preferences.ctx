@@ -5,7 +5,7 @@ Element-Name: Preferences
 Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
-Save-Time: 11/19/20 10:41 PM
+Save-Time: 11/20/20 1:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -69,6 +69,10 @@ proc "check-one-preference-item" [val prefName] {
 		global [val curPrefix2 
 			[ replaceFirst $prefName ".*," ""] ] -override
 	}
+	if [ $curLevel | str | matches "3" ] {
+		global [val curPrefix3
+			[ replaceFirst $prefName ".*," ""] ] -override
+	}
 	global [val savedLevel $curLevel ] -override
 	$curLevel | switch [ case "0" {
 		global [val curPrefMenu $curPrefix0 ] -override
@@ -76,47 +80,59 @@ proc "check-one-preference-item" [val prefName] {
 		global [val curPrefMenu [ concat $curPrefix0 "/" $curPrefix1 ] ] -override
 	} ]  [ case "2" {
 		global [val curPrefMenu [ concat $curPrefix0 "/" $curPrefix1 "/" $curPrefix2 ]] -override
+	} ]  [ case "3" {
+		global [val curPrefMenu [ concat $curPrefix0 "/" $curPrefix1 "/" $curPrefix2 "/" $curPrefix3 ]] -override
 	} ] -default {
 		bool false | assert-true -message "Unexecptecd state for curPrefMenu!"
 	}  
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
 		with [get-tree] {
-			concat "check-one-preference-item: curPrefMenu is" $curPrefMenu | log
-			expand-all | select $curPrefMenu
-			global [val curPrefMenuClean [ replaceAll $curPrefMenu "[ äöüéèàç]" "_" ] ] -override
-			if [ get-item -path $curPrefMenu | get-property childCount -raw | matches "0" ] {
-				global [val  imgName [ 
-						concat $imagesDir "preferences/" $curPrefMenuClean ".png"
-					] ] -override
-			} -else {
-				global [val  imgName [
-						concat $imagesDir "preferences/"  $curPrefMenuClean "/_"
-						[ replaceFirst $curPrefMenuClean -searchPattern "/[^\\/]*$" -replaceString "" ]
-						".png"
+			// concat "check-one-preference-item: curPrefMenu is: '" $curPrefMenu "'"| log
+			try {
+				if [ get-item -path $curPrefMenu | get-property childCount -raw | matches "0" ] {
+					global [val  imgName [
+							concat $imagesDir "preferences/" $curPrefMenuClean ".png"
 						] ] -override
-				concat "imgName now " $imagesDir | log
-			}
-			concat "save-screenshot: curPrefMenu: " $curPrefMenu " img: " $imgName | log
-			get-window [ t preferences ] | get-object |save-screenshot -out [ replaceAll $imgName "/___" "/" ]
+				} -else {
+					global [val  imgName [
+							concat $imagesDir "preferences/"  $curPrefMenuClean "/_"
+							[ replaceFirst $curPrefMenuClean -searchPattern "/[^\\/]*$" -replaceString "" ]
+							".png"
+							] ] -override
+				}
+				// concat "check-one-preference-item: imgName now " $imgName | log
+				expand-all | select $curPrefMenu
+				// concat "check-one-preference-item: selected: '" $curPrefMenu "'"| log
+				} -error [val errorObj]  -catch {
+					concat "check-one-preference-item: failed selecting: '" $curPrefMenu "' " $errorObj | log
+					global [val  imgName [
+							concat $imagesDir "preferences/failed/" $curPrefMenu ".png" ] ] -override
+					}
+			global [val curPrefMenuClean [ replaceAll $curPrefMenu "[ äöüéèàç]" "_" ] ] -override
+			global [val  imgName  [ replaceAll $imgName "/___" "/" ] ] -override
+			// concat "save-screenshot: curPrefMenu: " $curPrefMenu " img: " $imgName | log
+			get-window [ t preferences ] | get-object | save-screenshot -out $imgName
 		}
 		get-button [ t apply_and_close ] | click
 	}
-	concat "check-one-preference-item: " $curLevel " " $prefName  " done" | log
+	// concat "check-one-preference-item: " $curLevel " " $prefName  " done" | log
 }
 
 proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
+	concat "visit-all-preferences started addToIgnorePattern: " $addToIgnorePattern | log
 	SavePreferencesToFile
 	global [val curPrefSection [get-first-preference-item]] -override
-	concat "visit-all-preferences having: " [ read-lines $preferencesCsvFile | length ] " items" | log
-	read-lines $preferencesCsvFile | foreach [val item] {
-		concat "visit-all-preferences checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
-		if [$item | str | matches [ concat  "^_indent.*" $addToIgnorePattern] ] {
-			concat "visit-all-preferences: line to ignore is '" $item "'" | log
+	concat "visit-all-preferences read " $preferencesCsvFile " with " [ read-lines $preferencesCsvFile | length ] " lines" | log
+	read-lines $preferencesCsvFile | foreach [val line] {
+		if [$line | str | matches [ concat  "^_indent.*|" $addToIgnorePattern] ] {
+			concat "visit-all-preferences: ignores line '" $line "'" | log
 		} -else {
-			check-one-preference-item $item
+			concat "visit-all-preferences checks line: " $line " addToIgnorePattern: " $addToIgnorePattern  | log
+			check-one-preference-item $line
 		}
 	}
+	concat "visit-all-preferences finished addToIgnorePattern: " $addToIgnorePattern  | log
 }
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

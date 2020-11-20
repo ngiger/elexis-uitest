@@ -61,7 +61,11 @@ So sieht am Schluss ein Aufruf zum erstellen eine elexis-3.8 RCP-Applikation fü
 ** Da Elexis im master Zweig auf eclipse 2018-09 aufsetzt, müssen die Snapshot-Versionen von rcptt verwendet werden bis RCPTTT 2.3.1 herauskommt, z.B. viaa
   http://download.eclipse.org/rcptt/nightly/2.4.0/201901240014/ide/rcptt.ide-2.4.0-N201901240014-linux.gtk.x86_64.zip
 * maven > 3.3.9 (z.B. 3.5.2 oder 3.6.0) zum Starten der Tests auf der Komandozeile z.B via `-V clean verify  -f RunFromScratch/pom.xml -Dsuite2run=SmokeTestSuite`
+* OpenOffice (4.1.7?) muss installiert sein (siehe EnsureOpenOfficeIsInstalled in  KernFunktionen/Tests/Textverarbeitung/text_plugins_common.ctx). Vorgabepfad ist /opt/openoffice4/program/swriter. Diese
+  Version findet man unter https://netcologne.dl.sourceforge.net/project/openofficeorg.mirror/4.1.7/binaries/de/
+* LibreOffice muss installiert sein (siehe EnsureLibreOffficIsInstalled in  KernFunktionen/Tests/Textverarbeitung/text_plugins_common.ctx)
 * Es darf keine LibreOffice-Instanz offen sein, falls der Test Dokumente via dem Hilotec-Plugin druckt, da sonst LibreOffice das headless ignoriert.
+* import utility muss unter Linux installiert sein (Debian buster Paket imagemagick-6)
 
 ### AUT definieren
 

@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 11/19/20 5:41 PM
+Save-Time: 11/20/20 12:16 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -237,10 +237,15 @@ proc "create-entire-screenshot" [ val out [concat $imagesDir "screen.png"] ] {
 		// and we get the windows titles anyway
 		get-eclipse-window | gen-screenshot $out
 	} -else {
-		concat "create-entire-screenshot " $out | log
+		concat "create-entire-screenshot 1 " $out | log
+		get-eclipse-window | gen-screenshot $out // creates directory if necessary
+		concat "create-entire-screenshot 2 " $out | log
+		take-screenshot $out // creates directory if necessary
+		concat "create-entire-screenshot 3 " $out | log
 		let [ val result [ exec-process "import" "-window" "root" $out -ignoreExitCode true  ] ] {
 			concat "create-entire-screenshot " $out " returned " [ $result | get  exitCode ] | log
 		}
+		concat "create-entire-screenshot done " $out | log
 	}
 }
 
@@ -264,6 +269,10 @@ proc "GetMainToolbar" {
 proc "GetBottomToolbar" {
 	get-button Restore | get-object | invoke getParent | invoke getParent | invoke getParent
 }
+
+create-entire-screenshot [ concat $imagesDir "ecl_helper_started.png"]
+take-screenshot  [ concat $imagesDir "ecl_helper_screenshot.png"]
+trace [ concat "trace " $imagesDir "ecl_helper_screenshot.png"]
 //
 // Ende
 

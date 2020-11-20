@@ -74,13 +74,25 @@
                       <outputDirectory>${project.build.directory}/results/</outputDirectory>
                       <resources>
                           <resource>
-                              <directory>${user.home}/PDF</directory>
+                              <directory>${user.home}/elexis/logs</directory>
                               <includes>
                                   <include>*</include>
                               </includes>
                           </resource>
+                      </resources>
+                  </configuration>
+              </execution>
+              <execution>
+                  <id>runtest-PDF-to-${project.build.directory}/results</id>
+                  <phase>verify</phase>
+                  <goals>
+                      <goal>copy-resources</goal>
+                  </goals>
+                  <configuration>
+                      <outputDirectory>${project.build.directory}/results/PDF</outputDirectory>
+                      <resources>
                           <resource>
-                              <directory>${user.home}/elexis/logs</directory>
+                              <directory>${user.home}/PDF</directory>
                               <includes>
                                   <include>*</include>
                               </includes>
@@ -102,6 +114,8 @@
             <!-- full list given http://rcptt.xored.com/arguments, s.a. sets timeout options for the whole test suite and for a single test:-->
             <testExecTimeout>5410</testExecTimeout>
             <contextRunnableTimeout>5403000</contextRunnableTimeout>
+            <passedTestDetails>true</passedTestDetails>
+            <launchingKillAutOnConnectError>true</launchingKillAutOnConnectError>
           </testOptions>
           <aut>
             <!-- use the product build in elexis-${useBranch} -->

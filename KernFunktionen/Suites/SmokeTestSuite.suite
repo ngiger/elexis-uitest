@@ -5,7 +5,7 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
-Save-Time: 11/19/20 10:27 PM
+Save-Time: 11/20/20 8:08 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -18,6 +18,8 @@ Sollte nicht mehr als 10 Minuten dauren.
 Content-Type: text/testcase
 Entry-Name: testcase-items
 
+_gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
+_37YskCr-EeujcoUPAsRgcQ	// kind: 'test' name: 'OOWriterMustBeInstalled' path: '../Tests/Textverarbeitung/OOWriterMustBeInstalled.test'
 _naPjYLBwEemub6f3erWwag	// kind: 'test' name: 'AboutElexis' path: '../Tests/Infrastruktur/AboutElexis.test'
 __ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '../Tests/Infrastruktur/NoPreferenceWithPercent.test'
 _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../Tests/Infrastruktur/NoViewWithPercent.test'
@@ -31,7 +33,6 @@ _tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Test
 _kd4wsLBUEemub6f3erWwag	// kind: 'test' name: 'ImportArtikelstamm' path: '../Tests/Infrastruktur/SingleImportTests/ImportArtikelstamm.test'
 _lqzhsLBSEemub6f3erWwag	// kind: 'test' name: 'ImportMigel' path: '../Tests/Infrastruktur/SingleImportTests/ImportMigel.test'
 _3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Hilfen/RestartElexis.test'
-_gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
 _ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/BasicAbrechnungssytems.test'
 _7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
