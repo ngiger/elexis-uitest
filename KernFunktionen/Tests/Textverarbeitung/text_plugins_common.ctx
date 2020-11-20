@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 11/19/20 5:27 PM
+Save-Time: 11/20/20 7:04 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -77,7 +77,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 		get-tree | select [ t Textverarbeitung ]
 		// Button name various on number of installed text plugins!
 		// There replace 0 :, etc by .*
-	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "select-hilotecODF.png" ]
+	    get-window [ t preferences ] | gen-screenshot [concat $imagesDir "hilotecODF-select.png" ]
 	    with [get-button [ t print_save_letter_extern ] ] {
 	        check
 	    }
@@ -87,6 +87,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    with [get-button [ t pref_texte_lokal_editieren ] ] {
 	        check
 	    }
+	    get-window "OpenOffice.*" | gen-screenshot [concat $imagesDir "hilotecODF-config-1.png" ]
 	    get-button ".*Hilotec-OpenDocument" | click
 		get-tree | select "Hilotec-OpenDocument"
 		if [ get-by-os  -win true -macosx false -linux false ] {
@@ -105,7 +106,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 			set-text $lowriter
 		}
 		get-button "Wrapper Skript aktivieren" | uncheck
-	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "config-hilotecODF.png" ]
+	    get-window [ t preferences ] | gen-screenshot [concat $imagesDir "hilotecODF-config-2.png" ]
 		get-button [ t apply_and_close ] | click
 	}
 }
@@ -172,7 +173,7 @@ proc ConfigureMsOO_TextVerarbeitung {
 		get-tree | select [ t Textverarbeitung ]
 		// Button name various on number of installed text plugins!
 		// There replace 0 :, etc by .*
-	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "select-MsOO.png" ]
+	    get-window [ t preferences ] | gen-screenshot [concat $imagesDir "MsOO-select.png" ]
 	    with [get-button [ t print_save_letter_extern ] ] {
 	    	uncheck // Must be unchecked for OpenOffice Text plugin
 	    }
@@ -186,15 +187,17 @@ proc ConfigureMsOO_TextVerarbeitung {
 		    set-text "/opt/openoffice4/program"
 		}
 		get-link ".*Define.*" | click-link
+		wait 1000 // leave some time to find the app
 		with [get-window "OpenOffice.org application"] {
-		    get-section "Available OpenOffice.org applications" | get-table | select "OpenOffice 4.1.7"
+		    get-section "Available OpenOffice.org applications" | get-table | select "OpenOffice.*"
+		    get-window "OpenOffice.*" | gen-screenshot [concat $imagesDir "MsOO-available.png" ]
 		    get-button Fertigstellen | click -metaKeys ""
 		}
 	    with [get-button "Prevent termination of OpenOffice.org application"  ] {
 	    	check // Must be checked for OpenOffice Text plugin
 	    	// , so verhindert diese Einstellung, dass das OpenOffice Programm mit Elexis geschlossen wird. 
 	    }
-	  	take-screenshot "PreferencesTextOpenOffice.png"
+	    take-screenshot "PreferencesTextOpenOffice.png"
 		get-tree | select "System/Druckereinstellungen"
 		$MsOOOutDir | log
 		set-dialog-result Folder $MsOOOutDir		
@@ -203,13 +206,13 @@ proc ConfigureMsOO_TextVerarbeitung {
 	    get-editbox -after [get-label "Drucker mit A4-Papier standard"] | set-text PDF
 	    get-editbox -after [get-label "Drucker mit A5-Papier" ] | set-text PDF
 	    get-editbox -after [get-label "Drucker mit Einzelblatteinzug"] | set-text PDF
-	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "config-MsOO.png" ]
-	  	take-screenshot "PreferencesSystemPrinters.png"
+	    get-window [ t preferences ] | gen-screenshot [concat $imagesDir "MsOO-config.png" ]
+	    take-screenshot "PreferencesSystemPrinters.png"
 		get-tree | select "Datenaustausch/eHC"
 	    get-editbox -after [get-label "Standard Ausgabeverzeichnis"] | set-text [concat [get-java-property user.home] "/elexis/eHC/output" ]
 	    get-editbox -after [get-label "Standard Eingangsverzeichnis"] | set-text [concat [get-java-property user.home] "/elexis/eHC/input" ]
-	  	wait 1000
-	  	get-window [ t preferences ] | gen-screenshot [concat $imagesDir "config-eHC.png" ]
+	    wait 1000
+	    get-window [ t preferences ] | gen-screenshot [concat $imagesDir "MsOO-config-eHC.png" ]
 		get-button [ t apply_and_close ] | click
 	}
 }
