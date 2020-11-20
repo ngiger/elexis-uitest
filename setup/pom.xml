@@ -41,6 +41,9 @@
                       <directory>${user.home}/elexis/logs</directory>
                   </fileset>
                   <fileset>
+                      <directory>${user.home}/PDF</directory>
+                  </fileset>
+                  <fileset>
                       <directory>${user.home}/elexis/rcptt</directory>
                   </fileset>
                   <fileset>

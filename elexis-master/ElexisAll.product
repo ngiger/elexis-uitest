@@ -47,6 +47,7 @@
    </plugins>
 
    <features>
+     <!-- from elexis-3-base -->
       <feature id="at.gruber.elexis.mythic22.feature" installMode="root"/>
       <feature id="at.medevit.elexis.agenda.feature" installMode="root"/>
       <feature id="at.medevit.elexis.bluemedication.feature" installMode="root"/>
@@ -80,12 +81,6 @@
       <feature id="ch.elexis.connect.reflotron.v2.feature" installMode="root"/>
       <feature id="ch.elexis.connect.sysmex.feature" installMode="root"/>
       <feature id="ch.elexis.connector.medicosearch.feature" installMode="root"/>
-      <feature id="ch.elexis.core.application.feature" installMode="root"/>
-      <feature id="ch.elexis.core.common.feature" installMode="root"/>
-      <feature id="ch.elexis.core.logging.feature" installMode="root"/>
-      <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
-      <feature id="ch.elexis.core.ui.feature" installMode="root"/>
-      <feature id="ch.elexis.core.ui.p2.feature" installMode="root"/>
       <feature id="ch.elexis.externe_dokumente.feature" installMode="root"/>
       <feature id="ch.elexis.fop_wrapper.feature" installMode="root"/>
       <feature id="ch.elexis.global_inbox.feature" installMode="root"/>
@@ -145,10 +140,21 @@
       <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
+
+      <!-- from elexis-3-core -->
+      <feature id="ch.elexis.core.application.feature" installMode="root"/>
+      <feature id="ch.elexis.core.common.feature" installMode="root"/>
+      <feature id="ch.elexis.core.logging.feature" installMode="root"/>
+      <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
+      <feature id="ch.elexis.core.spotlight.feature" installMode="root"/>
       <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
       <feature id="ch.elexis.core.ui.chromium.feature" installMode="root"/>
       <feature id="ch.elexis.core.ui.eenv.feature" installMode="root"/>
+      <feature id="ch.elexis.core.ui.feature" installMode="root"/>
+      <feature id="ch.elexis.core.ui.p2.feature" installMode="root"/>
       <feature id="ch.elexis.jre.feature" installMode="root"/>
+      <!-- to get the texteditor -->
+      <!-- changes a lot in the preferences menu feature id="org.eclipse.platform" installMode="root"/--> 
    </features>
 
    <configurations>
