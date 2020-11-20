@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 11/20/20 7:04 PM
+Save-Time: 11/20/20 10:17 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -87,7 +87,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	    with [get-button [ t pref_texte_lokal_editieren ] ] {
 	        check
 	    }
-	    get-window "OpenOffice.*" | gen-screenshot [concat $imagesDir "hilotecODF-config-1.png" ]
+	    get-window [ t preferences ] | gen-screenshot [concat $imagesDir "hilotecODF-config-1.png" ]
 	    get-button ".*Hilotec-OpenDocument" | click
 		get-tree | select "Hilotec-OpenDocument"
 		if [ get-by-os  -win true -macosx false -linux false ] {
