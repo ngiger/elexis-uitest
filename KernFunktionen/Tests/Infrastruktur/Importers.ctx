@@ -5,7 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Save-Time: 8/14/20 1:32 PM
+Save-Time: 11/20/20 3:47 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -99,7 +99,7 @@ proc "ExecuteDataImport" [ val file ] {
 
 proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xml" ] ] {
 	open-window-by-name [ t daten_artikel ]
-	concat "before ReadArtikelstamm file: " $file | log
+	concat "ReadArtikelstamm before reading file: " $file | log
 	try { get-view [ t artikel ] }  -error [val errorObj] -catch {
 		concat "Error ReadArtikelstamm view " [ t artikel ] [$errorObj | get message] | log
 	}
@@ -108,17 +108,21 @@ proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xm
 		get-editbox -after [get-label [ t artikelstamm_label  ]] | set-focus
 	}
 	get-button [ t show_menu ] | click
-	get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
-	set-dialog-result File $file
-	concat "ReadArtikelstamm OK before " $file | log
-	with [get-window [ t view_data_import ]] {
-		get-button [ t btn_data_import_search ] | click
-		// TODO: Wait that pull request 174 for Tickets 14745 gets merged
-		// get-button "Pharma-Artikel" | check
-		get-button OK | click
+	try {
+		get-view [ t artikel ] | get-menu -path [ t btn_import ] | click
+		set-dialog-result File $file
+		concat "ReadArtikelstamm OpenSource OK before " $file | log
+		with [get-window [ t view_data_import ]] {
+			get-button [ t btn_data_import_search ] | click
+			// TODO: Wait that pull request 174 for Tickets 14745 gets merged
+			// get-button "Pharma-Artikel" | check
+			get-button OK | click
+		}
+		concat "ReadArtikelstamm OpenSource from " $file | log
+	} -catch {
+		log "Could not click on import, checking Medelexis Datei..Referenzdaten aktualisieren"
+		get-menu -path "Datei/Referenzdaten aktualisieren" | click
 	}
-
-	concat "ReadArtikelstamm OK danach " $file | log
 	
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	get-view [ t artikel ] | get-button [ t btn_automatic_search ] | uncheck

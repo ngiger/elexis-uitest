@@ -5,7 +5,7 @@ Element-Name: Preferences
 Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
-Save-Time: 11/20/20 1:06 PM
+Save-Time: 11/20/20 2:04 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -134,5 +134,7 @@ proc "visit-all-preferences" [ val addToIgnorePattern "" ] {
 	}
 	concat "visit-all-preferences finished addToIgnorePattern: " $addToIgnorePattern  | log
 }
+close-window-if-open "InfoBox: not proper private key" // missing key
+
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
