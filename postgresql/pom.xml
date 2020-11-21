@@ -22,20 +22,19 @@
   </profiles>
   <properties>
     <!--  Initial preparation to do ONCE
-    create database elexis_rcptt owner elexis encoding 'utf8' template template0;
+    create database elexis_rcptt_de owner elexis encoding 'utf8' template template0;
     create user elexis with UNENCRYPTED password 'elexisTest';
     ALTER USER elexis CREATEDB;
-    GRANT ALL PRIVILEGES ON DATABASE elexis_rcptt TO elexis ;
+    GRANT ALL PRIVILEGES ON DATABASE elexis_rcptt_de TO elexis ;
     GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO elexis;
-    ALTER DATABASE elexis_rcptt OWNER TO elexis;
+    ALTER DATABASE elexis_rcptt_de OWNER TO elexis;
     -->
-    <myBaseDir>${project.basedir}/..</myBaseDir>
   </properties>
   <modules>
-    <module>../setup</module>
-    <module>../elexis-${useBranch}</module>
     <!--
     -->
+    <module>../setup</module>
+    <module>../elexis-${useBranch}</module>
     <module>../KernFunktionen</module>
   </modules>
   <build>
@@ -94,28 +93,54 @@
         <version>1.6.0</version>
         <executions>
           <execution>
-              <id>pg_dump-database elexis_rcptt_${language}</id>
+            <id>pg_dump-database elexis_rcptt_de_${language}</id>
             <phase>compile</phase>
             <goals>
               <goal>exec</goal>
             </goals>
+            <configuration>
+              <verbose>true</verbose>
+              <executable>pg_dump</executable>
+              <environmentVariables>
+                <PGPASSWORD>elexisTest</PGPASSWORD>
+              </environmentVariables>
+              <outputFile>${project.basedir}/target/results/pg_dump_${language}.sql</outputFile>
+              <arguments>
+                <argument>--host=localhost</argument>
+                <argument>--verbose</argument>
+                <argument>--user=elexis</argument>
+                <argument>--encoding=UTF-8</argument>
+                <argument>--clean</argument>
+                <argument>--dbname=elexis_rcptt_${language}</argument>
+                <argument>--create</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pg_schemas elexis_rcptt_de_${language}</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <verbose>true</verbose>
+              <executable>pg_dump</executable>
+              <environmentVariables>
+                <PGPASSWORD>elexisTest</PGPASSWORD>
+              </environmentVariables>
+              <outputFile>${project.basedir}/target/results/pg_schema_${language}.sql</outputFile>
+              <arguments>
+                <argument>--schema-only</argument>
+                <argument>--host=localhost</argument>
+                <argument>--user=elexis</argument>
+                <argument>--encoding=UTF-8</argument>
+                <argument>--clean</argument>
+                <argument>--dbname=elexis_rcptt_${language}</argument>
+                <argument>--create</argument>
+              </arguments>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <executable>pg_dump</executable>
-          <environmentVariables>
-            <PGPASSWORD>elexisTest</PGPASSWORD>
-          </environmentVariables>
-          <outputFile>${project.basedir}/target/results/pg_dump_${language}.sql</outputFile>
-          <arguments>
-            <argument>--host=localhost</argument>
-            <argument>--user=elexis</argument>
-            <argument>--encoding=UTF-8</argument>
-            <argument>--clea</argument>
-            <argument>--dbname=elexis_rcptt_${language}</argument>
-            <argument>--create</argument>
-          </arguments>
-        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -10,18 +10,20 @@
     <version>0.1</version>
   </parent>
   <properties>
-    <!--  Initial preparation to TO ONCE
+    <!--  Initial preparation to TO ONCE, on Debian Buster sudo -u root mysql
       mariadb 
        create user elexis identified by 'elexisTest';
     mysql -u root -p 3306 -h 127.0.0.1
-    create database elexis_rcptt;
+    create database elexis_rcptt_de;
     create user elexis identified by 'elexisTest';
-    grant all on elexis_rcptt.* to elexis@'%';
-    grant all on elexis_rcptt.* to 'elexis'@'%' with grant option;
+    grant all on elexis_rcptt_de.* to elexis@'%';
+    grant all on elexis_rcptt_de.* to 'elexis'@'%' with grant option;
    flush privileges;
     -->
   </properties>
   <modules>
+    <!--
+    -->
     <module>../setup</module>
     <module>../elexis-${useBranch}</module>
     <module>../KernFunktionen</module>
@@ -33,9 +35,23 @@
         <version>1.8</version>
         <executions>
           <execution>
-            <id>dump-database-elexis-rcptt-${project.basedir}/../KernFunktionen/target/results</id>
+            <id>Create ${project.basedir}/target/results</id>
             <phase>verify</phase>
             <configuration>
+               <verbose>true</verbose>
+               <target>
+                    <mkdir dir="${project.basedir}/target/results" />
+                </target>
+            </configuration>
+            <goals>
+                <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>dump-database-elexis-rcptt-${project.basedir}/target/results</id>
+            <phase>verify</phase>
+            <configuration>
+              <verbose>true</verbose>
               <target>
                 <exec executable="/usr/bin/env" failonerror="true" >
                   <arg value="mysqldump"/>
@@ -45,8 +61,32 @@
                   <arg value="--password=elexisTest"/>
                   <arg value="--add-drop-database"/>
                   <arg value="--single-transaction"/>
-                  <arg value="--result-file=${project.basedir}/../KernFunktionen/target/results/mysql_dump.sql" />
-                  <arg value="elexis_rcptt"/>
+                  <arg value="--result-file=${project.basedir}/target/results/mysql_dump.sql" />
+                  <arg value="elexis_rcptt_${language}"/>
+                </exec>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+         <execution>
+            <id>dump-mysql-schema-${project.basedir}/target/results</id>
+            <phase>verify</phase>
+            <configuration>
+              <verbose>true</verbose>
+              <target>
+                <exec executable="/usr/bin/env" failonerror="true" >
+                  <arg value="mysqldump"/>
+                  <arg value="--no-data"/>
+                  <arg value="--host=${mysqlHost}"/>
+                  <arg value="--user=elexis"/>
+                  <arg value="--port=${mysqlPort}"/>
+                  <arg value="--password=elexisTest"/>
+                  <arg value="--add-drop-database"/>
+                  <arg value="--single-transaction"/>
+                  <arg value="--result-file=${project.basedir}/target/results/mysql_schema.sql" />
+                  <arg value="elexis_rcptt_${language}"/>
                 </exec>
               </target>
             </configuration>

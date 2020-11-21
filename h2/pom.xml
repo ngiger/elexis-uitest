@@ -11,11 +11,12 @@
     <version>0.1</version>
   </parent>
   <properties>
-    <myBaseDir>${project.basedir}/..</myBaseDir>
     <!-- missing AUTO_SERVER=TRUE" -->
     <suite2run>SmokeTestSuite</suite2run>
   </properties>
   <modules>
+    <!--
+    -->
     <module>../setup</module>
     <module>../elexis-${useBranch}</module>
     <module>../KernFunktionen</module>
@@ -27,6 +28,19 @@
         <version>1.8</version>
         <executions>
           <execution>
+            <id>Create ${project.basedir}/target/results</id>
+            <phase>verify</phase>
+            <configuration>
+               <verbose>true</verbose>
+               <target>
+                    <mkdir dir="${project.basedir}/target/results" />
+                </target>
+            </configuration>
+            <goals>
+                <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
               <id>dump-${user.home}/elexis/h2_elexis_rcptt_${language}/db</id>
               <phase>verify</phase>
               <configuration>
@@ -34,14 +48,42 @@
                 <target>
                   <exec executable="java" failonerror="true">
                     <arg value="-cp"/>
-                    <arg value="${rcptt-resources}/h2-1.4.197.jar"/>
+                    <arg value="${rcptt-resources}/h2-${h2.version}.jar"/>
                     <arg value="org.h2.tools.Script"/>
                     <arg value="-url"/>
                     <arg value="jdbc:h2:${user.home}/elexis/h2_elexis_rcptt_${language}/db"/>
                     <arg value="-user"/>
                     <arg value="sa"/>
                     <arg value="-script"/>
-                    <arg value="${myBaseDir}/KernFunktionen/target/results/h2_elexis_rcptt_${language}.sql"/>
+                    <arg value="${project.basedir}/target/results/h2_elexis_rcptt_${language}.sql"/>
+                  </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+            <execution>
+              <!-- tested with
+              java -cp ~/elexis/rcptt/h2-1.4.197.jar org.h2.tools.Script -url jdbc:h2:~/elexis/h2_elexis_rcptt_de/db -user SA -script test.sql -options NODATA
+              -->
+              <id>schema-${user.home}/elexis/h2_elexis_rcptt_${language}/db</id>
+              <phase>verify</phase>
+              <configuration>
+                <verbose>true</verbose>
+                <target>
+                  <exec executable="java" failonerror="true">
+                    <arg value="-cp"/>
+                    <arg value="${rcptt-resources}/h2-${h2.version}.jar"/>
+                    <arg value="org.h2.tools.Script"/>
+                    <arg value="-url"/>
+                    <arg value="jdbc:h2:${user.home}/elexis/h2_elexis_rcptt_${language}/db"/>
+                    <arg value="-user"/>
+                    <arg value="sa"/>
+                    <arg value="-script"/>
+                    <arg value="${project.basedir}/target/results/h2_schema_${language}.sql"/>
+                    <arg value="-options"/>
+                    <arg value="NODATA"/>
                   </exec>
                 </target>
               </configuration>
@@ -58,7 +100,7 @@
                   <exec executable="cp" failonerror="true">
                     <arg value="-rpv"/>
                     <arg value="${user.home}/elexis/h2_elexis_rcptt_${language}"/>
-                    <arg value="${myBaseDir}/KernFunktionen/target/results/"/>
+                    <arg value="${project.basedir}/target/results/"/>
                   </exec>
                 </target>
               </configuration>

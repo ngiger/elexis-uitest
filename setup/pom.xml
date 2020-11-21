@@ -247,9 +247,9 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://repo1.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar</url>
+              <url>https://repo1.maven.org/maven2/com/h2database/h2/${h2.version}/h2-${h2.version}.jar</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
-              <md5>f9893acfa22b7fe1492dd9c515af2e5b</md5>
+              <md5>18c05829a03b92c0880f22a3c4d1d11d</md5>
             </configuration>
           </execution>
           <execution>

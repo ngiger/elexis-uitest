@@ -22,9 +22,9 @@
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
     <useBranch>master</useBranch>
-    <myBaseDir>${project.basedir}</myBaseDir>
     <localeSqlScript>${project.build.directory}/setlocale_${language}_CH.sql</localeSqlScript>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
+    <h2.version>1.4.200</h2.version>
   </properties>
 
   <pluginRepositories> <!-- tried to use https://ftp.fau.de/eclipse/content/repositories, but this does not work -->

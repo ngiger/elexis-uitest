@@ -16,7 +16,6 @@
     <!-- these are the default for the h2 database, for
          mysql and postgreSQL we override these values via settings.xml
     -->
-    <myBaseDir>${project.basedir}/..</myBaseDir>
     <!-- missing AUTO_SERVER=TRUE" -->
     <vmArg1>-Dch.elexis.dbFlavor=h2</vmArg1>
     <vmArg2>-Dch.elexis.dbSpec=jdbc:h2:${user.home}/elexis/h2_elexis_rcptt_${language}/db</vmArg2>
