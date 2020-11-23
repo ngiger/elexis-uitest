@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 11/20/20 12:16 PM
+Save-Time: 11/23/20 9:34 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -128,17 +128,18 @@ proc "RestartElexis" {
 }
 // global [ val resultsDir [ concat [ get-env PWD ] "/../results/"] ]
 global [ val resultsDir [ concat [pwd ] "/../results/"] ]
-concat "translations_de uri is: " [concat [get-java-property user.home] "/elexis//rcptt/translations_de.properties" ] | log
+concat "translations_de uri is: "  [uri-from-path [concat [get-java-property user.home] "/elexis/rcptt/translations_de.properties" ] ] | log
 
 global [ val translations [ map
-	[ entry de [ read-properties -uri [concat [get-java-property user.home]"/elexis/rcptt/translations_de.properties" ] ] ]
-	[ entry fr [ read-properties -uri [concat [get-java-property user.home] "/elexis//rcptt/translations_fr.properties" ] ] ]
+	[ entry de [ read-properties -uri [uri-from-path [concat [get-java-property user.home]"/elexis/rcptt/translations_de.properties" ] ] ] ]
+	[ entry fr [ read-properties -uri [uri-from-path [concat [get-java-property user.home] "/elexis//rcptt/translations_fr.properties" ] ] ] ]
 ] ]
+concat "translation read" | log
 
 global [ val imagesDir	[ concat $resultsDir "images/" ] ]
 global [ val pdfDir	[ concat $resultsDir "pdf/" ] ]
-global [ val preferencesCsvFile [ concat  $resultsDir "preferences.csv" ] ]
-global [ val viewsCsvFile	   [ concat  $resultsDir "views.csv" ] ]
+global [ val preferencesCsvFile [ uri-from-path [ concat  $resultsDir "preferences.csv" ] ] ]
+global [ val viewsCsvFile	    [ uri-from-path [ concat  $resultsDir "views.csv" ] ] ]
 concat "get-env HOME returns: " [get-env HOME ] |log
 concat "resultsDir returns: " $resultsDir |log
 concat "get-default-locale returns: " [get-default-locale] |log
@@ -231,22 +232,19 @@ proc "gen-screenshot" [ val parent -input ] [ val out [concat $imagesDir "dest.p
 	concat "gen-screenshot: " $out | log
 }
 
-proc "create-entire-screenshot" [ val out [concat $imagesDir "screen.png"] ] {
+proc "create-entire-screenshot" [ val pathName [concat $imagesDir "screen.png"] ] {
 	if [ get-by-os  -win true -macosx true -linux false ] {
 		// We create normal screenshot on windows and macOSX as we do not run under openbox
 		// and we get the windows titles anyway
-		get-eclipse-window | gen-screenshot $out
+		get-eclipse-window | get-object | save-screenshot $pathName
 	} -else {
-		concat "create-entire-screenshot 1 " $out | log
-		get-eclipse-window | gen-screenshot $out // creates directory if necessary
-		concat "create-entire-screenshot 2 " $out | log
-		take-screenshot $out // creates directory if necessary
-		concat "create-entire-screenshot 3 " $out | log
-		let [ val result [ exec-process "import" "-window" "root" $out -ignoreExitCode true  ] ] {
-			concat "create-entire-screenshot " $out " returned " [ $result | get  exitCode ] | log
+		get-eclipse-window | get-object | save-screenshot $pathName // creates directory if necessary
+		wait 500
+		let [ val result [ exec-process "import" "-window" "root" $pathName -ignoreExitCode true  ] ] {
+			// concat "create-entire-screenshot " $pathName " returned " [ $result | get  exitCode ] | log
 		}
-		concat "create-entire-screenshot done " $out | log
 	}
+	concat "create-entire-screenshot pathName " $pathName | log
 }
 
 proc "GetActPatPersonalia" {
@@ -270,9 +268,9 @@ proc "GetBottomToolbar" {
 	get-button Restore | get-object | invoke getParent | invoke getParent | invoke getParent
 }
 
-create-entire-screenshot [ concat $imagesDir "ecl_helper_started.png"]
-take-screenshot  [ concat $imagesDir "ecl_helper_screenshot.png"]
-trace [ concat "trace " $imagesDir "ecl_helper_screenshot.png"]
+get-eclipse-window | gen-screenshot [ concat $imagesDir " window/ecl_helper_screenshot.png"]
+create-entire-screenshot [ concat $imagesDir "entire/ecl_helper_screenshot.png"]
+trace [ concat "create-entire-screenshot " $imagesDir "ecl_helper_screenshot.png"]
 //
 // Ende
 
