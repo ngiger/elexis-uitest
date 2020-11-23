@@ -5,17 +5,16 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Jfwu0BQ_EemEb8FG0wciYA
 Manually-Ordered: true
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/2/19 5:50 PM
+Save-Time: 11/23/20 8:15 PM
 
 ------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8
 Content-Type: text/testcase
 Entry-Name: testcase-items
 
-_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: 'BasicMandanten.test'
-_c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBase' path: 'ImportSwissBase.test'
-_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Hilfen/RestartElexis.test'
-_7B2QICqtEemYspbA8Fsyow	// kind: 'test' name: 'BasicPrinting' path: 'BasicPrinting.test'
-_GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: 'BasicKonsTests.test'
+_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../BasicMandanten.test'
+_c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBaseAll' path: '../Infrastruktur/SingleImportTests/ImportSwissBaseAll.test'
+_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../../Hilfen/RestartElexis.test'
+_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../BasicAbrechnungssytems.test'
+_GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Infrastruktur/BasicKonsTests.test'
 
 ------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8--
