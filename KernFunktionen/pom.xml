@@ -44,8 +44,7 @@
                         <language>${language}</language>
                     </properties>
                   <target> 
-                  <exec executable="/usr/bin/env" failonerror="true" >
-                    <arg value="bash"/>
+                  <exec executable="bash" failonerror="true" >
                     <arg value="${dropCreateDbScript}"/>
                     <arg value="${language}"/>
                     <arg value="${mysqlHost}"/>

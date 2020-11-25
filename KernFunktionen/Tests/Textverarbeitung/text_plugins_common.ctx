@@ -5,7 +5,8 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 11/25/20, 11:58 AM
+Runtime-Version: 2.4.2.201905080442
+Save-Time: 11/25/20 8:51 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -69,7 +70,7 @@ proc EnsureLibreOffficIsInstalled {
 			log "EnsureLibreOffficIsInstalled: libreoffice ist installed (LINUX)"
 		} -else {
 			log "EnsureLibreOffficIsInstalled: Check whether libreoffice ist installed under Windows"
-			global [val lowriter "/c/Program\ Files/LibreOffice/program/program/soffice.exe"] -override
+			global [val lowriter "C:\\Program Files\\LibreOffice\\program\\swriter.exe"] -override
 			let [val result [exec-process -command $lowriter -args "--version"]] {
 				concat "EnsureLibreOffficIsInstalled: " $lowriter "libreoffice version returned " [$result | get
 					"exitCode"] " out " [$result | get stdout] | log
@@ -176,7 +177,7 @@ proc EnsureOpenOfficeIsInstalled {
 		log "EnsureOpenOffficIsInstalled: Check whether openoffice ist installed under MacOSX"
 		global [val oowriter "/Applications/OpenOffice.app/Contents/MacOS/swriter"] -override
 		let [val result [exec-process $oowriter "-invisible" "-headless" "-help" -ignoreStderr true ]] {
-			concat "EnsureOpenOffficIsInstalled: " $oowriter "openoffice version returned " [$result | get exitCode]
+			concat "EnsureOpenOffficIsInstalled: " $oowriter "openoffice help returned " [$result | get exitCode]
 				" out " [$result | get stdout] | log
 			$result | get exitCode | equals 0 | assert-true
 		}
@@ -197,10 +198,9 @@ proc EnsureOpenOfficeIsInstalled {
 			log "EnsureOpenOffficIsInstalled: openoffice ist installed (LINUX)"
 		} -else {
 			log "EnsureOpenOffficIsInstalled: Check whether openoffice ist installed under Windows"
-			// global [val oowriter "C:\\Program Files\\LibreOffice\\program\\swriter"] -override
-			global [val oowriter "/c/Program\ Files/OpenOffice/program/soffice.exe"] -override
-			let [val result [exec-process -command $oowriter -args "--version"]] {
-				concat "EnsureOpenOffficIsInstalled: " $oowriter "openoffice version returned " [$result | get exitCode]
+			global [val oowriter "C:\\Program Files (x86)/OpenOffice 4\\program\\swriter.exe"] -override
+			let [val result [exec-process $oowriter  "-invisible" "-headless" "-help" -ignoreStderr true ] ] {
+				concat "EnsureOpenOffficIsInstalled: " $oowriter "openoffice help returned " [$result | get exitCode]
 					" out " [$result | get stdout] | log
 				$result | get exitCode | equals 0 | assert-true
 			}

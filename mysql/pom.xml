@@ -53,8 +53,7 @@
             <configuration>
               <verbose>true</verbose>
               <target>
-                <exec executable="/usr/bin/env" failonerror="true" >
-                  <arg value="mysqldump"/>
+                <exec executable="mysqldump" failonerror="true" >
                   <arg value="--host=${mysqlHost}"/>
                   <arg value="--user=elexis"/>
                   <arg value="--port=${mysqlPort}"/>
@@ -76,8 +75,7 @@
             <configuration>
               <verbose>true</verbose>
               <target>
-                <exec executable="/usr/bin/env" failonerror="true" >
-                  <arg value="mysqldump"/>
+                <exec executable="mysqldump" failonerror="true" >
                   <arg value="--no-data"/>
                   <arg value="--host=${mysqlHost}"/>
                   <arg value="--user=elexis"/>
