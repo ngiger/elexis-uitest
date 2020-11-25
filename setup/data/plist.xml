@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.jenkins.ci</string>
+    <key>UserName</key>
+    <string>jenkins</string>
+    <key>SessionCreate</key>
+    <true/>
+    <key>ProgramArguments</key>
+    <array>
+      <string>java</string>
+      <string>-Djava.awt.headless=true</string>
+      <string>-jar</string>
+      <string>/Users/jenkins/Downloads/agent.jar</string>
+      <string>-jnlpUrl</string>
+      <string>https://srv.elexis.info/jenkins/computer/MacMini/slave-agent.jnlp</string>
+	  <string>-secret</string>
+	  <string>topsecret</string>
+	  <string>-workDir</string>
+	  <string>/Users/jenkins/build/</string>
+    </array>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/jenkins/Desktop/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/jenkins/Desktop/error.log</string>
+  </dict>
+</plist>

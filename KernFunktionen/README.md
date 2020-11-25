@@ -224,6 +224,20 @@ https://www.eclipse.org/rcptt/blog/2014/11/21/screenshots-with-rcptt.html
 
 https://www.eclipse.org/rcptt/blog/2014/12/10/test-about-dialog.html
 
+# Jenkins MacOSX Slave aufsetzen
+
+* Benutzer erzeugen
+* MacOSX node auf jenkins Instanz erzeugen
+* Starten via agent testen (evt. JDK/OpenWebStart dazu intallieren)
+* OpenOffice installieren und einmal aufstarten (als Benutzer Jenkins), damit Vorname/Name/Kürzel gesetzt wird
+* LibreOffice installieren und einmal aufstarten (als Benutzer Jenkins), damit Vorname/Name/Kürzel gesetzt wird
+* Einen Daemon (Hintergrund-Program) dazu einrichten.
+** URL und secret in setup/data/plist.xml anpassen
+
+    sudo cp setup/data/plist.xml /Library/LaunchDaemons/com.jenkins.ci.plist
+    sudo chmod 644 /Library/LaunchDaemons/com.jenkins.ci.plist
+
+
 # TODO: Cleanup
 
 * Wenn RCPTT 2.3.1 (oder 2.4.0) herauskommt, commit vom 20.12.2018 wegen find-all rückgängig machen.

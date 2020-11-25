@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 11/23/20 9:34 PM
+Save-Time: 11/25/20, 4:44 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -126,8 +126,16 @@ proc "RestartElexis" {
 		log "RestartElexis successfull"
 	}
 }
-// global [ val resultsDir [ concat [ get-env PWD ] "/../results/"] ]
-global [ val resultsDir [ concat [pwd ] "/../results/"] ]
+
+if [get-by-os -win false -macosx true -linux false] {
+	global [ val resultsDir [ concat [pwd ] "/../../../../results/"] ] -override
+	log "resultsDir: 2 under MacOSX is " $resultsDir | log
+	global [ val resultsDir [ invoke-static  "org.apache.commons.io" "org.apache.commons.io.FilenameUtils" "normalize" $resultsDir ] ] -override
+	log "resultsDir: 3 under MacOSX is " $resultsDir | log
+} -else {
+	global [ val resultsDir [ concat [pwd ] "/../results/"] ] -override
+	log "resultsDir: (win or linux) is " $resultsDir | log
+}
 concat "translations_de uri is: "  [uri-from-path [concat [get-java-property user.home] "/elexis/rcptt/translations_de.properties" ] ] | log
 
 global [ val translations [ map
