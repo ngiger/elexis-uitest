@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.rcptt.launching.ext">
+    <booleanAttribute key="append.args" value="true"/>
+    <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
+    <booleanAttribute key="askclear" value="true"/>
+    <stringAttribute key="aut-location" value="/Users/niklaus/Documents/work/Eclipse.app/Contents/Eclipse"/>
+    <stringAttribute key="aut-target-platform" value="AUT Elexis3MacOsxH2 (Target Platform)"/>
+    <booleanAttribute key="aut-target-updatable" value="true"/>
+    <stringAttribute key="bootstrap" value=""/>
+    <stringAttribute key="checked" value="[NONE]"/>
+    <booleanAttribute key="clearConfig" value="true"/>
+    <booleanAttribute key="clearws" value="false"/>
+    <booleanAttribute key="clearwslog" value="false"/>
+    <stringAttribute key="com.xored.launching.common.attrArch" value="x86_64"/>
+    <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MacOsxH2"/>
+    <stringAttribute key="location" value="${workspace_loc}/../aut-ch.elexis.core.application.product"/>
+    <booleanAttribute key="org.eclipse.debug.ui.ATTR_APPEND_TO_FILE" value="true"/>
+    <stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="/Users/niklaus/rcpttWorkspace/.metadata/.plugins/org.eclipse.pde.core/ch.elexis.core.application.product/console.log"/>
+    <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/AdoptOpenJDK 11 [11.0.9.1]"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch x86_64 -consoleLog"/>
+    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dch.elexis.dbFlavor=h2&#10;-Dch.elexis.dbSpec=jdbc:h2:${env_var:HOME}/elexis/h2_elexis_rcptt_de/db&#10;-Dch.elexis.dbUser=sa&#10;-Dch.elexis.dbPw=&#10;-Dch.elexis.firstMandantName=Mustermann&#10;-Dch.elexis.firstMandantPassword=elexisTest&#10;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info&#10;-Dch.elexis.username=Mustermann&#10;-Dch.elexis.password=elexisTest"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${env_var:HOME}/Documents/work/wd"/>
+    <stringAttribute key="pde.version" value="3.3"/>
+    <stringAttribute key="product" value="ch.elexis.core.application.product"/>
+    <booleanAttribute key="tracing" value="false"/>
+    <booleanAttribute key="useDefaultConfig" value="true"/>
+    <booleanAttribute key="useDefaultConfigArea" value="true"/>
+    <booleanAttribute key="useProduct" value="true"/>
+</launchConfiguration>
