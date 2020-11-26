@@ -1,0 +1,1 @@
+echo No drop/create database needed for h2

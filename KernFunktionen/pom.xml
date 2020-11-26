@@ -12,7 +12,29 @@
     <artifactId>common</artifactId>
     <version>0.1</version>
   </parent>
-  <properties>
+  <profiles>
+    <profile>
+      <id>windows</id>
+    <activation>
+      <os>
+        <family>Windows</family>
+      </os>
+    </activation>
+      <properties>
+		<dropCreateDbScript>${project.basedir}/drop_create_db.bat</dropCreateDbScript>
+      </properties>
+	 </profile>
+	 <profile>
+      <id>other</id>
+    <activation>
+	<activeByDefault>true</activeByDefault>
+    </activation>
+      <properties>
+		<dropCreateDbScript>${project.basedir}/drop_create_db.sh</dropCreateDbScript>
+      </properties>
+	 </profile>
+   </profiles>
+   <properties>
     <!-- these are the default for the h2 database, for
          mysql and postgreSQL we override these values via settings.xml
     -->
@@ -28,7 +50,6 @@
     <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
     <vmArg10>-DvmArg10</vmArg10>
     <suite2run>SmokeTestSuite</suite2run>
-    <dropCreateDbScript>${project.basedir}/drop_create_db.sh</dropCreateDbScript>
   </properties>
   <build>
     <plugins>
@@ -44,8 +65,7 @@
                         <language>${language}</language>
                     </properties>
                   <target> 
-                  <exec executable="bash" failonerror="true" >
-                    <arg value="${dropCreateDbScript}"/>
+                  <exec executable="${dropCreateDbScript}" failonerror="true" >
                     <arg value="${language}"/>
                     <arg value="${mysqlHost}"/>
                     <arg value="${mysqlPort}"/>

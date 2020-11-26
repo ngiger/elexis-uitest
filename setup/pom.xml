@@ -9,7 +9,29 @@
     <version>0.1</version>
   </parent>
   <packaging>pom</packaging>
-  <build>
+  <profiles>
+    <profile>
+      <id>windows</id>
+    <activation>
+      <os>
+        <family>Windows</family>
+      </os>
+    </activation>
+      <properties>
+		<save_run_from_scratch>save_run_from_scratch.bat</save_run_from_scratch>
+      </properties>
+	 </profile>   
+	 <profile>
+      <id>other</id>
+    <activation>
+	<activeByDefault>true</activeByDefault>
+    </activation>
+      <properties>
+		<save_run_from_scratch>save_run_from_scratch.sh</save_run_from_scratch>
+      </properties>
+	 </profile>
+   </profiles>
+   <build>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -73,7 +95,7 @@
               <phase>generate-sources</phase>
               <configuration>
                 <target>
-                  <copy file="${project.basedir}/save_run_from_scratch.sh" tofile="${rcptt-resources}/save_run_from_scratch.sh" preservelastmodified="true" />
+                  <copy file="${project.basedir}/${save_run_from_scratch}" tofile="${rcptt-resources}/${save_run_from_scratch}" preservelastmodified="true" />
                   <copy file="${project.basedir}/data/test.properties" tofile="${rcptt-resources}/test.properties" preservelastmodified="true" />
                   <copy file="${project.basedir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
                   <copy file="${project.basedir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
