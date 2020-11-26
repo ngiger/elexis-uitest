@@ -1,12 +1,12 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
-Contexts: _QPqdkBNIEemmeedSb1JQew,_LkBSkBsDEembU9g-6bJhVg,_jOjx0CCAEem06Mv2pVmYtA
+Contexts: _QPqdkBNIEemmeedSb1JQew,_jOjx0CCAEem06Mv2pVmYtA
 Element-Name: CheckTarmedFallVerrechnen
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _Mr6FcFFuEemrk7fLFkHFEw
-Save-Time: 7/29/20 1:09 PM
+Save-Time: 11/26/20, 12:22 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -19,7 +19,7 @@ Entry-Name: .content
 /*
 SetMandantKontaktInfo 1
 SetMandantenDetails 1 // Test
-ChangeMandant [concat [ GetPraxisProperty praxis.mandant.1.Name ] ".*" ]
+ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
 */
 
 let [ val hiloFile [ concat $rcpttDir "hilotec_configured" ] ] {
@@ -36,7 +36,7 @@ let [ val hiloFile [ concat $rcpttDir "hilotec_configured" ] ] {
 	}
 }
 
-ChangeMandant [concat [ GetPraxisProperty praxis.mandant.1.Name ] ".*" ]
+ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
 let [ val keyId patient.100. ] {
 	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
 	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]

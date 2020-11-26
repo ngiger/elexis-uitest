@@ -5,18 +5,23 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Save-Time: 8/14/20 1:35 PM
+Save-Time: 11/26/20, 12:16 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc ChangeMandant [ val name ] {
-	concat "ChangeMandant: " $name | log
+proc ChangeMandant [ val name ] [ val first_name ".*" ] {
+	concat "ChangeMandant: " $name " f " $first_name | log
 	get-menu -path [ t Datei_Mandant_wechseln ] | click
 	with [get-window -class ChangeMandantDialog] {
 		get-list | select $name
-		get-window -class ChangeMandantDialog | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_1.png"]
+		if [ $first_name | eq ".*" ] {
+			log "Skip firstname "
+			get-window -class ChangeMandantDialog | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_1.png"]
+		} -else {
+			get-window -class ChangeMandantDialog | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_" $first_name "_1.png"]
+		}
 		get-button OK | click
 	}
 }
