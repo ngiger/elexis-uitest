@@ -184,16 +184,11 @@ proc EnsureOpenOfficeIsInstalled {
 	} -else {
 		if [get-by-os -win false -macosx false -linux true] {
 			log "EnsureOpenOffficIsInstalled: Check whether openoffice ist installed under Linux"
-			let [val result [exec-process -command $oowriter -args "--version"]] {
-				concat "EnsureOpenOffficIsInstalled: openoffice version returned " [$result | get exitCode] " out "
+			let [val result [exec-process $oowriter "-invisible" "-headless" "-help" -ignoreStderr true ]] {
+				concat "EnsureOpenOffficIsInstalled: openoffice help returned " [$result | get exitCode] " out "
 					[$result | get stdout] | log
-				concat "EnsureOpenOffficIsInstalled: openoffice version returned " [$result | get exitCode] " out "
+				concat "EnsureOpenOffficIsInstalled: openoffice help returned " [$result | get exitCode] " out "
 				$result | get exitCode | equals 0 | assert-true
-				let [val result [exec-process -command which -args $oowriter]] {
-					global [val oowriter [invoke-static "org.apache.commons.lang3"
-						"org.apache.commons.lang3.StringUtils" chop [$result | get stdout]]] -override
-					concat "EnsureOpenOffficIsInstalled: oowriter is now set to: " $oowriter ": done" | log
-				}
 			}
 			log "EnsureOpenOffficIsInstalled: openoffice ist installed (LINUX)"
 		} -else {
@@ -263,5 +258,5 @@ proc ConfigureMsOO_TextVerarbeitung {
 }
 
 // Ende
-// 
+//
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
