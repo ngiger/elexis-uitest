@@ -5,8 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 11/25/20 8:51 PM
+Save-Time: 11/30/20 4:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -247,9 +246,9 @@ proc ConfigureMsOO_TextVerarbeitung {
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-config.png"]
 		take-screenshot "PreferencesSystemPrinters.png"
 		get-tree | select "Datenaustausch/eHC"
-		get-editbox -after [get-label "Standard Ausgabeverzeichnis"] | set-text [concat [get-java-property user . home]
+		get-editbox -after [get-label "Standard Ausgabeverzeichnis"] | set-text [concat [get-java-property  "user.home" ]
 			"/elexis/eHC/output"]
-		get-editbox -after [get-label "Standard Eingangsverzeichnis"] | set-text [concat [get-java-property user . home]
+		get-editbox -after [get-label "Standard Eingangsverzeichnis"] | set-text [concat [get-java-property "user.home" ]
 			"/elexis/eHC/input"]
 		wait 1000
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-config-eHC.png"]
