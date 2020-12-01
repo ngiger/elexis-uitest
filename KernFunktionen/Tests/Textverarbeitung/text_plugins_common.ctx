@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 11/30/20 4:20 PM
+Save-Time: 12/1/20 4:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -16,6 +16,9 @@ global [val MsOOOutDir $pdfDir] -override
 global [val ConfiguredTextPlugin ""] -override
 global [val lowriter "/usr/bin/libreoffice"] -override
 global [val oowriter "/opt/openoffice4/program/swriter"] -override
+global [val hiloFile [ concat $rcpttDir "hilotec_configured" ] ] -override
+global [val hiloVorlagen [ concat $rcpttDir "hilotec_vorlagen" ] ] -override
+global [val ooFile [ concat $rcpttDir "medelexis_oo_configured" ] ] -override
 
 proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 	global [val ConfiguredTextPlugin useTextPlugin] -override
@@ -40,7 +43,7 @@ proc SetupTextPlugins {
 	get-eclipse-window | gen-screenshot [concat $imagesDir "Aquilana_imported.png"]
 	ConfigureHilotecODF_TextVerarbeitung
 	ConfigureMsOO_TextVerarbeitung
-	ImportHilotecODF_Vorlagen
+	ImportHilotecODF_Vorlage
 }
 
 proc EnsureLibreOffficIsInstalled {
@@ -132,10 +135,27 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "hilotecODF-config-2.png"]
 		get-button [t apply_and_close] | click
 	}
+	str "ConfigureHilotecODF_TextVerarbeitung done" | write-lines $hiloFile
+	if [ get-file $ooFile | get exists | equals true ] {
+		get-file $ooFile  | delete-file
+	}
 }
 
-proc ImportHilotecODF_Vorlagen [val vorlage [concat $rcpttDir "elexis-vorlagen-master/openoffice/AUF-Zeugnis.odt"]] {
-	concat "ImportHilotecODF_Vorlagen should import: " $vorlage | log
+proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $rcpttDir "elexis-vorlagen-master/openoffice/AUF-Zeugnis.odt"]] {
+	if [ get-file $hiloVorlagen | get exists | equals true ] {
+		log "ImportAlleHilotecODF_Vorlagen already done"
+	} -else {
+		ImportHilotecODF_Vorlage  [ concat $rcpttDir "elexis-vorlagen-master/openoffice/Tarmedrechnung_EZ.odt" ]
+		ImportHilotecODF_Vorlage  [ concat $rcpttDir "elexis-vorlagen-master/openoffice/TR44_S1.odt" ]
+		ImportHilotecODF_Vorlage  [ concat $rcpttDir "elexis-vorlagen-master/openoffice/TR44_S2.odt" ]
+		ImportHilotecODF_Vorlage  [ concat $rcpttDir "elexis-vorlagen-master/openoffice/Tarmedrechnung_S1.odt" ]
+		ImportHilotecODF_Vorlage  [ concat $rcpttDir "elexis-vorlagen-master/hilotec-odt/ch.elexis.arzttarife_ch/Tarmedrechnung_S2.odt" ] // only hilotec
+		str "ImportAlleHilotecODF_Vorlagen done" | write-lines $hiloVorlagen
+	}
+}
+
+proc ImportHilotecODF_Vorlage [val vorlage [concat $rcpttDir "elexis-vorlagen-master/openoffice/AUF-Zeugnis.odt"]] {
+	concat "ImportHilotecODF_Vorlage should import: " $vorlage | log
 	get-file $vorlage | get exists | assert-true -message [concat "File " $vorlage " not found"]
 	open-window-by-name [t Dokumente_Textvorlagen_Management]
 	set-dialog-result File $vorlage
@@ -156,15 +176,7 @@ proc ImportHilotecODF_Vorlagen [val vorlage [concat $rcpttDir "elexis-vorlagen-m
 	}
 	OpenAndResetStartPerspektive
 }
-/* Mit /ohne Adresse
-with [get-view "Textvorlagen Management" | get-table] {
-    select Liste -column "Name der Vorlage"
-    get-cell 1 4 | uncheck
-}
-with [get-view "Textvorlagen Management" | get-table] {
-    select Liste -column "Name der Vorlage"
-    get-cell 1 4 | check
-} */
+
 proc TextVorlagenEntfernen [val name Liste] {
 	open-window-by-name [t Textvorlagen_Management]
 	get-view [t Textvorlagen_Management] | get-table | select $name -column [t Name_der_Vorlage] | get-menu [t
@@ -253,6 +265,10 @@ proc ConfigureMsOO_TextVerarbeitung {
 		wait 1000
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-config-eHC.png"]
 		get-button [t apply_and_close] | click
+	}
+	str "ConfigureMsOO_TextVerarbeitung done" | write-lines $ooFile
+	if [ get-file $hiloFile | get exists | equals true ] {
+		get-file $hiloFile  | delete-file
 	}
 }
 
