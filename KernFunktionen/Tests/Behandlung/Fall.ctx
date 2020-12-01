@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 8/17/20 4:54 PM
+Save-Time: 12/1/20 12:11 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -128,16 +128,16 @@ proc AktuellenFallSchliessen [ val endDate "" ] {
 	    get-button OK | click
 	}
 }
-proc AktuellenFallVerrechnen [ val abortOnError true ] {
+proc AktuellenFallVerrechnen [ val abortOnError true ] [ val label "no_label" ] {
 	global [val AktuellenFallVerrechnenHadError false] -override
 	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
 		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items"| log
-		get-eclipse-window | gen-screenshot [concat $imagesDir "AktuellenFallVerrechnen" $nrItemsBefore ".png"]			
+		get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label "-" $nrItemsBefore ".png"]
 		get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
 		try {
 			get-window [ t invoice_error ] | get-label -index 1 |  get-property caption -raw | log
 			log "AktuellenFallVerrechnen: Failed. See message above" -severity error
-			get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung-" $nrItemsBefore "-failed.png"]
+			get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label "-" $nrItemsBefore "-failed.png"]
 			global [val AktuellenFallVerrechnenHadError true] -override
 			close-window-if-open [ t invoice_error ]
 			close-window-if-open [ t invoice_error ]
@@ -145,12 +145,13 @@ proc AktuellenFallVerrechnen [ val abortOnError true ] {
 		} -catch { log "AktuellenFallVerrechnen: No Error WIndow"}
 		if [ and $abortOnError $AktuellenFallVerrechnenHadError ] {
 			concat "AktuellenFallVerrechnen failed and abortOnError" $abortOnError " AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
+			get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label "-" $nrItemsBefore ".failed-and-aborting.png"]
 			bool false | assert-true -message "AktuellenFallVerrechnen: Failed and aborting"
 		} -else {
 			if [ not $AktuellenFallVerrechnenHadError ] {
 				concat "AktuellenFallVerrechnen was considered okay abortOnError" $abortOnError " AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
 				// Clean up errors
-				get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung-" $nrItemsBefore "-considered-okay.png"]
+				get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label " " $nrItemsBefore "-considered-okay.png"]
 				close-window-if-open [ t Fehler_bei_Mandant_Definition ]
 				close-window-if-open [ t Fehler_beim_Drucken ]
 				close-window-if-open [ t Fehler_beim_Drucken ]
@@ -233,21 +234,7 @@ proc "FallSetVersicherungsNummer" [ val nummer 123456 ] [ val fall ".*" ] {
 		}
 	}
 }
-/*
-with [get-view Fall] {
-    with [get-editbox -after [get-label Versicherungsnummer]] {
-        set-text 1234
-        key-type Enter
-    }
-    get-link "Kostenträger" | click
-}
-with [get-window "Kontakt auswählen"] {
-    get-list | select "Testarossa-KVG-de Emilio (m), 29.02.1984 (29.02.1984)"
-    get-editbox -after [get-label "Andere Kontakte"] -index 1 | set-text Testa
-    get-table | select "Testarossa-KVG-de Emilio, Nebenstrasse 33, 9876 Elexiskon \\(29.02.1984\\)"
-    get-button OK | click
-}
-*/
+
 proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa" ]
 	[ val firstName "Antonio" ]
 	[ val male true ]

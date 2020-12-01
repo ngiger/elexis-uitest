@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 11/19/20 3:12 PM
+Save-Time: 12/1/20 3:13 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -541,7 +541,7 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 			kons-add-block  -blockName $blockName -expectedItemsAdded $blockNr -info [ concat  $firstName " " $familyName ]
 			FallSetVersicherungsNummer -fall $caseName
 			FallSetCostBearer -fall $caseName -name "Aquilana"
-			AktuellenFallVerrechnen -abortOnError $abortOnError
+			AktuellenFallVerrechnen -abortOnError $abortOnError -label [ concat $familyName "-" $firstName "-" $caseName ]
 			AktuellenFallSchliessen
 		}
 	}
@@ -553,6 +553,12 @@ proc AllVerrechnungenEntfernen {
 		 t path_remove_all | log
 			get-cell 0 2 |  mouse down Right -count 1
 			get-menu -path [ t path_remove_all  ] | click
+			try {
+				get-window [ t window_warning ] | close
+			}  -error [val errorObj] -catch {
+				concat "AllVerrechnungenEntfernen no warning found: "  [$errorObj | get message] | log
+			}
+			close-window-if-open [ t window_warning ]
 			log "AllVerrechnungenEntfernen. Done"
 		} -error [val errorObj] -catch {
 			concat "AllVerrechnungenEntfernen Nix zu tun!"  [$errorObj | get message] | log
