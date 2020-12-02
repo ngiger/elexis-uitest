@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 11/25/20, 4:44 PM
+Save-Time: 12/2/20 5:49 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -25,6 +25,11 @@ proc "pwd" {
 }
 proc "get-default-locale" {
 	invoke-static "org.eclipse.rcptt.util" "java.util.Locale" getDefault
+}
+
+// return a current date and time, eg. 14.10.2020 20:30:45
+proc now {
+	get-time | format-time "dd.MM.yyyy hh:mm:ss"
 }
 
 global [ val today [invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now  |
@@ -71,8 +76,12 @@ proc "safe-get-java-property" [val name] {
 	}
 }
 
+proc "get-seconds-in-minute" {
+	get-time | div 1000 | mod 60 | int
+}
+
 proc "get-seconds" {
-	 invoke-static "org.eclipse.rcptt.util" "java.lang.System" currentTimeMillis | div 1000
+	get-time | div 1000
 }
 
 /**
@@ -111,19 +120,46 @@ proc "elexisLogMayNotContain"  [ val searchFor  ] {
 
 elexisLogMayNotContain "java.lang.OutOfMemoryError"
 
+global [val rcpttDir	[ concat [ get-user-dir ] "/rcptt/"] ]
+global [val restart_msFile [ concat $rcpttDir "restart_ms" ] ] -override
+
 /**
- * Somehow this does not work, wait-until-eclipse-is-ready never returns
+ * Somehow this does not always work, wait-until-eclipse-is-ready never returns.
+ * We consider it failing unless elexis-run-mode is RunFromScratch or it took less than 5 seconds
  */
-proc "RestartElexis" {
-	concat "RestartElexis: Run-Mode is " [ safe-get-java-property "elexis-run-mode" ] | log
-	trace "RestartElexis"
-	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
-		log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
-	} -else {
-		log "RestartElexis: Trying to restart Elexis"
-		restart-aut
-		wait-until-eclipse-is-ready
-		log "RestartElexis successfull"
+proc RestartElexis {
+	let [ val milliSecsBeforeRestart [ get-time ] ] {
+		concat "RestartElexis: Run-Mode is " [ safe-get-java-property "elexis-run-mode" ] " ms: " $milliSecsBeforeRestart | log
+		if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
+			log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
+			return
+		} -else {
+			concat "RestartElexis: Trying to restart Elexis milliSecsBeforeRestart " $milliSecsBeforeRestart | log
+			str $milliSecsBeforeRestart  | write-lines $restart_msFile
+			restart-aut
+			wait-until-eclipse-is-ready
+		}
+	}
+}
+
+/**
+ * Check whether the restart took between 5 and 120 seconds for Elexis
+ */
+proc CheckRestartElexis {
+	// read-file does not work, read-lines neither at they return	 the first line + EOL/EOF
+	let [ val milliSecsBeforeRestart [ read-lines $restart_msFile | foreach -do str] ] {
+		concat "CheckRestartElexis: milliSecsBeforeRestart were <" $milliSecsBeforeRestart ">" | log
+		concat "CheckRestartElexis: milliSecsBeforeRestart now  <" [ get-time ] ">" | log
+		if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
+			log "Skipping CheckRestartElexis as RunFromScratch" // We cannot restart Elexis without loosing all content
+			return
+		} -else {
+			concat "CheckRestartElexis ms is now: " [ get-time ] " took " [  minus [ get-time ] $milliSecsBeforeRestart ] | log
+		}
+		minus [ get-time ] $milliSecsBeforeRestart | gt   5000 | log
+		minus [ get-time ] $milliSecsBeforeRestart | lt 120000 | log
+	    minus [ get-time ] $milliSecsBeforeRestart | gt   5000 | assert-true -message [ concat "CheckRestartElexis  Too fast ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
+		minus [ get-time ] $milliSecsBeforeRestart | lt 120000 | assert-true -message [ concat "CheckRestartElexis: Too slow ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
 	}
 }
 
@@ -131,7 +167,7 @@ if [get-by-os -win false -macosx true -linux false] {
 	global [ val resultsDir [ concat [pwd ] "/../../../../results/"] ] -override
 	log "resultsDir: 2 under MacOSX is " $resultsDir | log
 	global [ val resultsDir [ invoke-static  "org.apache.commons.io" "org.apache.commons.io.FilenameUtils" "normalize" $resultsDir ] ] -override
-	log "resultsDir: 3 under MacOSX is " $resultsDir | log
+	log "resultsDir: 3 under MacOSX is " $resultgsDir | log
 } -else {
 	global [ val resultsDir [ concat [pwd ] "/../results/"] ] -override
 	log "resultsDir: (win or linux) is " $resultsDir | log
