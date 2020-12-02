@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 12/2/20 5:49 PM
+Save-Time: 12/2/20 6:50 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -29,7 +29,7 @@ proc "get-default-locale" {
 
 // return a current date and time, eg. 14.10.2020 20:30:45
 proc now {
-	get-time | format-time "dd.MM.yyyy hh:mm:ss"
+	get-time | format-time "dd.MM.yyyy HH:mm:ss"
 }
 
 global [ val today [invoke-static  "org.eclipse.rcptt.util"  "java.time.LocalDate" now  |
