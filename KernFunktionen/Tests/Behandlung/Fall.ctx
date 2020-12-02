@@ -5,101 +5,102 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 12/1/20 12:11 PM
+Save-Time: 12/2/20 8:37 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc "set-date-picker-date" [val window ] [ val labelBefore -input ] [ val "date" ] {
-	concat "set-date-picker-date: " window ": " $labelBefore ": " $date| log
-	global [ val myCombo [  get-window $window | get-editbox -after [get-label $labelBefore ] ]] -override
-	get-window $window | get-editbox -after [get-label $labelBefore ] | log
-	get-window $window | get-editbox -after [get-label $labelBefore ] | set-text $date
-	get-window $window | get-editbox -after [get-label $labelBefore ] | key-type Enter
+proc "set-date-picker-date" [val window] [val labelBefore -input] [val date] {
+	concat "set-date-picker-date: " window ": " $labelBefore ": " $date | log
+	global [val myCombo [get-window $window | get-editbox -after [get-label $labelBefore]]] -override
+	get-window $window | get-editbox -after [get-label $labelBefore] | log
+	get-window $window | get-editbox -after [get-label $labelBefore] | set-text $date
+	get-window $window | get-editbox -after [get-label $labelBefore] | key-type Enter
 }
 
-proc "SetRightToDeleteCase" {
+proc SetRightToDeleteCase {
 	get-preferences-menu | click
-	with [get-window [ t preferences ] ] {
-		get-tree | select [ t select_roles_right ]
-		get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | get-item -path  [ t right_delete_case ]
-		  | get-property "values['u']" -raw | log
-		if [ get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | get-item -path  [ t right_delete_case ]
-		  | get-property "values['u']" -raw | equals x | eq true ] {
+	with [get-window [t preferences]] {
+		get-tree | select [t select_roles_right]
+		get-tree -after [get-link [t dlg_create_user_accounting_change]] | get-item -path [t right_delete_case]
+			| get-property "values['u']" -raw | log
+		if [get-tree -after [get-link [t dlg_create_user_accounting_change]] | get-item -path [t right_delete_case]
+			| get-property "values['u']" -raw | equals x | eq true] {
 			log "User has already the right"
-		  } -else {
+		} -else {
 			log "Must git the user the right"
-			get-tree -after [get-link [t dlg_create_user_accounting_change ] ] | select [ t right_delete_case ] | check
-		  }
-		get-button [ t apply_and_close ] | click
+			get-tree -after [get-link [t dlg_create_user_accounting_change]] | select [t right_delete_case] | check
+		}
+		get-button [t apply_and_close] | click
 	}
 }
 
 proc DeleteSelectedCase {
-	get-view [ t view_cases ] | click
-	get-view [ t view_cases ] | get-table | get-menu -path  [ t btn_delete_case ] | click
+	get-view [t view_cases] | click
+	get-view [t view_cases] | get-table | get-menu -path [t btn_delete_case] | click
 }
 
 // startDate and endDate should be like 01.03.2018 with two digit month and day values
-proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate "201.*"] [val endDate "01.08.2018"] {
-	if [FallOffen -caseLaw $caseLaw -startDate $startDate ] {
-		concat  "Offenen Fall " $caseLaw " gefunden für Startatum " $startDate
+proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG]] [val caseReason [t reason_UVG]] [val startDate "201.*"] [val endDate "01.08.2018"] {
+	if [FallOffen -caseLaw $caseLaw -startDate $startDate] {
+		concat "Offenen Fall " $caseLaw " gefunden für Startatum " $startDate
 	} -else {
 		FallZuPatientErstellen -caseLaw $caseLaw -caseReason $caseReason -startDate "20.04.2018"
 	}
 }
 
-proc FallZuPatientExistiert [ val text ".*KVG:.*offen.*" ] {
-	with [ get-view [ t view_cases ] ] {
+// Checks whether the case really exists for the currently selected patient
+proc FallZuPatientExistiert [val text ".*KVG:.*offen.*"] {
+	with [get-view [t view_cases]] {
 		get-table | gen-screenshot [concat $imagesDir "Fall_check_" $text ".png"]
-		get-table | get-item -path $text | get-property caption -raw | matches $text | log
-		get-table | get-item -path $text
-		    | get-property caption -raw | matches $text | assert-true -message [ concat "Case " $text " not found" ]
+		get-table | get-item -path $text | get-property caption -raw | log
+		get-table | get-item -path $text | get-property caption -raw
+			| matches $text | assert-true -message [concat "Case " $text " not found"]
 	}
 }
 
-proc FallZuPatientErstellen [val caseLaw [t case_UVG ] ] [ val caseReason [ t reason_UVG ]  ] [val startDate ""] [val endDate ""] {
-	open-window-by-name [ t view_cases ]
-	concat FallZuPatientErstellen  $caseLaw " " $caseReason " " $startDate  " " $endDate| log
-	concat FallZuPatientErstellen  [ t view_cases ] " btn. " [ t btn_create_new_case ] " dlg " [ t dlg_new_case ] | log
+proc FallZuPatientErstellen [val caseLaw [t case_UVG]] [val caseReason [t reason_UVG]] [val startDate ""] [val endDate ""] {
+	open-window-by-name [t view_cases]
+	concat FallZuPatientErstellen " " $caseLaw " " $caseReason " " $startDate " " $endDate | log
+	concat FallZuPatientErstellen [t view_cases] " btn. " [t btn_create_new_case] " dlg " [t dlg_new_case] | log
 	wait 100
-	
-	get-view [ t view_cases ]| get-button [ t btn_create_new_case ] | click
+
+	get-view [t view_cases] | get-button [t btn_create_new_case] | click
 	wait 100
-	
-	with [get-window [ t dlg_new_case ] ] {
-		concat "caseLaw: " $caseLaw  " caseReason: " $caseReason | log
-		get-combo -after [get-label [ t dlg_new_case_caseMethod ] ] | select $caseLaw
-		get-combo -after [get-label [ t dlg_new_case_caseReason ] ] | select $caseReason
-		if [ $startDate | eq "" ] {
+
+	with [get-window [t dlg_new_case]] {
+		concat "caseLaw: " $caseLaw " caseReason: " $caseReason | log
+		get-combo -after [get-label [t dlg_new_case_caseMethod]] | select $caseLaw
+		get-combo -after [get-label [t dlg_new_case_caseReason]] | select $caseReason
+		if [$startDate | eq ""] {
 			log "Skip setting startDate as empty"
 		} -else {
-			set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_startDate ] $startDate
+			set-date-picker-date [t dlg_new_case] [t dlg_new_case_startDate] $startDate
 		}
-		if [ $endDate | eq "" ] {
+		if [$endDate | eq ""] {
 			log "Skip setting endDate as empty"
 		} -else {
-			set-date-picker-date [ t dlg_new_case ] [ t dlg_new_case_endDate ] $endDate
+			set-date-picker-date [t dlg_new_case] [t dlg_new_case_endDate] $endDate
 		}
-		concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png" | log
+		concat $imagesDir Fall_ $caseLaw "_" $startDate "_created.png" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
-		get-button  [ t ok] | click
+		get-button [t ok] | click
 	}
-	with [get-view [ t view_cases ] ] {
-		with [get-button [ t FaelleView_ShowOnlyOpenCase ] ] {
+	with [get-view [t view_cases]] {
+		with [get-button [t FaelleView_ShowOnlyOpenCase]] {
 			click -metaKeys ""
 			click -metaKeys ""
 		}
-	 }
-	FallZuPatientExistiert [concat $caseLaw ".*"  $startDate ".*" [ t fall_offen_part ] ".*" ]
+	}
+	FallZuPatientExistiert [concat $caseLaw ".*" $startDate ".*" [t fall_offen_part] ".*"]
 }
 
-proc SelectFall [val caseLaw] [val startDate] [ val isOpen [ t fall_offen_part ] ] {
-	let [ val searchPattern [ concat ".*" $caseLaw ".*" $startDate ".*" $isOpen ".*" ] ] {
-		concat "SelectFall: " [ GetActPatPersonalia ] " searching for: " $searchPattern | log
+proc SelectFall [val caseLaw] [val startDate] [val isOpen [t fall_offen_part]] {
+	let [val searchPattern [concat ".*" $caseLaw ".*" $startDate ".*" $isOpen ".*"]] {
+		concat "SelectFall: " [GetActPatPersonalia] " searching for: " $searchPattern | log
 		try {
-			get-view [ t view_cases ] | get-table | select $searchPattern | click
+			get-view [t view_cases] | get-table | select $searchPattern | click
 			bool true
 		} -catch {
 			bool false
@@ -108,171 +109,176 @@ proc SelectFall [val caseLaw] [val startDate] [ val isOpen [ t fall_offen_part ]
 }
 
 proc FallOffen [val caseLaw] [val startDate] {
-	let [val searchPattern [concat $caseLaw ".*" $startDate ".*" ] ] {
+	let [val searchPattern [concat $caseLaw ".*" $startDate ".*"]] {
 		try {
-			concat "FallOffen: " [ GetActPatPersonalia ] " searching for: " $searchPattern | log
-			get-view [ t view_cases ] | get-table | get-item $searchPattern | get-property caption
-			get-view [ t view_cases ] | get-table | get-item $searchPattern | select-item
-			bool true  // 0 stands for true
+			concat "FallOffen: " [GetActPatPersonalia] " searching for: " $searchPattern | log
+			get-view [t view_cases] | get-table | get-item $searchPattern | get-property caption
+			get-view [t view_cases] | get-table | get-item $searchPattern | select-item
+			bool true // 0 stands for true
 		} -catch {
 			bool false // 1 stands for false
 		}
 	}
 }
 
-proc AktuellenFallSchliessen [ val endDate "" ] {
-	get-view [ t view_cases ] | get-table | get-menu -path [ t mnu_close_case ] | click
-	with [get-window [ t fall_abschlssdatum ] ] {
-	    get-editbox | set-focus
-	    get-editbox | set-text $endDate
-	    get-button OK | click
+proc AktuellenFallSchliessen [val endDate ""] {
+	get-view [t view_cases] | get-table | get-menu -path [t mnu_close_case] | click
+	with [get-window [t fall_abschlssdatum]] {
+		get-editbox | set-focus
+		get-editbox | set-text $endDate
+		get-button OK | click
 	}
 }
-proc AktuellenFallVerrechnen [ val abortOnError true ] [ val label "no_label" ] {
+proc AktuellenFallVerrechnen [val abortOnError true] [val label no_label] {
 	global [val AktuellenFallVerrechnenHadError false] -override
-	let [val nrItemsBefore [ GetNrOfInvoices -status [ t Offen ] ] ] {
-		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items"| log
+	let [val nrItemsBefore [GetNrOfInvoices -status [t Offen]]] {
+		concat "AktuellenFallVerrechnen: before " $nrItemsBefore " items" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label "-" $nrItemsBefore ".png"]
-		get-view [ t view_cases ] | get-table | get-menu -path [ t btn_create_invoice ] | click
+		get-view [t view_cases] | get-table | get-menu -path [t btn_create_invoice] | click
 		try {
-			get-window [ t invoice_error ] | get-label -index 1 |  get-property caption -raw | log
+			get-window [t invoice_error] | get-label -index 1 | get-property caption -raw | log
 			log "AktuellenFallVerrechnen: Failed. See message above" -severity error
 			get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label "-" $nrItemsBefore "-failed.png"]
 			global [val AktuellenFallVerrechnenHadError true] -override
-			close-window-if-open [ t invoice_error ]
-			close-window-if-open [ t invoice_error ]
-			close-window-if-open [ t invoice_error ]
-		} -catch { log "AktuellenFallVerrechnen: No Error WIndow"}
-		if [ and $abortOnError $AktuellenFallVerrechnenHadError ] {
-			concat "AktuellenFallVerrechnen failed and abortOnError" $abortOnError " AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
+			close-window-if-open [t invoice_error]
+			close-window-if-open [t invoice_error]
+			close-window-if-open [t invoice_error]
+		} -catch {
+			log "AktuellenFallVerrechnen: No Error WIndow"
+		}
+		if [and $abortOnError $AktuellenFallVerrechnenHadError] {
+			concat "AktuellenFallVerrechnen failed and abortOnError: '" $abortOnError "' AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
 			get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label "-" $nrItemsBefore ".failed-and-aborting.png"]
 			bool false | assert-true -message "AktuellenFallVerrechnen: Failed and aborting"
 		} -else {
-			if [ not $AktuellenFallVerrechnenHadError ] {
-				concat "AktuellenFallVerrechnen was considered okay abortOnError" $abortOnError " AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
+			if [not $AktuellenFallVerrechnenHadError] {
+				concat "AktuellenFallVerrechnen was considered okay abortOnError: '" $abortOnError "' AktuellenFallVerrechnenHadError " $AktuellenFallVerrechnenHadError | log
 				// Clean up errors
 				get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/" $label " " $nrItemsBefore "-considered-okay.png"]
-				close-window-if-open [ t Fehler_bei_Mandant_Definition ]
-				close-window-if-open [ t Fehler_beim_Drucken ]
-				close-window-if-open [ t Fehler_beim_Drucken ]
-				let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen ] ] ] {
-					concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items"| log
-					$nrItemsBefore | plus 1 | equals $nrItemsAfter | assert-true -message
-						[ concat "AktuellenFallVerrechnen: After invoicing expected "  [$nrItemsBefore | plus 1 ] " items but found " $nrItemsAfter]
+				close-window-if-open [t Fehler_bei_Mandant_Definition]
+				close-window-if-open [t Fehler_beim_Drucken]
+				close-window-if-open [t Fehler_beim_Drucken]
+				let [val nrItemsAfter [GetNrOfInvoices -status [t Offen]]] {
+					concat "AktuellenFallVerrechnen: after have " $nrItemsAfter " items" | log
+					$nrItemsBefore | plus 1 | equals $nrItemsAfter | assert-true -message [concat "AktuellenFallVerre" +
+						"chnen: After invoicing expected " [$nrItemsBefore | plus 1] " items but found " $nrItemsAfter]
 				}
 			}
 		}
 	}
 }
 
-global [val auf_id 1 ] -override
-proc "FallErzeugeAUF" [ val percentage 100 ] [ val reason "RCPTT Test-Grund" ] [ val comment "" ] [ val startDate "" ] [ val endDate ""]  {
+global [val auf_id 1] -override
+proc FallErzeugeAUF [val percentage 100] [val reason "RCPTT Test-Grund"] [val comment ""] [val startDate ""]	[val endDate ""] {
 	concat "FallErzeugeAUF. Warum ist hier manchmal kein Fall ausgewählt? " $auf_id | log
 	get-eclipse-window | gen-screenshot [concat $imagesDir "AUF-" $auf_id "-before-create.png"]
-	with [get-view [ t AUF ]] {
+	with [get-view [t AUF]] {
 		click
-		get-button [ t btn_create_new_auf ] | click
+		get-button [t btn_create_new_auf] | click
 	}
-	with [get-window [ t Arbeitsunfaehigkeit ] ] {
-		with [get-editbox -after [get-label [ t Prozent ]]] {
+	with [get-window [t Arbeitsunfaehigkeit]] {
+		with [get-editbox -after [get-label [t Prozent]]] {
 			set-text $percentage
 		}
-		with [get-editbox -after [get-label [ t Grund ]] -index 1] {
+		with [get-editbox -after [get-label [t Grund]] -index 1] {
 			set-text $reason
 		}
-		get-editbox -after [get-label [ t Zusaetzliche_Angaben ] ] | set-text $comment
+		get-editbox -after [get-label [t Zusaetzliche_Angaben]] | set-text $comment
 		get-eclipse-window | gen-screenshot [concat $imagesDir "AUF-" $auf_id ".png"]
-		global [val auf_id [  $auf_id | plus 1 ] ] -override
+		global [val auf_id [$auf_id | plus 1]] -override
 		get-button OK | click
 	}
 }
 
-proc "DruckeBriefZuAut" [ val adrName "Aquilana" ] [ val adrPostalcode "5401" ] {
-	with [get-view [ t AUF ]] {
+proc DruckeBriefZuAut [val adrName Aquilana] [val adrPostalcode 5401] {
+	with [get-view [t AUF]] {
 		// Select first matching
 		get-table | select ".*"
 		t print_AUF | log
-		get-button [ t print_AUF ] | click
+		get-button [t print_AUF] | click
 	}
-	with [get-window [ t select_contact ]] {
-		get-table | select  [ concat ".*" $adrName ".*"  $adrPostalcode ".*" ]
+	with [get-window [t select_contact]] {
+		get-table | select [concat ".*" $adrName ".*" $adrPostalcode ".*"]
 		get-button OK | click
 	}
 }
 
-proc "FallSetCostBearer" [ val name "AEROSANA" ] [ val fall ".*" ] {
-	get-view [ t view_cases ] | get-table | select [ concat $fall ".*" ] | double-click
-	get-view  [ t Fall ]  | get-link [ t fall_cost_bearer ] | click
-	with [get-window [t select_contact ] ] {
-	    with [get-editbox -after [get-label [ t select_andere_kontakte ] ] -index 1] {
-	        set-text $name
-	    }
-	    get-table | select [ concat ".*" $name ".*" ]
-	    get-window [t select_contact ] | gen-screenshot [concat $imagesDir "Fall_" $fall "_costBearer_" $name ".png"]
-	    get-button OK | click
+proc FallSetCostBearer [val name AEROSANA] [val fall ".*"] {
+	get-view [t view_cases] | get-table | select [concat $fall ".*"] | double-click
+	get-view [t Fall] | get-link [t fall_cost_bearer] | click
+	with [get-window [t select_contact]] {
+		with [get-editbox -after [get-label [t select_andere_kontakte]] -index 1] {
+			set-text $name
+		}
+		get-table | select [concat ".*" $name ".*"]
+		get-window [t select_contact] | gen-screenshot [concat $imagesDir "Fall_" $fall "_costBearer_" $name ".png"]
+		get-button OK | click
 	}
 }
-proc "FallSetVersicherungsNummer" [ val nummer 123456 ] [ val fall ".*" ] {
-	get-view [ t view_cases ] | get-table | select [ concat $fall ".*" ] | double-click
+proc FallSetVersicherungsNummer [val nummer 123456] [val fall ".*"] {
+	get-view [t view_cases] | get-table | select [concat $fall ".*"] | double-click
 	try {
 		// This works in french wher Cas is name for view Fälle (les cas) und Fall (le cas)
-		get-view [ t Fall ] -index 1 | get-button [ t Kopie_an_Patienten ] | check
-		 // TODO: French problem: INFO  ch.elexis.data.PersistentObject - field is not mapped Désignation
-		get-view [ t Fall ] -index 1 | get-editbox -after [get-label [ t Versicherungsnummer -language de ] ] | set-text $nummer
+		get-view [t Fall] -index 1 | get-button [t Kopie_an_Patienten] | check
+		// TODO: French problem: INFO  ch.elexis.data.PersistentObject "-" field is not mapped Désignation
+		get-view [t Fall] -index 1 | get-editbox -after [get-label [t Versicherungsnummer -language de]] | set-text
+			$nummer
 	} -catch {
-		with [ get-view [ t Fall ] ] {
-			get-button [ t Kopie_an_Patienten ] | check
+		with [get-view [t Fall]] {
+			get-button [t Kopie_an_Patienten] | check
 			try {
-				with [get-editbox -after [get-label [ t Versicherungsnummer ] ] ] {
+				with [get-editbox -after [get-label [t Versicherungsnummer]]] {
 					set-text $nummer
-			        key-type Enter
+					key-type Enter
 					concat "FallSetVersicherungsNummer " $fall " to " $nummer " done" | log
 				}
-			} -error  [val errorObj] -catch {
+			} -error [val errorObj] -catch {
 				concat "Versicherungsnummer is not present for the case" [$errorObj | get message] | log
 			}
 		}
 	}
 }
 
-proc "PatientMitFallUndKonsErstellenOderAuswaehlen" [ val familyName "Testarossa" ]
-	[ val firstName "Antonio" ]
-	[ val male true ]
-	[ val birthDate "30.03.1990" ]
-	[ val street  "Nebenstrasse 33" ]
-	[ val plz "9876" ]
-	[ val location Elexiskon ]
-	[ val phone "055 323 45 67" ]
-	[ val caseName "kvg" ]
-	[ val caseReason [ t reason_KVG ] ]
-	[ val caseStartDate "14.10.2018" ]
-	[ val konsDate $today ]
+proc PatientMitFallUndKonsErstellenOderAuswaehlen [val familyName Testarossa]
+	[val firstName Antonio]
+	[val male true]
+	[val birthDate "30.03.1990"]
+	[val street "Nebenstrasse 33"]
+	[val plz 9876]
+	[val location Elexiskon]
+	[val phone "055 323 45 67"]
+	[val caseName kvg]
+	[val caseReason [t reason_KVG]]
+	[val caseStartDate "14.10.2018"]
+	[val konsDate	$today]
 {
 	if [SelectPatient $familyName $firstName | eq false] {
 		PatientenErstellen $familyName $firstName $male $birthDate $street $plz $location $phone
 	}
 
-	
-	if [SelectFall -caseLaw $caseName -startDate $caseStartDate ] {
+	if [SelectFall -caseLaw $caseName -startDate $caseStartDate] {
 		concat "Offenen Fall " $caseName " " $caseStartDate " gefunden" | log
 	} -else {
 		FallZuPatientErstellen -caseLaw $caseName -caseReason $caseReason -startDate $caseStartDate
-		concat "FallZuPatientErstellen " $familyName " " $firstName  " " caseName | log
+		concat "FallZuPatientErstellen " $familyName " " $firstName " " caseName | log
 	}
 	SelectFall -caseLaw $caseName -startDate $caseStartDate
-	FallOffen -caseLaw $caseName -startDate $caseStartDate | assert-true -message [ concat "Case " $caseName " " $caseStartDate " must be open" ]
-	if [ HasKonsSelected | eq false] {
-		kons-erstellen [ concat "PatientMitFallUndKonsErstellenOderAuswaehlen "  $familyName " " $firstName " mit " $caseName  " of " $caseStartDate 
-			" kons of " $konsDate " seconds " [ get-seconds ] ]
-	} -else {
-		log "HasKonsSelected returned true"
-	}
 	wait -ms 200 // give Elexis some time. TODO: Is this needed?
-	create-entire-screenshot [concat $imagesDir "kons-set-date-" $caseName "-" $konsDate "-" $familyName "_" $firstName ".png"]
+	FallOffen -caseLaw $caseName -startDate $caseStartDate | assert-true -message [concat "Case " $caseName " " $caseStartDate " must be open"]
+	if [HasKonsSelected | eq false] {
+		kons-erstellen [concat "PatientMitFallUndKonsErstellenOderAuswaehlen " $familyName " " $firstName " mit " $caseName " of " $caseStartDate " kons2 of " $konsDate " now " [ now ]]
+	} -else {
+		log "HasKonsSelected returned true, checking whether it is from the select patient"
+		let [val currentKons [ get-view [ t kons_view ] | get-label | get-property caption -raw ] ] {
+			$currentKons | matches [ concat $familyName "." $firstName "." ] | log
+			$currentKons | matches [ concat $familyName "." $firstName "." ] |
+				assert-true -message [ concat "Kons " $currentKons " does not match selected patient "  $familyName " " $firstName ]
+		}
+	}
+	create-entire-screenshot [concat $imagesDir "kons-set-date-" $caseName "-" $konsDate "-" $familyName "_" $firstName	".png"]
 	kons-set-date $konsDate
 }
 
-
 // End
-//
+// 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

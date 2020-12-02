@@ -5,7 +5,7 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Save-Time: 11/19/20 5:39 PM
+Save-Time: 12/2/20 6:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -76,11 +76,17 @@ proc "AbrechnungsSystemKonfigurieren"
 	}
 }
 
+global [val anzeigeNr 0 ] -override
 proc "RechnungslisteAnzeigen" [ val status [ t Offen ] ] {
 	open-window-by-name [ t Rechnungsliste ]
 	with [get-view [ t Rechnungsliste ] ] {
 		get-combo -after [get-label [ t RG_Total ]] | select $status
+		global [val anzeigeNr [ int $anzeigeNr | plus 1 | int] ] -override
+		concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_vorher.png" | log
+		get-eclipse-window | get-object | save-screenshot -out [ concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_vorher.png"  ]
 		get-button [ t Liste_neu_einlesen ] | click
+		wait 2000 // Looks like we need some more time here
+		get-eclipse-window | get-object | save-screenshot -out [ concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_nachher.png"  ]
 	}
 }
 
@@ -206,11 +212,25 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 	$highestInvoiceNr | str
 }
 
-proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] {
+proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] [ val workAround21559 true ] {
+	if [ $workAround21559  | eq true ] {
+		concat "GetNrOfInvoices: workAround21559 view is "  [ t Rechnungsliste ] | log
+		try {
+			get-view [ t Rechnungsliste ] | get-label -index 1 | get-property caption -raw | log
+			let [ val textContent [ get-view  [ t Rechnungsliste ] | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
+				concat "GetNrOfInvoices got before : " $status " as int " $textContent | log
+				$textContent | int
+			}
+			get-view [ t Rechnungsliste ] | close
+			concat "GetNrOfInvoices: workAround21559 closed wait"  [ t Rechnungsliste ] | log
+		} -error [val errorObj] -catch {
+			log "GetNrOfInvoices:  Rechnungsliste not present"
+		}
+	}
 	RechnungslisteAnzeigen -status $status
 	let [ val textContent [ get-view  [ t Rechnungsliste ] | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
-		// concat "GetNrOfInvoices got : " $textContent " as int " [ $textContent | int ] | log
-		 $textContent | int
+		concat "GetNrOfInvoices got : " $status " as int " $textContent | log
+		$textContent | int
 	}
 }
 

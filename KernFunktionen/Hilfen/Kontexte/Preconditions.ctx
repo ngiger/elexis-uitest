@@ -5,8 +5,7 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 6/20/19 1:00 PM
+Save-Time: 12/2/20 6:06 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -61,7 +60,6 @@ OpenAndResetStartPerspektive
 
 // RunScript runs a SQL script against a database. 
  
-global [val rcpttDir	[ concat [ get-user-dir ] "/rcptt/"] ]
 global [val h2Jar	   [ concat $rcpttDir "h2-1.4.197.jar"] ]
 global [val dumpFile	[ concat $rcpttDir "dump.sql.zip"] ]
 global [val sqlCmdFile	  [ concat $rcpttDir "commands.sql"] ]
