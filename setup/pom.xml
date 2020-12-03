@@ -159,16 +159,16 @@
             </configuration>
           </execution>
           <execution>
-            <id>download-complementary_190101</id>
+            <id>download-complementary_24022020</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://medelexis.ch/wp-content/uploads/complementary_190101.csv</url>
+              <url>http://medelexis.ch/wp-content/uploads/ElexisResources/complementary_24022020.csv</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <unpack>false</unpack>
-              <md5>2aa2e848653aa925f185f372e0a3e462</md5>
+              <md5>da1782d137a063168f86761c9b103280</md5>
             </configuration>
           </execution>
           <execution>
@@ -208,19 +208,6 @@
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <outputFileName>MiGeL2019v1.csv</outputFileName>
               <md5>eb65ce32837644c432830e044db28fdb</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-complementary</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://medelexis.ch/wp-content/uploads/complementary_190101.csv</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <outputFileName>complementary_190101.csv</outputFileName>
-              <md5>2aa2e848653aa925f185f372e0a3e462</md5>
             </configuration>
           </execution>
           <execution>
