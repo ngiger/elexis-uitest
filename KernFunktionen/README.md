@@ -226,11 +226,17 @@ https://www.eclipse.org/rcptt/blog/2014/11/21/screenshots-with-rcptt.html
 
 https://www.eclipse.org/rcptt/blog/2014/12/10/test-about-dialog.html
 
-# Jenkins MacOSX Slave aufsetzen
+# Jenkins Master aufsetzen
+
+* https://srv.elexis.info/jenkins/configureSecurity/ In "TCP port for inbound agent" use a static port
+* https://wiki.jenkins.io/display/JENKINS/Step+by+step+guide+to+set+up+master+and+agent+machines+on+Windows
+
+## Jenkins MacOSX Slave aufsetzen
 
 * Benutzer erzeugen
 * MacOSX node auf jenkins Instanz erzeugen
 * Starten via agent testen (evt. JDK/OpenWebStart dazu intallieren)
+* git installieren
 * OpenOffice installieren und einmal aufstarten (als Benutzer Jenkins), damit Vorname/Name/Kürzel gesetzt wird
 * LibreOffice installieren und einmal aufstarten (als Benutzer Jenkins), damit Vorname/Name/Kürzel gesetzt wird
 * Einen Daemon (Hintergrund-Program) dazu einrichten.
@@ -238,7 +244,25 @@ https://www.eclipse.org/rcptt/blog/2014/12/10/test-about-dialog.html
 
     sudo cp setup/data/plist.xml /Library/LaunchDaemons/com.jenkins.ci.plist
     sudo chmod 644 /Library/LaunchDaemons/com.jenkins.ci.plist
+	sudo launchctl load /Library/LaunchDaemons/com.jenkins.ci.plist
+	sudo launchctl list com.jenkins.ci
 
+
+## Jenkins Windows Slave aufsetzen
+
+* Benutzer erzeugen
+* MacOSX node auf jenkins Instanz erzeugen
+* Starten via agent testen (evt. JDK/OpenWebStart dazu intallieren)
+* OpenOffice installieren und einmal aufstarten (als Benutzer Jenkins), damit Vorname/Name/Kürzel gesetzt wird
+* LibreOffice installieren und einmal aufstarten (als Benutzer Jenkins), damit Vorname/Name/Kürzel gesetzt wird
+* Einen Daemon (Hintergrund-Program) dazu einrichten.
+
+* git bash installieren
+** git config core.fileMode false # setzen, damit bei *.sh-Dateien nicht immer als git status new mode 0644 gemeldet wird
+* mysql installieren (falls mysql DB verwendet wird)
+* Build einmal von Hand auf Slave ausführen (wegen Zugriffsberechtigungen, z.B. für Java JDK)
+* startup script für windows slave ?? 
+* als Windows Service installieren ??
 
 # TODO: Cleanup
 

@@ -167,7 +167,7 @@ if [get-by-os -win false -macosx true -linux false] {
 	global [ val resultsDir [ concat [pwd ] "/../../../../results/"] ] -override
 	log "resultsDir: 2 under MacOSX is " $resultsDir | log
 	global [ val resultsDir [ invoke-static  "org.apache.commons.io" "org.apache.commons.io.FilenameUtils" "normalize" $resultsDir ] ] -override
-	log "resultsDir: 3 under MacOSX is " $resultgsDir | log
+	log "resultsDir: 3 under MacOSX is " $resultsDir | log
 } -else {
 	global [ val resultsDir [ concat [pwd ] "/../results/"] ] -override
 	log "resultsDir: (win or linux) is " $resultsDir | log
