@@ -17,7 +17,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <repositories>
     <repository>
       <id>elexis.3.core</id>
+      <!--
       <url>https://download.elexis.info/elexis/master/p2/elexis-3-core</url>
+      -->
+      <url>file:///opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/repository</url>
       <layout>p2</layout>
     </repository>
     <repository>

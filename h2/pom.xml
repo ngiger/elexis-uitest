@@ -16,9 +16,10 @@
   </properties>
   <modules>
     <!--
-    -->
-    <module>../setup</module>
     <module>../elexis-${useBranch}</module>
+    -->
+    <module>../elexis-${useBranch}</module>
+    <module>../setup</module>
     <module>../KernFunktionen</module>
   </modules>
   <build>

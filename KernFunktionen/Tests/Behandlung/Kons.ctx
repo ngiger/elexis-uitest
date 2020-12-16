@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 12/1/20 3:13 PM
+Save-Time: 12/3/20 4:41 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -21,7 +21,7 @@ proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 		log "KonsErstellenFallsNichtVorhanden: HasKonsSelected returned true"
 	}
 }
-proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
+proc "kons-erstellen" [ val text2enter "NixZuTUn" ] [ val createSecond false ] {
 	get-eclipse-window | gen-screenshot [concat $imagesDir "Before_kons_Erstellen.png"]
 	t kons_create_new | log
 	get-view [ t kons_view ] | get-button [ t kons_create_new ] | click
@@ -32,6 +32,9 @@ proc "kons-erstellen" [ val text2enter "NixZuTUn" ] {
 	// TODO: Force closing then opening Konsultation necessary?
 	// TODO: Is this an RCPTT problem??
 		get-eclipse-window | gen-screenshot [concat $imagesDir "ERROR_must_i_close_the_kons.png" ]
+		if [ $createSecond ] {
+			close-window-if-open [ t zweite_kons_erlaubt ]
+		}
 		get-view [ t kons_view ] | close
 		open-window-by-name  [ t kons_view ]
 		get-view [ t kons_view ]  |get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
@@ -515,6 +518,28 @@ proc "KonsCloseCannotBeChangedError" {
 	}
 }
 
+proc SelectPatFallKonsFromProperty [ val keyId ] [ val abortOnError true ] {
+	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
+	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
+	    [ val male		 [ GetTestProperty [ concat $keyId male      ] ] ]
+	    [ val caseName	 [ GetTestProperty [ concat $keyId caseName  ] ] ]
+	    [ val blockNr	 [ GetTestProperty [ concat $keyId blockNr   ] 4 ] ]
+	    [ val tarmed	 [ GetTestProperty [ concat $keyId tarmed    ] [ concat "10.0010" ] ] ]
+	    [ val birthDate  [ GetTestProperty [ concat $keyId birthDate ] "29.02.1984" ] ]
+	    [ val blockName	 [ GetTestProperty [ concat $keyId blockName ] "kons plus (KVG)" ] ]
+    {
+		if [ $firstName | equals "" ] {
+			concat "SelectPatFallKonsFromProperty found no entry with key " $keyId | log
+			bool false | assert-true -message [ concat "SelectPatFallKonsFromProperty found no entry with key " $keyId ]
+		} -else {
+			concat "SelectPatFallKonsFromProperty started with key " $keyId " " $firstName " " $familyName | log
+			OpenAndResetStartPerspektive
+			SelectPatientMitFallUndKons -familyName $familyName
+			 -firstName $firstName -birthDate $birthDate -male $male
+			 -caseName $caseName
+		}
+	}
+}
 proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
 	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]

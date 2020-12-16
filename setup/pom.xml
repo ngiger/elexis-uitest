@@ -20,7 +20,7 @@
       <properties>
 		<save_run_from_scratch>save_run_from_scratch.bat</save_run_from_scratch>
       </properties>
-	 </profile>   
+	 </profile>
 	 <profile>
       <id>other</id>
     <activation>
@@ -131,7 +131,7 @@
               <unpack>false</unpack>
               <md5>470b203a84b64ed92595ec9c6070a4d4</md5>
             </configuration>
-          </execution> 
+          </execution>
           <execution>
             <id>download-Universal-patienten</id>
             <phase>generate-sources</phase>
@@ -155,10 +155,23 @@
               <url>https://github.com/ngiger/elexis-vorlagen/archive/master.zip</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <unpack>true</unpack>
-              <md5>496cfd421265f3e1a871342aa35ed528</md5>
+              <md5>44cd00031b98cdfa18c66a1ca3e36b94</md5>
             </configuration>
           </execution>
           <execution>
+            <id>download-Medelexis-Vorlagen_OpenOffice_Fenster_recht</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://medelexis.ch/wp-content/uploads/2020/10/Bundle_OpenOffice_Fenster_rechts.zip</url>
+              <outputDirectory>${rcptt-resources}/medelexis_openoffice_fenster_rechts</outputDirectory>
+              <unpack>true</unpack>
+              <md5>7b69b8e31e1137eecdbcf57c3c4aa228</md5>
+            </configuration>
+          </execution>
+          <!--execution>
             <id>download-complementary_24022020</id>
             <phase>generate-sources</phase>
             <goals>
@@ -171,6 +184,7 @@
               <md5>da1782d137a063168f86761c9b103280</md5>
             </configuration>
           </execution>
+          -->
           <execution>
             <id>download-MiGeL-01.04.20.xlsx</id>
             <phase>generate-sources</phase>

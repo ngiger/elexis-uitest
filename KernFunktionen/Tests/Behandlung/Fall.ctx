@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 12/2/20 8:37 PM
+Save-Time: 12/3/20 4:40 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -238,6 +238,48 @@ proc FallSetVersicherungsNummer [val nummer 123456] [val fall ".*"] {
 		}
 	}
 }
+
+/** 
+  * Selects the desired patient, case and kons
+  * Fails if not present
+  */
+proc SelectPatientMitFallUndKons [val familyName Testarossa]
+	[val firstName Antonio]
+	[val male true]
+	[val birthDate "30.03.1990"]
+	[val street "Nebenstrasse 33"]
+	[val plz 9876]
+	[val location Elexiskon]
+	[val phone "055 323 45 67"]
+	[val caseName kvg]
+	[val caseReason [t reason_KVG]]
+	[val caseStartDate "14.10.2018"]
+	[val konsDate	$today]
+{
+	if [SelectPatient $familyName $firstName | eq false] {
+		bool false | assert-true -message [ concat "SelectPatientMitFallUndKons not such patient "  $familyName " " $firstName ]
+	}
+
+	if [SelectFall -caseLaw $caseName -startDate $caseStartDate] {
+		concat "SelectPatientMitFallUndKons Fall " $caseName " " $caseStartDate " gefunden" | log
+	} -else {
+		bool false | assert-true -message [ concat "SelectPatientMitFallUndKons not such case "  $familyName " " $firstName " " $caseName " " $caseStartDate ]
+	}
+	wait -ms 200 // give Elexis some time. TODO: Is this needed?
+	if [HasKonsSelected | eq false] {
+		false | assert-true -message [ concat "SelectPatientMitFallUndKons not such kons "  $familyName " " $firstName " " $caseName " " $caseStartDate ]
+	} -else {
+		log "SelectPatientMitFallUndKons returned true, checking whether it is from the select patient"
+		let [val currentKons [ get-view [ t kons_view ] | get-label | get-property caption -raw ] ] {
+			$currentKons | matches [ concat $familyName " " $firstName ".*" ] | log
+			$currentKons | matches [ concat $familyName " " $firstName ".*" ] |
+				assert-true -message [ concat "Kons " $currentKons " does not match selected patient "  $familyName " " $firstName ]
+		}
+	}
+	create-entire-screenshot [concat $imagesDir "selected-" $familyName "_" $firstName "_" $caseName "_" $caseStartDate ".png"]
+	concat "SelectPatientMitFallUndKons successfull " $familyName " " $firstName " " $caseName " " $caseStartDate | log
+}
+
 
 proc PatientMitFallUndKonsErstellenOderAuswaehlen [val familyName Testarossa]
 	[val firstName Antonio]
