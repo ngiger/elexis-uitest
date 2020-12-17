@@ -130,7 +130,7 @@
       <feature id="com.hilotec.elexis.opendocument2omnivore.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.pluginstatistiken.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.stickerprefix.feature" installMode="root"/>
-      <!--feature id="com.hilotec.elexis.toolbar.feature" installMode="root"/ Missing for the moment, as Niklaus does not know, whether this one is compatible with Elexis 3.9-->
+      <feature id="com.hilotec.elexis.toolbar.feature" installMode="root" />
       <feature id="net.medshare.connector.aerztekasse.feature" installMode="root"/>
       <feature id="net.medshare.connector.viollier.feature" installMode="root"/>
       <feature id="org.iatrix.bestellung.rose.feature" installMode="root"/>

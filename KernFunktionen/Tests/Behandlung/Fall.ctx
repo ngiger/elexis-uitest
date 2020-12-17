@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 12/3/20 4:40 PM
+Save-Time: 12/17/20 9:42 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -203,15 +203,18 @@ proc DruckeBriefZuAut [val adrName Aquilana] [val adrPostalcode 5401] {
 	}
 }
 
-proc FallSetCostBearer [val name AEROSANA] [val fall ".*"] {
-	get-view [t view_cases] | get-table | select [concat $fall ".*"] | double-click
+/**
+ * Kostenträger des aktuell ausgewählten Falles setzen. Must come after FallSetVersicherungsNummer
+ * *printId nur für debug/image name
+ */
+proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
 	get-view [t Fall] | get-link [t fall_cost_bearer] | click
 	with [get-window [t select_contact]] {
 		with [get-editbox -after [get-label [t select_andere_kontakte]] -index 1] {
 			set-text $name
 		}
 		get-table | select [concat ".*" $name ".*"]
-		get-window [t select_contact] | gen-screenshot [concat $imagesDir "Fall_" $fall "_costBearer_" $name ".png"]
+		get-window [t select_contact] | gen-screenshot [concat $imagesDir "Fall_" $printId "_costBearer_" $name ".png"]
 		get-button OK | click
 	}
 }
@@ -255,12 +258,13 @@ proc SelectPatientMitFallUndKons [val familyName Testarossa]
 	[val caseReason [t reason_KVG]]
 	[val caseStartDate "14.10.2018"]
 	[val konsDate	$today]
+	[val caseIsOpen  [t fall_offen_part] ]
 {
 	if [SelectPatient $familyName $firstName | eq false] {
 		bool false | assert-true -message [ concat "SelectPatientMitFallUndKons not such patient "  $familyName " " $firstName ]
 	}
 
-	if [SelectFall -caseLaw $caseName -startDate $caseStartDate] {
+	if [SelectFall -caseLaw $caseName -startDate $caseStartDate -isOpen $caseIsOpen ] {
 		concat "SelectPatientMitFallUndKons Fall " $caseName " " $caseStartDate " gefunden" | log
 	} -else {
 		bool false | assert-true -message [ concat "SelectPatientMitFallUndKons not such case "  $familyName " " $firstName " " $caseName " " $caseStartDate ]
@@ -303,6 +307,7 @@ proc PatientMitFallUndKonsErstellenOderAuswaehlen [val familyName Testarossa]
 	} -else {
 		FallZuPatientErstellen -caseLaw $caseName -caseReason $caseReason -startDate $caseStartDate
 		concat "FallZuPatientErstellen " $familyName " " $firstName " " caseName | log
+		SelectPatient $familyName $firstName
 	}
 	SelectFall -caseLaw $caseName -startDate $caseStartDate
 	wait -ms 200 // give Elexis some time. TODO: Is this needed?
@@ -312,8 +317,7 @@ proc PatientMitFallUndKonsErstellenOderAuswaehlen [val familyName Testarossa]
 	} -else {
 		log "HasKonsSelected returned true, checking whether it is from the select patient"
 		let [val currentKons [ get-view [ t kons_view ] | get-label | get-property caption -raw ] ] {
-			$currentKons | matches [ concat $familyName "." $firstName "." ] | log
-			$currentKons | matches [ concat $familyName "." $firstName "." ] |
+			$currentKons | matches [ concat $familyName "." $firstName "." ] | bool |
 				assert-true -message [ concat "Kons " $currentKons " does not match selected patient "  $familyName " " $firstName ]
 		}
 	}

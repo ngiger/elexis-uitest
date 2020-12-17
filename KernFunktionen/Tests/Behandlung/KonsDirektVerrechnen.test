@@ -1,0 +1,48 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _QPqdkBNIEemmeedSb1JQew,_LkBSkBsDEembU9g-6bJhVg
+Element-Name: KonsDirektVerrechnen
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _r8134DV7EeuXVMkM-fyEfg
+Save-Time: 12/17/20 9:38 PM
+Testcase-Type: ecl
+
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
+Content-Type: text/plain
+Entry-Name: .description
+
+KonsDirektVerrechnen: Test für neues Feature in 3.8
+------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa--
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
+ImportPatFallKonsFromProperty patient.106.
+let [ val anfangs2020 "30.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason [t reason_KVG]] {
+	FallZuPatientErstellen -startDate $anfangs2020 -caseLaw $caseLaw -caseReason $caseReason
+	SelectFall -caseLaw $caseLaw -startDate $anfangs2020
+	FallSetVersicherungsNummer 87654321 -fall [ concat  ".*" $caseLaw ".*"  $anfangs2020 ".*"]
+	FallSetCostBearer -printId [concat "KonsDirektVerrechnen "  $anfangs2020 ]
+	kons-erstellen [concat "KonsDirektVerrechnen "  $anfangs2020 " now " [ now ] ] -createSecond true
+	kons-set-date $anfangs2020
+	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
+	kons-add-block
+	kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
+}
+
+get-view [ t kons_view ] | get-button [t kons_direkt_verrechnen] | click -metaKeys ""
+
+with [get-window [t View_Rechnung_ausgeben] ] {
+    get-combo | select [ t Als_Tarmed_Rechnung_ausdrucken ]
+    get-button OK | click -metaKeys ""
+}
+get-window [ t Drucken_beendet ]| assert-non-empty
+get-window [ t Drucken_beendet ]| gen-screenshot [concat $imagesDir "KonsDirektVerrechnen_done.png"]
+get-window [ t Drucken_beendet ]| close
+AktuellenFallSchliessen
+
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

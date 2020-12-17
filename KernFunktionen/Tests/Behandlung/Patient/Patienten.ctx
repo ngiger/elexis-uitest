@@ -5,8 +5,7 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/25/19 10:16 PM
+Save-Time: 12/17/20 7:38 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -16,11 +15,13 @@ proc SelectPatient [val familyName] [val firstName] {
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
 	with [get-view [t view_patients ]] {
+	    get-link | click // Clicks on the red "x" to remove all information for name, firstname and date of birth
 		with [get-editbox] {
 			set-text $familyName
 			key-type TRAVERSE_TAB_NEXT
 		}
 		get-editbox -index 1 | set-text $firstName
+		key-type TRAVERSE_TAB_NEXT
 		get-view [t view_patients ] | get-table | get-property itemCount | log
 	}
 	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
@@ -32,9 +33,23 @@ proc SelectPatient [val familyName] [val firstName] {
 	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 }
 
+/**
+ * Set the AHV number for the currently selected patient
+ */
+proc SetAHVnumber [ val AHVnumber "756.1234.5678.1" ] {
+	open-window-by-name [ t Patientendetails_new ]
+	get-view [ t Patientendetails ] | get-label [ t Patientendetails_AHV ] | click
+	with [get-window [ t Identifikationselemente ] ] {
+	    with [get-group [ t notwendigen_Identifikationsdaten ] | get-editbox -after [get-label [ t AHV]]] {
+	        set-text $AHVnumber
+	    }
+	    get-button [ t ok ] | click
+    }
+}
+
 proc PatientenErstellenFallsNichtVorhanden [val familyName "Wesen" ] [val firstName "Armes" ] [val male [bool true] ] 
 	[val birthDate "29.2.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
-	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] {
+	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] [ val ahv  "756.1234.0000.1" ] {
 	if [SelectPatient -familyName $familyName -firstName $firstName | eq false] {
 		PatientenErstellen -familyName $familyName -firstName $firstName -male $male -birthDate $birthDate 
 			-street $street -zipCode $zipCode -location $location -phone $phone
@@ -43,7 +58,7 @@ proc PatientenErstellenFallsNichtVorhanden [val familyName "Wesen" ] [val firstN
 
 proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val male true] 
 	[val birthDate "29.02.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
-	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] {
+	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] [ val ahv  "756.1234.9999.1" ] {
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
 	get-view [t view_patients ] | get-button [ t btn_create_new_patient ]  | click
@@ -74,6 +89,8 @@ proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val 
 		get-editbox -after [get-label [ t dlg_new_patient_phone ] ] | set-text $phone
 		get-eclipse-window | gen-screenshot [concat $imagesDir $familyName "_"n $firstName "_created.png"]
 		get-button [t ok ] | click
+		SetAHVnumber -AHVnumber $ahv
+		get-eclipse-window | gen-screenshot [concat $imagesDir $familyName "_"n $firstName "_AHV.png"]
 	}
 	global [ val PatientenErstellenOkay true ] -override
 	try {

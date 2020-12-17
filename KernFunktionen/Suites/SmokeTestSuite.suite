@@ -5,7 +5,7 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
-Save-Time: 12/2/20 5:59 PM
+Save-Time: 12/17/20 9:40 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -37,6 +37,8 @@ _oNRWQDS0EeuXVMkM-fyEfg	// kind: 'test' name: 'CheckRestart' path: '../Tests/Che
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
 _ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/BasicAbrechnungssytems.test'
 _7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
+_Y9h3EEBkEeuIMcVqhnswXA	// kind: 'test' name: 'VerrechnenBeiGeschlossenemFall' path: '../Tests/Rechnungen/VerrechnenBeiGeschlossenemFall.test'
+_r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../Tests/Behandlung/KonsDirektVerrechnen.test'
 _gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
 _aMFqEOBrEeqxlcSTFlM60Q	// kind: 'test' name: 'SetupTextPluginTests' path: '../Tests/Textverarbeitung/SetupTextPluginTests.test'
 _Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: '../Tests/Rechnungen/CheckTarmedFallVerrechnen.test'
