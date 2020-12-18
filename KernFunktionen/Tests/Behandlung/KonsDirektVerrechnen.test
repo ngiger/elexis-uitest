@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _r8134DV7EeuXVMkM-fyEfg
-Save-Time: 12/18/20 1:19 PM
+Save-Time: 12/18/20 5:53 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -21,13 +21,17 @@ Entry-Name: .content
 
 ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
 TextPluginSelect hilotec_odf
-ImportPatFallKonsFromProperty patient.106.
+if [ not [ SelectPatient DirectInvoice Marianne] ] {
+	PatientenErstellen  DirectInvoice Marianne true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
+	SelectPatient DirectInvoice Marianne
+}
 let [ val anfangs2020 "30.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason [t reason_KVG]] {
 	FallZuPatientErstellen -startDate $anfangs2020 -caseLaw $caseLaw -caseReason $caseReason
 	SelectFall -caseLaw $caseLaw -startDate $anfangs2020
 	FallSetVersicherungsNummer 87654321 -fall [ concat  ".*" $caseLaw ".*"  $anfangs2020 ".*"]
-	FallSetCostBearer -printId [concat "KonsDirektVerrechnen "  $anfangs2020 ]
-	kons-erstellen [concat "KonsDirektVerrechnen "  $anfangs2020 " now " [ now ] ] -createSecond true
+	FallSetCostBearer -name "Helsana Unfall" -printId [concat "DirectInvoice "  $anfangs2020 ]
+	FallSetDefaultInvoiceRecipient DirectInvoice Marianne
+	kons-erstellen [concat "DirectInvoice "  $anfangs2020 " now " [ now ] ] -createSecond true
 	kons-set-date $anfangs2020
 	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
 	kons-add-block
@@ -41,7 +45,7 @@ with [get-window [t View_Rechnung_ausgeben] ] {
     get-button OK | click -metaKeys ""
 }
 get-window [ t Drucken_beendet ]| assert-non-empty
-get-window [ t Drucken_beendet ]| gen-screenshot [concat $imagesDir "KonsDirektVerrechnen_done.png"]
+get-window [ t Drucken_beendet ]| gen-screenshot [concat $imagesDir "DirectInvoice_done.png"]
 get-window [ t Drucken_beendet ]| close
 AktuellenFallSchliessen
 

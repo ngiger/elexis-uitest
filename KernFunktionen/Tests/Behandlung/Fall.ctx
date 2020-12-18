@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 12/18/20 3:21 PM
+Save-Time: 12/18/20 5:53 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -216,6 +216,17 @@ proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
 		get-table | select [concat ".*" $name ".*"]
 		get-window [t select_contact] | gen-screenshot [concat $imagesDir "Fall_" $printId "_costBearer_" $name ".png"]
 		get-button OK | click
+	}
+}
+/**
+ * Set the receipient to the full address of the patient
+ */
+proc FallSetDefaultInvoiceRecipient  [val name ] [ val firstname ]  {
+// get-view "Fälle" | get-table | select "KVG: Krankheit - Allgemein\\(30.01.2020- offen\\)" | double-click
+	get-view Fall | get-link "Rechnungsempfänger" | click
+	with [get-window "Kontakt auswählen"] {
+	    get-list | select [ concat $name ".*" $firstname ".*" ]
+	    get-button [ t ok ] | click
 	}
 }
 proc FallSetVersicherungsNummer [val nummer 123456] [val fall ".*"] {
