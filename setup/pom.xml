@@ -171,20 +171,19 @@
               <md5>7b69b8e31e1137eecdbcf57c3c4aa228</md5>
             </configuration>
           </execution>
-          <!--execution>
+          <execution>
             <id>download-complementary_24022020</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://medelexis.ch/wp-content/uploads/ElexisResources/complementary_24022020.csv</url>
+              <url>https://medelexis.ch/wp-content/uploads/ElexisResources/Tarife/complementary_24022020.csv</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <unpack>false</unpack>
               <md5>da1782d137a063168f86761c9b103280</md5>
             </configuration>
           </execution>
-          -->
           <execution>
             <id>download-MiGeL-01.04.20.xlsx</id>
             <phase>generate-sources</phase>
