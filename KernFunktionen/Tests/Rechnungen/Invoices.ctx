@@ -5,7 +5,7 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Save-Time: 12/18/20 12:53 PM
+Save-Time: 12/18/20 3:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -229,7 +229,7 @@ proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] [ val workAroun
 	}
 	RechnungslisteAnzeigen -status $status
 	let [ val textContent [ get-view  [ t Rechnungsliste ] | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
-		concat "GetNrOfInvoices got : " $status " as int " $textContent | log
+		get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_GetNrOfInvoices_" $textContent ".png"]
 		$textContent | int
 	}
 }

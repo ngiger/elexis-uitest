@@ -5,7 +5,7 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Save-Time: 12/18/20 1:15 PM
+Save-Time: 12/18/20 3:21 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -27,6 +27,11 @@ proc SelectPatient [val familyName] [val firstName] {
 	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 	try {
 		get-view [t view_patients ]  | get-table | select [ concat  $familyName ".*" $firstName ".*"]
+		log "SelectPatient returned true, checking whether it updates title of window"
+		let [val currentKons [ get-view [ t kons_view ] | get-label | get-property caption -raw ] ] {
+			$currentKons | matches [ concat $familyName " " $firstName ".*" ] |
+				assert-true -message [ concat "Kons " $currentKons " does not match SelectPatient "  $familyName " " $firstName ]
+		}
 	} -catch {
 	  log "SelectPatient not found"
 	}

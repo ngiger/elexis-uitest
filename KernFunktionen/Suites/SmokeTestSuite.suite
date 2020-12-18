@@ -5,7 +5,7 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
-Save-Time: 12/18/20 2:09 PM
+Save-Time: 12/18/20 4:55 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -32,12 +32,11 @@ _d0UGkLBSEemub6f3erWwag	// kind: 'test' name: 'ImportTarmed' path: '../Tests/Inf
 _tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
 _kd4wsLBUEemub6f3erWwag	// kind: 'test' name: 'ImportArtikelstamm' path: '../Tests/Infrastruktur/SingleImportTests/ImportArtikelstamm.test'
 _lqzhsLBSEemub6f3erWwag	// kind: 'test' name: 'ImportMigel' path: '../Tests/Infrastruktur/SingleImportTests/ImportMigel.test'
+_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
+_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/Infrastruktur/BasicAbrechnungssytems.test'
+_PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
 _3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Tests/RestartElexis.test'
 _oNRWQDS0EeuXVMkM-fyEfg	// kind: 'test' name: 'CheckRestart' path: '../Tests/CheckRestart.test'
-_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
-_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/BasicAbrechnungssytems.test'
-_PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
-_7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
 _Y9h3EEBkEeuIMcVqhnswXA	// kind: 'test' name: 'VerrechnenBeiGeschlossenemFall' path: '../Tests/Rechnungen/VerrechnenBeiGeschlossenemFall.test'
 _r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../Tests/Behandlung/KonsDirektVerrechnen.test'
 _gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
@@ -47,6 +46,7 @@ _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/I
 _mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../Tests/Kassenbuch.test'
 _6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../Tests/Textverarbeitung/hilotec_odf.test'
 _xf2KwCp1EeujcoUPAsRgcQ	// kind: 'test' name: 'medelexis_oo' path: '../Tests/Rechnungen/medelexis_oo.test'
+_7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
 _EwDAgAYfEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostPreferences' path: '../Tests/Infrastruktur/VisitMostPreferences.test'
 _0fUkAAYeEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostViews' path: '../Tests/Infrastruktur/VisitMostViews.test'
 
