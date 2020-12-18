@@ -5,7 +5,7 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Save-Time: 12/2/20 6:06 PM
+Save-Time: 12/18/20 2:07 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -50,17 +50,17 @@ try {
 OpenAndResetStartPerspektive
 
 // Some Hints from http://h2database.com/html/tutorial.html#tutorial_starting_h2_console
-// http://central.maven.org/maven2/com/h2database/h2/1.4.197/h2-1.4.197.jar
-// java -classpath ~/elexis/rcptt/h2-1.4.197.jar org.h2.tools.RunScript -script locale.sql -url jdbc:h2:~/elexis/demoDB/db -user sa  -showResults
+// http://central.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
+// java -classpath ~/elexis/rcptt/h2-1.4.200.jar org.h2.tools.RunScript -script locale.sql -url jdbc:h2:~/elexis/demoDB/db -user sa  -showResults
 // Save to test.zip
-// java -classpath ~/elexis/rcptt/h2-1.4.197.jar org.h2.tools.Script -url jdbc:h2:~/elexis/demoDB/db -user sa -script test.zip -options compression zip
+// java -classpath ~/elexis/rcptt/h2-1.4.200.jar org.h2.tools.Script -url jdbc:h2:~/elexis/demoDB/db -user sa -script test.zip -options compression zip
 
 // Restore from test.zip
-// java -classpath ~/elexis/rcptt/h2-1.4.197.jar org.h2.tools.RunScript -url jdbc:h2:~/elexis/demoDB/db -user sa -script test.zip -options compression zip
+// java -classpath ~/elexis/rcptt/h2-1.4.200.jar org.h2.tools.RunScript -url jdbc:h2:~/elexis/demoDB/db -user sa -script test.zip -options compression zip
 
 // RunScript runs a SQL script against a database. 
  
-global [val h2Jar	   [ concat $rcpttDir "h2-1.4.197.jar"] ]
+global [val h2Jar	   [ concat $rcpttDir "h2-1.4.200.jar"] ]
 global [val dumpFile	[ concat $rcpttDir "dump.sql.zip"] ]
 global [val sqlCmdFile	  [ concat $rcpttDir "commands.sql"] ]
 global [val jdbcConnection  "Unknown jdbcConnection"]
@@ -104,10 +104,13 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 				log "I do not know how to access the JDBConnection when Running from Scratch"
 	} -else {
-		concat "Will create SQL backup for h2 under: " $zipFile | log
-			  concat "java" " -classpath " $jarFile " org.h2.tools.Script   -url " $jdbc " -user " "sa" " -script " $zipFile "-options" " compression zip" | log
-		exec-process "java"  "-classpath"  $jarFile  "org.h2.tools.Script" "-url"  $jdbc  "-user"  "sa"  "-script"  test.xx.zip "-options"  "compression" "zip"
-		concat "Created SQL backup for h2 under: " $zipFile | log
+		if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "h2" ] {
+			concat "Will create SQL backup for h2 under: " $zipFile | log
+				  concat "java" " -classpath " $jarFile " org.h2.tools.Script   -url " $jdbc " -user " "sa" " -script " $zipFile "-options" " compression zip" | log
+			concat "Created SQL backup for h2 under: " $zipFile | log
+		} -else {
+			concat "create-backup-sql unsupported flavor " [ safe-get-java-property "ch.elexis.dbFlavor" ] | log
+		}
 	}
 }
 
