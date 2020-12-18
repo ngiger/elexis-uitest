@@ -5,7 +5,7 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Save-Time: 12/2/20 6:33 PM
+Save-Time: 12/18/20 12:53 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -57,10 +57,10 @@ proc "AbrechnungsSystemKonfigurieren"
 				if [ $found_abr_system ] {
 					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " multi " $mustMatch " already preset" |log		
 				} -else {
-					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " must add multi" |log		
+					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " must add multi "  $newFactor " since " $startDate |log
 					get-button [ t hinzufuegen ] | click
-					with [get-window  [ t Neuer_Multiplikator ] ] {
-			   		with [get-editbox -after [get-label [ t Datum ]]] { set-text $startDate }
+					with [get-window  [ t Neuer_Multiplikator ] ] { // 01.01.18 oder 0
+						get-editbox -after [get-label [ t Datum ]] | set-text $startDate
 						get-editbox -after [get-label [ t Multiplikator ] ] | set-text $newFactor
 						gen-screenshot [concat $imagesDir "Abrechnungs_Multiplikator_" $abrSystem "_"  $startDate " " $newFactor ".png"]
 						get-button OK | click
