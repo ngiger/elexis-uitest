@@ -27,6 +27,9 @@ proc "get-default-locale" {
 	invoke-static "org.eclipse.rcptt.util" "java.util.Locale" getDefault
 }
 
+proc cleanFileName [ val original ] {
+  replaceAll original "[ äöüéèàç\*\"]" "_"
+}
 // return a current date and time, eg. 14.10.2020 20:30:45
 proc now {
 	get-time | format-time "dd.MM.yyyy HH:mm:ss"
@@ -271,12 +274,12 @@ proc OpenAndResetStartPerspektive {
 /**
  * Logs and creates a snapshot of the passed graphical object
  */
-proc "gen-screenshot" [ val parent -input ] [ val out [concat $imagesDir "dest.png"] ] {
+proc "gen-screenshot" [ val parent -input ] [ val out [ cleanFileName [concat $imagesDir "dest.png"]]] {
 	$parent | get-object | save-screenshot $out
 	concat "gen-screenshot: " $out | log
 }
 
-proc "create-entire-screenshot" [ val pathName [concat $imagesDir "screen.png"] ] {
+proc "create-entire-screenshot" [ val pathName [ cleanFileName [concat $imagesDir "screen.png"]]] {
 	if [ get-by-os  -win true -macosx true -linux false ] {
 		// We create normal screenshot on windows and macOSX as we do not run under openbox
 		// and we get the windows titles anyway
