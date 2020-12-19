@@ -5,7 +5,7 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Save-Time: 12/18/20 2:07 PM
+Save-Time: 12/19/20 9:58 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -105,9 +105,12 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 				log "I do not know how to access the JDBConnection when Running from Scratch"
 	} -else {
 		if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "h2" ] {
-			concat "Will create SQL backup for h2 under: " $zipFile | log
-				  concat "java" " -classpath " $jarFile " org.h2.tools.Script   -url " $jdbc " -user " "sa" " -script " $zipFile "-options" " compression zip" | log
-			concat "Created SQL backup for h2 under: " $zipFile | log
+			let [ val params [ concat " java -classpath " $jarFile " org.h2.tools.Script   -url '" $jdbc 
+				"' -user " "sa" " -script " $zipFile " -options" " compression zip" ]] {
+				log $params
+				exec-process  "/usr/bin/env" $params
+				concat "Created SQL backup for h2 under: " $zipFile | log
+			}
 		} -else {
 			concat "create-backup-sql unsupported flavor " [ safe-get-java-property "ch.elexis.dbFlavor" ] | log
 		}
