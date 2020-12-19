@@ -5,13 +5,22 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Save-Time: 12/18/20 3:21 PM
+Save-Time: 12/19/20 11:00 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc SelectPatient [val familyName] [val firstName] {
+proc PatientMustBeSelected [val familyName] [val firstName] {
+	let [val currentTitle [ get-eclipse-window | get-property title -raw ]]
+	    [val pattern  [ concat ".*" $familyName ".*" $firstName ".*" ]] {
+		$currentTitle | matches $pattern |
+			assert-true -message [ concat "PatientMustBeSelected " $currentTitle " does not match pattern " $pattern]
+		concat "PatientMustBeSelected " $currentTitle " does match pattern " $pattern " in window title" | log
+	}
+}
+
+proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
 	with [get-view [t view_patients ]] {
@@ -24,17 +33,16 @@ proc SelectPatient [val familyName] [val firstName] {
 		key-type TRAVERSE_TAB_NEXT
 		get-view [t view_patients ] | get-table | get-property itemCount | log
 	}
-	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
-	try {
-		get-view [t view_patients ]  | get-table | select [ concat  $familyName ".*" $firstName ".*"]
-		log "SelectPatient returned true, checking whether it updates title of window"
-		let [val currentKons [ get-view [ t kons_view ] | get-label | get-property caption -raw ] ] {
-			$currentKons | matches [ concat $familyName " " $firstName ".*" ] |
-				assert-true -message [ concat "Kons " $currentKons " does not match SelectPatient "  $familyName " " $firstName ]
+	if [ $mustExist ] {
+		try { let [ val pattern  [ concat $familyName ".*" $firstName ".*" ]] {
+			get-view [t view_patients ]  | get-table | select $pattern
+		}} -catch {
+			bool false | assert-true -message  [ concat "SelectPatient: needed " $pattern " not found "]
 		}
-	} -catch {
-	  log "SelectPatient not found"
+		PatientMustBeSelected $familyName $firstName
 	}
+	concat "SelectPatient: " $familyName " " $firstName " found " [
+		get-view [t view_patients ] | get-table | get-property itemCount -raw ] " times" | log
 	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 }
 

@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 12/18/20 5:53 PM
+Save-Time: 12/19/20 10:56 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -289,6 +289,7 @@ proc SelectPatientMitFallUndKons [val familyName Testarossa]
 			$currentKons | matches [ concat $familyName " " $firstName ".*" ] |
 				assert-true -message [ concat "Kons " $currentKons " does not match selected patient "  $familyName " " $firstName ]
 		}
+		PatientMustBeSelected $familyName $firstName
 	}
 	create-entire-screenshot [concat $imagesDir "selected-" $familyName "_" $firstName "_" $caseName "_" $caseStartDate ".png"]
 	concat "SelectPatientMitFallUndKons successfull " $familyName " " $firstName " " $caseName " " $caseStartDate | log

@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _tFxLkBNbEemKBfY3bI9wrQ
-Save-Time: 11/17/20 2:40 PM
+Save-Time: 12/19/20 10:58 AM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -94,8 +94,8 @@ proc "PrepareEphaCheck" {
 
 proc "EnsurePatientChanged" {
 	// The change is only visible after closing the view or forcing a refresh by changing the patient
-	SelectPatient Armes Wesen
-	SelectPatient Mille Tonnere
+	SelectPatient Armes Wesen -mustExist true
+	SelectPatient Mille Tonnere -mustExist true
 }
 
 proc "CheckEphaInKons" {
