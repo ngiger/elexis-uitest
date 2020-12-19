@@ -159,7 +159,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>download-Medelexis-Vorlagen_OpenOffice_Fenster_recht</id>
+            <id>download-Medelexis-Vorlagen_OpenOffice_Fenster_rechts</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
@@ -169,6 +169,19 @@
               <outputDirectory>${rcptt-resources}/medelexis_openoffice_fenster_rechts</outputDirectory>
               <unpack>true</unpack>
               <md5>7b69b8e31e1137eecdbcf57c3c4aa228</md5>
+            </configuration>
+          </execution>
+          <execution>
+            <id>download-Medelexis-Vorlagen_OpenOffice_Fenster_links</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://medelexis.ch/wp-content/uploads/2020/10/Bundle_OpenOffice_Fenster_links.zip</url>
+              <outputDirectory>${rcptt-resources}/medelexis_openoffice_fenster_links</outputDirectory>
+              <unpack>true</unpack>
+              <md5>677fc1ca9af3e35c87e7739d51660784</md5>
             </configuration>
           </execution>
           <execution>
