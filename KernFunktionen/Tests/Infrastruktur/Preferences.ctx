@@ -17,7 +17,7 @@ proc SavePreferencesToFile {
 	 t preferences|log
 	    // CSV file must be written in two Steps
 	 	get-window [ t preferences ] | get-tree | expand-all
-		wait 100 	
+		wait 100
 	  	get-window [ t preferences ] | get-tree | get-table-data | write-csv-file $preferencesCsvFile
 		get-window [ t preferences ] | get-button [ t cancel ] | click
 	}
@@ -58,15 +58,15 @@ proc "check-one-preference-item" [val prefName] {
 	global [val curLevel [replaceAll $prefName ",.*" "" | int ] ] -override
 	concat "check-one-preference-item: " $curLevel " " $prefName | log
 	if [ $curLevel | str | matches "0" ] {
-		global [val curPrefix0 
+		global [val curPrefix0
 			[ replaceFirst $prefName ".*," ""] ] -override
 	}
 	if [ $curLevel | str | matches "1" ] {
-		global [val curPrefix1 
+		global [val curPrefix1
 			[ replaceFirst $prefName ".*," ""] ] -override
 	}
 	if [ $curLevel | str | matches "2" ] {
-		global [val curPrefix2 
+		global [val curPrefix2
 			[ replaceFirst $prefName ".*," ""] ] -override
 	}
 	if [ $curLevel | str | matches "3" ] {
@@ -84,7 +84,7 @@ proc "check-one-preference-item" [val prefName] {
 		global [val curPrefMenu [ concat $curPrefix0 "/" $curPrefix1 "/" $curPrefix2 "/" $curPrefix3 ]] -override
 	} ] -default {
 		bool false | assert-true -message "Unexecptecd state for curPrefMenu!"
-	}  
+	}
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
 		with [get-tree] {
@@ -111,8 +111,7 @@ proc "check-one-preference-item" [val prefName] {
 					}
 			global [val curPrefMenuClean [ replaceAll $curPrefMenu "[ äöüéèàç]" "_" ] ] -override
 			global [val  imgName  [ replaceAll $imgName "/___" "/" ] ] -override
-			// concat "save-screenshot: curPrefMenu: " $curPrefMenu " img: " $imgName | log
-			get-window [ t preferences ] | get-object | save-screenshot -out $imgName
+			get-window [ t preferences ] | gen-screenshot -out $imgName
 		}
 		get-button [ t apply_and_close ] | click
 	}

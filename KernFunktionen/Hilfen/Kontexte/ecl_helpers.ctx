@@ -275,7 +275,7 @@ proc OpenAndResetStartPerspektive {
  * Logs and creates a snapshot of the passed graphical object
  */
 proc "gen-screenshot" [ val parent -input ] [ val out [ cleanFileName [concat $imagesDir "dest.png"]]] {
-	$parent | get-object | save-screenshot $out
+	$parent | get-object | save-screenshot $out // creates directory if necessary
 	concat "gen-screenshot: " $out | log
 }
 
@@ -283,7 +283,7 @@ proc "create-entire-screenshot" [ val pathName [ cleanFileName [concat $imagesDi
 	if [ get-by-os  -win true -macosx true -linux false ] {
 		// We create normal screenshot on windows and macOSX as we do not run under openbox
 		// and we get the windows titles anyway
-		get-eclipse-window | get-object | save-screenshot $pathName
+		get-eclipse-window | get-object | save-screenshot $pathName // creates directory if necessary
 	} -else {
 		get-eclipse-window | get-object | save-screenshot $pathName // creates directory if necessary
 		wait 500

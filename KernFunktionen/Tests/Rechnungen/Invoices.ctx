@@ -11,11 +11,11 @@ Save-Time: 12/18/20 3:06 PM
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc "AbrechnungsSystemKonfigurieren" 
-	[ val abrSystem  [ t case_KVG ] ] 
-	[ val leistungsSystem  [ t TarmedLeistung ] ] 
-	[ val abrPrinter [ t Tarmed_Drucker ] ] 
-	[ val caseLaw	 [ t KVG_Gesetz ] ] 
+proc "AbrechnungsSystemKonfigurieren"
+	[ val abrSystem  [ t case_KVG ] ]
+	[ val leistungsSystem  [ t TarmedLeistung ] ]
+	[ val abrPrinter [ t Tarmed_Drucker ] ]
+	[ val caseLaw	 [ t KVG_Gesetz ] ]
 	[ val newFactor  "0.95" ]
 	[ val startDate  "01.01.2018" ] {
 	get-preferences-menu | click
@@ -34,7 +34,7 @@ proc "AbrechnungsSystemKonfigurieren"
 			get-combo -after [get-label [ t Leistungscode_System ] ] | select $leistungsSystem
 			get-combo -after [get-label [ t Standard_Rechnungsausgabe ] ] | select $abrPrinter
 			get-combo -after [get-label [ t Gesetz ] ] | select $caseLaw
-			let [ val  nrMultiplikatoren [ get-list | get-property "getItemCount()" -raw ] ] 
+			let [ val  nrMultiplikatoren [ get-list | get-property "getItemCount()" -raw ] ]
 				[ val mustMatch [ concat ".*" $startDate ".*" $newFactor ] ]			{
 				loop [val idx 0] {
 					concat "AbrechnungsSystemKonfigurieren: nrMultiplikatoren ist: " $nrMultiplikatoren " idx " $idx " mustMatch " $mustMatch| log
@@ -46,16 +46,16 @@ proc "AbrechnungsSystemKonfigurieren"
 						if [ get-window [ t Abrechnungssystem ] | get-list | get-property [ concat "getItems().String[" [ $idx | str ] "]" ] -raw | matches $mustMatch ] {
 								log "AbrechnungsSystemKonfigurieren: Found match"
 								global [ val found_abr_system true ] -override
-						} -else { 
-							log "AbrechnungsSystemKonfigurieren: Did not match" 
+						} -else {
+							log "AbrechnungsSystemKonfigurieren: Did not match"
 							if [  $idx | lt $nrMultiplikatoren ] { recur [$idx | plus 1] }
-						} 
-					} -catch { 
-						log "AbrechnungsSystemKonfigurieren: Failed, noMultiplikatoren" 
+						}
+					} -catch {
+						log "AbrechnungsSystemKonfigurieren: Failed, noMultiplikatoren"
 					}
 				}
 				if [ $found_abr_system ] {
-					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " multi " $mustMatch " already preset" |log		
+					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " multi " $mustMatch " already preset" |log
 				} -else {
 					concat "AbrechnungsSystemKonfigurieren " $found_abr_system " must add multi "  $newFactor " since " $startDate |log
 					get-button [ t hinzufuegen ] | click
@@ -83,10 +83,10 @@ proc "RechnungslisteAnzeigen" [ val status [ t Offen ] ] {
 		get-combo -after [get-label [ t RG_Total ]] | select $status
 		global [val anzeigeNr [ int $anzeigeNr | plus 1 | int] ] -override
 		concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_vorher.png" | log
-		get-eclipse-window | get-object | save-screenshot -out [ concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_vorher.png"  ]
+		get-eclipse-window | gen-screenshot -out [ concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_vorher.png"  ]
 		get-button [ t Liste_neu_einlesen ] | click
 		wait 2000 // Looks like we need some more time here
-		get-eclipse-window | get-object | save-screenshot -out [ concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_nachher.png"  ]
+		get-eclipse-window | gen-screenshot -out [ concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_nachher.png"  ]
 	}
 }
 
@@ -207,7 +207,7 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 			}
 		}
 	}
-	
+
 	concat "GetHighestInvoiceNrOf set highestInvoiceNr to: " $highestInvoiceNr | log
 	$highestInvoiceNr | str
 }
