@@ -224,19 +224,6 @@
             </configuration>
           </execution>
           <execution>
-            <id>download-MiGeL-01012019-mdelexis</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://medelexis.ch/wp-content/uploads/MiGeL2019v1.csv</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <outputFileName>MiGeL2019v1.csv</outputFileName>
-              <md5>eb65ce32837644c432830e044db28fdb</md5>
-            </configuration>
-          </execution>
-          <execution>
             <id>download-MiGeL-01012019-fr</id>
             <phase>generate-sources</phase>
             <goals>
