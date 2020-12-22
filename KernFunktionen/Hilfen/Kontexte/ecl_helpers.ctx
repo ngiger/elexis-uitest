@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 12/2/20 6:50 PM
+Save-Time: 12/22/20 9:00 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -27,9 +27,6 @@ proc "get-default-locale" {
 	invoke-static "org.eclipse.rcptt.util" "java.util.Locale" getDefault
 }
 
-proc cleanFileName [ val original ] {
-  replaceAll original "[ äöüéèàç\*\"]" "_"
-}
 // return a current date and time, eg. 14.10.2020 20:30:45
 proc now {
 	get-time | format-time "dd.MM.yyyy HH:mm:ss"
@@ -90,15 +87,24 @@ proc "get-seconds" {
 /**
  * @input: inString a string
 */
-proc "replaceFirst" [ val inString ] [ val searchPattern ] [ val replaceString] {
+proc replaceFirst [ val inString ] [ val searchPattern ] [ val replaceString] {
 	$inString | invoke replaceFirst $searchPattern $replaceString
 }
 // replaceFirst "Welcome to Tutorialspoint.com" "(.*)Tutorials(.*)" "AMROOD" | log
 
-proc "replaceAll" [ val inString ] [ val searchPattern ] [ val replaceString] {
+proc replaceAll [ val inString ] [ val searchPattern ] [ val replaceString] {
 	$inString | invoke replaceAll $searchPattern $replaceString
 }
 
+proc cleanFileName [ val original ] {
+  replaceAll -inString $original -searchPattern "[ äöüéèàç\*\"\[\]]" -replaceString "_"
+}
+
+let [ val testString  "Test äöüéèàç mit.*[]" ]
+    [ val expected "Test_________mit.___" ] {
+	cleanFileName $testString | str | equals $expected | assert-true -message
+		[ concat "cleanFilename expected <" $expected "> is <" [ cleanFileName $testString ] ">"]
+}
 
 proc "FileContainsString"  [ val fileName ] [ val searchFor  ] {
 	if [ get-by-os  -win true -macosx false -linux false ] {
