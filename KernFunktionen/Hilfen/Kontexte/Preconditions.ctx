@@ -5,7 +5,7 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Save-Time: 12/19/20 9:58 AM
+Save-Time: 12/23/20 1:23 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -100,16 +100,21 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 */
 proc "create-backup-sql" [val zipFile $dumpFile] 
 				 [val jarFile $h2Jar]
-				 [val jdbc $jdbcConnection] {
+				 [val jdbc "jdbc:h2:~/elexis/h2_elexis_rcptt_de/db" ] {
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
-				log "I do not know how to access the JDBConnection when Running from Scratch"
+		log "I do not know how to access the JDBConnection when Running from Scratch"
 	} -else {
 		if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "h2" ] {
-			let [ val params [ concat " java -classpath " $jarFile " org.h2.tools.Script   -url '" $jdbc 
-				"' -user " "sa" " -script " $zipFile " -options" " compression zip" ]] {
-				log $params
-				exec-process  "/usr/bin/env" $params
-				concat "Created SQL backup for h2 under: " $zipFile | log
+			if [ get-by-os  -win true -macosx false -linux false ] {
+				exec-process "java" "-classpath" $jarFile "org.h2.tools.Script"
+				"-url" $jdbc "-user" "sa" "-script"  $zipFile "-options" "compression" "zip"
+				concat "Dump to " $zipFile " done" | log
+			} -else {
+				let [ val params [ concat " java -classpath " $jarFile
+					" org.h2.tools.Script   -url '" $jdbc
+					"' -user " "sa" " -script " $zipFile " -options" " compression zip" ]] {
+					exec-process  "/usr/bin/env" $params
+				}
 			}
 		} -else {
 			concat "create-backup-sql unsupported flavor " [ safe-get-java-property "ch.elexis.dbFlavor" ] | log
