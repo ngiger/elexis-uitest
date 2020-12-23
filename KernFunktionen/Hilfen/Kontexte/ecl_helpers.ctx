@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 12/22/20 9:00 PM
+Save-Time: 12/23/20 2:29 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -97,11 +97,12 @@ proc replaceAll [ val inString ] [ val searchPattern ] [ val replaceString] {
 }
 
 proc cleanFileName [ val original ] {
-  replaceAll -inString $original -searchPattern "[ äöüéèàç\*\"\[\]]" -replaceString "_"
+    invoke-static  "org.apache.commons.io" "org.apache.commons.io.FilenameUtils" "separatorsToUnix" [
+		replaceAll -inString $original -searchPattern "[ äöüéèàç\*\"\[\]]" -replaceString "_" ]
 }
 
-let [ val testString  "Test äöüéèàç mit.*[]" ]
-    [ val expected "Test_________mit.___" ] {
+let [ val testString  "Test\A äöüéèàç mit.*[]" ]
+    [ val expected "Test/A_________mit.___" ] {
 	cleanFileName $testString | str | equals $expected | assert-true -message
 		[ concat "cleanFilename expected <" $expected "> is <" [ cleanFileName $testString ] ">"]
 }
