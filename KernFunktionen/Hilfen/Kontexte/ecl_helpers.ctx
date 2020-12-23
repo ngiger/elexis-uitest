@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 12/23/20 2:29 PM
+Save-Time: 12/23/20 10:29 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -21,7 +21,11 @@ proc "get-env" [val name] {
 		invoke-static "org.eclipse.rcptt.util" "java.lang.System" getenv $name
 }
 proc "pwd" {
-  get-java-property "user.dir"
+	if [ get-by-os  -win true -macosx false -linux false ] {
+		replaceAll [ get-java-property "user.dir" ] "\\\\" "/"
+	} -else {
+		get-java-property "user.dir"
+	}
 }
 proc "get-default-locale" {
 	invoke-static "org.eclipse.rcptt.util" "java.util.Locale" getDefault
@@ -249,13 +253,15 @@ proc handleResetPerspectiveDialog {
 	}
 }
 proc resetPerspective {
-// get-button "Perspektive zurücksetzen" | click
-// get-window "Perspektive zurücksetzen" | get-button "Reset Perspective" | click
-	if [ get-button [ t global_btn_reset_perspective ] | get-property enablement -raw | equals true ] {
-		get-button [ t global_btn_reset_perspective ] | click
-		handleResetPerspectiveDialog
-	} -else {
-		log "Button reset_perspective is disabled"
+	try {
+		if [ get-button [ t global_btn_reset_perspective ] | get-property enablement -raw | equals true ] {
+			get-button [ t global_btn_reset_perspective ] | click
+			handleResetPerspectiveDialog
+		} -else {
+			log "Button reset_perspective is disabled"
+		}
+	} -error [val errorObj] -catch {
+		concat  "Button reset_perspective is disabled: "  [$errorObj | get message] | log
 	}
 }
 
