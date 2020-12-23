@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 12/16/20 11:16 AM
+Save-Time: 12/23/20 1:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -75,11 +75,7 @@ proc EnsureLibreOffficIsInstalled {
 		} -else {
 			log "EnsureLibreOffficIsInstalled: Check whether libreoffice ist installed under Windows"
 			global [val lowriter "C:\\Program Files\\LibreOffice\\program\\swriter.exe"] -override
-			let [val result [exec-process -command $lowriter -args "--version"]] {
-				concat "EnsureLibreOffficIsInstalled: " $lowriter "libreoffice version returned " [$result | get
-					"exitCode"] " out " [$result | get stdout] | log
-				$result | get exitCode | equals 0 | assert-true
-			}
+			get-file [ uri-from-path $lowriter ] | get exists | assert-true -message [ concat "Could not find " $lowriter]
 		}
 	}
 	create-entire-screenshot [concat $imagesDir "EnsureLibreOffficIsInstalled.png"]
@@ -94,7 +90,8 @@ proc CloseLibreOffice {
 			concat "CloseLibreOffice linux " $lowriter | log
 			exec-process -command killall -args oosplash -ignoreExitCode -ignoreStderr
 		} -else {
-			log "I do not now howto close CloseLibreOffice under windows"
+			exec-process -command taskkill -args "/IM soffice.bin /F" -ignoreExitCode -ignoreStderr
+			exec-process -command taskkill -args "/IM soffice.exe /F" -ignoreExitCode -ignoreStderr
 		}
 	}
 }
@@ -210,6 +207,7 @@ proc EnsureOpenOfficeIsInstalled {
 		} -else {
 			log "EnsureOpenOffficIsInstalled: Check whether openoffice ist installed under Windows"
 			global [val oowriter "C:\\Program Files (x86)/OpenOffice 4\\program\\swriter.exe"] -override
+			get-file [ uri-from-path $oowriter ] | get exists | assert-true -message [ concat "Could not find " $oowriter]
 			let [val result [exec-process $oowriter  "-invisible" "-headless" "-help" -ignoreStderr true ] ] {
 				concat "EnsureOpenOffficIsInstalled: " $oowriter "openoffice help returned " [$result | get exitCode]
 					" out " [$result | get stdout] | log
