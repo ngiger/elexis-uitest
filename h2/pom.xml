@@ -47,7 +47,8 @@
               <configuration>
                 <verbose>true</verbose>
                 <target>
-                  <exec executable="java" failonerror="true">
+                  <!-- only under linux as it fails under Windows -->
+                  <exec executable="java" failonerror="true" os="Linux">
                     <arg value="-cp"/>
                     <arg value="${rcptt-resources}/h2-${h2.version}.jar"/>
                     <arg value="org.h2.tools.Script"/>
@@ -73,7 +74,8 @@
               <configuration>
                 <verbose>true</verbose>
                 <target>
-                  <exec executable="java" failonerror="true">
+                  <!-- only under linux as it fails under Windows -->
+                  <exec executable="java" failonerror="true" os="Linux">
                     <arg value="-cp"/>
                     <arg value="${rcptt-resources}/h2-${h2.version}.jar"/>
                     <arg value="org.h2.tools.Script"/>
@@ -98,7 +100,8 @@
               <configuration>
                 <verbose>true</verbose>
                 <target>
-                  <exec executable="cp" failonerror="true">
+                  <!-- only under linux as it fails under Windows -->
+                  <exec executable="cp" failonerror="true" os="Linux">
                     <arg value="-rpv"/>
                     <arg value="${user.home}/elexis/h2_elexis_rcptt_${language}"/>
                     <arg value="${project.basedir}/target/results/"/>
