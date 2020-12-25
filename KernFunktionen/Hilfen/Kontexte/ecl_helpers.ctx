@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 12/23/20 10:29 PM
+Save-Time: 12/25/20 11:29 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -308,8 +308,12 @@ proc "create-entire-screenshot" [ val pathName [ cleanFileName [concat $imagesDi
 }
 
 proc "GetActPatPersonalia" {
+   try {
 	invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.events.ElexisEventDispatcher -methodName getSelectedPatient |
 		invoke getPersonalia
+	} -catch {
+		log "GetActPatPersonalia: no Patient selected"
+	}
 }
 
 /**

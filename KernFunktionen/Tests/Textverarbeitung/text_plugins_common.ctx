@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 12/23/20 1:20 PM
+Save-Time: 12/23/20 10:40 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -30,21 +30,10 @@ proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 		ConfigureMsOO_TextVerarbeitung
 	}
 }
-proc SetupTextPlugins {
-	// requires ImportSwissBase, BasicMandanten, BasicAbrechnungssystems run before
-	OpenAndResetStartPerspektive
 
-	// To print an AUF we need a text plugin. list of krankenkasse, AUF vorlagen
-	// The krankenkass comes in via ImportSwissBase
-	if [SelectKontakt -bezeichnung1 Aquilana] {
-		log "KK Aquilana schon vorhanden"
-	} -else {
-		ReadDataImport -file [concat [get-user-dir] "/rcptt/Universal_krankenkasse.xls"]
-		SelectKontakt -bezeichnung1 Aquilana
-	}
-	get-eclipse-window | gen-screenshot [concat $imagesDir "Aquilana_imported.png"]
-	ConfigureHilotecODF_TextVerarbeitung
+proc SetupTextPlugins {
 	ConfigureMsOO_TextVerarbeitung
+	ConfigureHilotecODF_TextVerarbeitung
 	ImportHilotecODF_Vorlage
 }
 

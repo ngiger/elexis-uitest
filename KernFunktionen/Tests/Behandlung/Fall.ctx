@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 12/19/20 10:56 AM
+Save-Time: 12/25/20 1:19 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -53,7 +53,9 @@ proc FallZuPatientErstellenFallsNichtVorhanden [val caseLaw [t case_UVG]] [val c
 // Checks whether the case really exists for the currently selected patient
 proc FallZuPatientExistiert [val text ".*KVG:.*offen.*"] {
 	with [get-view [t view_cases]] {
-		get-table | gen-screenshot [concat $imagesDir "Fall_check_" $text ".png"]
+		concat  "will gen-screenshot " $imagesDir "Fall_check_" $text ".png" | log
+		cleanFileName [ concat  "wil gen-screenshot " $imagesDir "Fall_check_" $text ".png" | log
+		get-eclipse-window | gen-screenshot [concat $imagesDir "Fall_check_" $text ".png"]
 		get-table | get-item -path $text | get-property caption -raw | log
 		get-table | get-item -path $text | get-property caption -raw
 			| matches $text | assert-true -message [concat "Case " $text " not found"]

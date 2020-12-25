@@ -5,7 +5,7 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Save-Time: 12/19/20 11:00 AM
+Save-Time: 12/25/20 11:21 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -31,7 +31,8 @@ proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 		}
 		get-editbox -index 1 | set-text $firstName
 		key-type TRAVERSE_TAB_NEXT
-		get-view [t view_patients ] | get-table | get-property itemCount | log
+		get-view [t view_patients ] | get-table | get-property itemCount -raw true | log
+		get-view Patienten | get-table | select ".*"
 	}
 	if [ $mustExist ] {
 		try { let [ val pattern  [ concat $familyName ".*" $firstName ".*" ]] {
