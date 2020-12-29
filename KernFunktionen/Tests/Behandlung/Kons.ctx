@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 12/24/20 10:35 AM
+Save-Time: 12/29/20, 4:41 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -562,15 +562,16 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 			PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $familyName
 			 -firstName $firstName -birthDate $birthDate -male $male
 			 -caseName $caseName
+			PatientMustBeSelected -familyName $familyName -firstName $firstName
+			FallSetVersicherungsNummer -fall $caseName
+			FallSetCostBearer -name "Aquilana" -printId [ concat $familyName " " $firstName ]
+			FallSetDefaultInvoiceRecipient  $familyName $firstName
 			AllVerrechnungenEntfernen
 			DiagnoseEntfernen
 			kons-add-tarmed [ concat $tarmed ]
 			kons-add-artikelstamm -item_short Losartan -item_long $Losartan
 			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 			kons-add-block  -blockName $blockName -expectedItemsAdded $blockNr -info [ concat  $firstName " " $familyName ]
-			FallSetVersicherungsNummer -fall $caseName
-			FallSetCostBearer -name "Testarossa" -printId [ concat $familyName " " $firstName ]
-			FallSetDefaultInvoiceRecipient  $familyName $firstName
 			AktuellenFallVerrechnen -abortOnError $abortOnError -label [ concat $familyName "-" $firstName "-" $caseName ]
 			AktuellenFallSchliessen
 		}
