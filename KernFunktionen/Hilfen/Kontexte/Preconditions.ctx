@@ -107,14 +107,11 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 		if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "h2" ] {
 			if [ get-by-os  -win true -macosx false -linux false ] {
 				exec-process "java" "-classpath" $jarFile "org.h2.tools.Script"
-				"-url" $jdbc "-user" "sa" "-script"  $zipFile "-options" "compression" "zip"
+				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
 				concat "Dump to " $zipFile " done" | log
 			} -else {
-				let [ val params [ concat " java -classpath " $jarFile
-					" org.h2.tools.Script   -url '" $jdbc
-					"' -user " "sa" " -script " $zipFile " -options" " compression zip" ]] {
-					exec-process  "/usr/bin/env" $params
-				}
+				exec-process "/usr/bin/env" "java" "-classpath" $jarFile "org.h2.tools.Script"
+				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
 			}
 		} -else {
 			concat "create-backup-sql unsupported flavor " [ safe-get-java-property "ch.elexis.dbFlavor" ] | log
