@@ -48,7 +48,10 @@
                 <verbose>true</verbose>
                 <target>
                   <!-- only under linux as it fails under Windows -->
-                  <exec executable="java" failonerror="true" os="Linux">
+                  <!-- fails sometimes with an error 
+                  org.h2.jdbc.JdbcSQLNonTransientException: Allgemeiner Fehler: "java.lang.ArrayIndexOutOfBoundsException: 0"
+                  -->
+                  <exec executable="java" failonerror="false" os="Linux">
                     <arg value="-cp"/>
                     <arg value="${rcptt-resources}/h2-${h2.version}.jar"/>
                     <arg value="org.h2.tools.Script"/>
