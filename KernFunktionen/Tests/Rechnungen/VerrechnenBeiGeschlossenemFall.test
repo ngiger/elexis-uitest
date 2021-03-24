@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _Y9h3EEBkEeuIMcVqhnswXA
-Save-Time: 12/17/20 8:26 PM
+Save-Time: 3/24/21 7:24 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -46,8 +46,13 @@ let [ val keyId patient.105. ] {
 				get-editbox | get-property readOnly -raw | equals false | assert-true -message "Kons muss nach Schliessen des Falls noch geändert werden können"
 				get-table -after [get-label [ t btn_accounting ] ] | get-cell 0 3 | mouse down Right -count 1 |
 				get-menu -path [ t path_remove_all ] | click
-				get-window [ t window_warning ] | get-button OK | click
-				get-button [ t btn_add_invoicable_item ] | get-property enablement | equals false  | assert-true -message "Kons darf nach Schliessen des Falls nicht anbieten Leistungen hinzufügen"
+				try {
+					get-window [ t window_warning ] | get-button OK | click
+				} -catch {
+					log -message "VerrechnenBeiGeschlossenemFall: No warning to remove"
+				}
+				get-button [ t btn_add_invoicable_item ] | get-property enablement | equals false  | assert-true -message
+					[ concat "Kons darf nach Schliessen des Falls nicht anbieten: " [ t btn_add_invoicable_item ] ]
 		 	}
 			kons-neue-diagnose [ t kons_diagnose.3.reiter ] [ t kons_diagnose.3.item ]
  			concat "VerrechnenBeiGeschlossenemFall war "  $invoicedAmount " ist " [ kons-get-invoiced-amount ] | log

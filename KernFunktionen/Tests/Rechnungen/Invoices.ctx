@@ -5,7 +5,7 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Save-Time: 12/18/20 3:06 PM
+Save-Time: 3/24/21 5:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -79,6 +79,7 @@ proc "AbrechnungsSystemKonfigurieren"
 global [val anzeigeNr 0 ] -override
 proc "RechnungslisteAnzeigen" [ val status [ t Offen ] ] {
 	open-window-by-name [ t Rechnungsliste ]
+	get-eclipse-window | key-type "M1+m" // Maximize
 	with [get-view [ t Rechnungsliste ] ] {
 		get-combo -after [get-label [ t RG_Total ]] | select $status
 		global [val anzeigeNr [ int $anzeigeNr | plus 1 | int] ] -override

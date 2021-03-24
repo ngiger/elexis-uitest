@@ -5,7 +5,7 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Save-Time: 12/29/20, 5:01 PM
+Save-Time: 3/24/21 6:01 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -34,18 +34,21 @@ proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 	}
 	let [ val pattern  [ concat $familyName ".*" $firstName ".*" ]] {
 		try {
-			get-view [t view_patients ]  | get-table | select $pattern
-		} -catch {
-			concat $pattern "not found times" | log
+			get-view [t view_patients ]  | get-table | select $pattern 
+			concat "SelectPatient: " $familyName " " $firstName " found " [
+				get-view [t view_patients ] | get-table | get-property itemCount -raw ] " times" | log
+			get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
+		} -error  [val errorObj] -catch {
+			concat $pattern "not found times: " $errorObj| log
 		}
 		if [ $mustExist ] {
 			bool false | assert-true -message  [ concat "SelectPatient: needed " $pattern " not found "]
 			PatientMustBeSelected $familyName $firstName
+			bool true
+		} -else {
+			get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 		}
 	}
-	concat "SelectPatient: " $familyName " " $firstName " found " [
-		get-view [t view_patients ] | get-table | get-property itemCount -raw ] " times" | log
-	get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 }
 
 /**
