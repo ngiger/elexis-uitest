@@ -5,7 +5,7 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Save-Time: 3/24/21 6:01 PM
+Save-Time: 3/24/21 8:17 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -21,6 +21,7 @@ proc PatientMustBeSelected [val familyName] [val firstName] {
 }
 
 proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
+	global [val occurences_selected 0 ] -override
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
 	with [get-view [t view_patients ]] {
@@ -34,21 +35,18 @@ proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 	}
 	let [ val pattern  [ concat $familyName ".*" $firstName ".*" ]] {
 		try {
-			get-view [t view_patients ]  | get-table | select $pattern 
-			concat "SelectPatient: " $familyName " " $firstName " found " [
-				get-view [t view_patients ] | get-table | get-property itemCount -raw ] " times" | log
-			get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
+			get-view [t view_patients ] | get-table | select $pattern
+			global [val occurences_selected [ get-view [ t view_patients ] | get-table | get-property itemCount -raw ] ] -override
 		} -error  [val errorObj] -catch {
-			concat $pattern "not found times: " $errorObj| log
+			// concat $pattern "not found times: " $errorObj| log
 		}
-		if [ $mustExist ] {
+		if [ and $mustExist [ $occurences_selected | lt 1 ] ] {
 			bool false | assert-true -message  [ concat "SelectPatient: needed " $pattern " not found "]
 			PatientMustBeSelected $familyName $firstName
-			bool true
-		} -else {
-			get-view [t view_patients ] | get-table | get-property itemCount -raw | int | gt 0
 		}
 	}
+	concat "SelectPatient: " $familyName " " $firstName " found " $occurences_selected " times" | log
+	$occurences_selected | gt 0
 }
 
 /**
