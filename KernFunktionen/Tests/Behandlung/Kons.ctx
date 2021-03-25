@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 3/25/21 2:51 PM
+Save-Time: 3/25/21 4:04 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -196,7 +196,8 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expected
 		concat "PressAddLeistungToKons "  $item_short " after screenshot" | log
 		with [get-view [t leistungen ] ] {
 			get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
-			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+			get-button [ t btn_execute_search ] | click -metaKeys ""
+//			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
 			log "kons-add-artikelstamm LeistungenExecuteSearch short"
 			get-group [ t alle_leistungen ] | get-table | select  $item_long | double-click
 //			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_long

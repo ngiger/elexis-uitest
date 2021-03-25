@@ -1,0 +1,42 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: CheckArtikelstammSuche
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _C9LzwI1wEeup49yUtwR__A
+Save-Time: 3/25/21 4:07 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+// 2021-03-25 Why does the Search not work
+if [ not [ SelectPatient CheckArtikelstamm "Barbara"] ] {
+	PatientenErstellen  CheckArtikelstamm "Barbara" true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
+	SelectPatient CheckArtikelstamm "Barbara" -mustExist true
+}
+let [ val anfangs2020 "15.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason [t reason_KVG]] {
+	FallZuPatientErstellen -startDate $anfangs2020 -caseLaw $caseLaw -caseReason $caseReason
+	SelectFall -caseLaw $caseLaw -startDate $anfangs2020
+	kons-erstellen [concat "CheckArtikelstamm "  $anfangs2020 " now " [ now ] ] -createSecond true
+	// Next does work at present (2021-03-25)
+	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
+
+	// Next should work too
+	PressAddLeistungToKons
+	with [get-view [t leistungen ] ] {
+			get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
+			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Losartan"
+			log "CheckArtikelstamm LeistungenExecuteSearch for Losartan"
+			get-eclipse-window | gen-screenshot [concat $imagesDir "CheckArtikelstamm-before-search.png"]			
+			get-button [ t btn_execute_search ] | click -metaKeys ""
+			get-eclipse-window | gen-screenshot [concat $imagesDir "CheckArtikelstamm-after-search.png"]
+			get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw | gt 0 | verify-true
+	}
+}
+
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
