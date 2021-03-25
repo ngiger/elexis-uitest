@@ -5,7 +5,7 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
-Save-Time: 3/25/21 10:29 AM
+Save-Time: 3/25/21 3:06 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -46,6 +46,7 @@ _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/I
 _mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../Tests/Kassenbuch.test'
 _6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../Tests/Textverarbeitung/hilotec_odf.test'
 _xf2KwCp1EeujcoUPAsRgcQ	// kind: 'test' name: 'medelexis_oo' path: '../Tests/Textverarbeitung/medelexis_oo.test'
+_C9LzwI1wEeup49yUtwR__A	// kind: 'test' name: 'CheckArtikelstammSuche' path: '../Tests/Behandlung/CheckArtikelstammSuche.test'
 _7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
 _EwDAgAYfEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostPreferences' path: '../Tests/Infrastruktur/VisitMostPreferences.test'
 _0fUkAAYeEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostViews' path: '../Tests/Infrastruktur/VisitMostViews.test'
