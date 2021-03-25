@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 3/25/21 4:04 PM
+Save-Time: 3/25/21 9:40 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -117,22 +117,21 @@ proc "kons-neue-diagnose" [ val reiter ] [ val item ] {
 
 proc "kons-check-expected-items" [ val caller ]
 	[ val item "" ]
-	[ val expectedItemsAdded 1 ]
-	[ val nrItemsBefore 0 ]  {
-		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ]
-			[val nrItemsSoll [  $nrItemsBefore | plus $expectedItemsAdded ] ] {
-			let [ val infoMsg
-				[ concat $caller " expectedItemsAdded failed: Added " $item  " nrItemsBefore " $nrItemsBefore " now we have " $nrItemsAfter " <> " $nrItemsSoll " items. expectedItemsAdded "  $expectedItemsAdded
-				] ]
-			{
+	[ val nrItemsBefore 0 ] {
+	let [ val nrItemsAfter [ kons-get-nr-invoiced-items ] ] {
+		let [ val infoMsg
+			[ concat $caller " expectedItemsAdded failed: Added " $item  " nrItemsBefore " $nrItemsBefore " now we have " $nrItemsAfter " items" ]
+			]
+		{
+			$infoMsg | log
+			if [ $nrItemsBefore | lt $nrItemsAfter] {
+				concat $caller " expectedItemsAdded passed: Added " $item | log
+			} -else {
 				$infoMsg | log
-				if [ $nrItemsBefore | plus $expectedItemsAdded | equals $nrItemsAfter ] {
-					concat $caller " expectedItemsAdded passed" | log
-				} -else {
-					$infoMsg | log
-				}
+				bool false | assert-true -message $infoMsg
 			}
 		}
+	}
 }
 
 proc "GetItemsInTable" [ val table "NotableGiven" ] {
@@ -187,9 +186,9 @@ proc "LeistungenExecuteSearch" {
  * <br>Der Name muss so gewählt werden, dass kein hellblau eingefärbter Artikel als erster in der
  * Auswahl erscheint, da diese nicht verrechnet werden können
 */
-proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expectedItemsAdded 1 ] {
+proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
-		concat "kons-add-artikelstamm: " $item_short " have " $nrItemsBefore " items. " $item_long | log
+		concat "kons-add-artikelstamm: " $item_short " have before " $nrItemsBefore " items. " $item_long | log
 		PressAddLeistungToKons
 		concat "PressAddLeistungToKons "  $item_short " done" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $item_short ".png"]
@@ -197,6 +196,7 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expected
 		with [get-view [t leistungen ] ] {
 			get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
 			get-button [ t btn_execute_search ] | click -metaKeys ""
+			wait 1000 // Time taken to execute the search
 //			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
 			log "kons-add-artikelstamm LeistungenExecuteSearch short"
 			get-group [ t alle_leistungen ] | get-table | select  $item_long | double-click
@@ -210,22 +210,26 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] [ val expected
 		ActivateVisibleKonsView
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $item_short ".png"]
 		kons-check-expected-items -caller "kons-add-artikelstamm" -item $item_short
-			-nrItemsBefore $nrItemsBefore -expectedItemsAdded $expectedItemsAdded
+			-nrItemsBefore $nrItemsBefore
 	}
 }
 
 proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führerschein" ] {
-	PressAddLeistungToKons
-	with [get-view [ t leistungen ] ] {
-		get-button [ t btn_show_list ] click
-		get-tab-folder | get-tab-item Eigenleistung | click
-		with [get-group [ t alle_leistungen ] ] {
-		get-editbox -after [get-label Code] | set-focus
-		get-table | select $itemName | double-click
+	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
+		PressAddLeistungToKons
+		with [get-view [ t leistungen ] ] {
+			get-button [ t btn_show_list ] click
+			get-tab-folder | get-tab-item Eigenleistung | click
+			with [get-group [ t alle_leistungen ] ] {
+			get-editbox -after [get-label Code] | set-focus
+			get-table | select $itemName | double-click
+			}
 		}
+		// Close Leistungen
+		ActivateVisibleKonsView 
+		kons-check-expected-items -caller "kons-add-eigenleistung" -item $itemName
+			-nrItemsBefore $nrItemsBefore
 	}
-	// Close Leistungen
-	ActivateVisibleKonsView 
 }
 
 proc "toggle-tarmed-kontext" {
@@ -321,7 +325,7 @@ proc "select-tarmed-leistung" [ val ziffer [ concat "00.0010" ] ] {
  * <BR>kons-add-tarmed [ concat "00.0010"]
  * <br>this prevents converting the string to a float
 */
-proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
+proc "kons-add-tarmed" [ val ziffer ] {
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
 		concat "kons-add-tarmed: " $ziffer " have " $nrItemsBefore " items"| log
 		PressAddLeistungToKons
@@ -340,7 +344,7 @@ proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
 		// Close Leistungen
 		ActivateVisibleKonsView
 		kons-check-expected-items -caller "kons-add-tarmed" -item $ziffer
-			-nrItemsBefore $nrItemsBefore -expectedItemsAdded $expectedItemsAdded
+			-nrItemsBefore $nrItemsBefore
 	}
 	// TODO: This fails with NullPointerException and does not populate the Verrechnung
 	// Not checking for this condition at the moment
@@ -350,7 +354,7 @@ proc "kons-add-tarmed" [ val ziffer ]  [ val expectedItemsAdded 1 ]  {
  * Adds a given complementary tarif position
 
 */
-proc "kons-add-complementary" [ val ziffer 1255 ]  [ val expectedItemsAdded 1 ]  { // 1255 /Blutege
+proc "kons-add-complementary" [ val ziffer 1255 ]  { // 1255 /Blutege
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
 		concat "kons-add-complementary: " $ziffer " have " $nrItemsBefore " items"| log
 		PressAddLeistungToKons
@@ -369,11 +373,7 @@ proc "kons-add-complementary" [ val ziffer 1255 ]  [ val expectedItemsAdded 1 ] 
 		}
 		ActivateVisibleKonsView
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $ziffer ".png"]
-		let [val nrItemsAfter [ kons-get-nr-invoiced-items ] ] {
-			concat "kons-add-complementary: " $ziffer " after have " $nrItemsAfter " items"| log
-			$nrItemsBefore | plus $expectedItemsAdded | equals $nrItemsAfter | assert-true -message
-				[ concat "kons-add-complementary: " $ziffer " After invoicing expected "  [$nrItemsBefore | plus $expectedItemsAdded ] " items but found " $nrItemsAfter]
-		}
+		kons-check-expected-items -caller "kons-add-complementary" -item $ziffer
 	}
 }
 
@@ -435,7 +435,6 @@ proc "kons-add-macro" [ val macroName "soap" ] {
 }
 
 proc "kons-add-block" [ val blockName "arzt_Besuch (KVG)" ]
-	[ val expectedItemsAdded 1 ]
 	[ val info "Für Fehlermeldungen" ] {
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
 		concat "kons-add-block: " $blockName " have " $nrItemsBefore " items"| log
@@ -458,7 +457,7 @@ proc "kons-add-block" [ val blockName "arzt_Besuch (KVG)" ]
 		wait 100
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $blockName ".png"]
 		kons-check-expected-items -caller [ concat "kons-add-block: for " $info ] -item $blockName
-			-nrItemsBefore $nrItemsBefore -expectedItemsAdded $expectedItemsAdded
+			-nrItemsBefore $nrItemsBefore
 	}
 }
 
@@ -573,7 +572,7 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 			kons-add-tarmed [ concat $tarmed ]
 			kons-add-artikelstamm -item_short Losartan -item_long $Losartan
 			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
-			kons-add-block  -blockName $blockName -expectedItemsAdded $blockNr -info [ concat  $firstName " " $familyName ]
+			kons-add-block  -blockName $blockName -info [ concat  $firstName " " $familyName ]
 			AktuellenFallVerrechnen -abortOnError $abortOnError -label [ concat $familyName "-" $firstName "-" $caseName ]
 			AktuellenFallSchliessen
 		}
