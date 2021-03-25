@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 12/25/20 11:29 AM
+Save-Time: 3/25/21 9:41 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -196,6 +196,13 @@ concat "translation read" | log
 
 global [ val imagesDir	[ concat $resultsDir "images/" ] ]
 global [ val pdfDir	[ concat $resultsDir "pdf/" ] ]
+str "RCPTT created pdfDir" | write-lines [ concat $pdfDir "/dummy.txt" ]
+str "RCPTT created .localdoc/backup" | write-lines [ concat [get-user-dir] "/.localdoc/backup/dummy.txt" ]
+str "RCPTT created eHC/input" | write-lines [ concat [get-user-dir] "/eHC/input/dummy.txt" ]
+str "RCPTT created eHC/output" | write-lines [ concat [get-user-dir] "/eHC/output/dummy.txt" ]
+str "RCPTT created extern" | write-lines [ concat [get-user-dir] "/extern/dummy.txt" ]
+concat "RCPTT created pdfDir/extern/.localdoc/eHC directories " $pdfDir | log
+
 global [ val preferencesCsvFile [ uri-from-path [ concat  $resultsDir "preferences.csv" ] ] ]
 global [ val viewsCsvFile	    [ uri-from-path [ concat  $resultsDir "views.csv" ] ] ]
 concat "get-env HOME returns: " [get-env HOME ] |log
