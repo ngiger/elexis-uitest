@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 3/25/21 9:53 AM
+Save-Time: 3/25/21 4:27 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -211,14 +211,16 @@ proc ConfigureMsOO_TextVerarbeitung {
 	EnsureOpenOfficeIsInstalled
 	get-preferences-menu | click
 	with [get-window [t preferences]] {
-		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-select.png"]
+		get-tree | select "Textverarbeitung"
 		get-button [t print_save_letter_extern] | uncheck // Must be unchecked for OpenOffice Text plugin
 		get-button [t pref_texte_lokal_editieren] | uncheck // Must be unchecked for OpenOffice Text plugin
 		get-button ".*OpenOffice 3.x" | click
+		get-button [t Anwenden] | click
+		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-selected.png"]
 		get-tree | select "Textverarbeitung/OpenOffice.org"
 		with [get-editbox -after [get-label "Application home"]] {
 			click-text
-			set-text "/opt/openoffice4/program"
+			set-text "/opt/openoffice4"
 		}
 		get-link ".*Define.*" | click-link
 		wait 1000 // leave some time to find the app
@@ -231,6 +233,7 @@ proc ConfigureMsOO_TextVerarbeitung {
 			check // Must be checked for OpenOffice Text plugin
 			// , so verhindert diese Einstellung, dass das OpenOffice Programm mit Elexis geschlossen wird.
 		}
+		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-configured.png"]
 		take-screenshot "PreferencesTextOpenOffice.png"
 		get-tree | select "System/Druckereinstellungen"
 		$MsOOOutDir | log
