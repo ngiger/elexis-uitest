@@ -5,7 +5,7 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Save-Time: 3/24/21 5:33 PM
+Save-Time: 3/25/21 9:06 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -102,7 +102,6 @@ proc RechnungSelektieren [ val invoiceId 1 ] {
 }
 
 proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
-	str "Created pdfDir" | write-lines [ concat $pdfDir "/dummy.txt" ]
 	set-dialog-result Folder $pdfDir
 	with [get-window [ t View_Rechnung_ausgeben] ] {
    		get-combo | select $druckTyp
@@ -187,7 +186,7 @@ proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
 proc "CheckTarmedXml"  [ val invoiceId ] [ val searchFor ] {
 	let [ val xmlFile [ GetXmlOfInvoice $invoiceId ] ] {
 		let [ val result [ FileContainsString $xmlFile -searchFor $searchFor ] ] {
-			let [ val infoMsg [ concat "CheckTarmedXml: " $invoiceId " in " infoMsg " looking for '" $searchFor "' returned " $result ] ] {
+			let [ val infoMsg [ concat "CheckTarmedXml: " $invoiceId " in " infoMsg " looking for '" $searchFor "' returned " $result  " xml: " $xmlFile] ] {
 				log $infoMsg
 				$result | assert-true -message $infoMsg
 			}
@@ -239,7 +238,7 @@ proc "GetXmlOfInvoice" [ val invoiceId 1] {
 	concat $pdfDir $invoiceId ".xml"
 }
 
-proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] {
+proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] [ val drugName Losartan ]{
 	if [ $invoiceId  | eq 0 ] {
 		global [val CheckTarmedFallId [ GetNrOfInvoices -status [ t ausstehend ] ] ] -override
 	} -else {
@@ -247,7 +246,7 @@ proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] {
 	}
 
 	// Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
-	CheckTarmedXml $CheckTarmedFallId Losartan
+	CheckTarmedXml $CheckTarmedFallId $drugName
 	// CheckTarmedXml $CheckTarmedFallId Metoprolol
 	CheckTarmedXml $CheckTarmedFallId "code=\"10.0010\"" // "Klinische Geruchsprüfung, beidseitig" // 10.0010
 	//  00.0010 00.0015 00.0026 00.0030
