@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 3/25/21 5:22 PM
+Save-Time: 3/29/21 8:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -129,28 +129,35 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 	}
 }
 
-proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $vorlagenDir "/openoffice/AUF-Zeugnis.odt"]] {
+proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $vorlagenDirOpenoffice "/AUF-Zeugnis.odt"]] {
 	if [ get-file $hiloVorlagen | get exists | equals true ] {
 		log "ImportAlleHilotecODF_Vorlagen already done"
 	} -else {
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDir "Tarmedrechnung_EZ.odt" ]
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDir "TR44_S1.odt" ]
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDir "TR44_S2.odt" ]
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDir "Tarmedrechnung_S1.odt" ]
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDir "Tarmedrechnung_S2.odt" ] // only hilotec
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDirOpenoffice "Privatrechnung_S1.odt" ]
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDirOpenoffice "Privatrechnung_S2.odt" ]
-		ImportHilotecODF_Vorlage  [ concat $vorlagenDirOpenoffice "Privatrechnung_EZ.odt" ]
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_EZ" ".odt"
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "TR44_S1" ".odt"
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "TR44_S2" ".odt"
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_S1" ".odt"
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
 		str "ImportAlleHilotecODF_Vorlagen done" | write-lines $hiloVorlagen
 	}
 }
 
-proc ImportHilotecODF_Vorlage [val vorlage [concat $vorlagenDir "AUF-Zeugnis.odt"]] {
-	concat "ImportHilotecODF_Vorlage should import: " $vorlage | log
-	get-file $vorlage | get exists | assert-true -message [concat "File " $vorlage " not found"]
+proc ImportHilotecODF_Vorlage [val directory $vorlagenDir ]
+	[ val vorlage "AUF-Zeugnis" ] [val extension ".odt" ] {
+	global [val fullVorlagenName [ concat $directory "/" $vorlage $extension ] ] -override
+	concat "ImportHilotecODF_Vorlage should import: " $fullVorlagenName | log
+	get-file $fullVorlagenName | get exists | assert-true -message [concat "File " $fullVorlagenName " not found"]
 	open-window-by-name [t Dokumente_Textvorlagen_Management]
-	set-dialog-result File $vorlage
-	get-view "Textvorlagen Management" | get-button "Beliebige Vorlage.*importieren" | click
+	with [get-view [t Textvorlagen_Management ] ] {
+	  with [get-editbox -after [get-label "Suchen:"]] {
+        click-text
+        set-text $vorlage
+        }
+	    get-table | select $vorlage -column "Name der Vorlage" | get-menu -path "Löschen" | click -metaKeys ""
+    }
+	set-dialog-result File [ concat $directory "/" $vorlage $extension ]
+	get-view [t Textvorlagen_Management ] | get-button "Beliebige Vorlage.*importieren" | click
 	try -command {
 		get-window Systemvorlage | get-button [t yes] | click
 	} -catch {
@@ -213,8 +220,8 @@ proc ConfigureMsOO_TextVerarbeitung {
 	with [get-window [t preferences]] {
 		get-tree | select "Textverarbeitung"
 		get-editbox -after [get-label [t pref_externes_textprogramm]] | set-text [concat [get-user-dir] "/extern"]
-		get-button [t print_save_letter_extern] | uncheck // Must be unchecked for OpenOffice Text plugin
 		get-button [t pref_texte_lokal_editieren] | uncheck // Must be unchecked for OpenOffice Text plugin
+		get-button [t print_save_letter_extern] | check // Must be checked for OpenOffice Text plugin
 		get-button ".*OpenOffice 3.x" | click
 		get-button [t Anwenden] | click
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-selected.png"]

@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 3/25/21 9:41 AM
+Save-Time: 3/29/21 3:37 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -293,6 +293,7 @@ proc OpenAndResetStartPerspektive {
 
 /**
  * Logs and creates a snapshot of the passed graphical object
+ * See https://www.eclipse.org/rcptt/blog/2014/11/21/screenshots-with-rcptt.html
  */
 proc "gen-screenshot" [ val parent -input ] [ val out [ cleanFileName [concat $imagesDir "dest.png"]]] {
 	$parent | get-object | save-screenshot $out // creates directory if necessary
