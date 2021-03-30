@@ -5,7 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Save-Time: 3/29/21 3:29 PM
+Save-Time: 3/30/21 10:09 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -268,11 +268,17 @@ proc "CheckArtikelstammLosartan" {
 	
 	with [get-view [t leistungen ] ] {
 		get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
-		get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Losartan"
+		// Setting a selector does not work in March 2021, therefor
+		// get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Losartan"
 		get-button [ t btn_execute_search ] | click -metaKeys ""
 		wait 1000 // Time taken to execute the search
 		get-group [ t alle_leistungen ] | get-table | select "Losartan.*"
 		get-eclipse-window | gen-screenshot [concat $imagesDir "ImportArtikelstamm_Losartan.png"]
+		concat "ImportArtikelstamm_Losartan found " [
+			get-view Leistungen | get-group Alle | get-table | get-item -path "Losartan.*"
+				| get-property caption -raw ] | log
+		get-view Leistungen | get-group Alle | get-table | get-item -path "Losartan.*"
+			| get-property selected | equals true | verify-true
 		concat "ImportArtikelstamm_Losartan found " [get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw ] " items found" | log
 		get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw | gt 0 | verify-true
 	}
