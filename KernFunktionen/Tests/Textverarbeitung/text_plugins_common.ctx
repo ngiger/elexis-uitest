@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 3/29/21 8:20 PM
+Save-Time: 3/30/21 10:30 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -18,9 +18,11 @@ global [val lowriter "/usr/bin/libreoffice"] -override
 global [val oowriter "/opt/openoffice4/program/swriter"] -override
 global [val hiloFile [ concat $rcpttDir "hilotec_configured" ] ] -override
 global [val hiloVorlagen [ concat $rcpttDir "hilotec_vorlagen" ] ] -override
+global [val msWordVorlagen [ concat $rcpttDir "msWord_vorlagen" ] ] -override
 global [val ooFile [ concat $rcpttDir "medelexis_oo_configured" ] ] -override
-global [val vorlagenDir  [concat $rcpttDir "medelexis_openoffice_fenster_rechts/" ] ] -override
-global [val vorlagenDirOpenoffice  [concat $rcpttDir "elexis-vorlagen-master/openoffice/" ] ] -override
+global [val vorlagenDir  [concat $rcpttDir "medelexis_openoffice_fenster_rechts" ] ] -override
+global [val vorlagenDirOpenoffice  [concat $rcpttDir "elexis-vorlagen-master/openoffice" ] ] -override
+global [val vorlagenDirMsWord  [concat $rcpttDir "elexis-vorlagen-master/msword/fenster_rechts" ] ] -override
 
 proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 	global [val ConfiguredTextPlugin useTextPlugin] -override
@@ -33,8 +35,9 @@ proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 
 proc SetupTextPlugins {
 	ConfigureMsOO_TextVerarbeitung
+	ImportAlleMsWord_Vorlagen
+	ImportAlleHilotecODF_Vorlagen
 	ConfigureHilotecODF_TextVerarbeitung
-	ImportHilotecODF_Vorlage
 }
 
 proc EnsureLibreOffficIsInstalled {
@@ -133,13 +136,29 @@ proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $vorlagenDirOpenoffice "
 	if [ get-file $hiloVorlagen | get exists | equals true ] {
 		log "ImportAlleHilotecODF_Vorlagen already done"
 	} -else {
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
+		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
 		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_EZ" ".odt"
 		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "TR44_S1" ".odt"
 		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "TR44_S2" ".odt"
 		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_S1" ".odt"
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
 		str "ImportAlleHilotecODF_Vorlagen done" | write-lines $hiloVorlagen
+	}
+}
+
+proc ImportAlleMsWord_Vorlagen [val directory $vorlagenDirMsWord ]
+	[ val vorlage "AUF-Zeugnis" ] [val extension ".docx" ] {
+	if [ get-file $msWordVorlagen | get exists | equals true ] {
+		log "ImportAlleMsWord_Vorlagen already done"
+	} -else {
+		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Tarmedrechnung_EZ" ".docx"
+		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "TR44_S1" ".docx"
+		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "TR44_S2" ".docx"
+		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Tarmedrechnung_S1" ".docx"
+		// There are nor templates for Privatrechnung under msword
+		// ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Privatrechnung_S1" ".docx"
+		// ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Privatrechnung_EZ" ".docx"
+		str "ImportAlleMsWord_Vorlagen done" | write-lines $msWordVorlagen
 	}
 }
 
@@ -154,14 +173,18 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDir ]
         click-text
         set-text $vorlage
         }
-	    get-table | select $vorlage -column "Name der Vorlage" | get-menu -path "Löschen" | click -metaKeys ""
+		try -command {
+		    get-table | select $vorlage -column "Name der Vorlage" | get-menu -path "Löschen" | click -metaKeys ""
+		} -catch {
+			concat $vorlage " " $extension " not yet imported" | log
+		}
     }
 	set-dialog-result File [ concat $directory "/" $vorlage $extension ]
 	get-view [t Textvorlagen_Management ] | get-button "Beliebige Vorlage.*importieren" | click
 	try -command {
 		get-window Systemvorlage | get-button [t yes] | click
 	} -catch {
-		log "Keine Systemvorlage"
+		concat $vorlage " " $extension " ist keine Systemvorlage" | log
 	}
 	try -command {
 		with [get-window -class TextTemplateImportConflictDialog] {
@@ -170,9 +193,9 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDir ]
 		}
 		concat "Vorlage: " $vorlage " existiert bereits, wurde ersetzt" | log
 	} -catch {
-		log "Vorlage existiert noch nicht"
+		concat $vorlage " " $extension " existierte noch nicht" | log
 	}
-	OpenAndResetStartPerspektive
+	resetPerspective
 }
 
 proc TextVorlagenEntfernen [val name Liste] {
