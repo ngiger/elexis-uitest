@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   <scm>
     <!-- See https://stackoverflow.com/questions/55309509/is-there-a-way-to-checkout-git-repository-to-certain-folder-with-maven -->
-      <connection>scm:git:git@github.com:elexis/elexis-vorlagen.git</connection>
+      <connection>scm:git:https://github.com/ngiger/elexis-vorlagen.git</connection>
   </scm>
   <profiles>
     <profile>
