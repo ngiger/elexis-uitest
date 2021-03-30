@@ -3,7 +3,7 @@
 <booleanAttribute key="append.args" value="true"/>
 <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
 <booleanAttribute key="askclear" value="true"/>
-<stringAttribute key="aut-location" value="/home/niklaus/work"/>
+<stringAttribute key="aut-location" value="/opt/elexis-master/os"/>
 <stringAttribute key="aut-target-platform" value="AUT Elexis3MasterLinuxH2 (Target Platform)"/>
 <booleanAttribute key="aut-target-updatable" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
@@ -24,8 +24,8 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/adoptopenjdk-8-hotspot-amd64"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os linux -ws gtk -arch x86_64 -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec=&quot;jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_de/db;AUTO_SERVER=TRUE&quot;&#10;-Dch.elexis.dbUser=sa -Dch.elexis.dbPw=&#10;-Duser.language=de -Duser.region=CH &#10;-Dch.elexis.firstMandantName=Mustermann &#10;-Dch.elexis.firstMandantPassword=elexisTest &#10;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info &#10;-Dch.elexis.username=Mustermann &#10;-Dch.elexis.password=elexisTest"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/home/niklaus/work"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec=jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_de/db;AUTO_SERVER=TRUE &#10;-Dch.elexis.dbUser=sa -Dch.elexis.dbPw= -Duser.language=de -Duser.region=CH &#10;-Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest &#10;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=Mustermann &#10;-Dch.elexis.password=elexisTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/elexis-master/os"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="ch.elexis.core.application.product"/>
 <booleanAttribute key="tracing" value="false"/>
