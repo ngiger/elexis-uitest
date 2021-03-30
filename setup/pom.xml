@@ -9,6 +9,10 @@
     <version>0.1</version>
   </parent>
   <packaging>pom</packaging>
+  <scm>
+    <!-- See https://stackoverflow.com/questions/55309509/is-there-a-way-to-checkout-git-repository-to-certain-folder-with-maven -->
+      <connection>scm:git:git@github.com:elexis/elexis-vorlagen.git</connection>
+  </scm>
   <profiles>
     <profile>
       <id>windows</id>
@@ -29,10 +33,39 @@
       <properties>
 		<save_run_from_scratch>save_run_from_scratch.sh</save_run_from_scratch>
       </properties>
-	 </profile>
-   </profiles>
-   <build>
-      <plugins>
+    </profile>
+    </profiles>
+  <build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-scm-plugin</artifactId>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-utils</artifactId>
+          <version>2.1</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.maven.scm</groupId>
+          <artifactId>maven-scm-provider-gitexe</artifactId>
+          <version>1.2</version>
+        </dependency>
+      </dependencies>
+      <version>1.0</version>
+      <configuration>
+          <checkoutDirectory>${rcptt-resources}/elexis-vorlagen</checkoutDirectory>
+      </configuration>
+      <executions>
+        <execution>
+          <id>checkout</id>
+          <phase>generate-sources</phase>
+          <goals>
+            <goal>checkout</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
@@ -144,45 +177,6 @@
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <unpack>false</unpack>
               <md5>808a8662e6f421c52e7805043e04f943</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-ODF-Hilotec-Vorlagen</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://github.com/ngiger/elexis-vorlagen/archive/master.zip</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <unpack>true</unpack>
-              <md5>ab339271a71ac3dd2a93353aa7a8f514</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-Medelexis-Vorlagen_OpenOffice_Fenster_rechts</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://medelexis.ch/wp-content/uploads/2020/10/Bundle_OpenOffice_Fenster_rechts.zip</url>
-              <outputDirectory>${rcptt-resources}/medelexis_openoffice_fenster_rechts</outputDirectory>
-              <unpack>true</unpack>
-              <md5>7b69b8e31e1137eecdbcf57c3c4aa228</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-Medelexis-Vorlagen_OpenOffice_Fenster_links</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://medelexis.ch/wp-content/uploads/2020/10/Bundle_OpenOffice_Fenster_links.zip</url>
-              <outputDirectory>${rcptt-resources}/medelexis_openoffice_fenster_links</outputDirectory>
-              <unpack>true</unpack>
-              <md5>677fc1ca9af3e35c87e7739d51660784</md5>
             </configuration>
           </execution>
           <execution>

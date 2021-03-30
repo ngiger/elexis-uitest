@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 3/30/21 10:30 AM
+Save-Time: 3/30/21 6:11 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -20,9 +20,8 @@ global [val hiloFile [ concat $rcpttDir "hilotec_configured" ] ] -override
 global [val hiloVorlagen [ concat $rcpttDir "hilotec_vorlagen" ] ] -override
 global [val msWordVorlagen [ concat $rcpttDir "msWord_vorlagen" ] ] -override
 global [val ooFile [ concat $rcpttDir "medelexis_oo_configured" ] ] -override
-global [val vorlagenDir  [concat $rcpttDir "medelexis_openoffice_fenster_rechts" ] ] -override
-global [val vorlagenDirOpenoffice  [concat $rcpttDir "elexis-vorlagen-master/openoffice" ] ] -override
-global [val vorlagenDirMsWord  [concat $rcpttDir "elexis-vorlagen-master/msword/fenster_rechts" ] ] -override
+global [val vorlagenDirOpenoffice  [concat $rcpttDir "elexis-vorlagen/openoffice" ] ] -override
+global [val vorlagenDirMsWord  [concat $rcpttDir "elexis-vorlagen/msword/fenster_rechts" ] ] -override
 
 proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 	global [val ConfiguredTextPlugin useTextPlugin] -override
@@ -162,7 +161,7 @@ proc ImportAlleMsWord_Vorlagen [val directory $vorlagenDirMsWord ]
 	}
 }
 
-proc ImportHilotecODF_Vorlage [val directory $vorlagenDir ]
+proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
 	[ val vorlage "AUF-Zeugnis" ] [val extension ".odt" ] {
 	global [val fullVorlagenName [ concat $directory "/" $vorlage $extension ] ] -override
 	concat "ImportHilotecODF_Vorlage should import: " $fullVorlagenName | log
