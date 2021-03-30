@@ -5,7 +5,7 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Save-Time: 12/23/20 1:23 PM
+Save-Time: 3/30/21 8:30 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -106,10 +106,14 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 	} -else {
 		if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "h2" ] {
 			if [ get-by-os  -win true -macosx false -linux false ] {
-				exec-process "java" "-classpath" $jarFile "org.h2.tools.Script"
-				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
-				concat "Dump to " $zipFile " done" | log
+				concat "java" " " "-classpath" " " $jarFile " " "org.h2.tools.Script"
+				" " "-url" " " $jdbc " " "-user" " " "sa" " " "-script" $zipFile " " "-options" " " "compression" " " "zip" | log
+				// exec-process "java" "-classpath" $jarFile "org.h2.tools.Script"
+				// "-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
+				concat "Dump to " $zipFile " skipped under windows" | log
 			} -else {
+				concat "/usr/bin/env" " java" " -classpath " $jarFile " org.h2.tools.Script"
+				" -url " $jdbc " -user" " sa" " -script " $zipFile " -options" " compression" " zip" | log
 				exec-process "/usr/bin/env" "java" "-classpath" $jarFile "org.h2.tools.Script"
 				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
 			}
