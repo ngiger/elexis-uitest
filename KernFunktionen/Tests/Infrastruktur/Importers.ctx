@@ -5,7 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Save-Time: 4/1/21 11:37 AM
+Save-Time: 4/1/21 6:48 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -35,9 +35,10 @@ proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 proc "HandleMissingInvoiceSystems" {
 	try {
 		get-window [ t update_invoice_systems ] | get-button OK | click
+		concat "HandleMissingInvoiceSystems found " [ t update_invoice_systems ] | log
 	} -error [val errorObj] -catch {
 			// Seen when running ImportSwissbase with french Elexis
-			// concat "HandleMissingInvoiceSystems window not found " [$errorObj | get message] | log
+			concat "HandleMissingInvoiceSystems window '"  [ t update_invoice_systems ] "' " [$errorObj | get message] | log
 	}
 }
 
@@ -104,7 +105,9 @@ proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xm
 	}
 	with [get-view [ t artikel ]] {
 		get-tab-folder | get-tab-item Artikelstamm | click
+		HandleMissingInvoiceSystems
 		get-editbox -after [get-label [ t artikelstamm_label  ]] | set-focus
+		HandleMissingInvoiceSystems
 	}
 	get-button [ t show_menu ] | click
 	try {
