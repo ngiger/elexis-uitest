@@ -289,9 +289,9 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://artikelstamm.elexis.info/v5/20190101/artikelstamm_01012019_v5.xml</url>
+              <url>https://artikelstamm.elexis.info/v5/20210401/artikelstamm_01042021_v5.xml</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
-              <md5>b867b162184045ff5e910b6d3b0ce9a7</md5>
+              <md5>639320fa0e1e79534e22eaa0e3972b64</md5>
             </configuration>
           </execution>
         </executions>

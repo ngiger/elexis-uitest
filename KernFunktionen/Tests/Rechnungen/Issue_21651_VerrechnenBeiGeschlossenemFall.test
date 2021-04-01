@@ -1,12 +1,12 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Contexts: _QPqdkBNIEemmeedSb1JQew,_LkBSkBsDEembU9g-6bJhVg
-Element-Name: VerrechnenBeiGeschlossenemFall
+Element-Name: Issue_21651_VerrechnenBeiGeschlossenemFall
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _Y9h3EEBkEeuIMcVqhnswXA
-Save-Time: 3/24/21 7:24 PM
+Save-Time: 4/1/21 10:36 AM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -24,6 +24,8 @@ Hinzugefügt werden können.
 Content-Type: text/ecl
 Entry-Name: .content
 
+// Testfall für https://redmine.medelexis.ch/issues/21651
+// Nach dem Schliessen und Abrechnens eines Falls, können einer Konsultation trotzdem Artikel und Diagnosen hinzugefügt werden
 // AbrechnungsSystemKonfigurieren
 // Des muss eine Bankverbindung mit einem Kontakt erstellt werden!!
 
