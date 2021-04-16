@@ -6,4 +6,4 @@ runFromScratch/
 *.log
 *#
 drop_create_db.sql
-
+.vagrant/
