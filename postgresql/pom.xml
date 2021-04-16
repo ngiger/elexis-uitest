@@ -21,10 +21,11 @@
     </profile>
   </profiles>
   <properties>
-    <!--  Initial preparation to do ONCE
-    create database elexis_rcptt_de owner elexis encoding 'utf8' template template0;
-    create user elexis with UNENCRYPTED password 'elexisTest';
+    <!--  Initial preparation to do ONCE by calling the following lines in  sudo -u postgres psql
+    create user elexis with password 'elexisTest';
+    create database elexis owner elexis encoding 'utf8' template template0;
     ALTER USER elexis CREATEDB;
+    create database elexis_rcptt_de owner elexis encoding 'utf8' template template0;
     GRANT ALL PRIVILEGES ON DATABASE elexis_rcptt_de TO elexis ;
     GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO elexis;
     ALTER DATABASE elexis_rcptt_de OWNER TO elexis;

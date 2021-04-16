@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# see also https://github.com/vagrant-libvirt/vagrant-libvirt
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+Vagrant.configure("2") do |config|
+  # https://vagrantcloud.com/generic/boxes/debian10/versions/3.2.6/providers/libvirt.box 3.3.2021
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+    
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "generic/debian10"
+  config.vm.box_version = "3.2.6"
+  config.vm.provider "virtualbox" do |v|
+    v.gui = true
+    v.cpus = 2
+    v.memory = 8094
+  end
+  # must be called by hand vagrant plugin install vagrant-vbguest
+  config.vagrant.plugins = [ "vagrant-vbguest" ]
+  # has problem:  can't activate vagrant-libvirt-0.4.1, already activated vagrant-libvirt-0.2.1 (Gem::LoadError)
+  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+  config.vm.provision "file", source: "~/.config/awesome", destination: "/home/vagrant/.config/awesome"
+  config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/scripts/"
+#  config.vm.network "public_network", bridge: [ "eth0", "enp3s0", "virbr0" ], ip: "192.168.1.237"
+  config.vm.network "private_network", type: "dhcp", ip: "192.168.2.237"
+  config.ssh.forward_agent = true
+  config.ssh.forward_x11 = true
+  config.vm.synced_folder "/opt", "/opt",
+      :create => false,
+      :nfs => true, 
+      :nfs_version => 4,
+      :nfs_export => false,
+      :nfs_udp => false
+#  https://stackoverflow.com/questions/22643177/ssh-onto-vagrant-box-with-different-username (answer 6)
+
+  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+  config.vm.provision "file", source: "~/.config/awesome/", destination: "/home/vagrant/.config/"
+  config.vm.provision "file", source: "~/.config/fish/conf.d/", destination: "/home/vagrant/.config/fish/"
+  config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/"
+#  config.vm.provision "shell",  path: "setup_elexis.sh"
+  # cannot provision to a different user!
+#  config.vm.provision "file", source: "~/.config/awesome", destination: "/home/niklaus/.config/awesome"
+  # by hand
+  # sudo cp -rv .config/awesome /home/niklaus/.config/
+ # sudo chown -R niklaus:niklaus /home/niklaus/.config/
+end
