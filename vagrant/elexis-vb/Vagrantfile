@@ -54,21 +54,13 @@ Vagrant.configure("2") do |config|
 #  https://stackoverflow.com/questions/22643177/ssh-onto-vagrant-box-with-different-username (answer 6)
 
   config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/"
-  if false
   config.vm.provision "file", source: "~/.config/awesome/", destination: "/home/vagrant/.config/"
   config.vm.provision "file", source: "~/.config/fish/conf.d/", destination: "/home/vagrant/.config/fish/"
   config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
   # next  files must be run in this order
   config.vm.provision "shell", path: "../scripts/setup_minimal.sh"
   config.vm.provision "shell", path: "../scripts/download_oomp_rcptt.sh"
-  end
-  # next file is commented out, as it only good on Niklaus Giger workspace
   config.vm.provision "shell", path: "../scripts/setup_elexis.sh"
-  config.vm.provision "shell", path: "../scripts/setup_niklaus.sh"
-#  config.vm.provision "shell",  path: "setup_elexis.sh"
-  # cannot provision to a different user!
-#  config.vm.provision "file", source: "~/.config/awesome", destination: "/home/niklaus/.config/awesome"
-  # by hand
-  # sudo cp -rv .config/awesome /home/niklaus/.config/
- # sudo chown -R niklaus:niklaus /home/niklaus/.config/
+  # next file is commented out, as it only good on Niklaus Giger workspace
+  # config.vm.provision "shell", path: "../scripts/setup_niklaus.sh"
 end
