@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 3/29/21 3:37 PM
+Save-Time: 4/19/21 3:41 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -306,11 +306,7 @@ proc "create-entire-screenshot" [ val pathName [ cleanFileName [concat $imagesDi
 		// and we get the windows titles anyway
 		get-eclipse-window | get-object | save-screenshot $pathName // creates directory if necessary
 	} -else {
-		get-eclipse-window | get-object | save-screenshot $pathName // creates directory if necessary
-		wait 500
-		let [ val result [ exec-process "import" "-window" "root" $pathName -ignoreExitCode true  ] ] {
-			// concat "create-entire-screenshot " $pathName " returned " [ $result | get  exitCode ] | log
-		}
+		get-eclipse-window | get-object | save-screenshot [ concat $pathName ] // creates directory if necessary
 	}
 	concat "create-entire-screenshot pathName " $pathName | log
 }
@@ -340,8 +336,8 @@ proc "GetBottomToolbar" {
 	get-button Restore | get-object | invoke getParent | invoke getParent | invoke getParent
 }
 
-get-eclipse-window | gen-screenshot [ concat $imagesDir " window/ecl_helper_screenshot.png"]
-create-entire-screenshot [ concat $imagesDir "entire/ecl_helper_screenshot.png"]
+get-eclipse-window | gen-screenshot [ concat $imagesDir "window/ecl_helper_screenshot.png"]
+create-entire-screenshot [ concat $imagesDir "window/entire_helper_screenshot.png"]
 trace [ concat "create-entire-screenshot " $imagesDir "ecl_helper_screenshot.png"]
 //
 // Ende
