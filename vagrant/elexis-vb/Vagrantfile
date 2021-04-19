@@ -61,6 +61,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "../scripts/setup_minimal.sh"
   config.vm.provision "shell", path: "../scripts/download_oomp_rcptt.sh"
   config.vm.provision "shell", path: "../scripts/setup_elexis.sh"
+  config.vm.provision "shell", path: "../scripts/setup_jenkins_slave.sh"
   # next file is commented out, as it only good on Niklaus Giger workspace
   # config.vm.provision "shell", path: "../scripts/setup_niklaus.sh"
 end

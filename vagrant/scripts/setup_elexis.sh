@@ -13,10 +13,6 @@ pwd
 ls -lrt
 tar -zxf /home/jenkins/eclipse-inst-jre-linux64.tar.gz
 EOF
-sudo cp /home/vagrant/scripts/jenkins-slave.service /home/vagrant/scripts/*.conf /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable jenkins-slave
-sudo systemctl start jenkins-slave
 sudo apt install -qy libreoffice-writer imagemagick xvfb
 tar -zxf /home/jenkins/Apache_OpenOffice_4.1.9_Linux_x86-64_install-deb_de.tar.gz
 sudo dpkg -i de/DEBS/*.deb
