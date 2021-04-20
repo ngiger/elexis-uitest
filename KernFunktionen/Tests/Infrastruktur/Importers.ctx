@@ -5,7 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Save-Time: 4/1/21 6:48 PM
+Save-Time: 4/20/21 6:29 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -34,11 +34,12 @@ proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 
 proc "HandleMissingInvoiceSystems" {
 	try {
-		get-window [ t update_invoice_systems ] | get-button OK | click
-		concat "HandleMissingInvoiceSystems found " [ t update_invoice_systems ] | log
+		get-window [ t update_invoice_systems ] | log
+		get-window [ t update_invoice_systems ] | close
+		concat "HandleMissingInvoiceSystems closed " [ t update_invoice_systems ] | log
 	} -error [val errorObj] -catch {
 			// Seen when running ImportSwissbase with french Elexis
-			concat "HandleMissingInvoiceSystems window '"  [ t update_invoice_systems ] "' " [$errorObj | get message] | log
+			concat "HandleMissingInvoiceSystems: handling error '"  [ t update_invoice_systems ] "' " [$errorObj | get message] | log
 	}
 }
 
@@ -96,18 +97,23 @@ proc "ExecuteDataImport" [ val file ] {
 	concat "ExecuteDataImport with "  $file " done" | log
 	elexisLogMayNotContain "java.lang.OutOfMemoryError"
 }
-proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xml" ] ] {
+proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xml" ] ] [ val maxWaitFor 100 ] {
 	open-window-by-name [ t daten_artikel ]
 	HandleMissingInvoiceSystems
-	concat "ReadArtikelstamm before reading file: " $file | log
-	try { get-view [ t artikel ] }  -error [val errorObj] -catch {
-		concat "Error ReadArtikelstamm view " [ t artikel ] [$errorObj | get message] | log
-	}
 	with [get-view [ t artikel ]] {
-		get-tab-folder | get-tab-item Artikelstamm | click
 		HandleMissingInvoiceSystems
+		with [ get-tab-folder | get-tab-item Artikelstamm ] {
+			HandleMissingInvoiceSystems
+			try {
+				click
+				concat "ReadArtikelstamm_5b clicked button " [ t update_invoice_systems ] | log
+			} -error [val errorObj] -catch {
+					// Seen when running ImportSwissbase with french Elexis
+					log "ReadArtikelstamm_5b: handling error "
+					click
+			}
+		}
 		get-editbox -after [get-label [ t artikelstamm_label  ]] | set-focus
-		HandleMissingInvoiceSystems
 	}
 	get-button [ t show_menu ] | click
 	try {
@@ -115,6 +121,7 @@ proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xm
 		set-dialog-result File $file
 		concat "ReadArtikelstamm OpenSource OK before " $file | log
 		with [get-window [ t view_data_import ]] {
+			get-eclipse-window | gen-screenshot [concat $imagesDir "ReadArtikelstamm_before_start.png"]
 			get-button [ t btn_data_import_search ] | click
 			// TODO: Wait that pull request 174 for Tickets 14745 gets merged
 			// get-button "Pharma-Artikel" | check
@@ -138,6 +145,7 @@ proc "ReadArtikelstamm" [ val file [ concat $rcpttDir "/Artikelstamm_Short_v5.xm
 			get-window "Referenzdaten Update Service" | get-button OK | click -metaKeys ""
 		}
 	}
+	WaitImportFinished "Artikelstamm" -maxWait $maxWaitFor
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_1.png"]
 	get-view [ t artikel ] | get-button [ t btn_automatic_search ] | uncheck
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ArtikelstammImporter_2.png"]
@@ -271,8 +279,8 @@ proc "CheckArtikelstammLosartan" {
 	
 	with [get-view [t leistungen ] ] {
 		get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
-		// Setting a selector does not work in March 2021, therefor
-		// get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Losartan"
+		get-button [ t btn_automatic_search ] | uncheck
+		get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Losartan"
 		get-button [ t btn_execute_search ] | click -metaKeys ""
 		wait 1000 // Time taken to execute the search
 		get-group [ t alle_leistungen ] | get-table | select "Losartan.*"
@@ -283,6 +291,27 @@ proc "CheckArtikelstammLosartan" {
 		get-view Leistungen | get-group Alle | get-table | get-item -path "Losartan.*"
 			| get-property selected | equals true | verify-true
 		concat "ImportArtikelstamm_Losartan found " [get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw ] " items found" | log
+		get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw | gt 0 | verify-true
+	}
+}
+
+proc "CheckArtikelstammNolvadex" {
+	open-window-by-name [t leistungen ]
+	get-eclipse-window | key-type "M1+m" // Maximize
+	with [get-view [t leistungen ] ] {
+		get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
+		get-button [ t btn_automatic_search ] | uncheck
+		get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Nolvadex"
+		get-button [ t btn_execute_search ] | click -metaKeys ""
+		wait 1000 // Time taken to execute the search
+		get-group [ t alle_leistungen ] | get-table | select "Nolvadex.*"
+		get-eclipse-window | gen-screenshot [concat $imagesDir "ImportArtikelstamm_Nolvadex.png"]
+		concat "ImportArtikelstamm_Nolvadex found " [
+			get-view Leistungen | get-group Alle | get-table | get-item -path "Nolvadex.*"
+				| get-property caption -raw ] | log
+		get-view Leistungen | get-group Alle | get-table | get-item -path "Nolvadex.*"
+			| get-property selected | equals true | verify-true
+		concat "ImportArtikelstamm_Nolvadex found " [get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw ] " items found" | log
 		get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw | gt 0 | verify-true
 	}
 }
