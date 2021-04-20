@@ -13,7 +13,7 @@
         <mysqlHost>127.0.0.1</mysqlHost>
         <myBaseDir>${project.basedir}/..</myBaseDir>
         <vmArg1>-Dch.elexis.dbFlavor=mysql</vmArg1>
-        <vmArg2>-Dch.elexis.dbSpec=jdbc:mysql://${mysqlHost}:${mysqlPort}/elexis_rcptt_${language}</vmArg2>
+        <vmArg2>-Dch.elexis.dbSpec=jdbc:mysql://${mysqlHost}:${mysqlPort}/elexis_rcptt_${language}?serverTimezone=Europe/Zurich</vmArg2>
         <vmArg3>-Dch.elexis.dbUser=elexis</vmArg3>
         <vmArg4>-Dch.elexis.dbPw=elexisTest</vmArg4>
         <vmArg5>-Dch.elexis.firstMandantName=Mustermann</vmArg5>
