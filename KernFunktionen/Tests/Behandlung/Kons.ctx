@@ -5,7 +5,7 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Save-Time: 4/20/21 1:41 PM
+Save-Time: 4/21/21 5:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -24,7 +24,7 @@ proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 proc "kons-erstellen" [ val text2enter "NixZuTUn" ] [ val createSecond false ] {
 	get-eclipse-window | gen-screenshot [concat $imagesDir "Before_kons_Erstellen.png"]
 	t kons_create_new | log
-	get-view [ t kons_view ] | get-button [ t kons_create_new ] | click
+	open-window-by-name [ t kons_view ] | get-button [ t kons_create_new ] | click
 	try {
 		get-view [ t kons_view ]  |get-editbox -after [get-label [ t kons_label_today ] ] | type-text $text2enter
 	} -catch {
@@ -193,17 +193,9 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 		concat "PressAddLeistungToKons "  $item_short " done" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $item_short ".png"]
 		concat "PressAddLeistungToKons "  $item_short " after screenshot" | log
+		SelectArtikelitemInTab $item_short $item_long
+		get-group [ t alle_leistungen ] | get-table | select $item_long | double-click
 		with [get-view [t leistungen ] ] {
-			get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
-			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_short
-			get-button [ t btn_execute_search ] | click -metaKeys ""
-			wait 1000 // Time taken to execute the search
-//			get-group  [ t alle_leistungen ] | get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
-			log "kons-add-artikelstamm LeistungenExecuteSearch short"
-			get-group [ t alle_leistungen ] | get-table | select  $item_long | double-click
-//			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text $item_long
-//			log "kons-add-artikelstamm LeistungenExecuteSearch"
-//			LeistungenExecuteSearch
 			get-eclipse-window | gen-screenshot [concat $imagesDir "kons-before_enter2_" $item_short ".png"]
 			key-type Enter
 		}

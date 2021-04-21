@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 3/30/21 6:11 PM
+Save-Time: 4/21/21 5:29 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -199,8 +199,9 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
 
 proc TextVorlagenEntfernen [val name Liste] {
 	open-window-by-name [t Textvorlagen_Management]
-	get-view [t Textvorlagen_Management] | get-table | select $name -column [t Name_der_Vorlage] | get-menu [t
-		"Delete_template"]
+	get-view [t Textvorlagen_Management] |
+		 get-table | select $name -column [ t Name_der_Vorlage] | 
+		 get-menu [ t delete_template ]
 }
 
 proc EnsureOpenOfficeIsInstalled {
@@ -240,14 +241,14 @@ proc ConfigureMsOO_TextVerarbeitung {
 	EnsureOpenOfficeIsInstalled
 	get-preferences-menu | click
 	with [get-window [t preferences]] {
-		get-tree | select "Textverarbeitung"
+		get-tree | select [ t Textverarbeitung ]
 		get-editbox -after [get-label [t pref_externes_textprogramm]] | set-text [concat [get-user-dir] "/extern"]
 		get-button [t pref_texte_lokal_editieren] | uncheck // Must be unchecked for OpenOffice Text plugin
 		get-button [t print_save_letter_extern] | check // Must be checked for OpenOffice Text plugin
 		get-button ".*OpenOffice 3.x" | click
 		get-button [t Anwenden] | click
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-selected.png"]
-		get-tree | select "Textverarbeitung/OpenOffice.org"
+		get-tree | select [ concat  [ t Textverarbeitung ] "/OpenOffice.org" ]
 		with [get-editbox -after [get-label "Application home"]] {
 			click-text
 			set-text "/opt/openoffice4"
@@ -257,7 +258,7 @@ proc ConfigureMsOO_TextVerarbeitung {
 		with [get-window "OpenOffice.org application"] {
 			get-section "Available OpenOffice.org applications" | get-table | select "OpenOffice.*"
 			get-window "OpenOffice.*" | gen-screenshot [concat $imagesDir "MsOO-available.png"]
-			get-button Fertigstellen | click -metaKeys ""
+			get-button [ t Fertigstellen ] | click -metaKeys ""
 		}
 		with [get-button "Prevent termination of OpenOffice.org application"] {
 			check // Must be checked for OpenOffice Text plugin
@@ -265,17 +266,17 @@ proc ConfigureMsOO_TextVerarbeitung {
 		}
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-configured.png"]
 		take-screenshot "PreferencesTextOpenOffice.png"
-		get-tree | select "System/Druckereinstellungen"
+		get-tree | select [ concat "System/" [ t Druckereinstellungen ]]
 		$MsOOOutDir | log
 		set-dialog-result Folder $MsOOOutDir
 		// get-button "->" -after [get-label "Drucker mit A4-Papier mit ESR"] | click -metaKeys ""
-		get-editbox -after [get-label "Drucker mit A4-Papier mit ESR"] | set-text PDF
-		get-editbox -after [get-label "Drucker mit A4-Papier standard"] | set-text PDF
-		get-editbox -after [get-label "Drucker mit A5-Papier"] | set-text PDF
-		get-editbox -after [get-label "Drucker mit Einzelblatteinzug"] | set-text PDF
+		get-editbox -after [get-label [ t Drucker_A4_ESR ] ] | set-text PDF
+		get-editbox -after [get-label [ t Drucker_A4_standard ] ] | set-text PDF
+		get-editbox -after [get-label [ t Drucker_A5 ] ] | set-text PDF
+		get-editbox -after [get-label [ t Drucker_Einzelblatt ] ]  | set-text PDF
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-config.png"]
 		take-screenshot "PreferencesSystemPrinters.png"
-		get-tree | select "Datenaustausch/eHC"
+		get-tree | select [ concat [ t Datenaustausch ] "/eHC" ]
 		get-editbox -after [get-label "Standard Ausgabeverzeichnis"] | set-text [concat [get-java-property  "user.home" ]
 			"/elexis/eHC/output"]
 		get-editbox -after [get-label "Standard Eingangsverzeichnis"] | set-text [concat [get-java-property "user.home" ]

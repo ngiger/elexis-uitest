@@ -5,7 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Save-Time: 4/20/21 6:29 PM
+Save-Time: 4/21/21 4:31 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -276,44 +276,13 @@ proc "ReadComplimentary" [ val file ] {
 proc "CheckArtikelstammLosartan" {
 	open-window-by-name [t leistungen ]
 	get-eclipse-window | key-type "M1+m" // Maximize
-	
-	with [get-view [t leistungen ] ] {
-		get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
-		get-button [ t btn_automatic_search ] | uncheck
-		get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Losartan"
-		get-button [ t btn_execute_search ] | click -metaKeys ""
-		wait 1000 // Time taken to execute the search
-		get-group [ t alle_leistungen ] | get-table | select "Losartan.*"
-		get-eclipse-window | gen-screenshot [concat $imagesDir "ImportArtikelstamm_Losartan.png"]
-		concat "ImportArtikelstamm_Losartan found " [
-			get-view Leistungen | get-group Alle | get-table | get-item -path "Losartan.*"
-				| get-property caption -raw ] | log
-		get-view Leistungen | get-group Alle | get-table | get-item -path "Losartan.*"
-			| get-property selected | equals true | verify-true
-		concat "ImportArtikelstamm_Losartan found " [get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw ] " items found" | log
-		get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw | gt 0 | verify-true
-	}
+	SelectArtikelitemInTab
 }
 
 proc "CheckArtikelstammNolvadex" {
 	open-window-by-name [t leistungen ]
 	get-eclipse-window | key-type "M1+m" // Maximize
-	with [get-view [t leistungen ] ] {
-		get-tab-folder | get-tab-item Artikelstamm | click -metaKeys ""
-		get-button [ t btn_automatic_search ] | uncheck
-		get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text "Nolvadex"
-		get-button [ t btn_execute_search ] | click -metaKeys ""
-		wait 1000 // Time taken to execute the search
-		get-group [ t alle_leistungen ] | get-table | select "Nolvadex.*"
-		get-eclipse-window | gen-screenshot [concat $imagesDir "ImportArtikelstamm_Nolvadex.png"]
-		concat "ImportArtikelstamm_Nolvadex found " [
-			get-view Leistungen | get-group Alle | get-table | get-item -path "Nolvadex.*"
-				| get-property caption -raw ] | log
-		get-view Leistungen | get-group Alle | get-table | get-item -path "Nolvadex.*"
-			| get-property selected | equals true | verify-true
-		concat "ImportArtikelstamm_Nolvadex found " [get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw ] " items found" | log
-		get-group  [ t alle_leistungen ]  | get-table | get-property itemCount -raw | gt 0 | verify-true
-	}
+	SelectArtikelitemInTab Nolvadex "Nolvadex.*Stk.*"
 }
 
 // Ende

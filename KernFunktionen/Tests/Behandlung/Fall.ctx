@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 12/29/20, 5:05 PM
+Save-Time: 4/21/21 5:18 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -193,7 +193,6 @@ proc DruckeBriefZuAut [val adrName Aquilana] [val adrPostalcode 5401] {
 	with [get-view [t AUF]] {
 		// Select first matching
 		get-table | select ".*"
-		t print_AUF | log
 		get-button [t print_AUF] | click
 	}
 	with [get-window [t select_contact]] {
@@ -222,9 +221,9 @@ proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
  */
 proc FallSetDefaultInvoiceRecipient  [val name ] [ val firstname ]  {
 // get-view "Fälle" | get-table | select "KVG: Krankheit - Allgemein\\(30.01.2020- offen\\)" | double-click
-	get-view Fall | get-link "Rechnungsempfänger" | click
-	with [get-window "Kontakt auswählen"] {
-		get-editbox -after [get-label "Andere Kontakte"] -index 1 | set-text $name
+	get-view [ t Fall ] | get-link [ t invoice_recipient ]| click
+	with [get-window [ t select_contact ] ] {
+		get-editbox -after [get-label [ t select_andere_kontakte ] ] -index 1 | set-text $name
 		get-table | select [ concat $name ".*" $firstname ".*" ]
 	    get-button [ t ok ] | click
 	}
