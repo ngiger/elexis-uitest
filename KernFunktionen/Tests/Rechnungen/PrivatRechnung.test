@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gAMNcECkEeucZoJXQ1XGtg
-Save-Time: 4/22/21 9:56 AM
+Save-Time: 4/22/21 2:52 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -39,7 +39,7 @@ with [get-window [ t preferences ] ] {
         key-type "TRAVERSE_TAB_NEXT"
     }
     get-editbox -after [get-label "ESR-Kundennummer"] | set-text 15453
-    with [get-button Anwenden] {
+    with [get-button [ t Anwenden ] ] {
         click -metaKeys ""
     }
     get-button [ t apply_and_close ] | click -metaKeys ""
@@ -49,8 +49,8 @@ TextPluginSelect hilotec_odf
 ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
 ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S2" ".odt"
 ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
-
 ImportPatFallKonsFromProperty  patient.101.
+
 let [ val invoiceId  [ GetHighestInvoiceNrOf ] ] {
 	RechnungAusgeben		  -invoiceId $invoiceId -druckTyp "Privatrechnung auf Drucker"
 }

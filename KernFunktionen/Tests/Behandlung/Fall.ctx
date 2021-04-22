@@ -5,7 +5,7 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 4/21/21 5:18 PM
+Save-Time: 4/22/21 3:03 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -330,7 +330,7 @@ proc PatientMitFallUndKonsErstellenOderAuswaehlen [val familyName Testarossa]
 	} -else {
 		log "HasKonsSelected returned true, checking whether it is from the select patient"
 		let [val currentKons [ get-view [ t kons_view ] | get-label | get-property caption -raw ]]
-			[val pattern  [ concat ".*" $familyName "." $firstName ".*" ] ] {
+			[val pattern  [ concat ".*" $familyName ".*" $firstName ".*" ] ] {
 			$currentKons | matches $pattern | bool | assert-true -message [ concat "Kons " $currentKons " does not match selected patient "  $pattern]
 		}
 	}
