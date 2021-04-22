@@ -5,13 +5,14 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Save-Time: 12/16/20 11:14 AM
+Save-Time: 4/22/21 11:25 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 global [val viewPathName "" ] -override
+global [ val defaultLanguage [ get-java-property "user.language" "de" ] ] -override
 
 proc "WriteViewsCsvFile" {
 	concat "WriteViewsCsvFile: " [ t menu_select_view ] " -> " [ t show_view ] | log
@@ -28,8 +29,13 @@ proc "open-window-by-name" [ val windowName ] {
 	try {
 		get-view $windowName
 	} -catch {
-		set-dialog-result File [ concat "/dummy_" $windowName ]
-		get-menu -path [ t menu_select_view ]| click
+		concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
+		if [ concat "" $defaultLanguage "" | eq "fr" ] {
+			get-eclipse-window | key-type "M1+n" // Ctrl-N
+		} -else {
+			set-dialog-result File [ concat "/dummy_" $windowName ]
+			get-menu -path [ t menu_select_view ]| click
+		}
 		with [get-window [ t show_view ]] {
 			if [ matches $windowName ".*/.*" ] {
 				get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima

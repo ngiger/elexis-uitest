@@ -6,7 +6,7 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gAMNcECkEeucZoJXQ1XGtg
-Save-Time: 3/29/21 6:15 PM
+Save-Time: 4/22/21 9:56 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -17,19 +17,19 @@ Entry-Name: .content
 // Kopieren von KonsDirectVerrechnen
 // Bank findet man via Raiffeisenbank
 
-get-menu -path "Datei/Einstellungen" | click -metaKeys ""
-with [get-window Benutzervorgaben] {
-    get-tree | select "Abrechnungssysteme/Privatrechnung"
-    with [get-editbox -after [get-label "Vorlage mit ESR"]] {
+get-preferences-menu | click
+with [get-window [ t preferences ] ] {
+    get-tree | select [ concat [ t Abrechnungssysteme ] "/Privatrechnung" ]
+    with [get-editbox -after [get-label "Vorlage mit ESR" ] ] {
         set-text "Privatrechnung_EZ"
         click-text
     }
-    with [get-editbox -after [get-label "Vorlage ohne ESR"]] {
+    with [get-editbox -after [get-label "Vorlage ohne ESR" ] ] {
         click-text
         set-text "Privatrechnung_S1"
     }
     get-label --after [ get-label Bank ] | click
-    with [get-window "Kontakt auswählen"] {
+    with [get-window [ t select_contact ] ] {
         get-editbox -index 1 | set-text Raiffeisenbank
         get-table | select "Raiffeisenbank.*"
         get-button OK | click -metaKeys ""
@@ -42,7 +42,7 @@ with [get-window Benutzervorgaben] {
     with [get-button Anwenden] {
         click -metaKeys ""
     }
-    get-button "Anwenden und Schließen" | click -metaKeys ""
+    get-button [ t apply_and_close ] | click -metaKeys ""
 }
 
 TextPluginSelect hilotec_odf
