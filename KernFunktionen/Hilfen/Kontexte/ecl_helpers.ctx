@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 4/21/21 5:42 PM
+Save-Time: 4/22/21 9:30 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -301,16 +301,16 @@ proc OpenAndResetStartPerspektive {
  */
 proc "gen-screenshot" [ val parent -input ] [ val out [ cleanFileName [concat $imagesDir "dest.png"]]] {
 	concat "gen-screenshot: " $out | log
-//	$parent | get-object | save-screenshot $out // creates directory if necessary
+	$parent | get-object | save-screenshot $out // creates directory if necessary
 }
 
 proc "create-entire-screenshot" [ val pathName [ cleanFileName [concat $imagesDir "screen.png"]]] {
 	if [ get-by-os  -win true -macosx true -linux false ] {
 		// We create normal screenshot on windows and macOSX as we do not run under openbox
 		// and we get the windows titles anyway
-//		get-eclipse-window | get-object | save-screenshot $pathName // creates directory if necessary
+		get-eclipse-window | get-object | save-screenshot $pathName // creates directory if necessary
 	} -else {
-//		get-eclipse-window | get-object | save-screenshot [ concat $pathName ] // creates directory if necessary
+		get-eclipse-window | get-object | save-screenshot [ concat $pathName ] // creates directory if necessary
 	}
 	concat "create-entire-screenshot pathName " $pathName | log
 }
@@ -349,13 +349,14 @@ proc "SelectArtikelitemInTab"  [ val shortName "Losartan" ]  [ val longName "Los
 		wait 1000 // Time taken to execute the search
 		get-group [ t alle_leistungen ] | get-table | get-property itemCount -raw | log
 		if [ get-group [ t alle_leistungen ] | get-table | get-property itemCount -raw | eq 0 ] {
+			get-eclipse-window | gen-screenshot [ concat $imagesDir "SelectArtikelitemInTab_" $shortName "_Workaround.png"]
 			get-group  [ t alle_leistungen ] | get-editbox -after [get-label [ t artikelstamm_label ] ] | set-text ""
 			get-button [ t btn_execute_search ] | click -metaKeys ""
 			wait 1000 // Time taken to execute the search
 			log -message "SelectArtikelitemInTab WorkAround was needed" -severity error
 		}
 		get-group [ t alle_leistungen ] | get-table | select $longName
-		get-eclipse-window | gen-screenshot [concat $imagesDir "ImportArtikelstamm_" $shortName ".png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "SelectArtikelitemInTab_" $shortName ".png"]
 		concat "SelectArtikelitemInTab " $shortName " found " [
 			get-group  [ t alle_leistungen ] | get-table | get-item -path $longName | get-property caption -raw ] | log
 			get-group  [ t alle_leistungen ] | get-table | get-item -path $longName

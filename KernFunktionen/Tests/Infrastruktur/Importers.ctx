@@ -5,7 +5,7 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Save-Time: 4/21/21 4:31 PM
+Save-Time: 4/22/21 9:18 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -274,13 +274,15 @@ proc "ReadComplimentary" [ val file ] {
 }
 
 proc "CheckArtikelstammLosartan" {
-	open-window-by-name [t leistungen ]
+	get-button [ t button_open_articles ] | click
+	open-window-by-name [ t leistungen ]
 	get-eclipse-window | key-type "M1+m" // Maximize
 	SelectArtikelitemInTab
 }
 
 proc "CheckArtikelstammNolvadex" {
-	open-window-by-name [t leistungen ]
+	get-button [ t button_open_articles ]
+	open-window-by-name [ t leistungen ]
 	get-eclipse-window | key-type "M1+m" // Maximize
 	SelectArtikelitemInTab Nolvadex "Nolvadex.*Stk.*"
 }
