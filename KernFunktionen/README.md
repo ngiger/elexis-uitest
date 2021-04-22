@@ -101,11 +101,17 @@ Für RunFromScratch (leere DB mit 007 als Arzt) hinzufügen
 * Sich überlegen, ob man eine separate config-xml-Datei verwenden will. Wenn ja dann `--use-config=anstell_von_local` hinzufügen
 * Mit Doppelclick ElexisDemoDB starten
 
-Zum Umgegehen des Ersten Mandator dialogs
+Zum Umgehen des Ersten Mandator dialogs
 
     -Duser.language=de -Duser.region=CH
     -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec=jdbc:h2:~/elexis/first;AUTO_SERVER=TRUE -Dch.elexis.dbUser=sa -Dch.elexis.dbPw= 
     -Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest
+    
+## AUT starten
+
+Nach dem Definieren der AUT kann man sie durch Doppelclick starten. Falls der Erste Mandator dialog umgangen wird, muss man von Hand nochmals neu starten, nachdem die AUT sich geschlossen hat.
+
+Falls sich eine AUT nicht starten lösst und nur die Log-Datei angeschaut werden kann, muss man in der AUT launch-Datei die Zeile, welche ATTR_AUT_LAUNCH_ID löschen und sie nochmals starten
 
 ## Test aufnehmen
 
