@@ -70,7 +70,7 @@ Vagrant.configure("2") do |config|
 # does not copy the file  config.vm.provision "file", source: "install_on_windows.ps1", destination: "C:\\aScript.ps1"
 # does not work neither  config.vm.provision "shell",  path: "install_on_windows.ps1",  privileged: true
 config.vm.provision "shell", inline: <<-SHELL
-choco install openjdk8 maven git
+choco install openjdk8 maven git unzip
 choco install sysinternals notepadplusplus 7zip runinbash
 choco install openoffice libreoffice-still
 choco install Office365Business office-to-pdf
@@ -78,10 +78,12 @@ choco install Office365Business office-to-pdf
 # choco install eclipse-java-oxygen
 git clone https://github.com/elexis/elexis-uitest.git
 choco install wget firefox postgresql mariadb
-wget https://ftp.snt.utwente.nl/pub/software/eclipse/oomph/products/eclipse-inst-win64.exe
-wget http://download.eclipse.org/rcptt/nightly/2.5.2/202104160005/ide/rcptt.ide-2.5.2-N202104160005-win32.win32.x86_64.zip
+wget https://ftp.snt.utwente.nl/pub/software/eclipse/oomph/products/eclipse-inst-jre-win64.exe
+http://download.eclipse.org/rcptt/nightly/2.5.2/latest/ide/rcptt.ide-2.5.2-nightly-win32.win32.x86_64.zip
 # Von Hand zu machen
 # eclipse-inst-win64.exe ausführen und https://raw.githubusercontent.com/elexis/elexis-3-core/master/Elexis.setup
+Set-WinUserLanguageList -LanguageList de-CH -force
+Get-WinUserLanguageList
 SHELL
 
   config.vm.provision "shell", inline: <<-SHELL

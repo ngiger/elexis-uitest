@@ -49,6 +49,8 @@ So sieht am Schluss ein Aufruf zum erstellen eine elexis-3.8 RCP-Applikation fü
 
     mvn -V clean verify -f mysql/pom.xml --settings mysql/settings.xml -DuseBranch=3.8 -Dsuite2run=QuickTestSuite  
 
+Tipp: Falls man die Farben nicht gerne hat im Output, kann dies mit folgende Maven-Option unterbinden `-Dstyle.color=none`
+
 ## Neue Testfälle erstellen
 
 ### Voraussetzunge
@@ -67,7 +69,7 @@ So sieht am Schluss ein Aufruf zum erstellen eine elexis-3.8 RCP-Applikation fü
 ** Man muss zuerst mal von Hand den Benutzernamen/Kürzel eingeben, da sonst swriter nicht startet (Wird in Datei ~/.openoffice/4/user/registrymodifications.xcu gespeichert)
 * LibreOffice muss installiert sein (siehe EnsureLibreOffficIsInstalled in  KernFunktionen/Tests/Textverarbeitung/text_plugins_common.ctx)
 * Es darf keine LibreOffice-Instanz offen sein, falls der Test Dokumente via dem Hilotec-Plugin druckt, da sonst LibreOffice das headless ignoriert.
-* import utility muss unter Linux installiert sein (Debian buster Paket imagemagick-6)
+* import utility muss unter Linux installiert sein (Debian buster Paket imagemagick)
 
 ### AUT definieren
 
@@ -270,11 +272,25 @@ https://www.eclipse.org/rcptt/blog/2014/12/10/test-about-dialog.html
 * startup script für windows slave ?? 
 * als Windows Service installieren ??
 
-# TODO: Cleanup
+Es gibt unter vagrant/elexis-windows ein Vagrant setup, das die meisten dieser Aufgaben übernehmen kann.
 
-* Wenn RCPTT 2.3.1 (oder 2.4.0) herauskommt, commit vom 20.12.2018 wegen find-all rückgängig machen.
-** Find-all war sauberer Lösung für locale
-** find-all erlaubte filtern von SQL-Scripts, so dass nur Resultate zurückkamen
-** SNAPSHOT-Version braucht jeden Tag viel zu lange, bis sie runter geladen war
+# Testen unter Windows10
 
+Folgende Schritte wurden unter Windows10 durchgeführt, um alle benötigten Programme
+zu installieren (in einer PowerShell mit administrativen Rechten)
 
+## Chocolatey install script für irgendein Programm
+
+    # gemäss https://chocolatey.org/install
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+Damit diverse Hilfsprogramme benutzt werden können, muss jetzt eine neue PowerShell oder Git Bash Kommandozeile
+geöffnet werden und die entsprechenden Zeilen aus dem [Vagrantfile](vagrant/elexis-windows/Vagrantfile) ausgeführt werden
+
+Danach muss man von Hand
+
+* ggf. Tastaturlayout und deutsche language pack installieren
+* OpenOffice mal aufstarten, und Benutzername/Kürzel setzen
+* unzip rcptt.ide-2.5.2-nightly-win32.win32.x86_64.zip (für RCPTT)
+* eclipse-inst-jre-win64.exe ausführen und gemäss https://github.com/elexis/elexis-3-core/blob/master/ch.elexis.sdk/ installieren
+* Create users and databases for mysql and/or postgresql as specified in [mysql/pom.xml](mysql/pom.xml) and [postgresql/pom.xml](postgresql/pom.xml)
