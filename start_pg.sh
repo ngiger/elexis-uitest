@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+os/Elexis3 -vmargs -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 -Dch.elexis.dbFlavor=postgresql -Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt_de -Dch.elexis.dbUser=elexis -Dch.elexis.dbPw=elexisTest -Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest -Xmx512m -XX:MaxPermSize=128m

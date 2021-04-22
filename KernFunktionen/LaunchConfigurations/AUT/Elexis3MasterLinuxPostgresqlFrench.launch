@@ -3,7 +3,7 @@
 <booleanAttribute key="append.args" value="true"/>
 <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
 <booleanAttribute key="askclear" value="false"/>
-<stringAttribute key="aut-location" value="/opt/elexis-master/os"/>
+<stringAttribute key="aut-location" value="/home/niklaus/elexis-master/git/elexis-uitest/os"/>
 <stringAttribute key="aut-target-platform" value="AUT Elexis3MasterLinuxPostgresqlFrench (Target Platform)"/>
 <booleanAttribute key="aut-target-updatable" value="true"/>
 <stringAttribute key="bootstrap" value=""/>

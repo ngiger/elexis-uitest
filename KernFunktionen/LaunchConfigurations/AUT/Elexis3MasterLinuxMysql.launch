@@ -3,7 +3,7 @@
 <booleanAttribute key="append.args" value="true"/>
 <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
 <booleanAttribute key="askclear" value="true"/>
-<stringAttribute key="aut-location" value="/opt/elexis-master/os"/>
+<stringAttribute key="aut-location" value="/home/niklaus/elexis-master/git/elexis-uitest/os"/>
 <stringAttribute key="aut-target-platform" value="AUT Elexis3MasterLinuxMysql (Target Platform)"/>
 <booleanAttribute key="aut-target-updatable" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
@@ -22,10 +22,10 @@
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/adoptopenjdk-8-hotspot-amd64"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-openjdk-amd64"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os linux -ws gtk -arch x86_64 -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 &#10;-Dch.elexis.dbFlavor=mysql -Dch.elexis.dbSpec=jdbc:mysql://localhost/elexis_rcptt_de &#10;-Dch.elexis.dbUser=elexis -Dch.elexis.dbPw=elexisTest&#10;-Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest &#10;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info -Dch.elexis.username=Mustermann &#10;-Dch.elexis.password=elexisTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 &#10;-Dch.elexis.dbFlavor=mysql &#10;-Dch.elexis.dbSpec=jdbc:mysql://localhost/elexis_rcptt_de?serverTimezone=Europe/Zurich&#10; -Dch.elexis.dbUser=elexis -Dch.elexis.dbPw=elexisTest&#10; -Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest &#10;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info &#10;-Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/elexis-master/os"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="ch.elexis.core.application.product"/>
