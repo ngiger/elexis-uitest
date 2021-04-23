@@ -20,7 +20,6 @@
     grant all on elexis_rcptt_de.* to 'elexis'@'%' with grant option;
     grant all on elexis_rcptt_fr.* to 'elexis'@'%' with grant option;
     flush privileges;
-    mysql -u elexis -port 3306 -h 127.0.0.1 --password=elexisTest
     -->
   </properties>
   <modules>
