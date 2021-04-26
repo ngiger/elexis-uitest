@@ -5,7 +5,7 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 4/21/21 5:29 PM
+Save-Time: 4/26/21 10:50 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -21,7 +21,7 @@ global [val hiloVorlagen [ concat $rcpttDir "hilotec_vorlagen" ] ] -override
 global [val msWordVorlagen [ concat $rcpttDir "msWord_vorlagen" ] ] -override
 global [val ooFile [ concat $rcpttDir "medelexis_oo_configured" ] ] -override
 global [val vorlagenDirOpenoffice  [concat $rcpttDir "elexis-vorlagen/openoffice" ] ] -override
-global [val vorlagenDirMsWord  [concat $rcpttDir "elexis-vorlagen/msword/fenster_rechts" ] ] -override
+global [val vorlagenDirMsWord  [concat $rcpttDir "elexis-vorlagen/msword/fenster_links" ] ] -override
 
 proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 	global [val ConfiguredTextPlugin useTextPlugin] -override
@@ -253,16 +253,16 @@ proc ConfigureMsOO_TextVerarbeitung {
 			click-text
 			set-text "/opt/openoffice4"
 		}
+		with [get-button "Prevent termination of OpenOffice.org application"] {
+			check // Must be checked for OpenOffice Text plugin
+			// , so verhindert diese Einstellung, dass das OpenOffice Programm mit Elexis geschlossen wird.
+		}
 		get-link ".*Define.*" | click-link
 		wait 1000 // leave some time to find the app
 		with [get-window "OpenOffice.org application"] {
 			get-section "Available OpenOffice.org applications" | get-table | select "OpenOffice.*"
 			get-window "OpenOffice.*" | gen-screenshot [concat $imagesDir "MsOO-available.png"]
 			get-button [ t Fertigstellen ] | click -metaKeys ""
-		}
-		with [get-button "Prevent termination of OpenOffice.org application"] {
-			check // Must be checked for OpenOffice Text plugin
-			// , so verhindert diese Einstellung, dass das OpenOffice Programm mit Elexis geschlossen wird.
 		}
 		get-window [t preferences] | gen-screenshot [concat $imagesDir "MsOO-configured.png"]
 		take-screenshot "PreferencesTextOpenOffice.png"
