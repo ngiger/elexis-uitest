@@ -5,7 +5,7 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Save-Time: 11/26/20, 12:16 PM
+Save-Time: 4/26/21 2:45 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -60,8 +60,8 @@ proc SetStandard4Cases {
 	    get-editbox -after [get-label [ t preferences_cases_standard ] ] | set-text "ist krank"
 	    get-editbox -after [get-label [ t preferences_cases_invoicesystem ] ] | set-text KVG
 	    get-editbox -after [get-label [ t preferences_cases_standard_diagnosis ] ] | click-text
-	    get-button [ t preferences_cases_diagnosis ] | click -metaKeys ""
-	    get-editbox -after [get-label  [ t preferences_cases_standard_diagnosis ] ] | click-text
+//	    get-button [ t preferences_cases_diagnosis ] | click -metaKeys ""
+//      get-editbox -after [get-label  [ t preferences_cases_standard_diagnosis ] ] | click-text
 	    get-button [ t apply_and_close ] | click -metaKeys ""
 	}
 }
@@ -254,9 +254,12 @@ proc "create-user" [ val idMandant 1 ]
 			concat "Checking Role " $role "res" [$role | matches "executive_doctor"  ] | log
 			if [ $role | matches "executive_doctor" ] {
 				get-group "Verrechnung" | get-button "ist verantwortlicher Arzt" | check
-				get-group "Verrechnung" | get-button "ist verantwortlicher Arzt" | uncheck
-				get-group "Verrechnung" | get-button "ist verantwortlicher Arzt" | check
-				// Some how this does not get stored correctly. Why?
+				try {
+					get-window [ t Kontakt_ist_kein_Mandant ] | get-button [ t yes ]  | click -metaKeys ""
+				} -catch {
+					log "Kontakt is already a mandant"
+				}
+//				get-group "Verrechnung" | get-button "ist verantwortlicher Arzt" | uncheck
 			} -else {
 				concat "Role " $role " is not executive_doctor" | log
 			}
