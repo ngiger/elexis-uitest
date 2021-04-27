@@ -5,7 +5,7 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Save-Time: 4/22/21 11:25 AM
+Save-Time: 4/27/21 3:55 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -23,30 +23,6 @@ proc "WriteViewsCsvFile" {
 	wait 100
 	get-window [ t show_view ] | get-button [ t cancel ] | click
 	log "WriteViewsCsvFile: done"
-}
-
-proc "open-window-by-name" [ val windowName ] {
-	try {
-		get-view $windowName
-	} -catch {
-		concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
-		if [ concat "" $defaultLanguage "" | eq "fr" ] {
-			get-eclipse-window | key-type "M1+n" // Ctrl-N
-		} -else {
-			set-dialog-result File [ concat "/dummy_" $windowName ]
-			get-menu -path [ t menu_select_view ]| click
-		}
-		with [get-window [ t show_view ]] {
-			if [ matches $windowName ".*/.*" ] {
-				get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima
-			} -else {
-				get-tree | expand-all | select [ concat ".*/" $windowName ]
-			}
-			get-button [t open ] | click
-		}
-		// Seen when running ImportSwissbase with french Elexis
-//			concat "open-window-by-name: " [$errorObj | get message] " for " $windowName | log
-	}
 }
 
 global [val curViewSection ""] -override

@@ -5,7 +5,7 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 4/22/21 9:30 AM
+Save-Time: 4/27/21 4:02 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -369,6 +369,36 @@ proc "SelectArtikelitemInTab"  [ val shortName "Losartan" ]  [ val longName "Los
 get-eclipse-window | gen-screenshot [ concat $imagesDir "window/ecl_helper_screenshot.png"]
 create-entire-screenshot [ concat $imagesDir "window/entire_helper_screenshot.png"]
 trace [ concat "create-entire-screenshot " $imagesDir "ecl_helper_screenshot.png"]
+
+proc "open-window-by-name" [ val windowName ] {
+	try {
+		get-view $windowName
+	} -catch {
+		concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
+		if [ concat "" $defaultLanguage "" | eq "fr" ] {
+			get-eclipse-window | key-type "M1+n" // Ctrl-N
+		} -else {
+			set-dialog-result File [ concat "/dummy_" $windowName ]
+			get-menu -path [ t menu_select_view ]| click
+		}
+		with [get-window [ t show_view ]] {
+			if [ matches $windowName ".*/.*" ] {
+				get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima
+			} -else {
+				get-tree | expand-all | select [ concat ".*/" $windowName ]
+			}
+			get-button [t open ] | click
+		}
+		// Seen when running ImportSwissbase with french Elexis
+//			concat "open-window-by-name: " [$errorObj | get message] " for " $windowName | log
+	}
+}
+
+OpenAndResetStartPerspektive
+open-window-by-name [ t daten_artikel ]
+open-window-by-name "Codes" // Force reading of loinc
+
+
 //
 // Ende
 

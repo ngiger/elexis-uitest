@@ -5,7 +5,7 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Save-Time: 3/30/21 8:30 PM
+Save-Time: 4/27/21 3:54 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -47,7 +47,7 @@ try {
 	// Verify that the window was missing (and not some other problem)
 	verify-error -command {get-window [ t preferences ]}
 }
-OpenAndResetStartPerspektive
+
 
 // Some Hints from http://h2database.com/html/tutorial.html#tutorial_starting_h2_console
 // http://central.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
