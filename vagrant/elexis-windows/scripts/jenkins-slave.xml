@@ -1,0 +1,21 @@
+<service>
+  <id>JenkinsSlave</id>
+  <name>Jenkins agent</name>
+  <description>This service runs an agent for Jenkins automation server.</description>
+  <executable>java.exe</executable>
+  <arguments>-jar C:\Jenkins\slave.jar -jnlpUrl https://srv.elexis.info/jenkins/computer/Elexis-WIndows-10/jenkins-agent.jnlp -secret 22cea5e4ee6f80d90dffccbcf332106fdf78acc46a5ee561094d7f5914241f3a -workDir "C:\Jenkins\workdir" -failIfWorkDirIsMissing</arguments>
+  <interactive />
+  <logmode>rotate</logmode>
+  <onfailure action="restart">
+    <download from="https://srv.elexis.info/jenkins/jnlpJars/agent.jar" to="C:\Jenkins\slave.jar">
+      <extensions>
+        <extension classname="winsw.Plugins.RunawayProcessKiller.RunawayProcessKillerExtension" enabled="true" id="killOnStartup">
+          <pidfile>%BASE%\jenkins_agent.pid</pidfile>
+          <stoptimeout>5000</stoptimeout>
+          <stopparentfirst>false</stopparentfirst>
+        </extension>
+      </extensions>
+    </download>
+  </onfailure>
+</service>
+

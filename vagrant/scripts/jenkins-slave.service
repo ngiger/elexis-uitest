@@ -4,7 +4,7 @@ Wants=network.target
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/java -Xmx4096m -jar /home/jenkins_slave/agent.jar -jnlpUrl https://srv.elexis.info/jenkins/computer/niklaus/jenkins-agent.jnlp -secret e9cb6c59779041ad60183b59ac464b13759bc8b37dc3d100c6789755c02cce41 -workDir /home/jenkins_slave/slave
+ExecStart=/usr/bin/java -Xmx2046m -jar /home/jenkins_slave/slave.jar -jnlpUrl https://srv.elexis.info/jenkins/computer/niklaus/jenkins-agent.jnlp -secret  @/home/jenkins_slave/.secret -workDir /home/jenkins_slave/slave
 User=jenkins_slave
 Restart=always
 RestartSec=10

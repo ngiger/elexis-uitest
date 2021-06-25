@@ -13,55 +13,36 @@ Vagrant.configure("2") do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
-  required_plugins = %w( vagrant-vbguest vagrant-disksize )
-  _retry = false
-  required_plugins.each do |plugin|
-    unless Vagrant.has_plugin? plugin
-      system "vagrant plugin install #{plugin}"
-      _retry=true
-    end
-  end
-
-  if (_retry)
-    exec "vagrant " + ARGV.join(' ')
-  end
-  config.disksize.size = "128GB"
     
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "generic/debian10"
   config.vm.box_version = "3.2.6"
-  config.vm.hostname = "elexis-buster"
-  config.vm.provider "virtualbox" do |vb|
-    vb.name = "elexis-buster"
-    vb.gui = false
-    vb.cpus = 2
-    vb.memory = 8094
+  config.vm.provider "virtualbox" do |v|
+    v.gui = false
+    v.cpus = 2
+    v.memory = 8094
   end
   # must be called by hand vagrant plugin install vagrant-vbguest
   config.vagrant.plugins = [ "vagrant-vbguest" ]
   # has problem:  can't activate vagrant-libvirt-0.4.1, already activated vagrant-libvirt-0.2.1 (Gem::LoadError)
-#  config.vm.network "public_network", bridge: [ "eth0", "enp3s0", "virbr0" ], ip: "192.168.1.237"
+  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+  config.vm.provision "file", source: "~/.config/awesome", destination: "/home/vagrant/.config/awesome"
+  config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/scripts/"
   config.vm.network "private_network", type: "dhcp", ip: "192.168.2.237"
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true
-  config.vm.synced_folder "/opt", "/opt",
+  config.vm.synced_folder "/opt", "/shared",
       :create => false,
       :nfs => true, 
       :nfs_version => 4,
       :nfs_export => false,
       :nfs_udp => false
-#  https://stackoverflow.com/questions/22643177/ssh-onto-vagrant-box-with-different-username (answer 6)
-
-  config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/"
+  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
   config.vm.provision "file", source: "~/.config/awesome/", destination: "/home/vagrant/.config/"
   config.vm.provision "file", source: "~/.config/fish/conf.d/", destination: "/home/vagrant/.config/fish/"
-  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
-  # next  files must be run in this order
+  config.vm.provision "file", source: "secret_file_niklaus", destination: "/home/vagrant/.secret"
+  config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/"
   config.vm.provision "shell", path: "../scripts/setup_minimal.sh"
-  config.vm.provision "shell", path: "../scripts/download_oomp_rcptt.sh"
-  config.vm.provision "shell", path: "../scripts/setup_elexis.sh"
   config.vm.provision "shell", path: "../scripts/setup_jenkins_slave.sh"
-  # next file is commented out, as it only good on Niklaus Giger workspace
-  # config.vm.provision "shell", path: "../scripts/setup_niklaus.sh"
 end
