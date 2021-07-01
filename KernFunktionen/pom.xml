@@ -142,8 +142,11 @@
               <arg>-nl</arg>
               <arg>${language}_CH</arg>
               <arg>-nosplash</arg>
-              <arg>-noregtool</arg>
+	      <arg>-noregtool</arg>
               <arg>--use-config=rpctt</arg>
+              <arg>-Xms1G</arg>
+              <arg>-Xmx1G</arg>
+              <arg>-XX:MaxPermSize=256M</arg>
            </args>
             <vmArgs>
               <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
