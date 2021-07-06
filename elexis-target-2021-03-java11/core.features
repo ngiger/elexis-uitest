@@ -1,0 +1,11 @@
+ch.elexis.core.application.feature
+ch.elexis.core.common.feature
+ch.elexis.core.logging.feature
+ch.elexis.core.persistence.feature
+ch.elexis.core.spotlight.feature
+ch.elexis.core.tasks.feature
+ch.elexis.core.ui.chromium.feature
+ch.elexis.core.ui.eenv.feature
+ch.elexis.core.ui.feature
+ch.elexis.core.ui.p2.feature
+ch.elexis.jre.feature
