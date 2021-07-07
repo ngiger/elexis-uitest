@@ -67,6 +67,7 @@
               <arg>--use-config=rpctt</arg>
            </args>
             <vmArgs>
+              <vmArg>-noverify</vmArg>
               <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
               <vmArg>-DGTK_IM_MODULE=ibus</vmArg>
               <vmArg>-Dlanguage=${language}</vmArg>
