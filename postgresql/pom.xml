@@ -29,6 +29,7 @@
     GRANT ALL PRIVILEGES ON DATABASE elexis_rcptt_de TO elexis ;
     GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO elexis;
     ALTER DATABASE elexis_rcptt_de OWNER TO elexis;
+    ALTER ROLE elexis WITH CREATEDB; # needed with psql 11
     -->
   </properties>
   <modules>
