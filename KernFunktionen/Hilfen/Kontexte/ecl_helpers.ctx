@@ -55,10 +55,11 @@ global [ val aWeekAgo [invoke-static  "org.eclipse.rcptt.util"  "java.time.Local
 			invoke plusDays "-7" |
 			invoke format [invoke-static  "org.eclipse.rcptt.util"  "java.time.format.DateTimeFormatter" "ofPattern" "dd.MM.yyyy" ]
 	 ] ]
-concat "today ist " $today " tomorrow " $tomorrow " yesterday: " $yesterday
-	 " aWeekAhead: " $aWeekAhead  " aWeekAgo: " $aWeekAgo | log
+// concat "today ist " $today " tomorrow " $tomorrow " yesterday: " $yesterday
+//	 " aWeekAhead: " $aWeekAhead  " aWeekAgo: " $aWeekAgo | log
 
-concat "user.home: " [get-java-property user.home]  ": getWritableUserDir returns: " [ invoke-static -pluginId ch.elexis.core.data -className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir ] | log
+// concat "user.home: " [get-java-property user.home]  ": getWritableUserDir returns: " [ invoke-static -pluginId ch.elexis.core.data
+// className ch.elexis.core.data.activator.CoreHub -methodName getWritableUserDir ] | log
 
 proc "get-user-dir" {
 	if [ get-by-os  -win true -macosx false -linux false ] {
@@ -209,13 +210,13 @@ concat "RCPTT created pdfDir/extern/.localdoc/eHC directories " $pdfDir | log
 
 global [ val preferencesCsvFile [ uri-from-path [ concat  $resultsDir "preferences.csv" ] ] ]
 global [ val viewsCsvFile	    [ uri-from-path [ concat  $resultsDir "views.csv" ] ] ]
-concat "get-env HOME returns: " [get-env HOME ] |log
-concat "resultsDir returns: " $resultsDir |log
-concat "get-default-locale returns: " [get-default-locale] |log
-concat "get-user-dir returns: " [get-user-dir] |log
-concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log
+// concat "get-env HOME returns: " [get-env HOME ] |log
+// concat "resultsDir returns: " $resultsDir |log
+// concat "get-default-locale returns: " [get-default-locale] |log
+// concat "get-user-dir returns: " [get-user-dir] |log
+// concat "user.language returns: " [ get-java-property "user.language" "dummy" ]  |log
 global [ val defaultLanguage [ get-java-property "user.language" "de" ] ]
-concat "defaultLanguage is now: " $defaultLanguage| log
+// concat "defaultLanguage is now: " $defaultLanguage| log
 str "Created eHC/input by RCPTT" | write-lines [ concat [get-user-dir] "/elexis/eHC/input/dummy_input.txt" ]
 str "Created eHC/output by RCPTT" | write-lines [ concat [get-user-dir] "/elexis/eHC/output/dummy_output.txt" ]
 
@@ -228,8 +229,6 @@ proc "t" [val key] [val language $defaultLanguage] {
 		bool false
 	}
 }
-t "open" "de" | eq "Öffnen" | verify-true
-t "open" "fr" | eq "Ouvrir" | verify-true
 
 global [ val praxisProperties [ read-properties -uri [concat [get-java-property user.home] "/elexis/rcptt/praxis_" $defaultLanguage ".properties"]]]
 global [ val test_properties  [ read-properties -uri [concat [get-java-property user.home] "/elexis/rcptt/test.properties"]]]
