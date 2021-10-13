@@ -8,7 +8,7 @@ source /etc/environment
 echo $JAVA_HOME
 echo -e "elexisTest\nelexisTest\n" | sudo passwd jenkins_slave
 sudo -iHu jenkins_slave <<EOF
-wget https://srv.elexis.info/jenkins/jnlpJars/agent.jar
+wget -nv https://srv.elexis.info/jenkins/jnlpJars/agent.jar
 EOF
 sudo cp /home/vagrant/scripts/jenkins-slave.service /home/vagrant/scripts/*.conf /etc/systemd/system/
 sudo systemctl daemon-reload

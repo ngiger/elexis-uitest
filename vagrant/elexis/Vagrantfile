@@ -7,43 +7,34 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+[ '/home/niklaus/.vagrant.d/boxes', '/var/lib/libvirt/images'].each do |symlink|
+  unless File.symlink?(symlink)
+    puts "Warning: #{symlink} is not a symlink"
+  end
+end
 
 Vagrant.configure("2") do |config|
-  # https://vagrantcloud.com/generic/boxes/debian10/versions/3.2.6/providers/libvirt.box 3.3.2021
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
-    
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "generic/debian10"
-  config.vm.box_version = "3.2.6"
-  config.vm.define :test_vm1 do |test_vm1|
-    test_vm1.vm.network :public_network,
-      :dev => "virbr0",
-      :mode => "bridge",
-      :type => "bridge",
-      :mac => "0a:0a:0a:0a:0a:02"
+  required_plugins = %w(vagrant-libvirt vagrant-timezone)
+  config.vm.box = "debian/bullseye64"
+  config.vm.hostname = "bullseye"
+  config.vm.provider :libvirt do |v|
+    v.cpus=2
+    # v.keymap = "en-us" works!
+    v.keymap = "de-ch" # works
+    #v.keymap = "de_ch" # fails
+    # v.keymap = "sg"
+    v.memory=4048
+    v.default_prefix="elexis-ng"
+    v.storage_pool_path = "/opt/images"
+    machine_virtual_size = "101GB";
+    management_network_autostart = true;
   end
-  config.vm.provider :libvirt do |libvirt|
-#    libvirt.channel :type => 'unix', :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
-    libvirt.cpus = 2
-    libvirt.memory = 4048;
-    # Use QEMU session instead of system connection
-    libvirt.qemu_use_session = true
-    # URI of QEMU session connection, default is as below
-    libvirt.uri = 'qemu:///session'
-    # URI of QEMU system connection, use to obtain IP address for management, default is below
-    libvirt.system_uri = 'qemu:///system'
-    # Path to store Libvirt images for the virtual machine, default is as ~/.local/share/libvirt/images
-    libvirt.storage_pool_path = '/home/user/.local/share/libvirt/images'
-    # Management network device, default is below
-    libvirt.management_network_device = 'virbr0'
-  end
+
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true
   if Vagrant.has_plugin?("vagrant-timezone")
-#    config.timezone.value = "CEST"
+    config.timezone.value = "Europe/Zurich"
+    # calls timedatectl set-timezone 'Europe/Zurich'
   end
 #  config.vm.network "public_network", bridge: ADAPTER #, auto_config: false
   # https://www.vagrantup.com/docs/networking/public_network#disable-auto-configuration
@@ -62,13 +53,17 @@ Vagrant.configure("2") do |config|
       :nfs_udp => false
 #  https://stackoverflow.com/questions/22643177/ssh-onto-vagrant-box-with-different-username (answer 6)
 
+
+  config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/"
+  config.vm.provision "file", source: "~/.config/awesome/", destination: "/home/vagrant/.config/"
+  config.vm.provision "file", source: "~/.config/fish/conf.d/", destination: "/home/vagrant/.config/fish/"
   config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
-  config.vm.provision "file", source: "~/.config/awesome", destination: "/home/vagrant/.config/awesome"
-  config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/scripts/"
-#  config.vm.provision "shell",  path: "setup_elexis.sh"
-  # cannot provision to a different user!
-#  config.vm.provision "file", source: "~/.config/awesome", destination: "/home/niklaus/.config/awesome"
-  # by hand
-  # sudo cp -rv .config/awesome /home/niklaus/.config/
- # sudo chown -R niklaus:niklaus /home/niklaus/.config/
+  # next  files must be run in this order
+  config.vm.provision "shell", path: "../scripts/setup_minimal.sh"
+  config.vm.provision "shell", path: "../scripts/download_oomp_rcptt.sh"
+  config.vm.provision "shell", path: "../scripts/setup_elexis.sh"
+  config.vm.provision "shell", path: "../scripts/setup_jenkins_slave.sh"
+  # next file is commented out, as it only good for Niklaus Giger workspace
+  # config.vm.provision "shell", path: "../scripts/setup_niklaus.sh"
+  # in vagrant ssh: call sudo /opt/src/elexis-uitest/vagrant/scripts/setup_minimal.sh et el
 end
