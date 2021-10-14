@@ -7,7 +7,7 @@ apt install -qy apt-transport-https ca-certificates wget dirmngr gnupg software-
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
 add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb
 apt update
-apt install -qy adoptopenjdk-8-hotspot maven fish htop iotop zip unzip openbox awesome sddm etckeeper nfs-common
+apt install -qy adoptopenjdk-8-hotspot adoptopenjdk-11-hotspot maven fish htop iotop zip unzip openbox awesome sddm etckeeper nfs-common
 java -version
 # update-alternatives --config java
 # echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"' > /etc/environment
