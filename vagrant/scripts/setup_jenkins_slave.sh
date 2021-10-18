@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # https://linuxize.com/post/install-java-on-debian-10/
 set -o xtrace # enable seeing the commands, prepended with a + sign
+sudo apt install -qy mariadb-server
 sudo userdel --force jenkins_slave
 sudo useradd  --shell /usr/bin/fish --uid 1007 -G sudo,lp,users --create-home jenkins_slave
 set -e # Do exit on any error:
@@ -13,11 +14,10 @@ EOF
 
 # taken from ../../mysql/pom.xmls
 sudo -u root mysql <<EOF
-    create user elexis identified by 'elexisTest';
-    create database elexis;
-    create database elexis_rcptt_de;
-    create database elexis_rcptt_fr;
-    create user elexis identified by 'elexisTest';
+    create user if not exists elexis identified by 'elexisTest';
+    create database if not exists elexis;
+    create database if not exists elexis_rcptt_de;
+    create database if not exists elexis_rcptt_fr;
     grant all on elexis_rcptt_de.* to elexis@'%';
     grant all on elexis_rcptt_de.* to 'elexis'@'%' with grant option;
     grant all on elexis_rcptt_fr.* to 'elexis'@'%' with grant option;
