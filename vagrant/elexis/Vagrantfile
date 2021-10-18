@@ -26,8 +26,8 @@ Vagrant.configure("2") do |config|
     v.memory=4048
     v.default_prefix="elexis-ng"
     v.storage_pool_path = "/opt/images"
-    machine_virtual_size = "101GB";
-    management_network_autostart = true;
+    v.machine_virtual_size = 102;
+    v.management_network_autostart = true;
   end
 
   config.ssh.forward_agent = true
@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
   # https://www.vagrantup.com/docs/synced-folders/nfs
   config.vm.synced_folder "/opt", "/opt",
       :create => false,
-      :nfs => true, 
+      :nfs => true,
       :nfs_version => 4,
       :nfs_export => false,
       :nfs_udp => false
@@ -55,9 +55,9 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.provision "file", source: "../scripts/", destination: "/home/vagrant/"
-  config.vm.provision "file", source: "~/.config/awesome/", destination: "/home/vagrant/.config/"
-  config.vm.provision "file", source: "~/.config/fish/conf.d/", destination: "/home/vagrant/.config/fish/"
-  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+  config.vm.provision "file", source: "~/.config/awesome/", destination: "/home/vagrant/.config/" if File.exists?('~/.config/awesome')
+  config.vm.provision "file", source: "~/.config/fish/conf.d/", destination: "/home/vagrant/.config/fish/" if File.exists?('~/.config/fish/conf.d')
+  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig" if File.exists?('~/.gitconfig')
   # next  files must be run in this order
   config.vm.provision "shell", path: "../scripts/setup_minimal.sh"
   config.vm.provision "shell", path: "../scripts/download_oomp_rcptt.sh"

@@ -10,6 +10,20 @@ echo -e "elexisTest\nelexisTest\n" | sudo passwd jenkins_slave
 sudo -iHu jenkins_slave <<EOF
 wget -nv https://srv.elexis.info/jenkins/jnlpJars/agent.jar
 EOF
+
+# taken from ../../mysql/pom.xmls
+sudo -u root mysql <<EOF
+    create user elexis identified by 'elexisTest';
+    create database elexis;
+    create database elexis_rcptt_de;
+    create database elexis_rcptt_fr;
+    create user elexis identified by 'elexisTest';
+    grant all on elexis_rcptt_de.* to elexis@'%';
+    grant all on elexis_rcptt_de.* to 'elexis'@'%' with grant option;
+    grant all on elexis_rcptt_fr.* to 'elexis'@'%' with grant option;
+    flush privileges;
+EOF
+
 sudo cp /home/vagrant/scripts/jenkins-slave.service /home/vagrant/scripts/*.conf /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable jenkins-slave

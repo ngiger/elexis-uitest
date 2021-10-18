@@ -3,7 +3,7 @@
 set -o xtrace # enable seeing the commands, prepended with a + sign
 set -e # Do exit on any error:
 apt-get update
-apt install -qy apt-transport-https ca-certificates wget dirmngr gnupg software-properties-common
+apt install -qy apt-transport-https ca-certificates parted wget dirmngr gnupg software-properties-common
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
 add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb
 apt update
