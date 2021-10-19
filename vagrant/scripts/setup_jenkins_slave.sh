@@ -12,6 +12,14 @@ sudo -iHu jenkins_slave <<EOF
 wget -nv https://srv.elexis.info/jenkins/jnlpJars/agent.jar
 EOF
 
+sudo apt install -qy mariadb-common mysql-common
+sudo mkdir -p /etc/mysql/mariadb.conf.d/
+echo "[mariadb]" | sudo tee /etc/mysql/mariadb.conf.d/lowercase.cnf
+echo "lower_case_table_names=1" | sudo tee --append /etc/mysql/mariadb.conf.d//lowercase.cnf
+sudo apt install -qy mariadb-server
+sudo -u root mysql -e 'SHOW VARIABLES LIKE "%case%";'
+sudo -u root mysql -e 'SHOW VARIABLES LIKE "%lower_case_table_names%";' | grep -w 1
+
 # taken from ../../mysql/pom.xmls
 sudo -u root mysql <<EOF
     create user if not exists elexis identified by 'elexisTest';

@@ -13,3 +13,5 @@ java -version
 # echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"' > /etc/environment
 source /etc/environment
 echo $JAVA_HOME
+resize2fs /dev/vda1
+
