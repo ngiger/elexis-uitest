@@ -34,9 +34,9 @@
    </launcher>
 
    <vm>
-      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
-      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</macos>
-      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</macos>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</windows>
    </vm>
 
    <license>
@@ -141,17 +141,15 @@
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
 
       <!-- from elexis-3-core -->
+      <feature id="org.eclipse.justj.openjdk.hotspot.jre.full" installMode="root"/>
       <feature id="ch.elexis.core.application.feature" installMode="root"/>
       <feature id="ch.elexis.core.common.feature" installMode="root"/>
       <feature id="ch.elexis.core.logging.feature" installMode="root"/>
-      <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
-      <feature id="ch.elexis.core.spotlight.feature" installMode="root"/>
-      <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
-      <feature id="ch.elexis.core.ui.chromium.feature" installMode="root"/>
-      <feature id="ch.elexis.core.ui.eenv.feature" installMode="root"/>
       <feature id="ch.elexis.core.ui.feature" installMode="root"/>
       <feature id="ch.elexis.core.ui.p2.feature" installMode="root"/>
-      <feature id="ch.elexis.jre.feature" installMode="root"/>
+      <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
+      <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
+      <feature id="ch.elexis.core.ui.chromium.feature" installMode="root"/>
       <!-- to get the texteditor -->
       <!-- changes a lot in the preferences menu feature id="org.eclipse.platform" installMode="root"/--> 
    </features>
@@ -159,16 +157,18 @@
    <configurations>
       <plugin id="ch.elexis.core.jpa.datasource" autoStart="true" startLevel="3" />
       <plugin id="ch.elexis.core.jpa.entities" autoStart="true" startLevel="3" />
-      <plugin id="ch.elexis.core.logging" autoStart="true" startLevel="2" />
+      <plugin id="ch.elexis.core.logging.osgi" autoStart="true" startLevel="2" />
       <plugin id="ch.elexis.core.ui.p2" autoStart="true" startLevel="4" />
       <plugin id="ch.qos.logback.classic" autoStart="true" startLevel="2" />
       <plugin id="ch.qos.logback.core" autoStart="true" startLevel="2" />
       <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.console" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.p2.transport.ecf" autoStart="true" startLevel="3" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.gemini.jpa" autoStart="true" startLevel="3" />
       <plugin id="org.eclipse.osgi.services" autoStart="true" startLevel="2" />
