@@ -5,7 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Save-Time: 4/27/21 4:02 PM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 10/20/21, 3:04 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -381,12 +382,17 @@ proc "open-window-by-name" [ val windowName ] {
 			get-menu -path [ t menu_select_view ]| click
 		}
 		with [get-window [ t show_view ]] {
+		    get-editbox | set-text ""
 			if [ matches $windowName ".*/.*" ] {
 				get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima
 			} -else {
 				get-tree | expand-all | select [ concat ".*/" $windowName ]
 			}
+		    get-editbox | set-text ""
+			concat "open-window-by-name: " [ t menu_select_view ]" for " [ t windowName ]| log
+			get-button [t open ] | get-property enablement -raw | log
 			get-button [t open ] | click
+			concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
 		}
 		// Seen when running ImportSwissbase with french Elexis
 //			concat "open-window-by-name: " [$errorObj | get message] " for " $windowName | log
@@ -395,7 +401,7 @@ proc "open-window-by-name" [ val windowName ] {
 
 OpenAndResetStartPerspektive
 open-window-by-name [ t daten_artikel ]
-open-window-by-name "Codes" // Force reading of loinc
+open-window-by-name "Codes/Codes" // Force reading of loinc
 
 
 //

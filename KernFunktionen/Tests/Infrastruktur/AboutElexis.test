@@ -1,18 +1,20 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
+Contexts: _7pLWIBQVEemEb8FG0wciYA
 Element-Name: AboutElexis
 Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _naPjYLBwEemub6f3erWwag
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 10/20/21, 11:46 AM
+Save-Time: 10/20/21, 2:41 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
+HandleMissingInvoiceSystems
 concat "Saving About Elexis 1 into " $resultsDir "about_elexis1" | log
 get-about-menu | click
 wait 2000
@@ -24,18 +26,18 @@ with [get-window[ t info_about ] ] {
     get-tab-folder | get-tab-item [t info_installed ] | click
         get-tree | expand-all | get-table-data | write-csv-file [ concat  $resultsDir "about_elexis1/installed.csv" ]
         get-tab-folder | get-tab-item [ t info_configuration ]  | click
-        try {
-            get-button "In die Zwischenablage kopieren" | click -metaKeys ""
-            log "Copy to clipboard available (Eclipse 2021)"
-            get-editbox -index 1 | click-text "16:30"
-        } -catch { log "No copy to clipboard available (Eclipse old)"
-            get-editbox -index 1 | click-text "3:3"
+		try {
+	        get-button "In die Zwischenablage kopieren" | click -metaKeys ""
+	        from-clipboard | write-lines -uri [ concat  $resultsDir "about_elexis1/configuration.txt" ]
+		    log "Copied from clipboard available (Eclipse 2021)"
+		} -catch { log "No copy to clipboard available (Eclipse old)"
+			get-editbox | click-text "3:3"
+            get-editbox | get-text | write-lines -uri [ concat  $resultsDir "about_elexis1/configuration.txt" ]
         }
-        concat "About Elexis -> " $resultsDir "about_elexis1/update.csv" | log
-        get-editbox | get-text | write-lines -uri [ concat  $resultsDir "about_elexis1/configuration.txt" ]
         get-tab-folder | get-tab-item [ t info_plugins ]  | click
         get-table | get-table-data | write-csv-file [ concat  $resultsDir "about_elexis1/plugins.csv" ]
       try {
+        concat "About Elexis -> " $resultsDir "about_elexis1/update.csv" | log
         get-tab-folder | get-tab-item [ t info_update ]   | click
         get-tree | expand-all | get-table-data | write-csv-file [ concat  $resultsDir "about_elexis1/update.csv" ]
         } -catch { log "Update info available" }

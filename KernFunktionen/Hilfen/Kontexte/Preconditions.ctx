@@ -5,7 +5,8 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Save-Time: 4/27/21 3:54 PM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 10/20/21, 3:01 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -100,7 +101,7 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 */
 proc "create-backup-sql" [val zipFile $dumpFile] 
 				 [val jarFile $h2Jar]
-				 [val jdbc "jdbc:h2:~/elexis/h2_elexis_rcptt_de/db" ] {
+				 [val jdbc  [ concat "jdbc:h2:~/elexis/h2_elexis_rcptt_" $defaultLanguage "/db;AUTO_SERVER=TRUE" ] ] {
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 		log "I do not know how to access the JDBConnection when Running from Scratch"
 	} -else {

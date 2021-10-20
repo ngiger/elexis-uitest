@@ -5,7 +5,8 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _9Pun8Co0EemYspbA8Fsyow
 Manually-Ordered: true
-Save-Time: 12/18/20 1:02 PM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 10/20/21, 12:10 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -18,11 +19,6 @@ This is a simple testsuite which should complete fast to be able to test the who
 Content-Type: text/testcase
 Entry-Name: testcase-items
 
-_37YskCr-EeujcoUPAsRgcQ	// kind: 'test' name: 'OOWriterMustBeInstalled' path: '../Tests/Textverarbeitung/OOWriterMustBeInstalled.test'
-_gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
-_NbvRkFILEemrk7fLFkHFEw	// kind: 'test' name: 'CreateFemalePatient' path: '../Tests/CreateFemalePatient.test'
-_Y9h3EEBkEeuIMcVqhnswXA	// kind: 'test' name: 'VerrechnenBeiGeschlossenemFall' path: '../Tests/Rechnungen/VerrechnenBeiGeschlossenemFall.test'
-_r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../Tests/Behandlung/KonsDirektVerrechnen.test'
-_gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
+_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
 
 ------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8--
