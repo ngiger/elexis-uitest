@@ -5,7 +5,8 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Save-Time: 4/26/21 10:50 AM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 10/20/21, 12:27 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -33,7 +34,7 @@ proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 }
 
 proc SetupTextPlugins {
-	ConfigureMsOO_TextVerarbeitung
+	// ConfigureMsOO_TextVerarbeitung
 	ImportAlleMsWord_Vorlagen
 	ImportAlleHilotecODF_Vorlagen
 	ConfigureHilotecODF_TextVerarbeitung
