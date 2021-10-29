@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 10/20/21, 3:04 PM
+Save-Time: 10/29/21 12:16 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -150,14 +150,14 @@ proc RestartElexis {
 			log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
 			return
 		} -else {
+			concat "RestartElexis: Trying to restart Elexis milliSecsBeforeRestart " $milliSecsBeforeRestart | log
+			str $milliSecsBeforeRestart  | write-lines $restart_msFile
 			if [ safe-get-java-property "ch.elexis.dbFlavor" |  eq "h2" ] {
-				log "Do not restart under h2"
-			} -else {
-				concat "RestartElexis: Trying to restart Elexis milliSecsBeforeRestart " $milliSecsBeforeRestart | log
-				str $milliSecsBeforeRestart  | write-lines $restart_msFile
-				restart-aut
-				wait-until-eclipse-is-ready
+				log "Do not restart under h2. Would fail with Failed to apply context Close modal dialogs"
+				return
 			}
+			restart-aut
+			wait-until-eclipse-is-ready
 		}
 	}
 }
