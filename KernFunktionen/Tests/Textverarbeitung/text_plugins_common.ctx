@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 10/20/21, 12:27 PM
+Save-Time: 10/29/21 10:22 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -35,9 +35,9 @@ proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 
 proc SetupTextPlugins {
 	// ConfigureMsOO_TextVerarbeitung
-	ImportAlleMsWord_Vorlagen
-	ImportAlleHilotecODF_Vorlagen
+	// ImportAlleMsWord_Vorlagen
 	ConfigureHilotecODF_TextVerarbeitung
+	ImportAlleHilotecODF_Vorlagen
 }
 
 proc EnsureLibreOffficIsInstalled {
