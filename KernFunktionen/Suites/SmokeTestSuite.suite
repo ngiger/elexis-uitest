@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 10/20/21, 12:28 PM
+Save-Time: 11/2/21 1:50 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -32,7 +32,7 @@ _lqzhsLBSEemub6f3erWwag	// kind: 'test' name: 'ImportMigel' path: '../Tests/Infr
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
 _ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/Infrastruktur/BasicAbrechnungssytems.test'
 _NZyqMJLOEeup49yUtwR__A	// kind: 'test' name: 'ImportArtikelstammFull' path: '../Tests/Infrastruktur/SingleImportTests/ImportArtikelstammFull.test'
-_PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
+_LCaAADvbEeyu1PDabCdSug	// kind: 'test' name: 'CreateSQLdumpInitPractice' path: '../Tests/Infrastruktur/CreateSQLdumpInitPractice.test'
 _3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Tests/RestartElexis.test'
 _oNRWQDS0EeuXVMkM-fyEfg	// kind: 'test' name: 'CheckRestart' path: '../Tests/CheckRestart.test'
 _aMFqEOBrEeqxlcSTFlM60Q	// kind: 'test' name: 'SetupTextPluginTests' path: '../Tests/Textverarbeitung/SetupTextPluginTests.test'
@@ -45,6 +45,7 @@ _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/I
 _6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../Tests/Textverarbeitung/hilotec_odf.test'
 _mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../Tests/Kassenbuch.test'
 _gAMNcECkEeucZoJXQ1XGtg	// kind: 'test' name: 'PrivatRechnung' path: '../Tests/Rechnungen/PrivatRechnung.test'
+_PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
 _C9LzwI1wEeup49yUtwR__A	// kind: 'test' name: 'CheckArtikelstammSuche' path: '../Tests/Behandlung/CheckArtikelstammSuche.test'
 _7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
 _EwDAgAYfEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostPreferences' path: '../Tests/Infrastruktur/VisitMostPreferences.test'
