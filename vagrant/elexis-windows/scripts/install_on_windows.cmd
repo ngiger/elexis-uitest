@@ -1,11 +1,12 @@
 REM Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+rem @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 rem https://4sysops.com/archives/adding-and-removing-keyboard-languages-with-powershell/
 $LanguageList = Get-WinUserLanguageList
 $LanguageList.Add("de-CH")
 Set-WinUserLanguageList -Force $LanguageList
 choco install powershell-core -y 
 REM Above installs powershell 7.x which may be opened as "C:\Program Files\PowerShell\7\pwsh.exe"  
-choco install openjdk8 maven git grep vim
+choco install openjdk8 maven git grep vim rsync
 choco install sysinternals notepadplusplus 7zip runinbash
 choco install openoffice libreoffice-still
 choco install Office365Business office-to-pdf
@@ -31,3 +32,5 @@ copy C:\Users\vagrant\scripts\jenkins-slave.xml
 .\jenkins-slave.exe install
 wget -o slave.jar https://srv.elexis.info/jenkins/jnlpJars/agent.jar
 Start-Service "JenkinsSlave" -PassThru
+
+REM TODO: refreshenv in normal cmd to make java, mvn etc reachable

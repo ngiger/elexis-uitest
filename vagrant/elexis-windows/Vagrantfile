@@ -1,6 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# See also https://fishilico.github.io/generic-config/windows/vagrant.html
+#
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -10,17 +12,38 @@ Vagrant.configure("2") do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
+  required_plugins = %w( vagrant-libvirt vagrant-sshfs )
+  _retry = false
+  required_plugins.each do |plugin|
+    unless Vagrant.has_plugin? plugin
+      system "vagrant plugin install #{plugin}"
+      _retry=true
+    end
+  end
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.storage_pool_path = "/opt/images"
+    machine_virtual_size = "101GB";
+    libvirt.machine_virtual_size = "101GB";
+    libvirt.memory = "12000"
+    libvirt.cpus = 3
+  end
+
+  if (_retry)
+    exec "vagrant " + ARGV.join(' ')
+  end
+  # config.disksize.size = "100GB"
+
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "peru/my_windows-10-enterprise-x64-eval"
-  config.vm.box_version = "20210401.01"
+  config.vm.box_version = "20210901.01"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
 
   # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
+    # within the machine from a port on the host machine. In the xample below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
   # config.vm.network "forwarded_port", guest: 80, host: 8080
@@ -37,20 +60,48 @@ Vagrant.configure("2") do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  config.vm.network "public_network", bridge: [ "eth0", "enp3s0", "virbr0" ]
+  # config.vm.network "public_network", bridge: [ "eth0", "enp3s0", "virbr0" ]
+  # Public Network
   config.vm.network "forwarded_port", guest: 3389, host: 33389 # for rdp
   # connect using: rdesktop -u vagrant -p vagrant 127.0.0.1:3389
 
-  config.vm.synced_folder "scripts", "/test"
+  # config.vm.network "private_network", ip: "192.168.18.10"
+  # config.vm.synced_folder "../scripts", "/scripts", type: "sshfs"
+  config.vm.hostname = "elexis-windows"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.gui = true
+    vb.name = "elexis-windows"
+    vb.gui = false
     vb.memory = "8094"
     vb.cpus = 3
   end
+end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
-  config.vm.provision "file", source: "scripts/", destination: "$HOME"
-#  config.vm.provision "shell",  path: "scripts/install_on_windows.cmd"
+# does not copy the file  config.vm.provision "file", source: "install_on_windows.ps1", destination: "C:\\aScript.ps1"
+# does not work neither  config.vm.provision "shell",  path: "install_on_windows.ps1",  privileged: true
+config.vm.provision "shell", inline: <<-SHELL
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+Set-TimeZone 'W. Europe Standard Time'
+Get-TimeZone
+SHELL
+
+config.vm.provision "shell", inline: <<-SHELL
+choco install openjdk8 maven git unzip
+choco install sysinternals notepadplusplus 7zip runinbash
+choco install openoffice libreoffice-still
+choco install Office365Business office-to-pdf
+# Weder für Eclipse RCP, RCPTT noch OOMPH gibt es einen Installer
+# choco install eclipse-java-oxygen
+git clone https://github.com/elexis/elexis-uitest.git
+choco install wget firefox postgresql mariadb
+wget -nv https://ftp.snt.utwente.nl/pub/software/eclipse/oomph/products/eclipse-inst-jre-win64.exe
+http://download.eclipse.org/rcptt/nightly/2.5.2/latest/ide/rcptt.ide-2.5.2-nightly-win32.win32.x86_64.zip
+# Von Hand zu machen
+# eclipse-inst-win64.exe ausführen und https://raw.githubusercontent.com/elexis/elexis-3-core/master/Elexis.setup
+Set-WinUserLanguageList -LanguageList de-CH -force
+Get-WinUserLanguageList
+SHELL
+
 end
