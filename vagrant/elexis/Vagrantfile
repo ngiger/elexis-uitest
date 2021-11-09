@@ -23,8 +23,11 @@ Vagrant.configure("2") do |config|
     v.keymap = "de-ch" # works
     #v.keymap = "de_ch" # fails
     # v.keymap = "sg"
-    v.memory=4048
-    v.default_prefix="elexis-ng"
+    v.memory=12096
+    v.video_type='virtio'
+    v.video_vram=4*9216
+    # v.video_accel3d=true
+    v.default_prefix="Bullseye"
     v.storage_pool_path = "/opt/images"
     v.machine_virtual_size = 102; # must call sudo resize2fs /dev/vda1 # inside the vm
     v.management_network_autostart = true;
@@ -62,8 +65,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "../scripts/setup_minimal.sh"
   config.vm.provision "shell", path: "../scripts/download_oomp_rcptt.sh"
   config.vm.provision "shell", path: "../scripts/setup_elexis.sh"
-  config.vm.provision "shell", path: "../scripts/setup_jenkins_slave.sh"
+#  config.vm.provision "shell", path: "../scripts/setup_jenkins_slave.sh"
   # next file is commented out, as it only good for Niklaus Giger workspace
-  # config.vm.provision "shell", path: "../scripts/setup_niklaus.sh"
+  config.vm.provision "shell", path: "../scripts/setup_niklaus.sh"
   # in vagrant ssh: call sudo /opt/src/elexis-uitest/vagrant/scripts/setup_minimal.sh et el
 end
