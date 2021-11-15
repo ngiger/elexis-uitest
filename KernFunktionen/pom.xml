@@ -155,7 +155,7 @@
               <vmArg>-Dlanguage=${language}</vmArg>
               <vmArg>-Duser.language=${language}</vmArg>
               <vmArg>${vmArg1}</vmArg>
-              <vmArg>${vmArg2}</vmArg>
+              <vmArg><![CDATA[${vmArg2}]]></vmArg>
               <vmArg>${vmArg3}</vmArg>
               <vmArg>${vmArg4}</vmArg>
               <vmArg>${vmArg5}</vmArg>
