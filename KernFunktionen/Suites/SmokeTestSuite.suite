@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 11/2/21 1:50 PM
+Save-Time: 11/25/21, 3:23 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -37,7 +37,6 @@ _3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Tests/Re
 _oNRWQDS0EeuXVMkM-fyEfg	// kind: 'test' name: 'CheckRestart' path: '../Tests/CheckRestart.test'
 _aMFqEOBrEeqxlcSTFlM60Q	// kind: 'test' name: 'SetupTextPluginTests' path: '../Tests/Textverarbeitung/SetupTextPluginTests.test'
 _NbvRkFILEemrk7fLFkHFEw	// kind: 'test' name: 'CreateFemalePatient' path: '../Tests/CreateFemalePatient.test'
-_Y9h3EEBkEeuIMcVqhnswXA	// kind: 'test' name: 'Issue_21651_VerrechnenBeiGeschlossenemFall' path: '../Tests/Rechnungen/Issue_21651_VerrechnenBeiGeschlossenemFall.test'
 _r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../Tests/Behandlung/Issue_17063_KonsDirektVerrechnen.test'
 _gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
 _Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: '../Tests/Rechnungen/CheckTarmedFallVerrechnen.test'
