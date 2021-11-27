@@ -80,7 +80,6 @@
       <feature id="ch.elexis.connect.mythic.feature" installMode="root"/>
       <feature id="ch.elexis.connect.reflotron.v2.feature" installMode="root"/>
       <feature id="ch.elexis.connect.sysmex.feature" installMode="root"/>
-      <feature id="ch.elexis.connector.medicosearch.feature" installMode="root"/>
       <feature id="ch.elexis.core.application.feature" installMode="root"/>
       <feature id="ch.elexis.core.common.feature" installMode="root"/>
       <feature id="ch.elexis.core.logging.feature" installMode="root"/>
@@ -139,13 +138,11 @@
       <feature id="net.medshare.connector.viollier.feature" installMode="root"/>
       <feature id="org.iatrix.bestellung.rose.feature" installMode="root"/>
       <feature id="org.iatrix.messwerte.feature" installMode="root"/>
-      <feature id="at.medbits.elexis.labbit.feature" installMode="root"/>
       <feature id="org.eclipse.rcp" installMode="root"/>
       <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
       <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
-      <feature id="ch.elexis.core.ui.chromium.feature" installMode="root"/>
       <feature id="ch.elexis.core.ui.eenv.feature" installMode="root"/>
       <feature id="ch.elexis.jre.feature" installMode="root"/>
    </features>
