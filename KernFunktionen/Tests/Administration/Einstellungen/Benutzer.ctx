@@ -53,19 +53,6 @@ proc EnterOneFinanzDetail [ val key ] [ val idMandant 1 ]  {
    }
 }
 
-/*
-get-menu -path "Datei/Einstellungen" | click -metaKeys ""
-with [get-window Benutzervorgaben] {
-    get-tree | select "Anwender/Fälle"
-    get-button Diagnose | click -metaKeys ""
-    with [get-window "Diagnose auswählen"] {
-        get-editbox -after [get-label "Filter (? = jedes Zeichen, * = jede Zeichenfolge)"] | set-text U
-        get-table | select "U9 Vertrauensarzt informiert" | double-click
-    }
-    get-button "Anwenden und Schließen" | click -metaKeys ""
-}
-*/
-
 proc SetStandard4Cases {
 	get-preferences-menu | click
 	with [get-window [ t preferences ] ] {
