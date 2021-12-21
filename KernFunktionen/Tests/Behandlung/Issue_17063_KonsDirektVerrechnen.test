@@ -6,7 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _r8134DV7EeuXVMkM-fyEfg
-Save-Time: 4/20/21 5:32 PM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 12/14/21, 4:09 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -22,18 +23,20 @@ Entry-Name: .content
 // Siehe https://redmine.medelexis.ch/issues/17063
 // Offener Fall mit Konsultation kann nicht verrechnet werden
 ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
-TextPluginSelect hilotec_odf
+// TextPluginSelect hilotec_odf
 
-if [ not [ SelectPatient DirektVerrechnen "Ursula"] ] {
-	PatientenErstellen  DirektVerrechnen "Ursula" true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
-	SelectPatient DirektVerrechnen "Ursula" -mustExist true
+global [ val konsDirektVorname	"Martin" ]
+
+if [ not [ SelectPatient DirektVerrechnen $konsDirektVorname] ] {
+	PatientenErstellen  DirektVerrechnen $konsDirektVorname true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
+	SelectPatient DirektVerrechnen $konsDirektVorname -mustExist true
 }
 let [ val anfangs2020 "30.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason [t reason_KVG]] {
 	FallZuPatientErstellen -startDate $anfangs2020 -caseLaw $caseLaw -caseReason $caseReason
 	SelectFall -caseLaw $caseLaw -startDate $anfangs2020
 	FallSetVersicherungsNummer 87654321 -fall [ concat  ".*" $caseLaw ".*"  $anfangs2020 ".*"]
 	FallSetCostBearer -name "Helsana Unfall" -printId [concat "DirektVerrechnen "  $anfangs2020 ]
-	FallSetDefaultInvoiceRecipient DirektVerrechnen "Ursula"
+	FallSetDefaultInvoiceRecipient DirektVerrechnen $konsDirektVorname
 	kons-erstellen [concat "DirektVerrechnen "  $anfangs2020 " now " [ now ] ] -createSecond true
 	kons-set-date $anfangs2020
 	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"

@@ -126,11 +126,14 @@
         <version>${rcptt-maven-version}</version>
         <extensions>true</extensions>
         <configuration>
-          <timeout>5402</timeout>
+          <timeout>5412</timeout>
           <testOptions>
             <!-- the default value of 300 for testExecTimeout was not long enough for VisitAllViews -->
             <!-- full list given http://rcptt.xored.com/arguments, s.a. sets timeout options for the whole test suite and for a single test:-->
-            <testExecTimeout>5410</testExecTimeout>
+            <timeout>7213</timeout>
+		<!-- Timeout for all tests, in seconds (90 minutes)-->
+            <execTimeout>5400</execTimeout>
+            <testExecTimeout>7213</testExecTimeout>
             <contextRunnableTimeout>5403000</contextRunnableTimeout>
             <passedTestDetails>true</passedTestDetails>
             <launchingKillAutOnConnectError>true</launchingKillAutOnConnectError>
@@ -145,8 +148,8 @@
 	      <arg>-noregtool</arg>
               <arg>--use-config=rpctt</arg>
               <arg>-Xms1G</arg>
-              <arg>-Xmx1G</arg>
-              <arg>-XX:MaxPermSize=256M</arg>
+              <arg>-Xmx4048m</arg>
+              <arg>-eclipse.password=${user.home}/.eclipse/master</arg>
            </args>
             <vmArgs>
               <vmArg>-noverify</vmArg>

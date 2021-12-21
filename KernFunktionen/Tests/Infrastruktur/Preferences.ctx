@@ -5,7 +5,8 @@ Element-Name: Preferences
 Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
-Save-Time: 12/23/20 9:56 PM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 12/14/21, 11:58 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -23,15 +24,6 @@ proc SavePreferencesToFile {
 	}
 }
 
-proc "close-window-if-open" [val windowName] {
-	log [concat "close-window-if-open: Must close Window " $windowName]
-
-	try {
-		get-window $windowName | close
-	}  -error [val errorObj] -catch {
-		concat "close-window-if-open: Window " $windowName " not open: "  [$errorObj | get message] | log
-	}
-}
 proc "get-first-preference-item" {
 	close-window-if-open [ t preferences ]
 	get-preferences-menu | click

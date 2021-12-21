@@ -52,7 +52,8 @@
             <!-- the default value of 300 for testExecTimeout was not long enough for VisitAllViews -->
             <!-- full list given http://rcptt.xored.com/arguments, s.a. sets timeout options for the whole test suite and for a single test:-->
             <testExecTimeout>5410</testExecTimeout>
-            <contextRunnableTimeout>5403000</contextRunnableTimeout>
+	    <contextRunnableTimeout>5403000</contextRunnableTimeout>
+	    <passedTestDetails>true</passedTestDetails>
           </testOptions>
           <projects>
               <project>${project.basedir}/../KernFunktionen</project>

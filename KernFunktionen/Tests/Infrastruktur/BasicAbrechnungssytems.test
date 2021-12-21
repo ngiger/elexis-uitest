@@ -6,14 +6,15 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _ynjc0GeUEemC85j2jjHDAQ
-Runtime-Version: 2.4.3.201909171500
-Save-Time: 11/14/19 6:23 PM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 12/16/21, 6:04 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
+HandleMissingInvoiceSystems
 emit 1 2 3 4 5 | foreach [val idx]{
 	let [ val keyId [ concat abrechnungssystem. $idx "." ] ] {
 		let [ val caseName   [ GetTestProperty [ concat $keyId caseName ] ] ]

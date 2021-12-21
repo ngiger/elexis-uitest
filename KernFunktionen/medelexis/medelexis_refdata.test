@@ -1,0 +1,36 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _7pLWIBQVEemEb8FG0wciYA
+Element-Name: medelexis_refdata
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _segtoFz8EeyLW8VExsYD8g
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 12/18/21, 12:41 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+ensure-codes-articles
+HandleMissingInvoiceSystems
+get-menu -path "Datei/Referenzdaten aktualisieren" | click -metaKeys ""
+try {
+	with [get-window -class ListSelectionDialog] {
+	    get-button "Alles abwählen" | click -metaKeys ""
+	    get-button "Alles auswählen" | click -metaKeys ""
+	    get-button OK | click -metaKeys ""
+		WaitImportFinished "Artikelstamm" -maxWait 900 // 15 Minutes
+		get-eclipse-window | gen-screenshot [concat $imagesDir "refdata_imported.png"]
+		close-window-if-open "Referenzdaten Update Service"
+			    
+	} 
+}-catch {
+	log "ReadArtikelstamm Referenzdaten scheinen uptodate zu sein"
+	get-eclipse-window | gen-screenshot [concat $imagesDir "refdata_okay.png"]
+	close-window-if-open "Referenzdaten Update Service"
+}
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

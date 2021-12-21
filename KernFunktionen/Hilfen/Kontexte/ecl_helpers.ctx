@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 10/29/21 2:20 PM
+Save-Time: 12/18/21, 11:50 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -134,10 +134,15 @@ proc "elexisLogMayNotContain"  [ val searchFor  ] {
 	FileContainsString -fileName [ concat [get-java-property user.home] "/elexis/logs/elexis-3.log" ] -searchFor $searchFor | not | assert-true
 }
 
-elexisLogMayNotContain "java.lang.OutOfMemoryError"
+proc "no_OOM_error" {
+	elexisLogMayNotContain "java.lang.OutOfMemoryError"
+} 
+
+no_OOM_error
 
 global [val rcpttDir	[ concat [ get-user-dir ] "/rcptt/"] ]
 global [val restart_msFile [ concat $rcpttDir "restart_ms" ] ] -override
+global [val default_KK "Aquilana" ] -override
 
 /**
  * Somehow this does not always work, wait-until-eclipse-is-ready never returns.
@@ -397,11 +402,22 @@ proc "open-window-by-name" [ val windowName ] {
 //			concat "open-window-by-name: " [$errorObj | get message] " for " $windowName | log
 	}
 }
+proc "close-window-if-open" [val windowName] {
+	log [concat "close-window-if-open: Must close Window " $windowName]
+
+	try {
+		get-window $windowName | close
+	}  -error [val errorObj] -catch {
+		concat "close-window-if-open: Window " $windowName " not open: "  [$errorObj | get message] | log
+	}
+}
 
 OpenAndResetStartPerspektive
-open-window-by-name [ t daten_artikel ]
-open-window-by-name "Codes/Codes" // Force reading of loinc
 
+proc "ensure-codes-articles" {
+	open-window-by-name [ t daten_artikel ]
+	open-window-by-name "Codes/Codes" // Force reading of loinc
+}
 
 //
 // Ende

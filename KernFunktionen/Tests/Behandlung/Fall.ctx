@@ -5,7 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Save-Time: 4/22/21 3:03 PM
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 12/18/21, 11:46 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -85,12 +86,23 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG]] [val caseReason [t reason
 		concat $imagesDir Fall_ $caseLaw "_" $startDate "_created.png" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
 		get-button [t ok] | click
+		wait 10000
 	}
 	with [get-view [t view_cases]] {
+		concat "nr items a: " [ get-view [t view_cases] | get-table | get-property  itemCount  -raw ] | log
+		concat "Is button enabled? 1 " [ get-button  [t FaelleView_ShowOnlyOpenCase]| get-property enablement -raw] | log 
+		wait 1000
+		concat "Is button enabled? 2 " [ get-button  [t FaelleView_ShowOnlyOpenCase]| get-property enablement -raw] | log 
 		with [get-button [t FaelleView_ShowOnlyOpenCase]] {
+			concat "nr items b: " [ get-view [t view_cases] | get-table | get-property itemCount -raw ] | log
 			click -metaKeys ""
+		wait 1000
+			concat "nr items c: " [ get-view [t view_cases] | get-table | get-property itemCount -raw ] | log
 			click -metaKeys ""
+		wait 1000
+			concat "nr items d: " [ get-view [t view_cases] | get-table | get-property itemCount -raw ] | log
 		}
+		concat "Is button enabled? 2 " [ get-button  [t FaelleView_ShowOnlyOpenCase]| get-property enablement -raw] | log 
 	}
 	FallZuPatientExistiert [concat $caseLaw ".*" $startDate ".*" [t fall_offen_part] ".*"]
 }
@@ -189,7 +201,7 @@ proc FallErzeugeAUF [val percentage 100] [val reason "RCPTT Test-Grund"] [val co
 	}
 }
 
-proc DruckeBriefZuAut [val adrName Aquilana] [val adrPostalcode 5401] {
+proc DruckeBriefZuAut [val adrName $default_KK] [val adrPostalcode 5401] {
 	with [get-view [t AUF]] {
 		// Select first matching
 		get-table | select ".*"

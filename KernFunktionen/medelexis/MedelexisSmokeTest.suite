@@ -1,0 +1,34 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: MedelexisSmokeTest
+Element-Type: testsuite
+Element-Version: 2.0
+Id: _i3MqkFz7EeyLW8VExsYD8g
+Manually-Ordered: true
+Runtime-Version: 2.5.2.202109092356
+Save-Time: 12/18/21, 11:57 AM
+
+------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8
+Content-Type: text/testcase
+Entry-Name: testcase-items
+
+_naPjYLBwEemub6f3erWwag	// kind: 'test' name: 'AboutElexis' path: '../Tests/Infrastruktur/AboutElexis.test'
+__ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '../Tests/Infrastruktur/NoPreferenceWithPercent.test'
+_yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../Tests/Infrastruktur/NoViewWithPercent.test'
+_segtoFz8EeyLW8VExsYD8g	// kind: 'test' name: 'medelexis_refdata' path: 'medelexis_refdata.test'
+_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/Infrastruktur/BasicAbrechnungssytems.test'
+_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
+_j4y1AFz8EeyLW8VExsYD8g	// kind: 'test' name: 'docx_setup' path: 'docx_setup.test'
+_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
+_UCxVwGBKEem4h8rctksNbQ	// kind: 'test' name: 'ImportBlocks' path: '../Tests/Infrastruktur/SingleImportTests/ImportBlocks.test'
+_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Tests/RestartElexis.test'
+_K4eJgCTcEeuNccHBiDKTuQ	// kind: 'test' name: 'AboutElexis2' path: '../Tests/Infrastruktur/AboutElexis2.test'
+_GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/Infrastruktur/BasicKonsTests.test'
+_r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../Tests/Behandlung/Issue_17063_KonsDirektVerrechnen.test'
+_gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
+_Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: '../Tests/Rechnungen/CheckTarmedFallVerrechnen.test'
+_mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../Tests/Kassenbuch.test'
+_0fUkAAYeEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostViews' path: '../Tests/Infrastruktur/VisitMostViews.test'
+_EwDAgAYfEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostPreferences' path: '../Tests/Infrastruktur/VisitMostPreferences.test'
+
+------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8--

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 10/29/21 10:22 AM
+Save-Time: 12/18/21, 12:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -146,19 +146,48 @@ proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $vorlagenDirOpenoffice "
 	}
 }
 
+global [ val  docxVorlagen[ list "AUF-Zeugnis" "AUF-Zeugnis_A5" "Abrechnungsliste" "AdressEtikette" "AgendaListe"
+	 "Allgemeines_Schreiben" "Bestellung" "Bitte_um_Rückruf" "Einnahmeliste" "GalexisAntwort" "IV_Anmeldung"
+	 "IV_Beiblatt" "IV_Verlaufsbericht" "KG-Deckblatt" "Laborblatt" "Liste" "Medietikette" 
+	 // "MephaAntwort alt" // Do not know howto set file with space in it
+     "PatientEtikette" "PatientEtiketteAuftrag" "Rezept" "TR44_S1" "TR44_S2"
+	 "Tarmedrechnung_EZ" "Tarmedrechnung_M1" "Tarmedrechnung_M2" "Tarmedrechnung_M3"
+	 "Tarmedrechnung_S1" "Tarmedrechnung_S2" "Terminkarte" "Ueberweisung_Du" "Ueberweisung_Sie"
+	 "Verordnung_für_Badekuren" "Verordnung_zur_Ergotherapie" "Verordnung_zur_Ernährungsberatung" 
+	 "Verordnung_zur_Logopädie" "Verordnung_zur_Physiotherapie" ] ]
+// global [ val  docxVorlagen [ list "Liste" ] ] -override
+global [ val praxisDatenDir	[ concat [get-user-dir] "/elexis_praxis_daten" ] ]
+
+proc ConfigureDocx_TextVerarbeitung {
+	str "RCPTT praxisDatenDir" | write-lines [ concat $praxisDatenDir "/dummy.txt" ]
+	EnsureLibreOffficIsInstalled
+	get-menu -path "Datei/Einstellungen" | click -metaKeys ""
+	with [get-window Benutzervorgaben] {
+	    get-tree | select Textverarbeitung
+	    get-button "0 : Docx-Document" | click -metaKeys ""
+	    with [get-editbox -after [get-label "Externes Textprogramm"]] {
+	        set-text $praxisDatenDir
+	    }
+	    get-tree | select "Textverarbeitung/Docx Textausgabe"
+	    with [get-editbox -after [get-label "Druck Befehl ohne konf. Drucker"]] {
+	        click-text
+	        set-text "/usr/bin/libreoffice --headless --convert-to pdf --outdir /home/niklaus/medelexis-uitest/elexis-uitest/KernFunktionen/target/aut/../results/pdf"
+	    }
+	    get-button "Anwenden und Schließen" | click -metaKeys ""	
+	}
+}
+
 proc ImportAlleMsWord_Vorlagen [val directory $vorlagenDirMsWord ]
 	[ val vorlage "AUF-Zeugnis" ] [val extension ".docx" ] {
 	if [ get-file $msWordVorlagen | get exists | equals true ] {
-		log "ImportAlleMsWord_Vorlagen already done"
+		concat "Found " $msWordVorlagen " ImportAlleMsWord_Vorlagen already done" | log
 	} -else {
-		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Tarmedrechnung_EZ" ".docx"
-		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "TR44_S1" ".docx"
-		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "TR44_S2" ".docx"
-		ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Tarmedrechnung_S1" ".docx"
-		// There are nor templates for Privatrechnung under msword
-		// ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Privatrechnung_S1" ".docx"
-		// ImportHilotecODF_Vorlage  $vorlagenDirMsWord "Privatrechnung_EZ" ".docx"
-		str "ImportAlleMsWord_Vorlagen done" | write-lines $msWordVorlagen
+		$docxVorlagen | each [val vorlage] {
+		  concat "doxVorlage ist: " $vorlage | log
+			ImportHilotecODF_Vorlage  $vorlagenDirMsWord $vorlage ".docx"
+		} 
+		concat "ImportAlleMsWord_Vorlagen finished. " [ get-time ] " " $today | write-lines $msWordVorlagen
+		concat "ImportAlleMsWord_Vorlagen finished. " [ get-time ] " " $today | log
 	}
 }
 
@@ -167,7 +196,12 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
 	global [val fullVorlagenName [ concat $directory "/" $vorlage $extension ] ] -override
 	concat "ImportHilotecODF_Vorlage should import: " $fullVorlagenName | log
 	get-file $fullVorlagenName | get exists | assert-true -message [concat "File " $fullVorlagenName " not found"]
-	open-window-by-name [t Dokumente_Textvorlagen_Management]
+	try -command {
+	    get-view  [t Textvorlagen_Management ] | click
+	} -catch { 
+		open-window-by-name [ t Dokumente_Textvorlagen_Management ]
+	}
+	get-view [t Textvorlagen_Management ] | maximize
 	with [get-view [t Textvorlagen_Management ] ] {
 	  with [get-editbox -after [get-label "Suchen:"]] {
         click-text
@@ -183,8 +217,9 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
 	get-view [t Textvorlagen_Management ] | get-button "Beliebige Vorlage.*importieren" | click
 	try -command {
 		get-window Systemvorlage | get-button [t yes] | click
+		concat "Systemvorlage " $vorlage $extension " wurde importiert" | log
 	} -catch {
-		concat $vorlage " " $extension " ist keine Systemvorlage" | log
+		concat $vorlage $extension " ist keine Systemvorlage" | log
 	}
 	try -command {
 		with [get-window -class TextTemplateImportConflictDialog] {
@@ -192,10 +227,10 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
 			get-button OK | click
 		}
 		concat "Vorlage: " $vorlage " existiert bereits, wurde ersetzt" | log
-	} -catch {
-		concat $vorlage " " $extension " existierte noch nicht" | log
+	} -error [ val errorObj ] -catch {
+	//	concat $vorlage $extension " existierte noch nicht: " $errorObj | log
 	}
-	resetPerspective
+	get-view [t Textvorlagen_Management ] | restore
 }
 
 proc TextVorlagenEntfernen [val name Liste] {

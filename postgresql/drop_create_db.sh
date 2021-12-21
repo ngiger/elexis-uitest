@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
+# Created by elexis-uitest/dbSpec/pom.xml as /home/niklaus/medelexis-uitest/postgresql/../postgresql/drop_create_db.sh
 export PGPASSWORD=elexisTest
-export language=${1:-de}
-# echo $0: language ${language}  mysqlHost ${mysqlHost} mysqlPort ${mysqlPort}
-/usr/bin/env psql --host=localhost --user=elexis --echo-queries --command="drop database if exists elexis_rcptt_${language};"
-/usr/bin/env psql --host=localhost --user=elexis --echo-queries --command="create database elexis_rcptt_${language} encoding 'utf8' template template0;"
+/usr/bin/env psql --host=localhost --user=elexis --command="drop database if exists elexis_rcptt_de;"
+/usr/bin/env psql --host=localhost --user=elexis --command="create database elexis_rcptt_de encoding 'utf8' template template0;"
