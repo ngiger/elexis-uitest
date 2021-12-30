@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 11/25/21, 3:23 PM
+Save-Time: 12/30/21, 1:15 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -23,10 +23,11 @@ _gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '.
 _naPjYLBwEemub6f3erWwag	// kind: 'test' name: 'AboutElexis' path: '../Tests/Infrastruktur/AboutElexis.test'
 __ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '../Tests/Infrastruktur/NoPreferenceWithPercent.test'
 _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../Tests/Infrastruktur/NoViewWithPercent.test'
+_rAxhUGlSEeySBq0xgLXOFw	// kind: 'test' name: 'EnsureLoincCodes' path: '../Tests/Infrastruktur/EnsureLoincCodes.test'
+_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
 _ddB9ELBUEemub6f3erWwag	// kind: 'test' name: 'ImportAnalysenListe' path: '../Tests/Infrastruktur/SingleImportTests/ImportAnalysenListe.test'
 _UCxVwGBKEem4h8rctksNbQ	// kind: 'test' name: 'ImportBlocks' path: '../Tests/Infrastruktur/SingleImportTests/ImportBlocks.test'
 _gZfZELBSEemub6f3erWwag	// kind: 'test' name: 'ImportComplementary' path: '../Tests/Infrastruktur/SingleImportTests/ImportComplementary.test'
-_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
 _d0UGkLBSEemub6f3erWwag	// kind: 'test' name: 'ImportTarmed' path: '../Tests/Infrastruktur/SingleImportTests/ImportTarmed.test'
 _lqzhsLBSEemub6f3erWwag	// kind: 'test' name: 'ImportMigel' path: '../Tests/Infrastruktur/SingleImportTests/ImportMigel.test'
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'

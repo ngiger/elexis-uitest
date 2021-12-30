@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.2.202109092356
-Save-Time: 12/18/21, 11:50 AM
+Save-Time: 12/30/21, 11:27 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -414,10 +414,6 @@ proc "close-window-if-open" [val windowName] {
 
 OpenAndResetStartPerspektive
 
-proc "ensure-codes-articles" {
-	open-window-by-name [ t daten_artikel ]
-	open-window-by-name "Codes/Codes" // Force reading of loinc
-}
 
 //
 // Ende
