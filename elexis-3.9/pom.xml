@@ -43,6 +43,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					<executionEnvironment>JavaSE-11</executionEnvironment>
 					<pomDependencies>consider</pomDependencies>
 					<environments>
 						<environment>

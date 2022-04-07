@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ch.elexis.congo.feature"
+      label="Elexis Congo"
+      version="3.10.0.qualifier"
+      provider-name="cosre.ch"
+      plugin="ch.elexis.congo.product">
+
+   <description url="http://www.cosre.ch">
+      Elexis pour le congo
+         Elexis pour le congo - www.elexis.info et www.cosre.ch
+         Une version française d'Elexis pour le congo.
+         Un projet initié par Victor Mboka et Niklaus Giger.
+         Uniquement possible grace au travail immense de
+         Gerry Weirich, Marco Descher, Thomas Huster et beaucoup d'autres.
+         Support profession depuis plus de dix ans pour les médecins suisse
+         par Medelexis SA.
+   </description>
+
+   <copyright>
+      Elexis.info et autres
+   </copyright>
+
+   <license>
+      Eclipse Public License 2.0
+   </license>
+
+   <plugin
+         id="ch.elexis.congo.product"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.logging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+
+   <plugin
+         id="ch.elexis.core.ui.usage"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
