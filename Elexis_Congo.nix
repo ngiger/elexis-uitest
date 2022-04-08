@@ -3,24 +3,26 @@
 # nix-build Elexis.nix; nix-env -i result/
 with (import <nixpkgs> {});
 let pname = "Elexis";
-  version = "3.9";
-  exec = "elexis";
-  icon = "$out/app/icon.xpm";
+  version = "3.10";
+  exec = "Elexis3-Congo";
+  icon = "icon";
 in 
 stdenv.mkDerivation {
 
   demoDB = pkgs.fetchurl {
-    url = "http://download.elexis.info/demoDB/demoDB_elexis_3.8.0.zip";
-    sha512 = "sha512-nNSmQPG8WRJ7mB1z0EYrunOgq0nQLiSQYzsgfPdgAcxKV1neHYCpfueDwjMHKvOnJnuJOBmtqRMcoQO43ZgHcg==";
+    url = "https://download.elexis.info/elexis/demoDB/demoDB_elexis_3.9.0.zip";
+    sha512 = "sha512-GAKE5pUreTl1Uhx8ilrXC/q3vLPJNWeSc+Bha+L3VU2OiGmuHPmJqr8C2jv8CfEaN34+KI8Hq86wBANipDvEew==";
   }; 
   name = "${pname}-${version}";
-  exec = "${exec}";
   icon = "${icon}";
-  description = "An eclipse RCP application for all aspect of a medical Swiss german practice";
   longDescription = ''
-    Elexis ist eine umfassende open source Software für die Arztpraxis, 
-    welche 2008 von Dr. Gerry Weirich entwickelt wurde und seither von der
-    Medelexis AG, den Entwicklern und Anwendern laufend verbessert wurde.  
+         Elexis pour le congo - www.elexis.info
+         Une version française d'Elexis pour le congo.
+         Un projet initié par Victor Mboka et Niklaus Giger.
+         Uniquement possible grace au travail immense de
+         Gerry Weirich, Marco Descher, Thomas Huster et beaucoup d'autres.
+         Support profession depuis plus de dix ans pour les médecins suisse
+         par Medelexis SA.
   '';
   homepage    = "https://elexis.info/";
   changelog   = "https://github.com/elexis/elexis-3-core/blob/master/Changelog";
@@ -29,15 +31,15 @@ stdenv.mkDerivation {
 #    platforms   = platforms.unix;
   inherit gcc coreutils perl glibc busybox makeWrapper stdenv patchelf  ;
   nativeBuildInputs = [ unzip  ];
-  src = elexis-master/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip;
+  src = elexis-congo/ch.elexis.congo.p2site/target/products/ElexisCongoApp-linux.gtk.x86_64.zip;
 
   desktopItem = makeDesktopItem {
     name = "${pname}-${version}";
     exec = "${exec}";
     icon = "${icon}";
-    comment = "An eclipse RCP application for all aspect of a medical Swiss german practice";
-    desktopName = "Elexis Swiss German desktop";
-    genericName = "ElexisOS";
+    comment = "Une application clipse RCP pour les médecins au Congo";
+    desktopName = "Elexis Congo";
+    genericName = "ElexisCongo";
     categories = "Office;";
   };
 
@@ -59,7 +61,7 @@ stdenv.mkDerivation {
     gsettings-desktop-schemas
     gtk3
     makeWrapper
-    openjdk8
+    openjdk11
     unzip
     webkit
     openjfx11 # openjfx
@@ -70,10 +72,8 @@ stdenv.mkDerivation {
     zlib
   ] ;
   unpackPhase = ''
-    echo Niklaus: unpackPhase von Niklaus
-      mkdir -pv "$out/app" 
-      unzip -qd "$out/app" $src
-    echo Unzipped into $out from $src
+    mkdir -p "$out/app" 
+    unzip -qd "$out/app" $src
   '';
   
   phases = [ "unpackPhase" "buildPhase" ] ;
@@ -84,11 +84,11 @@ stdenv.mkDerivation {
       export LD_LIBRARY_PATH='$ldPath'
       export XDG_DATA_DIRS='${gsettings-desktop-schemas}/share/gsettings-schemas/gsettings-desktop-schemas-40.0'
       export GIO_EXTRA_MODULES='${glib_networking}/lib/gio/modules'
-      export JAVA_HOME='${pkgs.openjdk8}'
+      export JAVA_HOME='${pkgs.openjdk11}'
   '';
   buildPhase = ''
     # Unpack tarball.
-    mkdir -pv $out/bin
+    mkdir -p $out/bin
     cp -v $setElexisEnv/bin/setElexisEnv  $out/bin
     # Patch Elexis3 binary AND the embedded java from the JRE
     interpreter=$(echo ${stdenv.glibc.out}/lib/ld-linux*.so.2)
@@ -97,37 +97,40 @@ stdenv.mkDerivation {
     --set-rpath $ldPath \
     $out/app/Elexis3
     patchelf --set-interpreter $interpreter $out/app/plugins/*/jre/bin/java
-
-    makeWrapper $out/app/Elexis3 $out/bin/"${exec}-h2_rcptt_de" \
-      --prefix PATH : ${openjdk8}/bin \
+    
+    # ensure eclipse.ini does not try to use a justj jvm, as those aren't compatible with nix
+    sed -i '/-vm/d' $out/app/Elexis3.ini
+    sed -i '/org.eclipse.justj/d' $out/app/Elexis3.ini
+    # does not seem to work with webbrowser find $out -name "*justj*" -type d | xargs rm -rf
+    
+    makeWrapper $out/app/Elexis3 $out/bin/"${exec}-h2_rcptt_fr" \
+      --prefix PATH : ${openjdk11}/bin \
       --prefix LD_LIBRARY_PATH : $ldPath \
       --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH" \
       --prefix GIO_EXTRA_MODULES : "${glib_networking}/lib/gio/modules" \
-      --add-flags "-nl de_CH -os linux -ws gtk -arch x86_64 -consoleLog -vmargs \\
-          -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 \\
-          -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec='jdbc:h2:~/elexis/h2_elexis_rcptt_de/db;AUTO_SERVER=TRUE' \\
+      --add-flags "-nl fr_CH -os linux -ws gtk -arch x86_64 -consoleLog -vmargs \\
+          -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec='jdbc:h2:~/elexis/h2_elexis_rcptt_fr/db;AUTO_SERVER=TRUE' \\
           -Dch.elexis.dbUser=sa -Dch.elexis.dbPw=  \\
           -Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info \\
           -Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest"
 
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/p2p/vuze/default.nix wegen swt lib 
   makeWrapper $out/app/Elexis3 $out/bin/${exec} \
-      --prefix PATH : ${openjdk8}/bin \
+      --prefix PATH : ${openjdk11}/bin \
       --prefix LD_LIBRARY_PATH : $ldPath \
       --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH" \
       --prefix GIO_EXTRA_MODULES : "${glib_networking}/lib/gio/modules" \
-      --add-flags "-nl de_CH -os linux -ws gtk -arch x86_64 -consoleLog"
+      --add-flags "-nl fr_CH -os linux -ws gtk -arch x86_64 -consoleLog"
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/networking/p2p/vuze/default.nix wegen swt lib 
   makeWrapper $out/app/Elexis3 $out/bin/"${exec}-demoDB" \
       --run "[[ ! -d ~/elexis/demoDB ]] && ${unzip}/bin/unzip $demoDB -d ~/elexis" \
-      --prefix PATH : ${openjdk8}/bin \
+      --prefix PATH : ${openjdk11}/bin \
       --prefix LD_LIBRARY_PATH : $ldPath \
       --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH" \
       --prefix GIO_EXTRA_MODULES : "${glib_networking}/lib/gio/modules" \
-      --add-flags "-nl de_CH -os linux -ws gtk -arch x86_64 -consoleLog \
+      --add-flags "-nl fr_CH -os linux -ws gtk -arch x86_64 -consoleLog \
       -configuration ~/elexis/.demo_config \
       -vmargs \
--Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 \
 -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec='jdbc:h2:~/elexis/demoDB/db;AUTO_SERVER=TRUE' \
 -Dch.elexis.dbUser=sa -Dch.elexis.dbPw= "
 
