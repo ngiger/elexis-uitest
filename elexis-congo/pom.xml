@@ -13,6 +13,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <elexis.target>2021-09-java11</elexis.target>
     <tycho.version>2.7.0</tycho.version>
+	<branch2build>master</branch2build>
     <!-- vvv required empty vvv-->
     <os-jvm-flags/>
   </properties>
@@ -24,12 +25,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		</repository>
     <repository>
       <id>elexis.3.core</id>
-      <url>https://download.elexis.info/elexis/master/p2/elexis-3-core</url>
+      <url>https://download.elexis.info/elexis/${branch2build}/p2/elexis-3-core</url>
       <layout>p2</layout>
     </repository>
     <repository>
       <id>elexis.3.base</id>
-      <url>https://download.elexis.info/elexis/master/p2/elexis-3-base</url>
+      <url>https://download.elexis.info/elexis/${branch2build}/p2/elexis-3-base</url>
       <layout>p2</layout>
     </repository>
   </repositories>
