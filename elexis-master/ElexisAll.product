@@ -147,6 +147,7 @@
       <feature id="ch.elexis.core.ui.p2.feature" installMode="root"/>
       <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
       <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
+      <feature id="ch.elexis.core.spotlight.feature" installMode="root"/>
       <!-- to get the texteditor -->
       <!-- changes a lot in the preferences menu feature id="org.eclipse.platform" installMode="root"/--> 
    </features>
