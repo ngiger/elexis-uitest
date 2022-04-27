@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.5.2.202109092356
-Save-Time: 12/18/21, 11:46 AM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 4/27/22, 5:38 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -30,7 +30,7 @@ proc SetRightToDeleteCase {
 			| get-property "values['u']" -raw | equals x | eq true] {
 			log "User has already the right"
 		} -else {
-			log "Must git the user the right"
+			log "Must give the user the right"
 			get-tree -after [get-link [t dlg_create_user_accounting_change]] | select [t right_delete_case] | check
 		}
 		get-button [t apply_and_close] | click
@@ -134,10 +134,14 @@ proc FallOffen [val caseLaw] [val startDate] {
 
 proc AktuellenFallSchliessen [val endDate ""] {
 	get-view [t view_cases] | get-table | get-menu -path [t mnu_close_case] | click
+	t fall_abschlssdatum | log
 	with [get-window [t fall_abschlssdatum]] {
-		get-editbox | set-focus
-		get-editbox | set-text $endDate
-		get-button OK | click
+	    with [get-canvas] {
+	        click
+	        click
+	        key-type Up
+	    }
+	    get-button OK | click -metaKeys ""
 	}
 }
 proc AktuellenFallVerrechnen [val abortOnError true] [val label no_label] {
@@ -218,14 +222,16 @@ proc DruckeBriefZuAut [val adrName $default_KK] [val adrPostalcode 5401] {
  * *printId nur für debug/image name
  */
 proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
-	get-view [t Fall] | get-link [t fall_cost_bearer] | click
-	with [get-window [t select_contact]] {
-		with [get-editbox -after [get-label [t select_andere_kontakte]] -index 1] {
-			set-text $name
+	if [get-view  [ t Fall ] | get-link  [t fall_cost_bearer] | get-property enablement | equals true ] { 
+		get-view [t Fall] | get-link [t fall_cost_bearer] | click
+		with [get-window [t select_contact]] {
+			with [get-editbox -after [get-label [t select_andere_kontakte]] -index 1] {
+				set-text $name
+			}
+			get-table | select [concat ".*" $name ".*"]
+			get-window [t select_contact] | gen-screenshot [concat $imagesDir "Fall_" $printId "_costBearer_" $name ".png"]
+			get-button OK | click
 		}
-		get-table | select [concat ".*" $name ".*"]
-		get-window [t select_contact] | gen-screenshot [concat $imagesDir "Fall_" $printId "_costBearer_" $name ".png"]
-		get-button OK | click
 	}
 }
 /**
@@ -233,11 +239,13 @@ proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
  */
 proc FallSetDefaultInvoiceRecipient  [val name ] [ val firstname ]  {
 // get-view "Fälle" | get-table | select "KVG: Krankheit - Allgemein\\(30.01.2020- offen\\)" | double-click
-	get-view [ t Fall ] | get-link [ t invoice_recipient ]| click
-	with [get-window [ t select_contact ] ] {
-		get-editbox -after [get-label [ t select_andere_kontakte ] ] -index 1 | set-text $name
-		get-table | select [ concat $name ".*" $firstname ".*" ]
-	    get-button [ t ok ] | click
+	if [get-view  [ t Fall ] | get-link  [t invoice_recipient] | get-property enablement | equals true ] { 
+		get-view [ t Fall ] | get-link [ t invoice_recipient ]| click
+		with [get-window [ t select_contact ] ] {
+			get-editbox -after [get-label [ t select_andere_kontakte ] ] -index 1 | set-text $name
+			get-table | select [ concat $name ".*" $firstname ".*" ]
+		    get-button [ t ok ] | click
+		}
 	}
 }
 proc FallSetVersicherungsNummer [val nummer 123456] [val fall ".*"] {
