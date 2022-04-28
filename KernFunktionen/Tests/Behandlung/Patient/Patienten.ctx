@@ -5,7 +5,8 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Save-Time: 3/24/21 8:17 PM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 4/28/22, 11:36 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -52,7 +53,7 @@ proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 /**
  * Set the AHV number for the currently selected patient
  */
-proc SetAHVnumber [ val AHVnumber "756.1234.5678.1" ] {
+proc SetAHVnumber [ val AHVnumber "756.1234.5678.10" ] {
 	open-window-by-name [ t Patientendetails_new ]
 	get-view [ t Patientendetails ] | get-label [ t Patientendetails_AHV ] | click
 	with [get-window [ t Identifikationselemente ] ] {
@@ -75,7 +76,7 @@ proc PatientenErstellenFallsNichtVorhanden [val familyName "Wesen" ] [val firstN
 
 proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val male true] 
 	[val birthDate "29.02.1980" ] [val street "Schattenloch" ] [val zipCode "9876" ]
-	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] [ val ahv  "756.1234.9999.1" ] {
+	[val location "Hintertal" ] [val phone "079 12 34 56 78" ] [ val ahv  "756.1234.9999.99" ] {
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
 	get-view [t view_patients ] | get-button [ t btn_create_new_patient ]  | click
