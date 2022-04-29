@@ -5,21 +5,22 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Runtime-Version: 2.5.2.202109092356
-Save-Time: 12/18/21, 12:12 PM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 4/28/22, 8:28 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 global [val hilotecOdfOutDir $pdfDir] -override
+global [val docxfOutDir $pdfDir] -override
 global [val MsOOOutDir $pdfDir] -override
 global [val ConfiguredTextPlugin ""] -override
 global [val lowriter "/usr/bin/libreoffice"] -override
 global [val oowriter "/opt/openoffice4/program/swriter"] -override
 global [val hiloFile [ concat $rcpttDir "hilotec_configured" ] ] -override
 global [val hiloVorlagen [ concat $rcpttDir "hilotec_vorlagen" ] ] -override
-global [val msWordVorlagen [ concat $rcpttDir "msWord_vorlagen" ] ] -override
+global [val docxVorlage [ concat $rcpttDir "msword/fenster_links" ] ] -override
 global [val ooFile [ concat $rcpttDir "medelexis_oo_configured" ] ] -override
 global [val vorlagenDirOpenoffice  [concat $rcpttDir "elexis-vorlagen/openoffice" ] ] -override
 global [val vorlagenDirMsWord  [concat $rcpttDir "elexis-vorlagen/msword/fenster_links" ] ] -override
@@ -35,7 +36,7 @@ proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 
 proc SetupTextPlugins {
 	// ConfigureMsOO_TextVerarbeitung
-	// ImportAlleMsWord_Vorlagen
+	// ImportAlleDocx_Vorlagen
 	ConfigureHilotecODF_TextVerarbeitung
 	ImportAlleHilotecODF_Vorlagen
 }
@@ -171,23 +172,27 @@ proc ConfigureDocx_TextVerarbeitung {
 	    get-tree | select "Textverarbeitung/Docx Textausgabe"
 	    with [get-editbox -after [get-label "Druck Befehl ohne konf. Drucker"]] {
 	        click-text
-	        set-text "/usr/bin/libreoffice --headless --convert-to pdf --outdir /home/niklaus/medelexis-uitest/elexis-uitest/KernFunktionen/target/aut/../results/pdf"
+	        set-text [ concat "libreoffice --headless --convert-to pdf --outdir " $docxfOutDir]
+	    }
+	    with [get-editbox -after [get-label "Druck Befehl mit konf. Drucker"]] {
+	        click-text
+	        set-text [ concat "libreoffice --headless --convert-to pdf --outdir " $docxfOutDir]
 	    }
 	    get-button "Anwenden und Schließen" | click -metaKeys ""	
 	}
 }
 
-proc ImportAlleMsWord_Vorlagen [val directory $vorlagenDirMsWord ]
+proc ImportAlleDocx_Vorlagen [val directory $vorlagenDirMsWord ]
 	[ val vorlage "AUF-Zeugnis" ] [val extension ".docx" ] {
-	if [ get-file $msWordVorlagen | get exists | equals true ] {
-		concat "Found " $msWordVorlagen " ImportAlleMsWord_Vorlagen already done" | log
+	if [ get-file $docxVorlage | get exists | equals true ] {
+		concat "Found " $docxVorlage " ImportAlleDocx_Vorlagen already done" | log
 	} -else {
 		$docxVorlagen | each [val vorlage] {
 		  concat "doxVorlage ist: " $vorlage | log
 			ImportHilotecODF_Vorlage  $vorlagenDirMsWord $vorlage ".docx"
 		} 
-		concat "ImportAlleMsWord_Vorlagen finished. " [ get-time ] " " $today | write-lines $msWordVorlagen
-		concat "ImportAlleMsWord_Vorlagen finished. " [ get-time ] " " $today | log
+		concat "ImportAlleDocx_Vorlagen finished. " [ get-time ] " " $today | write-lines $docxVorlage
+		concat "ImportAlleDocx_Vorlagen finished. " [ get-time ] " " $today | log
 	}
 }
 

@@ -5,7 +5,8 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Save-Time: 4/27/21 4:29 PM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 4/28/22, 8:01 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -139,6 +140,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 					EnterOneFinanzDetail [ t Postfach ]
 					EnterOneFinanzDetail TarmedESRParticipantNumber
 					EnterOneFinanzDetail TarmedESRIdentity
+					EnterOneFinanzDetail IBAN
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 		}
 		get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]

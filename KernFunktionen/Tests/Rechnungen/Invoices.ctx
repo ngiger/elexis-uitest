@@ -5,7 +5,8 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Save-Time: 4/20/21 5:28 PM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 4/29/22, 5:01 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -103,8 +104,11 @@ proc RechnungSelektieren [ val invoiceId 1 ] {
 
 proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 	set-dialog-result Folder $pdfDir
+	concat "RechnungsAusgabeDefinieren " $druckTyp " hat pdfDir: " $pdfDir | log
 	with [get-window [ t View_Rechnung_ausgeben] ] {
+		get-combo | get-property selection -raw | log
    		get-combo | select $druckTyp
+		get-combo | get-property selection -raw | log
    		if [ $druckTyp | matches [ t Als_Tarmed_Rechnung_ausdrucken ] ] {
 			get-button [ t Mit_ESR ] | check
 			get-button [ t Mit_Rechnungsformular ] | check
@@ -118,6 +122,15 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
    			set-dialog-result Folder $pdfDir
    			wait 1000
 			get-button [ t Tarmed_XML_Directory_Change ] | click
+		}
+   		if [ or [ $druckTyp | matches [ t Als_QR_PDF_ausdrucken ] ]
+	   		[ $druckTyp | matches [ t Als_PDF_ausdrucken ] ] ] {
+   			set-dialog-result Folder $pdfDir
+   			wait 1000
+			get-button [ t PDF_Directory ] | click
+   			set-dialog-result Folder $pdfDir
+   			wait 1000
+			get-button [ t XML_Directory ] | click
 		}
 		gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_dialog.png"]
 		get-button OK | click
