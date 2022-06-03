@@ -1,0 +1,73 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# see also https://github.com/vagrant-libvirt/vagrant-libvirt
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+[ '/home/niklaus/.vagrant.d/boxes', '/var/lib/libvirt/images'].each do |symlink|
+  unless File.symlink?(symlink)
+    puts "Warning: #{symlink} is not a symlink"
+  end
+end
+
+Vagrant.configure("2") do |config|
+  required_plugins = %w(vagrant-libvirt vagrant-timezone)
+  config.vm.box = "debian/bullseye64"
+  config.vm.hostname = "JenkinsSlaveDebian"
+  config.vm.provider :libvirt do |v|
+    v.cpus=2
+    # v.keymap = "en-us" works!
+    v.keymap = "de-ch" # works
+    #v.keymap = "de_ch" # fails
+    # v.keymap = "sg"
+    v.memory=12096
+    v.video_type='virtio'
+    v.video_vram=4*9216
+    # v.video_accel3d=true
+    v.default_prefix="JenkinsSlaveDebian"
+    v.storage_pool_path = "/opt/images"
+    v.machine_virtual_size = 102; # must call sudo resize2fs /dev/vda1 # inside the vm
+    v.management_network_autostart = true;
+  end
+
+  config.ssh.forward_agent = true
+  config.ssh.forward_x11 = true
+  if Vagrant.has_plugin?("vagrant-timezone")
+    config.timezone.value = "Europe/Zurich"
+    # calls timedatectl set-timezone 'Europe/Zurich'
+  end
+  config.vm.network "forwarded_port", guest: 22, host: 8222 
+  config.vm.network "private_network", ip: "192.168.121.159"
+  config.vm.network :public_network,
+    bridge: "virbr0",
+    ip: "192.168.0.126",
+    dev: "enp3s0",
+    autostart: true
+  config.vm.provision "shell", inline: "
+  export DEBIAN_FRONTEND=noninteractive
+  echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJY7+iMHzZ4v7rfVdmpkMFzxwWwetpj9F/At/bo0OM1i Niklaus Giger Dez 2019' | tee --append /home/vagrant/.ssh/authorized_keys
+  echo 'JS2a78HHzBNm73R6AA5uO8hofjqm2k69mbO3alQZkpUmvXyjXe9CZDaze4arYrL9wnRLaOi5HQ9s4lls9ROOBUo5J6YeHFtmpQ4sMWEs4IrMy+QXlmpNrK97N9GY3nhKYvvP2M5+yUajWx3yuiRF0CqQmu9jbBJFMnHW4XOKD jenkins@srv' | tee --append /home/vagrant/.ssh/authorized_keys
+  sudo resize2fs /dev/vda1
+  apt-get -q update
+  apt-get install -q -y fish net-tools vim git
+"
+config.vm.provision "shell", inline: "
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get install -q -y openbox xserver-xorg maven xvfb libreoffice-writer
+"
+  # https://www.vagrantup.com/docs/synced-folders/nfs
+  config.vm.synced_folder "/opt", "/opt",
+      :create => false,
+      :nfs => true,
+      :nfs_version => 4,
+      :nfs_export => false,
+      :nfs_udp => false
+#  https://stackoverflow.com/questions/22643177/ssh-onto-vagrant-box-with-different-username (answer 6)
+  config.vm.provision "file", source: "~/.config/fish/conf.d/", destination: "/home/vagrant/.config/fish/" if File.exists?('~/.config/fish/conf.d')
+  config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig" if File.exists?('~/.gitconfig')
+  # next  files must be run in this order
+  config.vm.provision "shell", path: "../scripts/setup_jenkins_slave.sh"
+end
