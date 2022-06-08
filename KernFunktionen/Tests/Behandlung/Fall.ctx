@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 4/27/22, 5:38 PM
+Save-Time: 6/8/22, 2:56 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -86,7 +86,7 @@ proc FallZuPatientErstellen [val caseLaw [t case_UVG]] [val caseReason [t reason
 		concat $imagesDir Fall_ $caseLaw "_" $startDate "_created.png" | log
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Fall_" $caseLaw "_" $startDate "_created.png"]
 		get-button [t ok] | click
-		wait 10000
+		wait 2000
 	}
 	with [get-view [t view_cases]] {
 		concat "nr items a: " [ get-view [t view_cases] | get-table | get-property  itemCount  -raw ] | log

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 4/28/22, 8:01 PM
+Save-Time: 6/8/22, 2:43 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -15,14 +15,9 @@ Entry-Name: .ecl.context
 proc ChangeMandant [ val name ] [ val first_name ".*" ] {
 	concat "ChangeMandant: " $name " f " $first_name | log
 	get-menu -path [ t Datei_Mandant_wechseln ] | click
-	with [get-window -class ChangeMandantDialog] {
-		get-list | select $name
-		if [ $first_name | eq ".*" ] {
-			log "Skip firstname "
-			get-window -class ChangeMandantDialog | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_1.png"]
-		} -else {
-			get-window -class ChangeMandantDialog | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_" $first_name "_1.png"]
-		}
+	with [get-window [ t Dialog_Mandant_wechseln ] ] {
+		get-table | select [ concat $name " " $first_name ]
+		get-window [ t Dialog_Mandant_wechseln ] | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_" $first_name "_1.png"]
 		get-button OK | click
 	}
 }
