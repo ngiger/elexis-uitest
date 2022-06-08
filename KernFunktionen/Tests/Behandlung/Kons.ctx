@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 6/8/22, 5:00 PM
+Save-Time: 6/8/22, 5:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -76,7 +76,7 @@ proc "PressAddLeistungToKons" {
 		concat "PressAddLeistungToKons failed: " [$errorObj | get message] | log
 		close-window-if-open [ t window_warning ]
 	}
-	get-view [ t leistungen ] ] | maximize // allow finding blocks etc
+	get-view [ t leistungen ] | maximize // allow finding blocks etc
 }
 
 proc "ActivateVisibleKonsView" {

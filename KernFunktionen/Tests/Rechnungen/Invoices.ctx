@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 4/29/22, 5:01 PM
+Save-Time: 6/8/22, 7:36 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -105,6 +105,7 @@ proc RechnungSelektieren [ val invoiceId 1 ] {
 proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 	set-dialog-result Folder $pdfDir
 	concat "RechnungsAusgabeDefinieren " $druckTyp " hat pdfDir: " $pdfDir | log
+	get-window [ t View_Rechnung_ausgeben] | get-object | invoke setSize 500 400
 	with [get-window [ t View_Rechnung_ausgeben] ] {
 		get-combo | get-property selection -raw | log
    		get-combo | select $druckTyp
@@ -135,14 +136,13 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 		gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_dialog.png"]
 		get-button OK | click
 	}
-	// get-window [ t View_Rechnung_ausgeben] | get-button OK | click
 }
 
 
 proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
 	[ val invoiceId 1 ]
 	[ val status [ t alle_rechnungs_stati ] ]
-	[ val druckTyp [ t Als_Tarmed_Rechnung_ausdrucken ] ] {
+	[ val druckTyp [ t Als_QR_PDF_ausdrucken ] ] {
 	global [val RechnungAusgebenError "0" ] -override
 	let [ val logName [ concat "_invoice_" $invoiceId ] ]
 		[val nrItemsBefore [ GetNrOfInvoices -status [ t Offen_und_gedruckt ] ] ] {
@@ -220,12 +220,15 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 			}
 		}
 	}
-
+	get-view [ t Rechnungsliste ] | key-type "M1+m"
+	get-view [ t Rechnungsliste ] | maximize
+	get-view [ t Rechnungsliste ] | key-type "M1+m" // Minimize
 	concat "GetHighestInvoiceNrOf set highestInvoiceNr to: " $highestInvoiceNr | log
 	$highestInvoiceNr | str
 }
 
 proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] [ val workAround21559 true ] {
+	close-window-if-open [ t error ]
 	if [ $workAround21559  | eq true ] {
 		concat "GetNrOfInvoices: workAround21559 view is "  [ t Rechnungsliste ] | log
 		try {

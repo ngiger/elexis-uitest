@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 6/8/22, 2:56 PM
+Save-Time: 6/8/22, 6:47 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -222,7 +222,9 @@ proc DruckeBriefZuAut [val adrName $default_KK] [val adrPostalcode 5401] {
  * *printId nur für debug/image name
  */
 proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
-	if [get-view  [ t Fall ] | get-link  [t fall_cost_bearer] | get-property enablement | equals true ] { 
+	get-view  [ t Fall ] | get-link  [t fall_cost_bearer] | get-property enablement -raw | log
+	get-view  [ t Fall ] | get-editbox -after [get-label "Notwendige Daten"] -index 1 | get-property enablement -raw | log
+	try {
 		get-view [t Fall] | get-link [t fall_cost_bearer] | click
 		with [get-window [t select_contact]] {
 			with [get-editbox -after [get-label [t select_andere_kontakte]] -index 1] {
@@ -232,6 +234,9 @@ proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
 			get-window [t select_contact] | gen-screenshot [concat $imagesDir "Fall_" $printId "_costBearer_" $name ".png"]
 			get-button OK | click
 		}
+	}  -error [val errorObj] -catch {
+		 log "Kostenträger not enabled"
+		 concat "Kostenträger not enabled: "  [$errorObj | get message] | log
 	}
 }
 /**
