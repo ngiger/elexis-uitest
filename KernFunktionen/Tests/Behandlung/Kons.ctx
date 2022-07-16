@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 6/8/22, 5:20 PM
+Save-Time: 7/16/22, 7:47 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -202,6 +202,7 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 			key-type Enter
 		}
 		concat "kons-neuen-artikelstamm item added " $item_short " " $item_long | log
+		get-view [ t leistungen ] | restore
 		ActivateVisibleKonsView
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kons-added_" $item_short ".png"]
 		kons-check-expected-items -caller "kons-add-artikelstamm" -item $item_short

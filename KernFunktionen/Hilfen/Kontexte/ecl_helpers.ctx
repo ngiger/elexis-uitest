@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 7/16/22, 4:08 PM
+Save-Time: 7/16/22, 7:44 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -388,7 +388,7 @@ proc "open-window-by-name" [ val windowName ] {
 	try {
 		get-view $windowName
 	} -catch {
-		concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
+		// concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
 		if [ concat "" $defaultLanguage "" | eq "fr" ] {
 			get-eclipse-window | key-type "M1+n" // Ctrl-N
 		} -else {
@@ -403,10 +403,10 @@ proc "open-window-by-name" [ val windowName ] {
 				get-tree | expand-all | select [ concat ".*/" $windowName ]
 			}
 		    get-editbox | set-text ""
-			concat "open-window-by-name: " [ t menu_select_view ]" for " [ t windowName ]| log
+			// concat "open-window-by-name: " [ t menu_select_view ]" for " [ t windowName ]| log
 			get-button [t open ] | get-property enablement -raw | log
 			get-button [t open ] | click
-			concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
+			// concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
 		}
 		// Seen when running ImportSwissbase with french Elexis
 //			concat "open-window-by-name: " [$errorObj | get message] " for " $windowName | log

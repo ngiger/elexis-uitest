@@ -5,8 +5,8 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.5.2.202109092356
-Save-Time: 11/15/21, 12:57 PM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 7/16/22, 8:24 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -27,18 +27,23 @@ proc "WriteViewsCsvFile" {
 }
 
 global [val curViewSection ""] -override
-proc "check-one-view-item" [val viewName] {
-	// viewName as seen in the CSV file
 
+/*
+  viewName as seen in the CSV file
+  Opens the view, maximizes it, creates a screenshot, resizes and closes it
+*/
+proc "check-one-view-item" [val viewName] {
 	global [val viewPathName [replaceFirst $viewName "0," ""]] -override
 	if [$viewName | str | matches "^0,.*"] {
 		global [val curViewSection [replaceFirst $viewName "0," ""]] -override
 		// global [val viewPathName [concat $curViewSection ".png"]] -override
-		concat "viewName: " $viewName " in curViewSection: " $curViewSection | log
-		resetPerspective
+		// concat "Setting viewName for 0,: " $viewName " in curViewSection: " $curViewSection | log
+		// log "check-one-view-item: Skipping resetPerspective"
 		// TODO: View Auwahl anzeigen?
 	} -else {
 		global [val viewPathName [replaceFirst $viewName "1," ""]] -override
+		global [val realViewName [replaceFirst $viewName "1," ""]] -override
+		global [val viewPathName2 [concat [$curViewSection] "/" $viewPathName]] -override
 		global [val viewPathName [concat [$curViewSection] "/" $viewPathName]] -override
 		// concat "viewPathName: " $viewPathName | log
 		global [val curViewImage [ concat $imagesDir
@@ -47,11 +52,22 @@ proc "check-one-view-item" [val viewName] {
 			".png"
 			] ] -override
 		concat "check-one-view-item "  $viewPathName | log
-		open-window-by-name $viewPathName
-		wait 100 // Give it some time to populate it
-		// TODO: Check that Die Ansicht konnte nicht erstellt werden is not visible
-		// TODO: Check Table "CSTGROUPS" not found
-		get-eclipse-window | gen-screenshot -out [ $curViewImage ]
+		try {
+			open-window-by-name $viewPathName
+			get-view $realViewName | maximize
+			wait 100 // Give it some time to populate it
+			// TODO: Check that Die Ansicht konnte nicht erstellt werden is not visible
+			// TODO: Check Table "CSTGROUPS" not found
+			get-eclipse-window | gen-screenshot -out [ $curViewImage ]
+			get-view $realViewName | restore
+		} -catch {
+			concat "check-one-view-item: Failed opening: " $realViewName | log
+		}
+		try {
+			get-view $realViewName | close
+			}  -error  [val errorObj]  -catch {
+				concat "check-one-view-item error closing: " $realViewName  " " $errorObj| log
+			}
 	}
 }
 
@@ -59,12 +75,15 @@ proc "visit-all-views" [ val addToIgnorePattern "" ] {
 	WriteViewsCsvFile
 	read-lines $viewsCsvFile | foreach [val item] {
 		concat "visit-all-views checks: " $item " addToIgnorePattern: " $addToIgnorePattern  | log
-		// if [$item | str | matches "^_indent.*" [
-		 if [$item | str | matches [
+		if [$item | str | matches [
 			concat  "^_indent.*" $addToIgnorePattern] ] {
 			concat "Skipping first line and " $addToIgnorePattern " in visit all Views"| log
 		} -else {
-			check-one-view-item $item
+			if  [$item | str | matches "0,.*" ] {
+ 				check-one-view-item $item
+			} -else {
+ 				check-one-view-item $item
+			}
 		}
 	}
 }
