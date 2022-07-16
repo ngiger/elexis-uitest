@@ -3,6 +3,7 @@
 	<name>elexis-uitest</name>
 	<comment></comment>
 	<projects>
+		<project>KernFunktionen</project>
 	</projects>
 	<buildSpec>
 	</buildSpec>

@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.5.2.202109092356
-Save-Time: 12/30/21, 11:27 AM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 7/16/22, 4:08 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -135,7 +135,7 @@ proc "elexisLogMayNotContain"  [ val searchFor  ] {
 }
 
 proc "no_OOM_error" {
-	elexisLogMayNotContain "java.lang.OutOfMemoryError"
+	// elexisLogMayNotContain "java.lang.OutOfMemoryError"
 } 
 
 no_OOM_error
@@ -281,31 +281,41 @@ proc resetPerspective {
 }
 
 /**
- * Resets to the default perspectives an
- */
-
-proc OpenAndResetStartPerspektive {
-	try {
-		get-button [ t btn_start_perspective ] | click
-		} -error [val errorObj] -catch {
-			// Seen when running ImportSwissbase with french Elexis
-			concat "Errror " [$errorObj | get message] "in btn_start_perspective " [ t btn_start_perspective ]  | log
-			set-dialog-result File "/dummy_ecl_helpers"
-	}
-	handleResetPerspectiveDialog
-	resetPerspective
-	// we need reproducable conditions else labels etc suddenly vanish
-	get-eclipse-window | get-object | invoke setSize 1400 1024
-	concat "OpenAndResetStartPerspektive: Size is " [ get-eclipse-window | get-object | invoke getSize ] | log
-}
-
-/**
  * Logs and creates a snapshot of the passed graphical object
  * See https://www.eclipse.org/rcptt/blog/2014/11/21/screenshots-with-rcptt.html
  */
 proc "gen-screenshot" [ val parent -input ] [ val out [ cleanFileName [concat $imagesDir "dest.png"]]] {
 	concat "gen-screenshot: " $out | log
 	$parent | get-object | save-screenshot $out // creates directory if necessary
+}
+
+
+/**
+ * Resets to the default perspectives an
+ */
+proc "HandleMissingInvoiceSystems" {
+	try {
+		concat "HandleMissingInvoiceSystems: " [ get-window ".*" | get-text ] | log
+		get-window [ t update_invoice_systems ] | get-text | log
+		get-window [ t update_invoice_systems ] | close
+		concat "HandleMissingInvoiceSystems closed " [ t update_invoice_systems ] | log
+	} -error [val errorObj] -catch {
+			concat $errorObj " was catched by HandleMissingInvoiceSystems" | log 
+	}
+}
+
+HandleMissingInvoiceSystems
+
+proc OpenAndResetStartPerspektive {
+	try {
+		concat "Button " [t btn_start_perspective ] " enabled? " | get-button [ t btn_start_perspective ] | get-property enablement -raw | log
+		get-button [ t btn_start_perspective ] | click
+	}-error [val errorObj] -catch {
+		concat "ErrorObj: " $errorObj " for OpenAndResetStartPerspektive" | log
+	}
+	// we need reproducable conditions else labels etc suddenly vanish
+	get-eclipse-window | get-object | invoke setSize 1400 1024
+	concat "OpenAndResetStartPerspektive: Size is " [ get-eclipse-window | get-object | invoke getSize ] | log
 }
 
 proc "create-entire-screenshot" [ val pathName [ cleanFileName [concat $imagesDir "screen.png"]]] {

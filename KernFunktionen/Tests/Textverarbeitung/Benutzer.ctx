@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 6/8/22, 2:43 PM
+Save-Time: 7/16/22, 4:10 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -98,7 +98,11 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Vorname"] ]
 		] ] -override
 		concat "AbrNameFirst: <" $AbrNameFirst "> Tarmed_Rechnungen <" [ t Tarmed_Rechnungen ] "> label <" [ t responsible_doctor ] ">" | log
-		get-combo -after [get-label [ t Tarmed_Rechnungen ] ] | select $AbrNameFirst
+		try {
+			get-combo -after [get-label [ t Tarmed_Rechnungen ] ] | select $AbrNameFirst
+		} - catch {
+			log "AbrNameFirst Not found"
+		}
 		get-group [ t responsible_doctor ] | get-combo | select  $AbrNameFirst
 		get-group [ t Detailangaben ]| get-button "Bills electronically" | check
 		get-group [ t Detailangaben ]| get-link [ t Leistungserbringer ] | click
@@ -123,12 +127,16 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 		} -else {
 			get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | click
 			with [get-window [ t select_Zahlungsinstitut ]] {
-		get-link [ t Finanzinstitut ] | click
-		with [get-window [ t select_contact ]] {
-			GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] | log
-			get-editbox -index 1 | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] ]
-			get-table | select ".+"
-			get-button OK | click
+			try {
+				get-link [ t Finanzinstitut ] | click
+				with [get-window [ t select_contact ]] {
+					GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] | log
+					get-editbox -index 1 | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] ]
+					get-table | select ".+"
+					get-button OK | click
+				}
+			} -catch {
+			log "second try"
 		}
 		with [get-group [ t notwendigen_Identifikationsdaten ]] {
 					EnterOneFinanzDetail [ t Abteilung ]

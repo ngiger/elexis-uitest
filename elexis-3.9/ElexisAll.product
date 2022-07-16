@@ -60,6 +60,7 @@
       <feature id="at.medevit.elexis.impfplan.feature" installMode="root"/>
       <feature id="at.medevit.elexis.inbox.feature" installMode="root"/>
       <feature id="at.medevit.elexis.loinc.feature" installMode="root"/>
+      <feature id="at.medevit.elexis.text.docx.feature" installMode="root"/>
       <feature id="at.medevit.elexis.medietikette.feature" installMode="root"/>
       <feature id="ch.berchtold.privatrechnung.feature" installMode="root"/>
       <feature id="ch.docbox.elexis.feature" installMode="root"/>
@@ -106,6 +107,7 @@
       <feature id="ch.elexis.molemax.feature" installMode="root"/>
       <feature id="ch.elexis.notes.feature" installMode="root"/>
       <feature id="ch.elexis.omnivore.feature" installMode="root"/>
+      <feature id="ch.elexis.pdfBills.feature" installMode="root"/>
       <feature id="ch.elexis.privatrechnung.feature" installMode="root"/>
       <feature id="ch.elexis.base.solr.feature" installMode="root"/>
       <feature id="ch.elexis.stickynotes.feature" installMode="root"/>
@@ -147,6 +149,7 @@
       <feature id="ch.elexis.core.ui.p2.feature" installMode="root"/>
       <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
       <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
+      <feature id="ch.elexis.core.spotlight.feature" installMode="root"/>
       <!-- to get the texteditor -->
       <!-- changes a lot in the preferences menu feature id="org.eclipse.platform" installMode="root"/--> 
    </features>

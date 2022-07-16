@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -48,7 +49,8 @@
     <vmArg7>-Dch.elexis.firstMandantEmail=mmustermann@elexis.info</vmArg7>
     <vmArg8>-Dch.elexis.username=Mustermann</vmArg8>
     <vmArg9>-Dch.elexis.password=elexisTest</vmArg9>
-    <vmArg10>-DvmArg10</vmArg10>
+    <vmArg10>-Dch.elexis.test.convertDocx2PDF=true</vmArg10>
+    <vmArg11>-DvmArg11</vmArg11>
     <suite2run>SmokeTestSuite</suite2run>
   </properties>
   <build>
@@ -147,8 +149,8 @@
               <arg>-nosplash</arg>
 	      <arg>-noregtool</arg>
               <arg>--use-config=rpctt</arg>
-              <arg>-Xms1G</arg>
-              <arg>-Xmx4048m</arg>
+              <arg>-Xms2048m</arg>
+              <arg>-Xmx4096m</arg>
               <arg>-eclipse.password=${user.home}/.eclipse/master</arg>
            </args>
             <vmArgs>
@@ -167,6 +169,7 @@
               <vmArg>${vmArg8}</vmArg>
               <vmArg>${vmArg9}</vmArg>
               <vmArg>${vmArg10}</vmArg>
+              <vmArg>${vmArg11}</vmArg>
             </vmArgs>
           </aut>
                  <suites>

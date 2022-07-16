@@ -6,7 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gAMNcECkEeucZoJXQ1XGtg
-Save-Time: 4/22/21 2:52 PM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 6/8/22, 11:05 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -45,14 +46,48 @@ with [get-window [ t preferences ] ] {
     get-button [ t apply_and_close ] | click -metaKeys ""
 }
 
+ConfigureDocx_TextVerarbeitung
+ImportAlleDocx_Vorlagen
+
+/*
 TextPluginSelect hilotec_odf
 ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
 ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S2" ".odt"
 ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
+*/
+// Siehe https://redmine.medelexis.ch/issues/17063
+// Offener Fall mit Konsultation kann nicht verrechnet werden
+ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
+// TextPluginSelect hilotec_odf
+
+global [ val konsDirektVorname	"Alejandro" ]
+
+if [ not [ SelectPatient PrivatPatient $konsDirektVorname] ] {
+	PatientenErstellen  PrivatPatient $konsDirektVorname true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
+	SelectPatient PrivatPatient $konsDirektVorname -mustExist true
+}
+let [ val anfangs2022 "30.01.2022" ] [val caseLaw "privat" ] [val caseReason [t reason_KVG]] {
+	FallZuPatientErstellen -startDate $anfangs2022 -caseLaw $caseLaw -caseReason $caseReason
+	SelectFall -caseLaw $caseLaw -startDate $anfangs2022
+	FallSetVersicherungsNummer 87654329 -fall [ concat  ".*" $caseLaw ".*"  $anfangs2022 ".*"]
+	FallSetCostBearer -name "Helsana Unfall" -printId [concat "PrivatPatient "  $anfangs2022 ]
+	FallSetDefaultInvoiceRecipient PrivatPatient $konsDirektVorname
+	kons-erstellen [concat "PrivatPatient "  $anfangs2022 " now " [ now ] ] -createSecond true
+	kons-set-date $anfangs2022
+	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
+	kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
+}
+OpenAndResetStartPerspektive
+let [val expectedInvoiceNr [ GetHighestInvoiceNrOf | plus 1  ] ] {
+	get-view [t view_cases] | get-table | get-menu -path [t mnu_incoice_case] | click
+	RechnungAusgeben -invoiceId $expectedInvoiceNr
+}
+/*
+
 ImportPatFallKonsFromProperty  patient.101.
 
 let [ val invoiceId  [ GetHighestInvoiceNrOf ] ] {
 	RechnungAusgeben		  -invoiceId $invoiceId -druckTyp "Privatrechnung auf Drucker"
 }
-
+*/
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 4/28/22, 8:28 PM
+Save-Time: 7/16/22, 4:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -180,6 +180,11 @@ proc ConfigureDocx_TextVerarbeitung {
 	    }
 	    get-button "Anwenden und Schließen" | click -metaKeys ""	
 	}
+	// Close and reopen Textvorlagen_Management to ensure reloading
+	open-window-by-name [t Textvorlagen_Management]
+	get-view [t Textvorlagen_Management] | click
+	get-view [t Textvorlagen_Management] | close
+	open-window-by-name [t Textvorlagen_Management]
 }
 
 proc ImportAlleDocx_Vorlagen [val directory $vorlagenDirMsWord ]
@@ -219,6 +224,11 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
 		}
     }
 	set-dialog-result File [ concat $directory "/" $vorlage $extension ]
+    try {
+		get-window [ t confirm_delete_template ] | get-button [t ok] | click
+	} -catch {
+			concat [ t confirm_delete_template ] " not present" | log
+	}
 	get-view [t Textvorlagen_Management ] | get-button "Beliebige Vorlage.*importieren" | click
 	try -command {
 		get-window Systemvorlage | get-button [t yes] | click

@@ -24,13 +24,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <repository>
       <id>elexis.3.core</id>
       <!--
-      <url>file:///opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/repository</url>
-      -->
+      <url>file:///opt/ide/2022.03/git/elexis-3-core/ch.elexis.core.p2site/target/repository</url>
+      <url>file:///home/niklaus/elexis-ide/git/elexis-3-core/ch.elexis.core.p2site/target/repository</url>
       <url>https://download.elexis.info/elexis/master/p2/elexis-3-core</url>
+	  -->
+      <url>file:///home/niklaus/elexis-ide/git/elexis-3-core/ch.elexis.core.p2site/target/repository</url>
       <layout>p2</layout>
     </repository>
     <repository>
       <id>elexis.3.base</id>
+      <!--
+      <url>file:///opt/ide/2022.03/git/elexis-3-base/ch.elexis.base.p2site/target/repository</url>
+	  -->
       <url>https://download.elexis.info/elexis/master/p2/elexis-3-base</url>
       <layout>p2</layout>
     </repository>

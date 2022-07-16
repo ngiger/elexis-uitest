@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _1gcfIMceEeyvX6ZcbpmWFg
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 4/29/22, 4:57 PM
+Save-Time: 7/16/22, 4:09 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,7 +16,10 @@ Entry-Name: .content
 
 ConfigureDocx_TextVerarbeitung
 ImportAlleDocx_Vorlagen
+
 ImportPatFallKonsFromProperty patient.107.
+FallErzeugeAUF -percentage 77 -reason "Test mit docx" -comment "Erstellt für libreoffice"
+DruckeBriefZuAut -adrName "COOP"- adrPostalcode "4002"
 
 let [ val invoiceId  [ GetHighestInvoiceNrOf ] ] {
 	RechnungAusgeben		  -invoiceId $invoiceId -druckTyp [ t Als_QR_PDF_ausdrucken ]
@@ -24,8 +27,6 @@ let [ val invoiceId  [ GetHighestInvoiceNrOf ] ] {
 	CheckTarmedFallVerrechnen -invoiceId $invoiceId
 }
 
-FallErzeugeAUF -percentage 77 -reason "Test mit docx" -comment "Erstellt für libreoffice"
-DruckeBriefZuAut -adrName "COOP"- adrPostalcode "4002"
 
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

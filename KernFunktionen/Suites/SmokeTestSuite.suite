@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.5.2.202204202359
-Save-Time: 4/29/22, 4:59 PM
+Save-Time: 6/21/22, 10:27 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -42,12 +42,12 @@ _r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../T
 _gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
 _Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: '../Tests/Rechnungen/CheckTarmedFallVerrechnen.test'
 _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/Infrastruktur/BasicKonsTests.test'
-_6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../Tests/Textverarbeitung/hilotec_odf.test'
 _1gcfIMceEeyvX6ZcbpmWFg	// kind: 'test' name: 'DocxText' path: '../Tests/Textverarbeitung/DocxText.test'
 _gAMNcECkEeucZoJXQ1XGtg	// kind: 'test' name: 'PrivatRechnung' path: '../Tests/Rechnungen/PrivatRechnung.test'
 _PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
 _C9LzwI1wEeup49yUtwR__A	// kind: 'test' name: 'CheckArtikelstammSuche' path: '../Tests/Behandlung/CheckArtikelstammSuche.test'
 _7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
+_6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../Tests/Textverarbeitung/hilotec_odf.test'
 _EwDAgAYfEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostPreferences' path: '../Tests/Infrastruktur/VisitMostPreferences.test'
 _0fUkAAYeEemcp9WoDsgIvA	// kind: 'test' name: 'VisitMostViews' path: '../Tests/Infrastruktur/VisitMostViews.test'
 

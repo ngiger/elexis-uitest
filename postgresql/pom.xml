@@ -70,7 +70,10 @@
               <arg>-nosplash</arg>
               <arg>-noregtool</arg>
               <arg>--use-config=rpctt</arg>
+              <arg>-Xms1024m</arg>
+              <arg>-Xmx1024m</arg>
            </args>
+
             <vmArgs>
               <vmArg>-noverify</vmArg>
               <vmArg>-Djava.library.path=/usr/lib/jni</vmArg>
@@ -87,6 +90,7 @@
               <vmArg>${vmArg8}</vmArg>
               <vmArg>${vmArg9}</vmArg>
               <vmArg>${vmArg10}</vmArg>
+              <vmArg>${vmArg11}</vmArg>
             </vmArgs>
           </aut>
                  <suites>
