@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/19/22, 12:11 PM
+Runtime-Version: 2.5.2.202204202359
+Save-Time: 7/19/22, 9:33 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -271,7 +271,7 @@ proc resetPerspective {
 	try {
 		if [ get-button [ t global_btn_reset_perspective ] | get-property enablement -raw | equals true ] {
 			get-button [ t global_btn_reset_perspective ] | click
-			handleResetPerspectiveDialog
+			// handleResetPerspectiveDialog
 		} -else {
 			log "Button reset_perspective is disabled"
 		}
@@ -315,6 +315,7 @@ proc OpenAndResetStartPerspektive {
 		} -else {
 			concat "OpenAndResetStartPerspektive button disabled: " [t btn_start_perspective ] | log
 		}
+		resetPerspective
 	}-error [val errorObj] -catch {
 		concat "ErrorObj: " $errorObj " for OpenAndResetStartPerspektive" | log
 	}
