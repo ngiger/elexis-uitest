@@ -5,8 +5,8 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 7/16/22, 8:24 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/19/22, 12:11 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -36,16 +36,12 @@ proc "check-one-view-item" [val viewName] {
 	global [val viewPathName [replaceFirst $viewName "0," ""]] -override
 	if [$viewName | str | matches "^0,.*"] {
 		global [val curViewSection [replaceFirst $viewName "0," ""]] -override
-		// global [val viewPathName [concat $curViewSection ".png"]] -override
-		// concat "Setting viewName for 0,: " $viewName " in curViewSection: " $curViewSection | log
-		// log "check-one-view-item: Skipping resetPerspective"
-		// TODO: View Auwahl anzeigen?
+		OpenAndResetStartPerspektive
 	} -else {
 		global [val viewPathName [replaceFirst $viewName "1," ""]] -override
 		global [val realViewName [replaceFirst $viewName "1," ""]] -override
 		global [val viewPathName2 [concat [$curViewSection] "/" $viewPathName]] -override
 		global [val viewPathName [concat [$curViewSection] "/" $viewPathName]] -override
-		// concat "viewPathName: " $viewPathName | log
 		global [val curViewImage [ concat $imagesDir
 			"views/"
 			[ replaceAll $viewPathName "\W" "_" ]
@@ -56,8 +52,6 @@ proc "check-one-view-item" [val viewName] {
 			open-window-by-name $viewPathName
 			get-view $realViewName | maximize
 			wait 100 // Give it some time to populate it
-			// TODO: Check that Die Ansicht konnte nicht erstellt werden is not visible
-			// TODO: Check Table "CSTGROUPS" not found
 			get-eclipse-window | gen-screenshot -out [ $curViewImage ]
 			get-view $realViewName | restore
 		} -catch {

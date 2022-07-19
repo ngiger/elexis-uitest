@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 7/16/22, 7:44 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/19/22, 12:11 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -308,14 +308,19 @@ HandleMissingInvoiceSystems
 
 proc OpenAndResetStartPerspektive {
 	try {
-		concat "Button " [t btn_start_perspective ] " enabled? " | get-button [ t btn_start_perspective ] | get-property enablement -raw | log
-		get-button [ t btn_start_perspective ] | click
+		if [ get-button [ t btn_start_perspective ] | get-property enablement -raw | equals true ] -then
+		{
+			get-button [ t btn_start_perspective ] | click  -metaKeys ""
+			concat "OpenAndResetStartPerspektive called: " [t btn_start_perspective ] | log
+		} -else {
+			concat "OpenAndResetStartPerspektive button disabled: " [t btn_start_perspective ] | log
+		}
 	}-error [val errorObj] -catch {
 		concat "ErrorObj: " $errorObj " for OpenAndResetStartPerspektive" | log
 	}
 	// we need reproducable conditions else labels etc suddenly vanish
 	get-eclipse-window | get-object | invoke setSize 1400 1024
-	concat "OpenAndResetStartPerspektive: Size is " [ get-eclipse-window | get-object | invoke getSize ] | log
+	// concat "OpenAndResetStartPerspektive: Size is " [ get-eclipse-window | get-object | invoke getSize ] | log
 }
 
 proc "create-entire-screenshot" [ val pathName [ cleanFileName [concat $imagesDir "screen.png"]]] {
