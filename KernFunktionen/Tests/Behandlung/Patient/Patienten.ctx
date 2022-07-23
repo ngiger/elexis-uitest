@@ -5,8 +5,8 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 4/28/22, 11:36 AM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 5:55 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -81,12 +81,19 @@ proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val 
 	get-view [t view_patients ] | get-editbox | set-focus
 	get-view [t view_patients ] | get-button [ t btn_create_new_patient ]  | click
 	with [get-window [t dlg_new_patient ]] {
-		with [get-editbox -after [get-label [ t dlg_new_patient_nom ]]] {
+	
+	   // Work around bug, that in italien family and firstname are translated as Nome (as per July 20222)
+	    get-editbox | set-text $familyName
+    	get-editbox -index 1 | set-text $firstName
+	
+	/*
+		with [get-editbox -after [get-label [// t dlg_new_patient_nom ]]] {
 			set-text $familyName
 		}
-		with [get-editbox -after [get-label [ t dlg_new_patient_firstname ]]] {
+		with [get-editbox -after [get-label [//  t dlg_new_patient_firstname ]]] {
 			set-text $firstName
 		}
+		*/
 		if [$male] {
 			get-combo -after [get-label [ t dlg_new_patient_sex ]] | select [ t dlg_new_patient_male ]
 		} -else {

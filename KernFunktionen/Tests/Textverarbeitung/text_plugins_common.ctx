@@ -5,8 +5,8 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 7/16/22, 4:12 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 3:50 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -137,12 +137,12 @@ proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $vorlagenDirOpenoffice "
 	if [ get-file $hiloVorlagen | get exists | equals true ] {
 		log "ImportAlleHilotecODF_Vorlagen already done"
 	} -else {
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_EZ" ".odt"
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "TR44_S1" ".odt"
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "TR44_S2" ".odt"
-		ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_S1" ".odt"
+		Import_Text_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
+		Import_Text_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
+		Import_Text_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_EZ" ".odt"
+		Import_Text_Vorlage  $vorlagenDirOpenoffice "TR44_S1" ".odt"
+		Import_Text_Vorlage  $vorlagenDirOpenoffice "TR44_S2" ".odt"
+		Import_Text_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_S1" ".odt"
 		str "ImportAlleHilotecODF_Vorlagen done" | write-lines $hiloVorlagen
 	}
 }
@@ -162,23 +162,23 @@ global [ val praxisDatenDir	[ concat [get-user-dir] "/elexis_praxis_daten" ] ]
 proc ConfigureDocx_TextVerarbeitung {
 	str "RCPTT praxisDatenDir" | write-lines [ concat $praxisDatenDir "/dummy.txt" ]
 	EnsureLibreOffficIsInstalled
-	get-menu -path "Datei/Einstellungen" | click -metaKeys ""
-	with [get-window Benutzervorgaben] {
-	    get-tree | select Textverarbeitung
+	get-preferences-menu | click
+	with [get-window [ t preferences ]] {
+	    get-tree | select  [ t Textverarbeitung ]
 	    get-button "0 : Docx-Document" | click -metaKeys ""
-	    with [get-editbox -after [get-label "Externes Textprogramm"]] {
+	    with [get-editbox -after [get-label [ t pref_externes_textprogramm ]]] {
 	        set-text $praxisDatenDir
 	    }
-	    get-tree | select "Textverarbeitung/Docx Textausgabe"
-	    with [get-editbox -after [get-label "Druck Befehl ohne konf. Drucker"]] {
+	    get-tree | select [ t pref_docx ]
+	    with [get-editbox -after [get-label [ t pref_docx_print_without_printer ]]] {
 	        click-text
 	        set-text [ concat "libreoffice --headless --convert-to pdf --outdir " $docxfOutDir]
 	    }
-	    with [get-editbox -after [get-label "Druck Befehl mit konf. Drucker"]] {
+	    with [get-editbox -after [get-label [ t pref_docx_print_with_printer ]]] {
 	        click-text
 	        set-text [ concat "libreoffice --headless --convert-to pdf --outdir " $docxfOutDir]
 	    }
-	    get-button "Anwenden und Schließen" | click -metaKeys ""	
+	    get-button [ t apply_and_close ] | click -metaKeys ""
 	}
 	// Close and reopen Textvorlagen_Management to ensure reloading
 	open-window-by-name [t Textvorlagen_Management]
@@ -194,17 +194,17 @@ proc ImportAlleDocx_Vorlagen [val directory $vorlagenDirMsWord ]
 	} -else {
 		$docxVorlagen | each [val vorlage] {
 		  concat "doxVorlage ist: " $vorlage | log
-			ImportHilotecODF_Vorlage  $vorlagenDirMsWord $vorlage ".docx"
+			Import_Text_Vorlage  $vorlagenDirMsWord $vorlage ".docx"
 		} 
 		concat "ImportAlleDocx_Vorlagen finished. " [ get-time ] " " $today | write-lines $docxVorlage
 		concat "ImportAlleDocx_Vorlagen finished. " [ get-time ] " " $today | log
 	}
 }
 
-proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
+proc Import_Text_Vorlage [val directory $vorlagenDirOpenoffice ]
 	[ val vorlage "AUF-Zeugnis" ] [val extension ".odt" ] {
 	global [val fullVorlagenName [ concat $directory "/" $vorlage $extension ] ] -override
-	concat "ImportHilotecODF_Vorlage should import: " $fullVorlagenName | log
+	concat "Import_Text_Vorlage should import: " $fullVorlagenName | log
 	get-file $fullVorlagenName | get exists | assert-true -message [concat "File " $fullVorlagenName " not found"]
 	try -command {
 	    get-view  [t Textvorlagen_Management ] | click
@@ -218,7 +218,7 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
         set-text $vorlage
         }
 		try -command {
-		    get-table | select $vorlage -column "Name der Vorlage" | get-menu -path "Löschen" | click -metaKeys ""
+		    get-table | select $vorlage -column [ t Name_der_Vorlage ] | get-menu -path "Löschen" | click -metaKeys ""
 		} -catch {
 			concat $vorlage " " $extension " not yet imported" | log
 		}
@@ -229,16 +229,18 @@ proc ImportHilotecODF_Vorlage [val directory $vorlagenDirOpenoffice ]
 	} -catch {
 			concat [ t confirm_delete_template ] " not present" | log
 	}
-	get-view [t Textvorlagen_Management ] | get-button "Beliebige Vorlage.*importieren" | click
+	//  "Beliebige Vorlage.*importieren" import_any_template
+	get-view [t Textvorlagen_Management ] | get-button [ t import_any_template ] | click
 	try -command {
 		get-window Systemvorlage | get-button [t yes] | click
 		concat "Systemvorlage " $vorlage $extension " wurde importiert" | log
 	} -catch {
-		concat $vorlage $extension " ist keine Systemvorlage" | log
+		concat $vorlage $extension " is not a system template" | log
 	}
 	try -command {
+	//  "Ersetzen.*" replace_template
 		with [get-window -class TextTemplateImportConflictDialog] {
-			get-button "Ersetzen.*" | click
+			get-button [ t replace_template ] | click
 			get-button OK | click
 		}
 		concat "Vorlage: " $vorlage " existiert bereits, wurde ersetzt" | log

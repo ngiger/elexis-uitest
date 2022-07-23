@@ -47,7 +47,6 @@
    </plugins>
 
    <features>
-     <!-- from elexis-3-base -->
       <feature id="at.gruber.elexis.mythic22.feature" installMode="root"/>
       <feature id="at.medevit.elexis.agenda.feature" installMode="root"/>
       <feature id="at.medevit.elexis.bluemedication.feature" installMode="root"/>
@@ -139,8 +138,6 @@
       <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
-
-      <!-- from elexis-3-core -->
       <feature id="org.eclipse.justj.openjdk.hotspot.jre.full" installMode="root"/>
       <feature id="ch.elexis.core.application.feature" installMode="root"/>
       <feature id="ch.elexis.core.common.feature" installMode="root"/>
@@ -150,8 +147,11 @@
       <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
       <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
       <feature id="ch.elexis.core.spotlight.feature" installMode="root"/>
-      <!-- to get the texteditor -->
-      <!-- changes a lot in the preferences menu feature id="org.eclipse.platform" installMode="root"/--> 
+      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
    </features>
 
    <configurations>
@@ -177,6 +177,7 @@
       <plugin id="org.slf4j.jcl" autoStart="true" startLevel="1" />
       <plugin id="org.slf4j.jul" autoStart="true" startLevel="1" />
       <plugin id="org.slf4j.log4j" autoStart="true" startLevel="1" />
+      <property name="GDK_BACKEND" value="x11" os="linux" />
    </configurations>
 
    <repositories>

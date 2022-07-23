@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _mc14UFVdEemNNe-dXP1Xqg
-Runtime-Version: 2.5.2.202109092356
-Save-Time: 12/18/21, 12:25 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 3:41 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -26,7 +26,7 @@ close-window-if-open "Kassenbuch" // We must close it, or the ACE change does no
 /*
 ConfigureHilotecODF_TextVerarbeitung
 TextVorlagenEntfernen Liste
-ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Liste" ".odt"
+Import_Text_Vorlage  $vorlagenDirOpenoffice "Liste" ".odt"
 */
 
 OpenAndResetStartPerspektive
@@ -83,7 +83,7 @@ with [get-view Kassenbuch] {
 }
 
 get-button "Menü anzeigen" | click
-ImportHilotecODF_Vorlage  $vorlagenDirOpenoffice "Liste" ".odt"
+Import_Text_Vorlage  $vorlagenDirOpenoffice "Liste" ".odt"
 get-view Kassenbuch | get-menu -path Drucken | click
 get-window "Dokumentvorlage nicht gefunden" | get-button OK | click
 get-window Kassenbuch | get-button Abbrechen | click

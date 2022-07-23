@@ -1,11 +1,8 @@
 #!/usr/bin/env nix-shell
 # call it: nix-shell start_eclipse.nix
 with import <nixpkgs> {};
-let mvn = pkgs.maven.override { jdk = pkgs.openjdk11; };
-in mkShell {
-  buildInputs = [ mvn pkgs.jq pkgs.adoptopenjdk-hotspot-bin-11 pkgs.ruby_3_0 pkgs.rubyPackages_3_0.rugged];
+mkShell {
   NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
-    xvfb-run mvn openjdk11 ruby rubyPackages.rugged # for development
     zlib
     dbus
     git

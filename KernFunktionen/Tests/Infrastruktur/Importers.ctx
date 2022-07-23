@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.5.2.202109092356
-Save-Time: 12/18/21, 11:16 AM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 10:10 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -18,8 +18,8 @@ Entry-Name: .ecl.context
 
 proc "OpenLeistungen" {
 	// this makes problem get-button [ t btn_services ] | click
-	open-window-by-name "Codes"
-	with [get-view Codes] {
+	open-window-by-name [ t codes ]
+	with [get-view [ t codes ]] {
 		 get-tab-folder | key-type "M1+m"
 	}
 }
@@ -33,10 +33,21 @@ proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 	}
 }
 
+if [ safe-get-java-property "user.language" |  eq "de" ] {
+	SetzeSpracheBeiImportern deutsch
+} -else {
+	if [ safe-get-java-property "user.language" |  eq "it" ] {
+		SetzeSpracheBeiImportern Italiano
+	} -else {
+		SetzeSpracheBeiImportern "fran.*ais"
+	}
+}
+
 proc "WaitImportFinished" [ val importerName "ZZZ" ] [ val maxWait 90 ] {
 	loop [val i 0] {
 		try {
-			with [get-button "Zeigt Hintergrundoperationen in der Sicht 'Fortschritt' an."] {
+			with [get-button [ t show_background_operation] ] {
+			/// get-button "Affiche les opérations en arrière-plan dans la vue Progression" | click -metaKeys ""
 				// concat "ReadTarmed: Must wait another 10 seconds for window lang " [ safe-get-java-property "user.language"  ] " window: " [ t Import_erfolgreich ] " erfolgreich i is "  $i  " max " $maxWait | log
 			    concat "WaitImportFinished: " $importerName [ get-property tooltip -raw ] " " $i " of " $maxWait | log
 				wait 10000 // Wait 10 seconds, but at most 5 minutes
@@ -147,12 +158,12 @@ proc "ReadBlocksExchange" [ val file  [ concat $rcpttDir "/blocks_landarztpraxis
 	OpenLeistungen
 	concat "ReadBlocksExchange file is: " $file | log
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange_1.png"]
-	with [get-view Codes] {
+	with [get-view [ t codes ]] {
 		get-tab-folder | get-tab-item [ t blocks ] | click
 		get-editbox -after [get-label [ t Name ] ] | set-focus
 	}
 	get-button [ t show_menu ] | click
-	get-view Codes | get-menu -path [ t btn_import ] | click
+	get-view [ t codes ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	ExecuteDataImport $file
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadBlocksExchange.png"]
@@ -178,10 +189,10 @@ proc "AssertNoErrorInProgress" {
 proc "ReadAnalysenListe" [ val file [ concat $rcpttDir "/EAL_01.04.2020.xlsx" ] ] {
 	OpenLeistungen
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadEAL_1.png"]
-	get-view Codes | get-tab-folder | get-tab-item "EAL 2009" | click
+	get-view [ t codes ] | get-tab-folder | get-tab-item "EAL 2009" | click
 	concat "ReadAnalysenListe file is: " $file | log
 	get-button [ t show_menu ] | click
-	get-view Codes | get-menu -path [ t btn_import ] | click
+	get-view [ t codes ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	ExecuteDataImport $file
 	// TODO: Warum kommt der Fehler beim Import for Input String "1'000"
@@ -210,13 +221,13 @@ proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR
 	WaitImportFinished "Before Tarmed" // Just in case there is still another import running
 	OpenLeistungen
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_1.png"]
-	with [get-view Codes] {
+	with [get-view [ t codes ]] {
 		get-tab-folder | get-tab-item Tarmed | click
 		get-editbox -after [get-label Ziffer] | set-focus
 	}
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadTarmed_2.png"]
 	get-button [ t show_menu ] | click
-	get-view Codes | get-menu -path [ t btn_import ] | click
+	get-view [ t codes ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File $file
 	with [get-window [ t view_data_import ]] {
 		get-button [ t btn_data_import_search ] | click
@@ -234,7 +245,7 @@ proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR
 	WaitImportFinished "Tarmed"
 }
 
-proc "ReadDataImport" [ val file [ concat $rcpttDir "/Universal_patienten.xls" ] ]
+proc "ReadDataImport" [ val file [ concat $rcpttDir "/Universal_patienten.xls" ] ] [ val fType XLS ]
 	[ val tab [ t Kontakt_Importer ] ] {
 	concat "ReadDataImport tab " $tab " from " $file " exists? " [ get-file $file | get exists ] | log
 	get-file $file| get exists | verify-true
@@ -242,6 +253,7 @@ proc "ReadDataImport" [ val file [ concat $rcpttDir "/Universal_patienten.xls" ]
 	get-window [ t view_general_data_import ] | get-tab-folder | get-tab-item $tab | click
 	set-dialog-result File $file
 	with [get-window [ t view_general_data_import  ] ] {
+	    get-combo | select $fType
 		get-button [ t btn_dataimport_select_file ] | click
   		get-eclipse-window | gen-screenshot  [concat $imagesDir "ReadDataImport.png"]
 		get-button [ t ok ] | click
@@ -250,16 +262,16 @@ proc "ReadDataImport" [ val file [ concat $rcpttDir "/Universal_patienten.xls" ]
 
 proc "ReadComplimentary" [ val file ] {
 	OpenLeistungen
-	with [get-view Codes] {
+	with [get-view [ t codes ]] {
 	    get-tab-folder | get-tab-item [ t Komplementaermedizin ] | click
 		get-eclipse-window | gen-screenshot [concat $imagesDir "ReadComplimentary_starting.png"]
 	}
 	// get-button "Menü anzeigen" -index 2 | click
-	get-view Codes | get-menu -path [ t btn_import ] | click
+	get-view [ t codes ] | get-menu -path [ t btn_import ] | click
 	set-dialog-result File [ concat $rcpttDir "/complementary_24022020.csv" ]
 	get-window [ t view_data_import ] | get-button [ t btn_data_import_search ] | click
 	get-window [ t view_data_import ] | get-button OK | click
-	get-view Codes | get-button [ t btn_execute_search ] | click
+	get-view [ t codes ] | get-button [ t btn_execute_search ] | click
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadComplimentary_done.png"]
 }
 

@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _ddB9ELBUEemub6f3erWwag
-Runtime-Version: 2.4.2.201905080442
-Save-Time: 11/6/19, 6:12 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 2:01 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -20,13 +20,6 @@ HandleMissingInvoiceSystems
 
 OpenAndResetStartPerspektive
 
-if [ safe-get-java-property "user.language" |  eq "de" ] {
-	SetzeSpracheBeiImportern deutsch
-} -else {
-	SetzeSpracheBeiImportern "fran.*ais"
-}
-
-OpenAndResetStartPerspektive
 ReadAnalysenListe
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 7/16/22, 7:47 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 8:49 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -463,7 +463,7 @@ proc "kons-set-date" [ val newKonsDate $aWeekAgo ] {
 	concat "kons-set-date must set: " $newKonsDate | log
 	try {
 		get-view [ t kons_view ] | get-menu -path [ t Kons_Datum ] | click
-		with [get-window "Datum eingeben"] {
+		with [get-window [ t enter_date ] ] {
 		    with [get-canvas] {
 		        click
 		        click
@@ -551,7 +551,7 @@ proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
 			FallSetVersicherungsNummer -fall $caseName
 			FallSetCostBearer -name $default_KK -printId [ concat $familyName " " $firstName ]
 			FallSetDefaultInvoiceRecipient  $familyName $firstName
-			AllVerrechnungenEntfernen
+			// AllVerrechnungenEntfernen
 			DiagnoseEntfernen
 			kons-add-tarmed [ concat $tarmed ]
 			kons-add-artikelstamm -item_short Losartan -item_long $Losartan

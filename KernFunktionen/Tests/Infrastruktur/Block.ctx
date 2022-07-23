@@ -5,16 +5,16 @@ Element-Name: Block
 Element-Type: context
 Element-Version: 2.0
 Id: _znSy0FtwEemvCbb2Y6o5tA
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 4/13/19 10:21 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 11:56 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 proc "SelectBlockInBlocks" [ val blockName "arzt_Berichte \\(KVG\\)" ] {
-	open-window-by-name Codes
-	with [ get-view Codes ]	{
+	open-window-by-name [ t codes ]
+	with [ get-view [ t codes ] ]	{
 		get-tab-folder | get-tab-item "Blöcke" | click
 		try {
 			get-tree | select $blockName
@@ -28,11 +28,11 @@ proc "SelectBlockInBlocks" [ val blockName "arzt_Berichte \\(KVG\\)" ] {
 
 proc "DeleteBlockInBlocks" [ val blockName "arzt_Berichte \\(KVG\\)" ] {
 	concat "DeleteBlockInBlocks for " $blockName " started" | log
-	open-window-by-name Codes
+	open-window-by-name [ t codes ]
 	SelectBlockInBlocks -blockName $blockName | assert-true -message
 		[ concat "DeleteBlockInBlocks PreCondition: " $blockName " must be selectable" ]
-    get-window Codes | gen-screenshot [concat $imagesDir "DeleteBlockInBlocks_before_" $blockName ".png" ]
-	get-view Codes | get-tree | select $blockName | get-menu -path "Block löschen" | click
+    get-window [ t codes ] | gen-screenshot [concat $imagesDir "DeleteBlockInBlocks_before_" $blockName ".png" ]
+	get-view [ t codes ] | get-tree | select $blockName | get-menu -path "Block löschen" | click
 	wait 1000
 	let [ val afterDelete [ SelectBlockInBlocks  -blockName $blockName ] ] {
 		concat "DeleteBlockInBlocks:  After deleting. Now SelectBlockInBlocks returned for " $blockName " " $afterDelete " should be false" | log

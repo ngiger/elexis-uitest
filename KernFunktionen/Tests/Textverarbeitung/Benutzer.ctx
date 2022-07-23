@@ -5,8 +5,8 @@ Element-Name: Benutzer
 Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 7/16/22, 4:10 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 3:02 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -57,7 +57,6 @@ proc SetStandard4Cases {
 	    get-editbox -after [get-label [ t preferences_cases_invoicesystem ] ] | set-text KVG
 	    get-editbox -after [get-label [ t preferences_cases_standard_diagnosis ] ] | click-text
 	    get-button [ t preferences_cases_diagnosis ] | click -metaKeys ""
-//	    get-editbox -after [get-label  [ t preferences_cases_standard_diagnosis ] ] | set-text "U9"
 	    with [get-window [ t select_diagnosis ]] {
 	        get-editbox -after [get-label "Fil.*"] | set-text U
 	        get-table | select "U9.*" | double-click
@@ -65,15 +64,16 @@ proc SetStandard4Cases {
 	    get-button [ t apply_and_close ] | click -metaKeys ""
 	}
 }
+
 proc SetMandantenDetails [ val idMandant 1 ] {
 	concat "SetMandantenDetails" $idMandant " starting" | log
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
-		get-tree | select [ t Gruppen_und_Rechte ]
+		get-tree | select [ t prefs_users_and_rights ]
 		GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"]  | log
 		try {
 			get-table | select  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] | double-click
-	get-button [ t cancel ] | click
+			get-button [ t cancel ] | click
 		} -catch {
 			log "Mandant not found. Must create it"
 			get-button [ t cancel ] | click

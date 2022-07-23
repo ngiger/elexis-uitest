@@ -5,8 +5,8 @@ Element-Name: Preferences
 Element-Type: context
 Element-Version: 2.0
 Id: _tIpJwP9tEeiDKs20GBwclA
-Runtime-Version: 2.5.2.202109092356
-Save-Time: 12/14/21, 11:58 AM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/19/22, 3:53 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -105,8 +105,12 @@ proc "check-one-preference-item" [val prefName] {
 			global [val  imgName  [ replaceAll $imgName "/___" "/" ] ] -override
 			get-window [ t preferences ] | gen-screenshot -out $imgName
 		}
-		get-button [ t apply_and_close ] | get-property enablement -raw | assert-true -message [ concat "Button apply and close must be enabled for " $prefName ]
-		get-button [ t apply_and_close ] | click
+		try {
+			get-button [ t apply_and_close ] | get-property enablement -raw | assert-true -message [ concat "Button apply and close must be enabled for " $prefName ]
+			get-button [ t apply_and_close ] | click
+		} -error [val errorObj]  -catch {
+			concat "check-one-preference-item: failed apply_and_close: '" $curPrefMenu "' " $errorObj | log
+		}
 	}
 	// concat "check-one-preference-item: " $curLevel " " $prefName  " done" | log
 }

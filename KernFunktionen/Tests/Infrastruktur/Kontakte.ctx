@@ -5,7 +5,8 @@ Element-Name: Kontakte
 Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
-Save-Time: 8/7/20 1:17 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 8:04 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -104,6 +105,7 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 	} -else {
 		concat "Kontakt " $Name " in " $Ort " gefunden" | log
 		*/
+		log "xxx xxx"
 		open-window-by-name [ t Details_zum_Kontakt  ]
 		with [get-view [ t Details_zum_Kontakt  ]] {
 			get-editbox -after [get-label [ t field_Name ] ] | set-text $Name
@@ -157,8 +159,12 @@ proc "OrganisationErfassen"  [ val idOrganisation 1 ] {
 		click
 		get-button [ t Neuen_Kontakt_erstellen ] | click
 	}
+	// Must resize the window to make button organsation visible
+	get-window [ t Kontakt_erfassen ] | gen-screenshot [concat $imagesDir "organisation_" $idOrganisation "_before_resize.png"]
+	get-window [ t Kontakt_erfassen ] | get-object | invoke setSize 700 700
+	get-window [ t Kontakt_erfassen ] | gen-screenshot [concat $imagesDir "organisation_" $idOrganisation "_after_resiez.png"]
 	with [get-window [ t Kontakt_erfassen ]] {
-		get-button Organisation | check
+		get-button [ t Organisation ] | check
 		str [ t fields_OrganisationErfassen de ] |
 		// "Bezeichnung Zusatz Ansprechperson Geburtsdatum Strasse Plz Ort Telefon EMail"  |
 			split -sep ";" | foreach [val item]  {

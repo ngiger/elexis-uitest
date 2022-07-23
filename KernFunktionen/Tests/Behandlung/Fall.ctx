@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 6/8/22, 6:47 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/23/22, 8:36 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -223,7 +223,7 @@ proc DruckeBriefZuAut [val adrName $default_KK] [val adrPostalcode 5401] {
  */
 proc FallSetCostBearer [val name AEROSANA] [ val printId "None" ] {
 	get-view  [ t Fall ] | get-link  [t fall_cost_bearer] | get-property enablement -raw | log
-	get-view  [ t Fall ] | get-editbox -after [get-label "Notwendige Daten"] -index 1 | get-property enablement -raw | log
+	get-view  [ t Fall ] | get-editbox -after [get-label [ t notwendige_daten ] ] -index 1 | get-property enablement -raw | log
 	try {
 		get-view [t Fall] | get-link [t fall_cost_bearer] | click
 		with [get-window [t select_contact]] {
