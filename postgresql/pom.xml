@@ -37,9 +37,9 @@
   </properties>
   <modules>
     <!--
-    <module>../elexis-${useBranch}</module>
     -->
     <module>../setup</module>
+    <module>../elexis-${useBranch}</module>
     <module>../KernFunktionen</module>
   </modules>
   <build>
