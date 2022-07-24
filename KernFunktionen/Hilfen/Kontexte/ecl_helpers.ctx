@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/24/22, 11:36 AM
+Save-Time: 7/24/22, 1:12 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -201,6 +201,7 @@ concat "translations_de uri is: "  [uri-from-path [concat [get-java-property use
 global [ val translations [ map
 	[ entry de [ read-properties -uri [uri-from-path [concat [get-java-property user.home]"/elexis/rcptt/translations_de.properties" ] ] ] ]
 	[ entry fr [ read-properties -uri [uri-from-path [concat [get-java-property user.home] "/elexis//rcptt/translations_fr.properties" ] ] ] ]
+	[ entry it [ read-properties -uri [uri-from-path [concat [get-java-property user.home] "/elexis//rcptt/translations_it.properties" ] ] ] ]
 ] ]
 concat "translation read" | log
 
