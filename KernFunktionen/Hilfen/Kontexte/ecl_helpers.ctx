@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 7/19/22, 9:33 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/24/22, 11:36 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -181,9 +181,9 @@ proc CheckRestartElexis {
 			concat "CheckRestartElexis ms is now: " [ get-time ] " took " [  minus [ get-time ] $milliSecsBeforeRestart ] | log
 		}
 		minus [ get-time ] $milliSecsBeforeRestart | gt   5000 | log
-		minus [ get-time ] $milliSecsBeforeRestart | lt 120000 | log
-	    minus [ get-time ] $milliSecsBeforeRestart | gt   5000 | assert-true -message [ concat "CheckRestartElexis  Too fast ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
-		minus [ get-time ] $milliSecsBeforeRestart | lt 120000 | assert-true -message [ concat "CheckRestartElexis: Too slow ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
+		minus [ get-time ] $milliSecsBeforeRestart | lt 200000 | log
+	    minus [ get-time ] $milliSecsBeforeRestart | gt   5000 | assert-true -message [ concat "CheckRestartElexis  (min 5secs) Too fast ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
+		minus [ get-time ] $milliSecsBeforeRestart | lt 200000 | assert-true -message [ concat "CheckRestartElexis: (max 200secs) Too slow ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
 	}
 }
 
