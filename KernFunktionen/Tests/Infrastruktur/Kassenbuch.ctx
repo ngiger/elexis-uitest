@@ -5,48 +5,49 @@ Element-Name: Kassenbuch
 Element-Type: context
 Element-Version: 2.0
 Id: _fxEOwIYvEemIZK08LadI4A
-Runtime-Version: 2.4.1.201903190000
-Save-Time: 6/5/19 10:58 AM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/29/22, 1:05 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 proc "KassenbuchDrucken" {
-	open-window-by-name Kassenbuch
-	get-view Kassenbuch | get-menu -path Drucken | click
-	with [get-window "Kassenbuch"] {
-	    with [get-button "Datei drucken"] {
+	open-window-by-name [ t kassenbuch_name ]
+	get-view [ t kassenbuch_name ] | get-menu -path Drucken | click
+	with [get-window [ t kassenbuch_name ]] {
+	    with [get-button [ t kassenbuch_drucken ]] {
 	        click
-	        key-type Tab
 	    }
-	    get-button OK | click
+	    get-button [ t ok ] | click
+	    wait 5000 // 5 seconds
+	    CloseLibreOffice
     }
 }
 
 proc "Kassenbuch-Anzahl-Buchungen" {
-	get-view Kassenbuch | get-table | get-property itemCount -raw
+	get-view [ t kassenbuch_name ] | get-table | get-property itemCount -raw
 }
 
 proc "Kassenbuch-Kategorien-definieren" [ val kategorien "Alles" ] {
-	open-window-by-name Kassenbuch
-	get-view Kassenbuch | get-menu -path "Kategorien..." | click
-	with [get-window "Elexis-Kassenbuch"] {
+	open-window-by-name [ t kassenbuch_name ]
+	get-view [ t kassenbuch_name ] | get-menu -path [ t kassenbuch_kategorien ] | click
+	with [get-window [ t kassenbuch_elexis ]] {
 	    with [get-editbox] {
 	        set-text $kategorien
 	    }
-		get-window "Elexis-Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_Kategorien.png" ]
-	    get-button OK | click
+		get-window [ t kassenbuch_elexis ] | gen-screenshot [concat $imagesDir "kassenbuch_Kategorien.png" ]
+	    get-button [ t ok ] | click
 	}
 }
 
 proc "Kassenbuch-Zahlungsarten-definieren" [ val arten "Bar" ] {
-	open-window-by-name Kassenbuch
-	get-view Kassenbuch | get-menu -path "Zahlungsart..." | click
-	with [get-window "Elexis-Kassenbuch"] {
+	open-window-by-name [ t kassenbuch_name ]
+	get-view [ t kassenbuch_name ] | get-menu -path[ t kassenbuch_zahlungsart ] | click
+	with [get-window [ t kassenbuch_elexis ]] {
 	    get-editbox | set-text $arten
-		get-window "Elexis-Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_Zahlungsarten.png" ]
-	    get-button OK | click
+		get-window [ t kassenbuch_elexis ] | gen-screenshot [concat $imagesDir "kassenbuch_Zahlungsarten.png" ]
+	    get-button [ t ok ] | click
 	}
 }
 
@@ -55,9 +56,9 @@ proc "Kassenbuch-Einnahme-verbuchen" [ val beleg ] [ val datum "" ] [ val betrag
 	concat  "Kassenbuch-Einnahme-verbuchen" $beleg " 2:" $beleg " 3: " $datum " 4:" $betrag " 5:" $betreff
 		" 6:" $kategory " 7:" $zahlungsart " 8:" $buchungstext | log
 	let [ val itemsBefore [ Kassenbuch-Anzahl-Buchungen ] ]	{
-		get-view Kassenbuch | get-button "Einnahme verbuchen" | click
-		with [get-window "Buchung für Kassenbuch"] {
-		    // get-editbox -after [get-label "Einnahme verbuchen"] | set-focus
+		get-view Kassenbuch | get-button [ t kassenbuch_einnahme_verbuchen ] | click
+		with [get-window [ t kassenbuch_buchung ]] {
+		    // get-editbox -after [get-label [ t kassenbuch_einnahme_verbuchen ]] | set-focus
 		    with [get-editbox -after [get-label Beleg]] {
 		        set-text $beleg
 		    }
@@ -70,8 +71,8 @@ proc "Kassenbuch-Einnahme-verbuchen" [ val beleg ] [ val datum "" ] [ val betrag
 		    get-combo -after [get-label Kategorie] | select $kategory
 		    get-combo -after [get-label Zahlungsart] | select $zahlungsart
 		    get-editbox -after [get-label Buchungstext] | set-text $buchungstext
-			get-window "Buchung für Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_buchung_" $beleg ".png" ]
-		    get-button OK | click
+			get-window [ t kassenbuch_buchung ] | gen-screenshot [concat $imagesDir "kassenbuch_buchung_" $beleg ".png" ]
+		    get-button [ t ok ] | click
 		}
 		let [ val itemsAfter [ get-view Kassenbuch | get-table | get-property itemCount -raw ] ]	{
 			concat "Kassenbuch-Einnahme-verbuchen should one item more than " $itemsBefore " before. Now we have " $itemsAfter | log
@@ -83,11 +84,11 @@ proc "Kassenbuch-Einnahme-verbuchen" [ val beleg ] [ val datum "" ] [ val betrag
 }
 
 proc "Kassenbuch-Zwischenbilanz" [ val aktuellerStand ] {
-	get-view Kassenbuch | get-button "Zwischenbilanz erstellen" | click
-	with [get-window "Kassenbestand abgleichen"] {
-	    get-editbox -after [get-label "Geben Sie bitte den abgezählten Betrag in der Kasse ein"] | set-text $aktuellerStand
-	    get-window "Kassenbestand abgleichen" | gen-screenshot [concat $imagesDir "kassenbuch_Zwischenbilanz" $aktuellerStand ".png" ]
-	    get-button OK | click
+	get-view Kassenbuch | get-button [ t kassenbuch_zwischenbilanz ] | click
+	with [get-window [ t kassenbuch_abgleichen ]] {
+	    get-editbox -after [get-label [ t kassenbuch_enter_betrag ]] | set-text $aktuellerStand
+	    get-window [ t kassenbuch_abgleichen ] | gen-screenshot [concat $imagesDir "kassenbuch_Zwischenbilanz" $aktuellerStand ".png" ]
+	    get-button [ t ok ] | click
 	}
 }
 
@@ -97,11 +98,11 @@ proc "Kassenbuch-stornieren" [ val beleg ] {
 
 proc "Kassenbuch-Zeitraum" [ val vonDate ] [ val bisDate ] {
 	get-view Kassenbuch | get-menu -path Zeitraum | click
-	with [get-window "Elexis Kassenbuch"] {
+	with [get-window [ t kassenbuch_elexis ]] {
 	    get-button "<" | click
 	    get-button "<<" | click
-	    get-window "Elexis Kassenbuch" | gen-screenshot [concat $imagesDir "kassenbuch_zeitraum" $vonDate "-" $$bisDate ".png" ]
-	    get-button OK | click
+	    get-window [ t kassenbuch_elexis ] | gen-screenshot [concat $imagesDir "kassenbuch_zeitraum" $vonDate "-" $$bisDate ".png" ]
+	    get-button [ t ok ] | click
 	}
 }
 

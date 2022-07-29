@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/24/22, 1:42 PM
+Save-Time: 7/29/22, 8:18 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -199,7 +199,7 @@ proc "ReadAnalysenListe" [ val file [ concat $rcpttDir "/EAL_01.04.2020.xlsx" ] 
 	// AssertNoErrorInProgress
 }
 
-proc "ReadMigel" [ val file [ concat $rcpttDir "/MiGeL-01012019_" $defaultLanguage ".csv" ] ] {
+proc "ReadMigel" [ val file [ concat $rcpttDir "/migel_" $defaultLanguage ".csv" ] ] {
 	concat "ReadMigel started for: " $file | log
 	try {
 		open-window-by-name [ t daten_artikel ]
@@ -244,6 +244,32 @@ proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR
 	}
 	concat "ReadTarmed: Start wait for Import erfolgreich" | log
 	WaitImportFinished "Tarmed"
+}
+
+proc "CheckTarmedPosition" [ val position  "00 .*/00.01 .*/00.01.01 .*" ] [ val shortName "01.01.01" ] {
+	try {
+		open-window-by-name [ t codes ]
+		with [get-view [ t codes ]] {
+			restore
+			t btn_show_list  | log
+		    get-button [ t btn_show_list ] | click	    
+		    get-tab-folder | get-tab-item Tarmed | click
+		    key-type "M1+m"
+		    with [get-editbox -after [get-label Ziffer]] {
+		        set-focus
+		    }
+		    get-eclipse-window | gen-screenshot [concat $imagesDir "Tarmed-select.png"]
+		    // next line is okay
+		    get-view [ t codes ] | get-tree | select $position
+		    get-eclipse-window | gen-screenshot [concat $imagesDir "Tarmed-select-" $shortName ".png"]
+		}
+		concat "select-tarmed-leistung " $shortName " passed in CheckTarmedPosition" | log
+	} -error [val errorObj] -catch {
+		global [val tarmed_error [ concat "select-tarmed-leistung " $shortName " failed in CheckTarmedPosition. " [$errorObj | get message] ] ]
+		log $tarmed_error
+	    get-eclipse-window | gen-screenshot [concat $imagesDir "Tarmed-select-" $shortName ".-failed.png"]
+		bool false | assert-true -message $tarmed_error	    
+	}	
 }
 
 proc "ReadDataImport" [ val file [ concat $rcpttDir "/Universal_patienten.xls" ] ] [ val fType XLS ]

@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _d0UGkLBSEemub6f3erWwag
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/23/22, 2:00 PM
+Save-Time: 7/29/22, 8:22 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -18,28 +18,8 @@ open-window-by-name [ t daten_artikel ]
 
 OpenAndResetStartPerspektive
 ReadTarmed
-OpenAndResetStartPerspektive
-try {
-	open-window-by-name [ t codes ]
-	with [get-view [ t codes ]] {
-		restore
-		t btn_show_list  | log
-	    get-button [ t btn_show_list ] | click	    
-	    get-tab-folder | get-tab-item Tarmed | click
-	    key-type "M1+m"
-	    with [get-editbox -after [get-label Ziffer]] {
-	        set-focus
-	    }
-	    get-eclipse-window | gen-screenshot [concat $imagesDir "TarmedImported-select-tarmed.png"]
-	    // next line is okay
-	    get-view [ t codes ] | get-tree | select "00 .*/00.01 .*/00.01.01 .*"
-	    get-eclipse-window | gen-screenshot [concat $imagesDir "TarmedImported-select-tarmed-00.01.01.png"]
-	}
-	log "select-tarmed-leistung passed in ImportTarmed"
-} -error [val errorObj] -catch {
-	concat "select-tarmed-leistung failed in ImportTarmed. " [$errorObj | get message]  " But we want to continue anyway" | log
-    get-eclipse-window | gen-screenshot [concat $imagesDir "TarmedImported-select-tarmed-00.01.01-failed.png"]
+CheckTarmedPosition
+// CheckTarmedPosition -position "99 18 asdf" -shortName "invalid"
 
-}
 // Ende
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
