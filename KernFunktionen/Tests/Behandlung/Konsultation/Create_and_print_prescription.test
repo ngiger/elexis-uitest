@@ -1,0 +1,45 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Element-Name: Create_and_print_prescription
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _D7-c0A9mEe28EodTjFsVbw
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/29/22, 7:47 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+/*  VOn Hand existierendes Rezept geändert
+with [get-view Rezepte] {
+    get-table | select "29.07.2022 Test Alfred"
+    get-list | select "Nolvadex Tabl 20 mg 30 Stk " | get-menu -path "Ändern..." | click -metaKeys ""
+}
+with [get-window Artikeldetail] {
+    get-button "Freitext de-/aktivieren" | click -metaKeys ""
+    get-editbox | set-text "Freier Text RCPTGT"
+    get-button OK | click -metaKeys ""
+}
+//     select "Co-Losartan Sandoz Filmtabl 100\\/12.5mg \\(neu\\) 28 Stk <34.0> " | double-click
+
+// We add always lines to the latest prescription
+	    let [ val nrItems [ get-item -path Administration | get-property "getParent().getColumns().length" -raw ] ] {
+
+*/
+// CreatePrescription
+TextPluginSelect docx
+get-view Rezepte | click
+SelectPatient -familyName "CheckArtikelstamm" -firstName "Barbara" -mustExist true
+get-view Rezepte | click
+get-view Rezepte | close // TODO: Warum werden hier die Rezepte nicht richtig aufdatiert
+open-window-by-name Rezepte
+SelectLastPrescripion
+AddMediToPrescription
+AddMediToPrescription -itemName "Losartan.*" -morning 1 -lunch 1 -supper 1 -night 0 -instructions "Langsam kauen" -freetext "First text from RCPTT"
+AddMediToPrescription -itemName "Paroxetin.*" -morning 0 -lunch 0 -supper 2 -night 1 -instructions "mit mind. 1 Tasse Tee" -freetext "Second free text from RCPTT"
+PrintPrescription
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

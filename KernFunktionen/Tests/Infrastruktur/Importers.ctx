@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 8:18 AM
+Save-Time: 7/29/22, 4:50 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -24,6 +24,58 @@ proc "OpenLeistungen" {
 	}
 }
 
+proc "AddEigenleistung" [ val short_name "m" ] [ val name "MeineBesteLeistung" ]
+ [ val invoice_cents 50000 ] [ val cost_cents 10000 ] [ val needTime 7 ] {
+	OpenLeistungen
+	with [get-view [ t codes ]] {
+		get-tab-folder | get-tab-item Eigenleistung | click
+		get-editbox -after [get-label Code ] | set-focus
+	    get-button "Eigene Leistungen hinzufügen" | click -metaKeys ""
+	}
+	with [get-window Eigenleistung] {
+	    with [get-editbox -after [get-label "Kürzel"]] {
+	        set-text $short_name
+        }
+	    with [get-editbox -after [get-label Name]] {
+	        set-text $name
+		}
+	    with [get-editbox -after [get-label "Kosten (Rp.)"]] {
+	        set-text $invoice_cents
+	    }
+	    with [get-editbox -after [get-label "Preis (Rp.)"]] {
+	        set-text $cost_cents
+	    }
+	    get-editbox -after [get-label Zeitbedarf] | set-text 5
+		get-button [ t ok ] | click -metaKeys ""
+    }
+}
+
+proc "ImportEigenDiagnosen"  [ val file  [ concat $rcpttDir "/Eigendiagnosen.csv"] ] {
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadEigendiagnosen_0.png"]
+	OpenLeistungen
+	concat "ReadEigendiagnosen file is: " $file | log
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadEigendiagnosen_1.png"]
+	with [get-view [ t codes ]] {
+		get-tab-folder | get-tab-item [ t diag_eigendiagnosen ] | click
+		get-editbox | set-focus
+	}
+	get-button [ t show_menu ] | click
+	get-view [ t codes ] | get-menu -path [ t btn_import ] | click
+	set-dialog-result File $file
+	ExecuteDataImport $file
+	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadEigendiagnosen.png"]
+}
+
+proc "VerifyEigendiagnose" [ val name  "Tauglichkeitsuntersuchung Führerschein" ] {
+	OpenLeistungen
+	with [get-view [ t codes ]] {
+		get-tab-folder | get-tab-item [ t diag_eigendiagnosen ] | click
+		get-editbox | set-focus
+		get-tree | select [concat ".*" $name ]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "Eigendiagnose_" $name ".png"]
+		concat "VerifyEigendiagnose: " $name " was successful" | log
+	}
+}
 proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
 	get-preferences-menu | click
 	with [get-window [t preferences ] ] {

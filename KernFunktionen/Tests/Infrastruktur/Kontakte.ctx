@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/23/22, 8:04 PM
+Save-Time: 7/29/22, 1:23 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -105,7 +105,6 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 	} -else {
 		concat "Kontakt " $Name " in " $Ort " gefunden" | log
 		*/
-		log "xxx xxx"
 		open-window-by-name [ t Details_zum_Kontakt  ]
 		with [get-view [ t Details_zum_Kontakt  ]] {
 			get-editbox -after [get-label [ t field_Name ] ] | set-text $Name

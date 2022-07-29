@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/23/22, 8:49 PM
+Save-Time: 7/29/22, 8:35 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -103,12 +103,7 @@ proc "kons-neue-diagnose" [ val reiter ] [ val item ] {
 		get-group [ t alle_leistungen ] | get-editbox | set-focus
 		get-tab-folder | get-tab-item $reiter | click
 		with [get-group [ t alle_leistungen ]] {
-		get-editbox | set-focus
-		with [get-tree] {
-			select $item
-			get-item -path $item | double-click
-			get-item -path $item | click
-		}
+			get-tree | select [ concat ".*" $item ] | double-click
 		}
 	}
 
@@ -210,7 +205,8 @@ proc "kons-add-artikelstamm" [ val item_short ] [ val item_long ] {
 	}
 }
 
-proc "kons-add-eigenleistung" [ val itemName  "Tauglichkeitsuntersuchung Führerschein" ] {
+proc "kons-add-eigenleistung" [ val itemName  "MeineBesteLeistung" ] {
+	ActivateVisibleKonsView
 	let [val nrItemsBefore [ kons-get-nr-invoiced-items ] ] {
 		PressAddLeistungToKons
 		with [get-view [ t leistungen ] ] {
@@ -594,6 +590,110 @@ proc DiagnoseEntfernen {
 				log -message "No diagnosis to remove"
 			}
 		}
+}
+
+proc EnableTab [ val view_name "Diagnose" ] [ val tab_name "Eigendiagnosen" ] {
+	get-preferences-menu | click
+	with [ get-window [ t preferences]] {
+	    get-tree | select [ t preferences_user_tabs ]
+	    get-combo -after [get-label View] | select $view_name
+	    try { // to move from availabe tabs to selected tabs
+			with [get-table -after [get-label [ t preferences_user_available_tabs ]] -index 1] {
+			concat "EnableTab: View name is " $view_name " tab_name is " $tab_name | log
+			select $tab_name
+			with [get-item -path $tab_name] {
+			    drag-start 56 6
+			    drag-enter 49 11 -detail move
+			    drag-over "-4" 23 -detail move
+			    drag-exit
+			    }
+			}
+		    with [get-table] {
+		        drag-enter 316 74 -detail move
+		        drag-over 92 36 -detail move
+		        drag-exit
+		        drag-accept 92 36 -detail move
+		    }
+		    get-table -after [get-label [ t preferences_user_available_tabs ]] -index 1 | drag-set-data
+		    get-table | drop 92 36 -detail move
+		    get-table -after [get-label [ t preferences_user_available_tabs ]] -index 1 | drag-end -detail move
+		}  -error [val errorObj] -catch {
+			concat "EnableTab: Unable to move " $view_name " tab " $tab_name " err: "  [$errorObj | get message] | log
+	    }
+	    get-combo -after [get-label View] | select $view_name
+	    get-table | select $tab_name
+		concat "EnableTab: EnableTab " $view_name " tab " $tab_name " selected is shown" | log
+	    get-button [ t Anwenden ] | click -metaKeys ""
+	    get-button [ t apply_and_close ] | click -metaKeys ""
+	}
+}
+/* get-view Rezepte | get-table | select "29.07.2022 Test Alfred"
+get-view Rezepte | get-table | get-item -path "29.07.2022 Test Alfred" | get-property "getParent().getItems().length"
+    | equals 1 | verify-true
+    */
+proc "SelectLastPrescripion" {
+	ActivateVisibleKonsView
+	with [get-view Rezepte] {
+	    click
+	    let [ val nrItems [  get-table | get-item -path ".*" | get-property "getParent().getItems().length" -raw ] ] {
+			concat "SelectLastPrescripion: My last item has index " [ minus $nrItems 1 | int ] | log
+			get-table | select [get-item -path ".*" -index [ minus $nrItems 1 | int ]  ]
+	    }
+	}
+}
+
+proc "CreatePrescription" {
+	ActivateVisibleKonsView
+	with [get-view Rezepte] {
+	    click
+	    get-button "Ein neues Rezept erstellen" | click -metaKeys ""
+	}
+}
+
+proc "AddMediToPrescription" [ val itemName "Nolvadex.*" ] [ val morning 0 ] [ val lunch 0 ] [ val supper 0 ]
+	[ val night 0] [ val instructions "" ] [ val reason "" ] [ val isReserve [ bool false ] ] [ val freetext "" ] {
+	SelectLastPrescripion
+	get-view Rezepte | get-button "Neue Zeile" | click -metaKeys ""
+	with [get-view Leistungen] {
+	//    get-group Alle | get-editbox -after [get-label Name] | set-focus
+	    with [get-group Alle] {
+	        get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
+	        get-view Leistungen | get-group Alle | get-button "Suche jetzt ausführen" | click -metaKeys ""
+	        wait 1000 // this takes some time sometimes
+	        get-table | select $itemName
+	        get-table | select $itemName | double-click
+	    }
+	}
+	get-view Rezepte | get-list | select $itemName| get-menu -path "Ändern..." | click -metaKeys ""
+	with [get-window Artikeldetail] {
+		get-editbox | get-property "getMessage()" -raw | log
+		if [ get-editbox | get-property "getMessage()" -raw | equals Freitext ] {
+			get-button "Freitext de-/aktivieren" | click -metaKeys ""
+		}
+	    get-editbox -index 0 | set-text $morning
+	    get-editbox -index 1 | set-text $lunch
+	    get-editbox -index 2 | set-text $supper
+	    get-editbox -index 3 | set-text $night
+	    get-editbox -index 4 | set-text $instructions
+	    if [ concat $freetext "" | eq "" ] {
+			log "Rezepte: No  Freetext"
+	    } -else {
+			concat "Rezepte: must add freetext " $freetext | log
+		    get-button "Freitext de-/aktivieren" | click -metaKeys ""
+		    get-editbox | set-text $freetext
+	    }
+	    if [ $isReserve | eq true ] {
+		    get-button Reservemedikation | check
+	    }
+	    get-button OK | click -metaKeys ""
+	}
+}
+
+proc "PrintPrescription" {
+	log "PrintPrescription starting"
+	SelectLastPrescripion
+	get-view Rezepte | get-button Drucken | click -metaKeys ""
+	log "PrintPrescription done"
 }
 
 // ENDE

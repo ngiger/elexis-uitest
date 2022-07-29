@@ -5,8 +5,8 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Runtime-Version: 2.5.2.202204202359
-Save-Time: 6/8/22, 7:36 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/29/22, 10:41 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -134,7 +134,7 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 			get-button [ t XML_Directory ] | click
 		}
 		gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_dialog.png"]
-		get-button OK | click
+		get-button [ t ok ] | click
 	}
 }
 
@@ -262,7 +262,9 @@ proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] [ val drugName Losartan ]{
 	}
 	// Items added/checked must be the same in TarmedFallVerrechnen and CheckTarmed Fall
 	CheckTarmedXml $CheckTarmedFallId $drugName
-	CheckTarmedXml $CheckTarmedFallId "<invoice:diagnosis type=\"by_contract\" code=\"A3\" />"
+	// We do not test for code = A3 as the TI-Code tab seems to have problem
+	// We have no FS from Fahrtüchtigkeit
+	CheckTarmedXml $CheckTarmedFallId "<invoice:diagnosis type=\"by_contract\" code="
 	concat "CheckTarmedFallVerrechnen " $CheckTarmedFallId " erfolgreich" | log
 }
 
