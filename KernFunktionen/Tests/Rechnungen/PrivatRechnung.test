@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gAMNcECkEeucZoJXQ1XGtg
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 7:48 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/30/22, 10:26 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -58,19 +58,24 @@ Import_Text_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
 ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
 // TextPluginSelect hilotec_odf
 
-global [ val konsDirektVorname	"Alejandro" ]
+global [ val privatPatientVorname	"Beat" ]
+global [ val privatPatientName	"PrivatPatient" ]
 
-if [ not [ SelectPatient PrivatPatient $konsDirektVorname] ] {
-	PatientenErstellen  PrivatPatient $konsDirektVorname true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
-	SelectPatient PrivatPatient $konsDirektVorname -mustExist true
+if [ not [ SelectPatient $privatPatientName $privatPatientVorname] ] {
+	PatientenErstellen  $privatPatientName $privatPatientVorname true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
+	SelectPatient $privatPatientName $privatPatientVorname -mustExist true
 }
 let [ val anfangs2022 "30.01.2022" ] [val caseLaw "privat" ] [val caseReason [t reason_KVG]] {
-	FallZuPatientErstellen -startDate $anfangs2022 -caseLaw $caseLaw -caseReason $caseReason
+	if [  FallZuPatientExistiert -text "privat.*offen.*" ] {
+		log "FallZuPatientExistiert"
+	} -else {
+		FallZuPatientErstellen -startDate $anfangs2022 -caseLaw $caseLaw -caseReason $caseReason
+	}
 	SelectFall -caseLaw $caseLaw -startDate $anfangs2022
 	FallSetVersicherungsNummer 87654329 -fall [ concat  ".*" $caseLaw ".*"  $anfangs2022 ".*"]
-	FallSetCostBearer -name "Helsana Unfall" -printId [concat "PrivatPatient "  $anfangs2022 ]
-	FallSetDefaultInvoiceRecipient PrivatPatient $konsDirektVorname
-	kons-erstellen [concat "PrivatPatient "  $anfangs2022 " now " [ now ] ] -createSecond true
+	FallSetCostBearer -name "Helsana Unfall" -printId [concat $privatPatientName " "  $anfangs2022 ]
+	FallSetDefaultInvoiceRecipient $privatPatientName $privatPatientVorname
+	kons-erstellen [concat $privatPatientName " "  $anfangs2022 " now " [ now ] ] -createSecond true
 	kons-set-date $anfangs2022
 	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
 	kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]

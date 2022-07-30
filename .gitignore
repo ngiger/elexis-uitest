@@ -7,3 +7,9 @@ runFromScratch/
 *#
 drop_create_db.sql
 .vagrant/
+de
+fr
+it
+os
+*.log
+*~

@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _mc14UFVdEemNNe-dXP1Xqg
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 1:10 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/30/22, 10:32 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -20,7 +20,7 @@ Entry-Name: .content
 
 // Either you add ConfigureHilotecODF_TextVerarbeitung as next line or BasicPrinting test was run before
 
-global [ val firstReceipt 100 ]
+global [ val firstReceipt 200 ]
 
 SetzeBenutzerRecht -recht "Kassenbuch" -role "user" -wert "A"
 close-window-if-open [ t kassenbuch_name ] // We must close it, or the ACE change does not apply
@@ -47,7 +47,7 @@ Kassenbuch-Einnahme-verbuchen -beleg [ $firstReceipt | plus 1 ] -betrag "24.55" 
 Kassenbuch-Zwischenbilanz -aktuellerStand "50.00"
 Kassenbuch-stornieren -beleg [ $firstReceipt | plus 1 ]
 Kassenbuch-Zwischenbilanz -aktuellerStand "24.00"
-KassenbuchDrucken
+// KassenbuchDrucken // TODO: docx muss Textdokument sofort in PDF umwandeln und nicht öffnen
 
 // Noch zu Testen
 // TODO: Anzahl Einträge variiert je nach Zeitraum

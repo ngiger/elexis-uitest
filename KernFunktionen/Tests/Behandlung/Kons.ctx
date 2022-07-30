@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 8:35 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/30/22, 10:02 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -635,10 +635,14 @@ proc "SelectLastPrescripion" {
 	ActivateVisibleKonsView
 	with [get-view Rezepte] {
 	    click
-	    let [ val nrItems [  get-table | get-item -path ".*" | get-property "getParent().getItems().length" -raw ] ] {
-			concat "SelectLastPrescripion: My last item has index " [ minus $nrItems 1 | int ] | log
-			get-table | select [get-item -path ".*" -index [ minus $nrItems 1 | int ]  ]
-	    }
+		try {
+		    let [ val nrItems [  get-table | get-item -path ".*" | get-property "getParent().getItems().length" -raw ] ] {
+				concat "SelectLastPrescripion: My last item has index " [ minus $nrItems 1 | int ] | log
+					get-table | select [get-item -path ".*" -index [ minus $nrItems 1 | int ]  ]
+		    }
+		} -catch {
+			concat "SelectLastPrescripion: okay if nrItems is 0" |log
+		}
 	}
 }
 
