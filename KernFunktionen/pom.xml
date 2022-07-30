@@ -149,8 +149,6 @@
               <arg>-nosplash</arg>
 	      <arg>-noregtool</arg>
               <arg>--use-config=rpctt</arg>
-              <arg>-Xms2048m</arg>
-              <arg>-Xmx4096m</arg>
               <arg>-eclipse.password=${user.home}/.eclipse/master</arg>
            </args>
             <vmArgs>
