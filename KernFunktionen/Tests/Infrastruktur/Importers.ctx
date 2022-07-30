@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 9:44 AM
+Save-Time: 7/30/22, 1:59 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -141,8 +141,10 @@ proc "SetArtikelstammOrigin2oddb2ml" {
 }
 
 proc "ExecuteDataImport" [ val file ] {
-	concat "ExecuteDataImport file "  $file " exists? " [get-file $file| get exists] | log
-	get-file $file| get exists | verify-true
+	let [ val fileStatus [ concat "file "  $file " exists? " [get-file $file| get exists] ] ] {
+		concat "ExecuteDataImport: " $fileStatus | log
+		get-file $file| get exists | bool | assert-true -message  $fileStatus 
+	}
 	with [get-window [ t view_data_import ]] {
 		get-button [ t btn_data_import_search ] | click
 		get-button OK | click
@@ -269,6 +271,16 @@ proc "ReadMigel" [ val file [ concat $rcpttDir "/migel_" $defaultLanguage ".csv"
 	get-eclipse-window | gen-screenshot [concat $imagesDir "ReadMigel.png"]
 }
 
+proc "CheckMigelItem" [ val itemName "Absaug" ] {
+	open-window-by-name [ t daten_artikel ]
+	with [ get-view [ t artikel ] ] {
+		get-tab-folder | get-tab-item MiGeL | click
+	    get-editbox -index 1 | set-text $itemName
+	    get-editbox -index 1 | set-focus
+	    get-view Artikel | get-table | select [ concat ".* " $itemName ".*"]
+    	get-eclipse-window | gen-screenshot [concat $imagesDir "Migel_" $itemName ".png"]
+	}
+}
 proc "ReadTarmed" [ val file  [ concat $rcpttDir "/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.mdb" ] ] {
 	WaitImportFinished "Before Tarmed" // Just in case there is still another import running
 	OpenLeistungen

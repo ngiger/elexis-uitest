@@ -122,40 +122,6 @@
               </filesets>
           </configuration>
         </plugin>
-        <plugin>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.8</version>
-          <executions>
-            <execution>
-              <id>copy-datafiles</id>
-              <phase>generate-sources</phase>
-              <configuration>
-                <target>
-                  <copy file="${project.basedir}/${save_run_from_scratch}" tofile="${rcptt-resources}/${save_run_from_scratch}" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/test.properties" tofile="${rcptt-resources}/test.properties" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/translations_it.properties" tofile="${rcptt-resources}/translations_it.properties" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/praxis_it.properties" tofile="${rcptt-resources}/praxis_it.properties" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/statistiken.xml" tofile="${user.home}/elexis/statistiken.xml" preservelastmodified="true" />
-                  <!-- Just to ensure that "${user.home}/elexis/extern getŝ created -->
-                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${user.home}/elexis/PDF/.just_to_create_directory" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/praxis_it.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
-                  <copy file="${project.basedir}/data/praxis_it.properties" tofile="${user.home}/elexis/PDF/.just_to_create_directory" preservelastmodified="true" />
-              </target>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
       <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
@@ -201,55 +167,16 @@
             </configuration>
           </execution>
           <execution>
-            <id>download-MiGeL-01.04.20.xlsx</id>
+            <id>download-MiGel_2022v2-de</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://wiki.elexis.info/images/d/db/MiGel-01.04.20.xlsx</url>
+              <url>https://medelexis.ch/wp-content/uploads/2022/04/MiGel_2022v2.csv</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
-              <outputFileName>MiGeL-01.04.20.xlsx</outputFileName>
-              <md5>5c4c349d210e9fb6ee1befa69676cb5c</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-MiGeL-01012019-de</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://download.elexis.info/download/migel/migel_01012019.csv.0</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <outputFileName>MiGeL-01012019_de.csv</outputFileName>
-              <md5>f9be54f8f2e551bcc60059b78f9c8e12</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-MiGeL-01012019-fr</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://download.elexis.info/download/migel/migel_01012019.csv.1</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <outputFileName>MiGeL-01012019_fr.csv</outputFileName>
-              <md5>6ba9e0b06ff1aa59e53fde9540e2f912</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-MiGeL-01012019-it</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://download.elexis.info/download/migel/migel_01012019.csv.0</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <outputFileName>MiGeL-01012019_it.csv</outputFileName>
-              <md5>f9be54f8f2e551bcc60059b78f9c8e12</md5>
+              <outputFileName>MiGel_2022v2.csv</outputFileName>
+              <md5>8d25362be2ab20f862edf4b9c6b25755</md5>
             </configuration>
           </execution>
           <execution>
@@ -317,6 +244,43 @@
           </execution>
         </executions>
       </plugin>
+        <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.8</version>
+          <executions>
+            <execution>
+              <id>copy-datafiles</id>
+              <phase>generate-sources</phase>
+              <configuration>
+                <target>
+                  <copy file="${rcptt-resources}/MiGel_2022v2.csv" tofile="${rcptt-resources}/migel_de.csv" preservelastmodified="true" />
+                  <copy file="${rcptt-resources}/MiGel_2022v2.csv" tofile="${rcptt-resources}/migel_fr.csv" preservelastmodified="true" />
+                  <copy file="${rcptt-resources}/MiGel_2022v2.csv" tofile="${rcptt-resources}/migel_it.csv" preservelastmodified="true" />
+                  <copy file="${project.basedir}/${save_run_from_scratch}" tofile="${rcptt-resources}/${save_run_from_scratch}" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/test.properties" tofile="${rcptt-resources}/test.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/translations_it.properties" tofile="${rcptt-resources}/translations_it.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Eigendiagnosen.csv" tofile="${rcptt-resources}/Eigendiagnosen.csv" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Privatrechnung.csv" tofile="${rcptt-resources}/Privatrechnung.csv" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Artikelstamm_Short_v5.xml" tofile="${rcptt-resources}/Artikelstamm_Short_v5.xml" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_de.properties" tofile="${rcptt-resources}/praxis_de.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${rcptt-resources}/praxis_fr.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_it.properties" tofile="${rcptt-resources}/praxis_it.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/statistiken.xml" tofile="${user.home}/elexis/statistiken.xml" preservelastmodified="true" />
+                  <!-- Just to ensure that "${user.home}/elexis/extern getŝ created -->
+                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_fr.properties" tofile="${user.home}/elexis/PDF/.just_to_create_directory" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_it.properties" tofile="${user.home}/elexis/extern/.just_to_create_directory" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/praxis_it.properties" tofile="${user.home}/elexis/PDF/.just_to_create_directory" preservelastmodified="true" />
+              </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
     </plugins>
   </build>
 </project>
