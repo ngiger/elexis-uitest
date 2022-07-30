@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 10:25 AM
+Save-Time: 7/30/22, 3:49 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -134,7 +134,11 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 			get-button [ t XML_Directory ] | click
 		}
 		gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_dialog.png"]
-		get-button [ t print ] | click
+		try {
+			get-button [ t print ] | click // for PDF Rechnung
+		} -catch {
+			get-button [ t ok ] | click // for Tarmed Rechnung
+		}
 	}
 }
 

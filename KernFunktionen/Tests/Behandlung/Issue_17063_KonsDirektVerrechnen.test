@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _r8134DV7EeuXVMkM-fyEfg
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/23/22, 5:44 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/30/22, 3:53 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -25,7 +25,7 @@ Entry-Name: .content
 ChangeMandant [ GetPraxisProperty praxis.mandant.2.Name ]
 // TextPluginSelect hilotec_odf
 
-global [ val konsDirektVorname	"Maxi" ]
+global [ val konsDirektVorname	"Norbert" ]
 
 if [ not [ SelectPatient DirektVerrechnen $konsDirektVorname] ] {
 	PatientenErstellen  DirektVerrechnen $konsDirektVorname true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
@@ -39,15 +39,22 @@ let [ val anfangs2020 "30.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason 
 	FallSetDefaultInvoiceRecipient DirektVerrechnen $konsDirektVorname
 	kons-erstellen [concat "DirektVerrechnen "  $anfangs2020 " now " [ now ] ] -createSecond true
 	kons-set-date $anfangs2020
-	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
+	kons-add-artikelstamm Nolvadex "Nolvadex Tabl .*"
 	kons-add-block
 	kons-add-tarmed -ziffer "10.0670" // Blutstillung
 	kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 }
 OpenAndResetStartPerspektive
+
 let [val expectedInvoiceNr [ GetHighestInvoiceNrOf | plus 1  ] ] {
 	get-view [t view_cases] | get-table | get-menu -path [t mnu_incoice_case] | click
-	RechnungAusgeben                  -invoiceId $expectedInvoiceNr
+	try {
+		get-window [t invoice_error] | get-label -index 1 | get-property caption -raw | log
+		bool false | assert-true -message  "KonsDirektVerrrechnung schlug fehl. Rechnung mit Fehler"
+	} -catch {
+		log "KonsDirektVerrrechnung konnte Rechnung erstellen"
+	}
+	RechnungAusgeben -invoiceId $expectedInvoiceNr
 	CheckTarmedFallVerrechnen -invoiceId $expectedInvoiceNr -drugName Nolvadex
 	CheckTarmedXml $expectedInvoiceNr "code=\"10.0670\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
 	CheckTarmedXml $expectedInvoiceNr "code=\"00.0060\"" //  "Konsultation, erste 5 Min. (Grundkonsultation)" // BLock Kons plus (KVG)

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
 Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 10:18 AM
+Save-Time: 7/30/22, 2:35 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -258,7 +258,21 @@ proc FallSetDefaultInvoiceRecipient  [val name ] [ val firstname ]  {
 		}
 	}
 }
+
+proc "GetNrOfCases"  {
+	get-view [t view_cases] | click
+	let [ val nrOfCases [ get-view [t view_cases] | get-table | get-items | length ] ] {
+		concat "GetNrOfCases returns " $nrOfCases | log
+		$nrOfCases | int
+	}
+}
+
 proc FallSetVersicherungsNummer [val nummer 123456] [val fall ".*"] {
+	if [ GetNrOfCases | eq 0 ] {
+		wait 3000
+		log "FallSetVersicherungsNummer: After wait"
+		GetNrOfCases
+	}
 	get-view [t view_cases] | get-table | select [concat $fall ".*"] | double-click
 	try {
 		// This works in french wher Cas is name for view Fälle (les cas) und Fall (le cas)

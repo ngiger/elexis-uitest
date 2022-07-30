@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _Mr6FcFFuEemrk7fLFkHFEw
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 5:28 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/30/22, 3:51 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -33,7 +33,7 @@ let [ val keyId patient.104. ] {
 		ImportPatFallKonsFromProperty patient.104.
 		let [ val invoiceId  [ GetHighestInvoiceNrOf ] ] {
 			AktuellenFallSchliessen
-			RechnungAusgeben -druckTyp [ t Als_Tarmed_Rechnung_ausdrucken ] -invoiceId $invoiceId
+			RechnungAusgeben -invoiceId $invoiceId
 			CheckTarmedFallVerrechnen -invoiceId $invoiceId -drugName Losartan
 		}
 	}
