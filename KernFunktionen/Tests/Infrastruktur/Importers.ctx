@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/30/22, 6:34 PM
+Save-Time: 7/30/22, 9:00 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -277,7 +277,7 @@ proc "CheckMigelItem" [ val itemName "Absaug" ] {
 		get-tab-folder | get-tab-item MiGeL | click
 	    get-editbox -index 1 | set-text $itemName
 	    get-editbox -index 1 | set-focus
-	    get-view Artikel | get-table | select [ concat ".* " $itemName ".*"]
+	    get-view  [ t artikel ]  | get-table | select [ concat ".* " $itemName ".*"]
     	get-eclipse-window | gen-screenshot [concat $imagesDir "Migel_" $itemName ".png"]
 	}
 }

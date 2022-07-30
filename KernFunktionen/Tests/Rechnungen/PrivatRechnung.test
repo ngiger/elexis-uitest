@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gAMNcECkEeucZoJXQ1XGtg
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 10:26 AM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/30/22, 10:36 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -17,6 +17,7 @@ Entry-Name: .content
 // TODO::
 // Kopieren von KonsDirectVerrechnen
 // Bank findet man via Raiffeisenbank
+
 TextPluginSelect docx
 
 get-preferences-menu | click
@@ -47,18 +48,12 @@ with [get-window [ t preferences ] ] {
     get-button [ t apply_and_close ] | click -metaKeys ""
 }
 
-/*
-TextPluginSelect hilotec_odf
-Import_Text_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S1" ".odt"
-Import_Text_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_S2" ".odt"
-Import_Text_Vorlage  $vorlagenDirOpenoffice "Privatrechnung_EZ" ".odt"
-*/
 // Siehe https://redmine.medelexis.ch/issues/17063
 // Offener Fall mit Konsultation kann nicht verrechnet werden
 ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
 // TextPluginSelect hilotec_odf
 
-global [ val privatPatientVorname	"Beat" ]
+global [ val privatPatientVorname	"Carlo" ]
 global [ val privatPatientName	"PrivatPatient" ]
 
 if [ not [ SelectPatient $privatPatientName $privatPatientVorname] ] {
@@ -85,12 +80,5 @@ let [val expectedInvoiceNr [ GetHighestInvoiceNrOf | plus 1  ] ] {
 	get-view [t view_cases] | get-table | get-menu -path [t mnu_incoice_case] | click
 	RechnungAusgeben -invoiceId $expectedInvoiceNr
 }
-/*
 
-ImportPatFallKonsFromProperty  patient.101.
-
-let [ val invoiceId  [ GetHighestInvoiceNrOf ] ] {
-	RechnungAusgeben		  -invoiceId $invoiceId -druckTyp "Privatrechnung auf Drucker"
-}
-*/
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

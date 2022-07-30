@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/30/22, 6:54 PM
+Save-Time: 7/30/22, 9:46 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -375,7 +375,11 @@ proc "preferences-use-macros-with-TI-and-Favoriten" {
 		get-tree | select [ t Anwender_Texteingabe ]
 		get-editbox -after [get-label [ t Makro_Zeichen ] ] | set-text "$"
 		get-button	[ t Makros_Verrechenbar_Favoriten ] | check
-		get-button [ t TI_Diagnosen ] | check
+		try {
+			get-button [ t TI_Diagnosen ] | check
+		} -catch {
+			concat "preferences-use-macros-with-TI-and-Favoriten button "  [ t TI_Diagnosen ] " not found" | log
+		}
 		get-button [ t apply_and_close ] | click
 	}
 }
@@ -383,11 +387,12 @@ proc "preferences-use-macros-with-TI-and-Favoriten" {
 proc "select-block" [ val blockName "arzt_Berichte"] {
 	open-window-by-name [  t leistungen ]
 	with [get-view [  t leistungen ]] {
+		restore
 		get-button [ t btn_show_list ]| click
 		get-tab-folder | get-tab-item Block | click
 		with [get-group [ t alle_leistungen ]] {
-		get-editbox -after [get-label Name ] | set-text $blockName
-		get-button [ t btn_execute_search ] | click
+			get-editbox -after [get-label Name ] | set-text $blockName
+			get-button [ t btn_execute_search ] | click
 		}
 	}
 	try {

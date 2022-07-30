@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 1:23 PM
+Save-Time: 7/30/22, 9:36 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -99,18 +99,16 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 	 [ val Kuerzel "" ]
 
 {
-/*
-	if [ SelectKontakt -bezeichnung1 $Name -location $Ort | eq false ] {
-		concat "Kontakt " $Name " in " $Ort " NICHT gefunden" | log
-	} -else {
-		concat "Kontakt " $Name " in " $Ort " gefunden" | log
-		*/
 		open-window-by-name [ t Details_zum_Kontakt  ]
+		get-view [ t tab_data_kontakte] | click
+		get-view [ t Details_zum_Kontakt] | click
 		with [get-view [ t Details_zum_Kontakt  ]] {
+			maximize
+			close-window-if-open [ t want_to_change_mandant ]
 			get-editbox -after [get-label [ t field_Name ] ] | set-text $Name
 			get-editbox -after [get-label [ t field_Geschlecht ] ] | set-text $Geschlecht
 			get-editbox -after [get-label [ t field_Vorname ] ] | set-text $Vorname
-			get-editbox -after [get-label [ t field_Zusatz ] ] | set-text $Zusatz
+//			get-editbox -after [get-label [ t field_Zusatz ] ] | set-text $Zusatz
 			get-editbox -after [get-label [ t field_Plz ] ] | set-text $Plz
 			get-editbox -after [get-label [ t field_Ort ] ] | set-text $Ort
 			get-editbox -after [get-label [ t field_Land ] ] | set-text $Land
@@ -121,6 +119,7 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 			get-editbox -after [get-label [ t field_Bemerkung ] ] | set-text $Bemerkung
 //			get-editbox -after [get-label [ t field_Kuerzel ] ] | set-text $Kuerzel
 			get-editbox -after [get-label [ t field_Titel ] ] | set-text $Titel
+			restore
 		}
 		get-eclipse-window | gen-screenshot [concat $imagesDir "kontakt_" $Name "_" $Vorname "_created.png"]
 //	}
