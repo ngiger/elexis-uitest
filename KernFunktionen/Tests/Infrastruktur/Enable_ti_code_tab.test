@@ -6,14 +6,14 @@ Element-Version: 3.0
 External-Reference: 
 Id: _iHZ1QA9IEe28EodTjFsVbw
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 2:25 PM
+Save-Time: 7/30/22, 6:53 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-EnableTab -view_name [ t preferences_cases_diagnosis ] -tab_name [ t diag_eigendiagnosen ]
-EnableTab -view_name [ t preferences_cases_diagnosis ] -tab_name [ t diag_ticode ]
+EnableTab -view_name [ t diag_name ] -tab_name [ t diag_eigendiagnosen ]
+EnableTab -view_name [ t diag_name ] -tab_name [ t diag_ticode ]
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

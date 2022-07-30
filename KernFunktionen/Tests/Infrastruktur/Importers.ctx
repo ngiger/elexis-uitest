@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 1:59 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/30/22, 6:34 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -30,22 +30,22 @@ proc "AddEigenleistung" [ val short_name "m" ] [ val name "MeineBesteLeistung" ]
 	with [get-view [ t codes ]] {
 		get-tab-folder | get-tab-item Eigenleistung | click
 		get-editbox -after [get-label Code ] | set-focus
-	    get-button "Eigene Leistungen hinzufügen" | click -metaKeys ""
+	    get-button [ t add_eigenleistung ] | click -metaKeys ""
 	}
-	with [get-window Eigenleistung] {
-	    with [get-editbox -after [get-label "Kürzel"]] {
+	with [get-window [ t eingeleistung_dialog]] {
+	    with [get-editbox -after [get-label [t eigenleistung_code]]] {
 	        set-text $short_name
         }
-	    with [get-editbox -after [get-label Name]] {
+	    with [get-editbox -after [get-label [t eigenleistung_name]]] {
 	        set-text $name
 		}
-	    with [get-editbox -after [get-label "Kosten (Rp.)"]] {
+	    with [get-editbox -after [get-label [t eigenleistung_cost]]] {
 	        set-text $invoice_cents
 	    }
-	    with [get-editbox -after [get-label "Preis (Rp.)"]] {
+	    with [get-editbox -after [get-label [t eigenleistung_price]]] {
 	        set-text $cost_cents
 	    }
-	    get-editbox -after [get-label Zeitbedarf] | set-text 5
+	    get-editbox -after [get-label [t eigenleistung_time]] | set-text 5
 		get-button [ t ok ] | click -metaKeys ""
     }
 }

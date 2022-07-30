@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 3:43 PM
+Runtime-Version: 2.5.4.202207162355
+Save-Time: 7/30/22, 6:54 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -608,7 +608,7 @@ proc EnableTab [ val view_name "Diagnose" ] [ val tab_name "Eigendiagnosen" ] {
 	get-preferences-menu | click
 	with [ get-window [ t preferences]] {
 	    get-tree | select [ t preferences_user_tabs ]
-	    get-combo -after [get-label View] | select $view_name
+	    get-combo -after [get-label [t prefs_user_services_view]] | select $view_name
 	    try { // to move from availabe tabs to selected tabs
 			with [get-table -after [get-label [ t preferences_user_available_tabs ]] -index 1] {
 			concat "EnableTab: View name is " $view_name " tab_name is " $tab_name | log
@@ -632,7 +632,7 @@ proc EnableTab [ val view_name "Diagnose" ] [ val tab_name "Eigendiagnosen" ] {
 		}  -error [val errorObj] -catch {
 			concat "EnableTab: Unable to move " $view_name " tab " $tab_name " err: "  [$errorObj | get message] | log
 	    }
-	    get-combo -after [get-label View] | select $view_name
+	    get-combo -after [get-label [t prefs_user_services_view]] | select $view_name
 	    get-table | select $tab_name
 		concat "EnableTab: EnableTab " $view_name " tab " $tab_name " selected is shown" | log
 	    get-button [ t Anwenden ] | click -metaKeys ""

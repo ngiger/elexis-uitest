@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-os-f24209/Elexis3  -nl de_CH -os linux -ws gtk -arch x86_64 -consoleLog -vmargs \
+#os-f24209/Elexis3  -nl de_CH -os linux -ws gtk -arch x86_64 -consoleLog -vmargs \
+
+os-f24209/Elexis3  -nl de_CH -os linux -ws gtk -arch x86_64 -Xmx2048m -consoleLog -vmargs \
 -Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 \
 -Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec='jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_de/db' \
 -Dch.elexis.dbUser=sa -Dch.elexis.dbPw= -Dch.elexis.dbH2AutoServer=1 \
