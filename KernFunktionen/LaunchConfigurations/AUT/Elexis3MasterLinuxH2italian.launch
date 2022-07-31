@@ -22,10 +22,10 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.JAVA_COMMAND" value="java"/>
-    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/lgp1lif5561bxpdp25rw38gsdqixirvz-adoptopenjdk-openj9-bin-11.0.11"/>
+    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/vi6f5j55y0rxwp413x4vrbyzqxx2pgrb-adoptopenjdk-openj9-bin-11.0.11"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os linux -ws gtk -arch x86_64 -consoleLog -nl it_CH"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.language=it -Duser.region=CH -Dfile.encoding=utf-8 -Dorg.eclipse.gemini.refreshBundles=false -Xmx512m&#10;-Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec='jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_it/db' &#10;-Dch.elexis.dbUser=sa -Dch.elexis.dbPw= -Dch.elexis.dbH2AutoServer=1 &#10;-Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info &#10;-Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest -Dch.elexis.test.convertDocx2PDF=true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.language=it -Duser.region=CH -Dfile.encoding=utf-8 -Dorg.eclipse.gemini.refreshBundles=false&#10;-Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec='jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_it/db' &#10;-Dch.elexis.dbUser=sa -Dch.elexis.dbPw= -Dch.elexis.dbH2AutoServer=1 &#10;-Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info &#10;-Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest -Dch.elexis.test.convertDocx2PDF=true"/>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/ide/2022.03/git/elexis-3-core/os"/>
     <stringAttribute key="org.eclipse.rcptt.launching.ATTR_AUT_LAUNCH_ID" value=""/>
     <stringAttribute key="pde.version" value="3.3"/>

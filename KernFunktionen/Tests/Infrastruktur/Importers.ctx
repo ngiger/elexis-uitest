@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/30/22, 9:00 PM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/31/22, 1:50 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -253,6 +253,18 @@ proc "ReadAnalysenListe" [ val file [ concat $rcpttDir "/EAL_01.04.2020.xlsx" ] 
 	// AssertNoErrorInProgress
 }
 
+proc "CheckAnalysenListe" [ val filter "1006" ] {
+	OpenLeistungen
+    with [get-view [ t codes ] ] {
+		get-tab-folder | get-tab-item "EAL 2009" | click
+		maximize
+		get-editbox | set-text $filter
+		get-table | select [ concat $filter ".*"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "EAL_" $filter ".png"]
+		restore
+	}
+}
+
 proc "ReadMigel" [ val file [ concat $rcpttDir "/migel_" $defaultLanguage ".csv" ] ] {
 	concat "ReadMigel started for: " $file | log
 	try {
@@ -380,6 +392,7 @@ proc "CheckArtikelstammNolvadex" {
 	open-window-by-name [ t leistungen ]
 	get-eclipse-window | key-type "M1+m" // Maximize
 	SelectArtikelitemInTab Nolvadex "Nolvadex.*Stk.*"
+	get-view [t leistungen ] | restore
 }
 
 // Ende

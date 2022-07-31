@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 3:49 PM
+Save-Time: 7/31/22, 1:09 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -31,7 +31,7 @@ proc "AbrechnungsSystemKonfigurieren"
 			get-label [ t Neu ] | click
 		}
 		with [get-window [ t Abrechnungssystem ]] {
-			get-editbox -after [get-label [ t Name ] ] | set-text $abrSystem
+			get-editbox -after [get-label [ t Abrechnungssysteme_Name ] ] | set-text $abrSystem
 			get-combo -after [get-label [ t Leistungscode_System ] ] | select $leistungsSystem
 			get-combo -after [get-label [ t Standard_Rechnungsausgabe ] ] | select $abrPrinter
 			get-combo -after [get-label [ t Gesetz ] ] | select $caseLaw
@@ -69,7 +69,7 @@ proc "AbrechnungsSystemKonfigurieren"
 				}
 
 			}
-			get-editbox -after [get-label [ t Name ] ] | set-focus
+			get-editbox -after [get-label [ t Abrechnungssysteme_Name ] ] | set-focus
 			get-button OK | click
 		}
 		gen-screenshot [concat $imagesDir "AbrechnungsSystemKonfigurieren_" $abrSystem "_"  $startDate " " $newFactor ".png"]
@@ -270,6 +270,36 @@ proc "CheckTarmedFallVerrechnen" [ val invoiceId 0 ] [ val drugName Losartan ]{
 	// We have no FS from Fahrtüchtigkeit
 	CheckTarmedXml $CheckTarmedFallId "<invoice:diagnosis type=\"by_contract\" code="
 	concat "CheckTarmedFallVerrechnen " $CheckTarmedFallId " erfolgreich" | log
+}
+
+proc "SetupPrivatrechnung" {
+	get-preferences-menu | click
+	with [get-window [ t preferences ] ] {
+	    get-tree | select [ concat [ t Abrechnungssysteme ] "/Privatrechnung" ]
+	    with [get-editbox -after [get-label "Vorlage mit ESR" ] ] {
+	        set-text "Privatrechnung_EZ"
+	        click-text
+	    }
+	    with [get-editbox -after [get-label "Vorlage ohne ESR" ] ] {
+	        click-text
+	        set-text "Privatrechnung_S1"
+	    }
+	    get-label --after [ get-label Bank ] | click
+	    with [get-window [ t select_contact ] ] {
+	        get-editbox -index 1 | set-text Raiffeisenbank
+	        get-table | select "Raiffeisenbank.*"
+	        get-button OK | click -metaKeys ""
+	    }
+	    with [get-editbox -after [get-label "ESR-Teilnehmernummer"]] {
+	        set-text "01-12648-2"
+	        key-type "TRAVERSE_TAB_NEXT"
+	    }
+	    get-editbox -after [get-label "ESR-Kundennummer"] | set-text 15453
+	    with [get-button [ t Anwenden ] ] {
+	        click -metaKeys ""
+	    }
+	    get-button [ t apply_and_close ] | click -metaKeys ""
+	}
 }
 
 // Ende
