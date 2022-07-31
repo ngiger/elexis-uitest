@@ -7,33 +7,20 @@ Element-Version: 3.0
 External-Reference: 
 Id: _D7-c0A9mEe28EodTjFsVbw
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/30/22, 7:09 PM
+Save-Time: 7/31/22, 12:13 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-/*  VOn Hand existierendes Rezept geändert
-with [get-view Rezepte] {
-    get-table | select "29.07.2022 Test Alfred"
-    get-list | select "Nolvadex Tabl 20 mg 30 Stk " | get-menu -path "Ändern..." | click -metaKeys ""
-}
-with [get-window Artikeldetail] {
-    get-button "Freitext de-/aktivieren" | click -metaKeys ""
-    get-editbox | set-text "Freier Text RCPTGT"
-    get-button OK | click -metaKeys ""
-}
-//     select "Co-Losartan Sandoz Filmtabl 100\\/12.5mg \\(neu\\) 28 Stk <34.0> " | double-click
-
 // We add always lines to the latest prescription
-	    let [ val nrItems [ get-item -path Administration | get-property "getParent().getColumns().length" -raw ] ] {
-
-*/
 // CreatePrescription
-TextPluginSelect docx
+
+// TextPluginSelect docx
 get-view [t prescription_view] | click
-SelectPatient -familyName "CheckArtikelstamm" -firstName "Barbara" -mustExist true
+SelectPatient -familyName "DirektVerrechnen" -firstName "Norbert" -mustExist true
+SelectFall  [ t case_KVG ]
 get-view [t prescription_view] | click
 get-view [t prescription_view] | close // TODO: Warum werden hier die Rezepte nicht richtig aufdatiert
 open-window-by-name [t prescription_view]

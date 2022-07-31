@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/30/22, 9:46 PM
+Save-Time: 7/31/22, 12:18 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -644,13 +644,10 @@ proc EnableTab [ val view_name "Diagnose" ] [ val tab_name "Eigendiagnosen" ] {
 	    get-button [ t apply_and_close ] | click -metaKeys ""
 	}
 }
-/* get-view Rezepte | get-table | select "29.07.2022 Test Alfred"
-get-view Rezepte | get-table | get-item -path "29.07.2022 Test Alfred" | get-property "getParent().getItems().length"
-    | equals 1 | verify-true
-    */
+
 proc "SelectLastPrescripion" {
 	ActivateVisibleKonsView
-	with [get-view Rezepte] {
+	with [get-view [t prescription_view]] {
 	    click
 		try {
 		    let [ val nrItems [  get-table | get-item -path ".*" | get-property "getParent().getItems().length" -raw ] ] {
@@ -665,31 +662,30 @@ proc "SelectLastPrescripion" {
 
 proc "CreatePrescription" {
 	ActivateVisibleKonsView
-	with [get-view Rezepte] {
+	with [get-view [t prescription_view]] {
 	    click
-	    get-button "Ein neues Rezept erstellen" | click -metaKeys ""
+	    get-button [ t prescription_create_one] | click -metaKeys ""
 	}
 }
 
 proc "AddMediToPrescription" [ val itemName "Nolvadex.*" ] [ val morning 0 ] [ val lunch 0 ] [ val supper 0 ]
 	[ val night 0] [ val instructions "" ] [ val reason "" ] [ val isReserve [ bool false ] ] [ val freetext "" ] {
 	SelectLastPrescripion
-	get-view Rezepte | get-button "Neue Zeile" | click -metaKeys ""
-	with [get-view Leistungen] {
-	//    get-group Alle | get-editbox -after [get-label Name] | set-focus
-	    with [get-group Alle] {
-	        get-editbox -after [get-label "Artikel oder Wirkstoff"] | set-focus
-	        get-view Leistungen | get-group Alle | get-button "Suche jetzt ausführen" | click -metaKeys ""
+	get-view [t prescription_view] | get-button [t prescription_new_line]| click -metaKeys ""
+	with [get-view [t leistungen ]] {
+	    with [get-group [t alle_leistungen]] {
+	        get-editbox -after [get-label [t artikelstamm_label]] | set-focus
+	        get-view [t leistungen ] | get-group [t alle_leistungen] | get-button [t btn_execute_search]| click -metaKeys ""
 	        wait 1000 // this takes some time sometimes
 	        get-table | select $itemName
 	        get-table | select $itemName | double-click
 	    }
 	}
-	get-view Rezepte | get-list | select $itemName| get-menu -path "Ändern..." | click -metaKeys ""
-	with [get-window Artikeldetail] {
+	get-view [t prescription_view] | get-list | select $itemName| get-menu -path [t prescription_change] | click -metaKeys ""
+	with [get-window [t prescription_detail]] {
 		get-editbox | get-property "getMessage()" -raw | log
-		if [ get-editbox | get-property "getMessage()" -raw | equals Freitext ] {
-			get-button "Freitext de-/aktivieren" | click -metaKeys ""
+		if [ get-editbox | get-property "getMessage()" -raw | equals [t prescription_freetext_default] ] {
+			get-button [t prescription_activate_freetext] | click -metaKeys ""
 		}
 	    get-editbox -index 0 | set-text $morning
 	    get-editbox -index 1 | set-text $lunch
@@ -700,20 +696,20 @@ proc "AddMediToPrescription" [ val itemName "Nolvadex.*" ] [ val morning 0 ] [ v
 			log "Rezepte: No  Freetext"
 	    } -else {
 			concat "Rezepte: must add freetext " $freetext | log
-		    get-button "Freitext de-/aktivieren" | click -metaKeys ""
+		    get-button [t prescription_activate_freetext] | click -metaKeys ""
 		    get-editbox | set-text $freetext
 	    }
 	    if [ $isReserve | eq true ] {
-		    get-button Reservemedikation | check
+		    get-button [t prescription_reserve ] | check
 	    }
-	    get-button OK | click -metaKeys ""
+	    get-button [ t ok ] | click -metaKeys ""
 	}
 }
 
 proc "PrintPrescription" {
 	log "PrintPrescription starting"
 	SelectLastPrescripion
-	get-view Rezepte | get-button Drucken | click -metaKeys ""
+	get-view [t prescription_view] | get-button [t print_prescription ] | click -metaKeys ""
 	log "PrintPrescription done"
 }
 
