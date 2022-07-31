@@ -6,13 +6,14 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/31/22, 12:18 AM
+Save-Time: 7/31/22, 8:32 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 global [ val Losartan "Losartan Sandoz Filmtabl 100 mg 98 Stk.*" ] -override
+global [ val konsDirektVorname	"Albert" ] -override
 
 proc "KonsErstellenFallsNichtVorhanden" [ val text2enter "NixZuTUn" ] {
 	if [ HasKonsSelected | eq false] {
@@ -710,6 +711,7 @@ proc "PrintPrescription" {
 	log "PrintPrescription starting"
 	SelectLastPrescripion
 	get-view [t prescription_view] | get-button [t print_prescription ] | click -metaKeys ""
+	close-window-if-open [ t error] // TODO: This should not be necesssary once docx prints directly newly opened docx files
 	log "PrintPrescription done"
 }
 
