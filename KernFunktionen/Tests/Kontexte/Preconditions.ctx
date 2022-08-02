@@ -5,8 +5,8 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/23/22, 11:54 AM
+Runtime-Version: 2.5.3.202205021448
+Save-Time: 7/31/22, 4:31 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -168,6 +168,7 @@ proc "Statusinformationen-Open" {
 }
 
 proc "ensure-loinc-codes-loaded" {
+	HandleMissingInvoiceSystems
 	log "vor Ensure-Loinc-Codes-loaded"
 	open-window-by-name [ t daten_artikel ]
 	open-window-by-name [ concat [ t codes ] "/" [ t codes ] ]// Force reading of loinc

@@ -128,6 +128,19 @@
         <version>1.4.1</version>
         <executions>
           <execution>
+            <id>download-MiGeL-xlsx</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>https://www.bag.admin.ch/dam/bag/de/dokumente/kuv-leistungen/Mittel-%20und%20Gegenst%C3%A4ndeliste/migel_gesamtliste_010722_excel.xlsx.download.xlsx/migel-gesamtliste-per010722.xlsx</url>
+              <outputDirectory>${rcptt-resources}</outputDirectory>
+              <unpack>false</unpack>
+              <md5>29e1ba7305c11a922bedc6b0198be828</md5>
+            </configuration>
+          </execution>
+          <execution>
             <id>download-Universal-krankenkasse</id>
             <phase>generate-sources</phase>
             <goals>
