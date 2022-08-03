@@ -33,14 +33,6 @@
       <name>RCPTT Maven repository</name>
       <url>https://repo.eclipse.org/content/repositories/rcptt-releases/</url>
     </pluginRepository>
-    <!--pluginRepository>
-      <id>rcptt-snapshots</id>
-      <name>RCPTT Maven Snapshots repository</name>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-      <url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/</url>
-    </pluginRepository-->
   </pluginRepositories>
   <modules>
     <module>h2</module>

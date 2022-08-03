@@ -6,12 +6,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <artifactId>common</artifactId>
     <version>0.1</version>
   </parent>
-  <version>3.9</version>
+  <version>3.10</version>
   <artifactId>elexis-master</artifactId>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <elexis.target>2021-09-java11</elexis.target>
+    <elexis.target>2022-06-java17</elexis.target>
     <!-- vvv required empty vvv-->
     <os-jvm-flags/>
   </properties>
@@ -47,7 +47,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
-					<executionEnvironment>JavaSE-11</executionEnvironment>
+					<executionEnvironment>JavaSE-17</executionEnvironment>
 					<pomDependencies>consider</pomDependencies>
 					<environments>
 							<environment>
@@ -56,16 +56,16 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 									<arch>x86_64</arch>
 							</environment>
 							<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86_64</arch>
+							  <os>win32</os>
+							  <ws>win32</ws>
+							  <arch>x86_64</arch>
 							</environment>
 							<environment>
-									<os>macosx</os>
-									<ws>cocoa</ws>
-									<arch>x86_64</arch>
+							  <os>macosx</os>
+							  <ws>cocoa</ws>
+							  <arch>x86_64</arch>
 							</environment>
-					</environments>
+					  </environments>
                  <dependency-resolution>
                    <profileProperties>
                      <org.eclipse.justj.buildtime>true</org.eclipse.justj.buildtime>
