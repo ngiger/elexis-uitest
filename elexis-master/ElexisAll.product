@@ -14,7 +14,7 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xms256m -Xmx1024m -Duser.language=de -Duser.region=CH  -Dfile.encoding=utf-8 -Dorg.eclipse.gemini.refreshBundles=falseelexis-master/ElexisAll.product
+      <vmArgs>-Xmx1024m -Duser.language=de -Duser.region=CH  -Dfile.encoding=utf-8 -Dorg.eclipse.gemini.refreshBundles=false --add-opens=java.base/java.net=ALL-UNNAMED
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts=false -Djava.awt.headless=true
       </vmArgsMac>

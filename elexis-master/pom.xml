@@ -92,6 +92,48 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.googlecode.maven-download-plugin</groupId>
+        <artifactId>download-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <executions>
+          <execution>
+            <id>get_rcptt_patch_eclipsebug_580261</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+			  <url>https://bugzillaattachments.eclipsecontent.org/bugs/attachment.cgi?id=288603</url>
+			  <outputDirectory>${project.build.directory}/plugins/</outputDirectory>
+			  <outputFileName>org.eclipse.rcptt.launching.ext_2.5.3.202205020620.jar</outputFileName>
+              <unpack>false</unpack>
+              <md5>7187383b9fe9c74414ab837bf25f3672</md5>
+            </configuration>
+          </execution>
+		</executions>
+	  </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+              <id>add patched rcptt for linux</id>
+              <phase>verify</phase>
+              <configuration>
+                  <target>
+                  <exec executable="zip" failonerror="true" dir="${project.build.directory}/" >
+                    <arg value="products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip"/>
+                    <arg value="plugins/org.eclipse.rcptt.launching.ext_2.5.3.202205020620.jar"/>
+                  </exec>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
