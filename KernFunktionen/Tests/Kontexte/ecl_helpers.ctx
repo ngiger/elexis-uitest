@@ -231,7 +231,7 @@ proc "t" [val key] [val language $defaultLanguage] {
 		// concat "Searching: " $language "." $key | log
 		$translations | get $language | get $key
 		} -catch {
-		concat "Unable to fetch key " $key " in translation_" $language ".properties"  | log -severity Error
+		concat "Unable to fetch key " $key " in translations_" $language ".properties"  | log -severity Error
 		bool false
 	}
 }
