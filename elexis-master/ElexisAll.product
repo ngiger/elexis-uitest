@@ -14,7 +14,7 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xmx1024m -Duser.language=de -Duser.region=CH  -Dfile.encoding=utf-8 -Dorg.eclipse.gemini.refreshBundles=false --add-opens=java.base/java.net=ALL-UNNAMED
+      <vmArgs>-Xmx1024m -Duser.language=de -Duser.region=CH  -Dfile.encoding=utf-8 -Dorg.eclipse.gemini.refreshBundles=false --add-opens java.base/java.lang=ALL-UNNAMED --add-modules=ALL-SYSTEM
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts=false -Djava.awt.headless=true
       </vmArgsMac>
@@ -60,7 +60,6 @@
       <feature id="at.medevit.elexis.inbox.feature" installMode="root"/>
       <feature id="at.medevit.elexis.loinc.feature" installMode="root"/>
       <feature id="at.medevit.elexis.medietikette.feature" installMode="root"/>
-      <feature id="at.medevit.elexis.text.docx.feature" installMode="root"/>
       <feature id="ch.berchtold.privatrechnung.feature" installMode="root"/>
       <feature id="ch.docbox.elexis.feature" installMode="root"/>
       <feature id="ch.elexis.agenda.feature" installMode="root"/>
@@ -73,8 +72,6 @@
       <feature id="ch.elexis.base.konsextension.privatnotizen.feature" installMode="root"/>
       <feature id="ch.elexis.base.messages.feature" installMode="root"/>
       <feature id="ch.elexis.base.messages.feature" installMode="root"/>
-      <feature id="ch.elexis.base.textplugin.feature" installMode="root"/>
-      <feature id="ch.elexis.base.textplugin.feature" installMode="root"/>
       <feature id="ch.elexis.buchhaltung.basis.feature" installMode="root"/>
       <feature id="ch.elexis.connect.afinion.feature" installMode="root"/>
       <feature id="ch.elexis.connect.mythic.feature" installMode="root"/>
@@ -114,20 +111,14 @@
       <feature id="ch.gpb.elexis.cst.feature" installMode="root"/>
       <feature id="ch.itmed.fop.printing.feature" installMode="root"/>
       <feature id="ch.itmed.lmz.risch.laborder.feature" installMode="root"/>
-      <feature id="ch.medelexis.text.templator.feature" installMode="root"/>
       <feature id="ch.medshare.connect.abacusjunior.feature" installMode="root"/>
       <feature id="ch.medshare.elexis_directories.feature" installMode="root"/>
       <feature id="ch.medshare.mediport.feature" installMode="root"/>
       <feature id="ch.novcom.elexis.mednet.plugin.feature" installMode="root"/>
       <feature id="ch.pharmed.phmprescriber.feature" installMode="root"/>
       <feature id="ch.unibe.iam.scg.archie.feature" installMode="root"/>
-      <feature id="ch.weirich.templator.pages.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.kgview.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.messwerte.v2.feature" installMode="root"/>
-      <feature id="com.hilotec.elexis.opendocument.feature" installMode="root"/>
-      <feature id="at.medevit.medelexis.text.msword.feature" installMode="root"/>
-      <feature id="ch.medelexis.openoffice.feature" installMode="root"/>
-      <feature id="com.hilotec.elexis.opendocument2omnivore.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.pluginstatistiken.feature" installMode="root"/>
       <feature id="com.hilotec.elexis.stickerprefix.feature" installMode="root"/>
       <feature id="net.medshare.connector.aerztekasse.feature" installMode="root"/>
