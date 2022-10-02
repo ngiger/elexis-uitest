@@ -186,10 +186,10 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://medelexis.ch/wp-content/uploads/2022/04/MiGel_2022v2.csv</url>
+              <url>https://medelexis.ch/wp-content/uploads/2022/09/MiGel_2022v2.csv</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <outputFileName>MiGel_2022v2.csv</outputFileName>
-              <md5>8d25362be2ab20f862edf4b9c6b25755</md5>
+              <md5>80614c5f0b853a56846f3efe461210bc</md5>
             </configuration>
           </execution>
           <execution>
