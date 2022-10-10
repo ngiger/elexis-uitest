@@ -11,7 +11,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <elexis.target>2022-06-java17</elexis.target>
+    <elexis.target>2022-09-java17</elexis.target>
     <!-- vvv required empty vvv-->
     <os-jvm-flags/>
   </properties>

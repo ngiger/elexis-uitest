@@ -105,7 +105,6 @@
       <feature id="ch.elexis.omnivore.feature" installMode="root"/>
       <feature id="ch.elexis.pdfBills.feature" installMode="root"/>
       <feature id="ch.elexis.privatrechnung.feature" installMode="root"/>
-      <feature id="ch.elexis.base.solr.feature" installMode="root"/>
       <feature id="ch.elexis.stickynotes.feature" installMode="root"/>
       <feature id="ch.elexis.support.dbshaker.feature" installMode="root"/>
       <feature id="ch.gpb.elexis.cst.feature" installMode="root"/>
@@ -137,7 +136,7 @@
       <feature id="ch.elexis.core.ui.p2.feature" installMode="root"/>
       <feature id="ch.elexis.core.persistence.feature" installMode="root"/>
       <feature id="ch.elexis.core.tasks.feature" installMode="root"/>
-      <!--feature id="ch.elexis.core.spotlight.feature" installMode="root"/Warum ist das bei Java nicht mehr drin?-->
+      <feature id="at.medevit.elexis.text.docx.feature" installMode="root"/>
    </features>
 
    <configurations>
