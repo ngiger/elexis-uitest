@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/24/22, 1:12 PM
+Runtime-Version: 2.5.5.202210022354
+Save-Time: 10/10/22, 5:04 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -103,7 +103,7 @@ proc replaceAll [ val inString ] [ val searchPattern ] [ val replaceString] {
 }
 
 proc cleanFileName [ val original ] {
-    invoke-static  "org.apache.commons.io" "org.apache.commons.io.FilenameUtils" "separatorsToUnix" [
+    invoke-static  "org.apache.commons.commons-io" "org.apache.commons.io.FilenameUtils" "separatorsToUnix" [
 		replaceAll -inString $original -searchPattern "[ äöüéèàç\*\"\[\]]" -replaceString "_" ]
 }
 
@@ -190,7 +190,7 @@ proc CheckRestartElexis {
 if [get-by-os -win false -macosx true -linux false] {
 	global [ val resultsDir [ concat [pwd ] "/../../../../results/"] ] -override
 	log "resultsDir: 2 under MacOSX is " $resultsDir | log
-	global [ val resultsDir [ invoke-static  "org.apache.commons.io" "org.apache.commons.io.FilenameUtils" "normalize" $resultsDir ] ] -override
+	global [ val resultsDir [ invoke-static  "org.apache.commons.commons-io" "org.apache.commons.io.FilenameUtils" "normalize" $resultsDir ] ] -override
 	log "resultsDir: 3 under MacOSX is " $resultsDir | log
 } -else {
 	global [ val resultsDir [ concat [pwd ] "/../results/"] ] -override
