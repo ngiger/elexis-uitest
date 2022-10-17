@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/17/22, 5:37 PM
+Save-Time: 10/18/22, 1:09 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -19,6 +19,19 @@ proc ChangeMandant [ val name ] [ val first_name ".*" ] {
 		get-table | select [ concat $name " " $first_name ]
 		get-window [ t Dialog_Mandant_wechseln ] | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_" $first_name "_1.png"]
 		get-button OK | click
+	}
+}
+
+proc "SelectContact"  [ val kontakt Test ] {
+	with [get-window [t select_contact]] {
+		with [get-editbox -index 1] {
+			set-text $kontakt
+			key-type "TRAVERSE_TAB_NEXT"
+		}
+        get-editbox -index 2 | set-focus
+         log [ concat $kontakt ".*"]
+        get-table | select [ concat $kontakt ".*"]
+		get-button [ t ok ] | click
 	}
 }
 
@@ -129,12 +142,11 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 			with [get-window [ t select_Zahlungsinstitut ]] {
 			try {
 				get-link [ t Finanzinstitut ] | click
-				with [get-window [ t select_contact ]] {
-					GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] | log
-					get-editbox -index 1 | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] ]
-					get-table | select ".+"
-					get-button OK | click
-				}
+				GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] | log
+				SelectContact [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ]]
+		        get-link Kontoinhaber | click
+				SelectContact [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ]]
+				log "Done"
 			} -catch {
 			log "second try"
 		}
@@ -152,6 +164,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 	// TODO: Why is the work-around necessary in RCPTT???
 			get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | click
 			with [get-window [ t select_Zahlungsinstitut ]] {
+			/*
 				with [get-group [ t notwendigen_Identifikationsdaten ]] {
 					EnterOneFinanzDetail [ t Abteilung ]
 					EnterOneFinanzDetail [ t Postfach ]
@@ -159,6 +172,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 					EnterOneFinanzDetail TarmedESRIdentity
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 				}
+				*/
 				get-window [ t select_Zahlungsinstitut ]| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
 				get-button OK | click
 			}
@@ -240,14 +254,7 @@ proc "create-user" [ val idMandant 1 ]
 			}
 	if [ $kontakt | matches ".+" ] {
 				get-group [t dlg_create_user_accounting] | get-link [ t dlg_create_user_accounting_change ] | click-link
-				with [get-window [t select_contact] ] {
-				with [get-editbox -index 1] {
-				set-text $kontakt
-				key-type "TRAVERSE_TAB_NEXT"
-			}
-			get-table | select  [ concat ".*" $kontakt ".+" ]
-			get-button [ t ok ] | click
-				}
+				SelectContact  [ concat ".*" $kontakt ".+" ]
 			}
 			with [get-group Systemzugang] {
 		get-button Administrator | check

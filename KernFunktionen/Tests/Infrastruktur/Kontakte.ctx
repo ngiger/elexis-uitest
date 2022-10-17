@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/17/22, 5:35 PM
+Save-Time: 10/18/22, 1:05 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -86,7 +86,16 @@ proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
 			}
 		}
 	}
-	get-eclipse-window | key-type "M1+m" // Maximize 	c
+	try {
+	  concat "Checking " [ t change_mandant_dialog] | log
+	  open-window-by-name [ t change_mandant_dialog]
+	  get-button OK | click
+	  concat "Checking " [ t change_mandant_dialog] " Done" | log
+	} -catch {
+	  concat "No " [ t change_mandant_dialog] | log
+	  get-window ".*" | get-button [ t cancel ] | click
+	}
+//	get-eclipse-window | key-type "M1+m" // Maximize 	c
 }
 
 proc "SetSelectedKontaktInfo" [ val Name "" ]

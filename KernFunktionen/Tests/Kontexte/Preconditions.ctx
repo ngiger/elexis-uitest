@@ -5,8 +5,8 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/31/22, 4:31 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/18/22, 10:03 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -119,7 +119,19 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
 			}
 		} -else {
-			concat "create-backup-sql unsupported flavor " [ safe-get-java-property "ch.elexis.dbFlavor" ] | log
+			if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "mysql" ] {
+				if [ get-by-os  -win false -macosx false -linux true ] {
+					concat "Starting mysqldump to " $zipFile | log
+					exec-process "/usr/bin/env" "mysqldump"
+					[ concat "--user=" [safe-get-java-property "ch.elexis.dbUser" ]]
+					[ concat "--password=" [safe-get-java-property "ch.elexis.dbPw" ]]
+					[ concat "elexis_rcptt_" $defaultLanguage ]
+					[ concat "--result-file=" $zipFile]
+					concat "Done dumping mysql to " $zipFile | log
+				} -else {
+					concat "create-backup-sql unsupported flavor/os " [ safe-get-java-property "ch.elexis.dbFlavor" ] | log
+				}
+			}
 		}
 	}
 }
