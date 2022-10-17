@@ -5,8 +5,8 @@ Element-Name: Kontakte
 Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/31/22, 10:14 AM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/17/22, 5:35 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -42,12 +42,21 @@ proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
 			with [get-view [ t Kontakte ]] {
 				get-table | select [ concat $kuerzel ".*"] | double-click
 			}
-			SetSelectedKontaktInfo -Name [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ]
-				-Vorname [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Vorname" ] ]
-				-Strasse [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Strasse" ] ]
-				-Plz [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Plz" ] ]
-				-Ort [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Ort" ] ]
-				-Titel [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Titel" ] ]
+					SetSelectedKontaktInfo -Name [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ]
+						-Vorname [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Vorname" ] ]
+						-Strasse [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Strasse" ] ]
+						-Plz [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Plz" ] ]
+						-Ort [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Ort" ] ]
+						-Titel [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Titel" ] ]
+						-Kuerzel [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Kuerzel" ] ]
+						-Telefon1 [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Telefon1" ] ]
+						-Telefon2 [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Telefon2" ] ]
+						-Fax [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Fax" ] ]
+						-Mobile [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Mobile" ] ]
+						-Geschlecht [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Geschlecht" ] ]
+						-EMail [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".EMail" ] ]
+						-Website [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Website" ] ]
+						-Bemerkung [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Bemerkung" ] ]
 			get-eclipse-window | gen-screenshot [concat $imagesDir "Mandant_" $idMandant "_kontakt_info.png"]
 		} -else {
 			concat "SetMandantKontatkInfo Kontakt via Kuerzel " $kuerzel " NICHT gefunden" | log

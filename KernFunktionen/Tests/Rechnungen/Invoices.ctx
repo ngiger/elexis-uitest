@@ -5,8 +5,8 @@ Element-Name: Invoices
 Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/31/22, 1:09 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/17/22, 5:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -79,9 +79,9 @@ proc "AbrechnungsSystemKonfigurieren"
 
 global [val anzeigeNr 0 ] -override
 proc "RechnungslisteAnzeigen" [ val status [ t Offen ] ] {
-	open-window-by-name [ t Rechnungsliste ]
+	open-window-by-name $invoiceList
 	get-eclipse-window | key-type "M1+m" // Maximize
-	with [get-view [ t Rechnungsliste ] ] {
+	with [get-view $invoiceList ] {
 		get-combo -after [get-label [ t RG_Total ]] | select $status
 		global [val anzeigeNr [ int $anzeigeNr | plus 1 | int] ] -override
 		concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_" $status "_" [ get-seconds-in-minute ] "_vorher.png" | log
@@ -142,8 +142,20 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 	}
 }
 
+proc "OpenRechnungsliste" {
+	try {
+		open-window-by-name [ t Rechnungsliste_beta ]
+		global [val invoiceList  [ t Rechnungsliste_beta ]] -override
+		
+    } -catch {
+		global [val invoiceList  [ t Rechnungsliste ]] -override
+		open-window-by-name [ t Rechnungsliste ]
+    }
+}
 
-proc RechnungAusgeben [ val invoiceListViewName [ t Rechnungsliste ] ]
+OpenRechnungsliste
+
+proc RechnungAusgeben [ val invoiceListViewName $invoiceList ]
 	[ val invoiceId 1 ]
 	[ val status [ t alle_rechnungs_stati ] ]
 	[ val druckTyp [ t Als_QR_PDF_ausdrucken ] ] {
@@ -214,9 +226,9 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 	global [val highestInvoiceNr 0 ] -override
 
 	RechnungslisteAnzeigen -status $status
-	with [get-view [ t Rechnungsliste ] ] {
+	with [get-view $invoiceList ] {
 		loop [val idx 0] {
-		get-view [ t Rechnungsliste ] | get-table | get-items | foreach [val item]  {
+		get-view $invoiceList | get-table | get-items | foreach [val item]  {
 			if [ $item | get-property caption -raw | gt $highestInvoiceNr ]{
 					// concat "GetHighestInvoiceNrOf Higher " [ $item | get-property caption -raw ] | log
 			 		global [val highestInvoiceNr [  $item | get-property caption -raw ] ] -override
@@ -224,9 +236,9 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 			}
 		}
 	}
-	get-view [ t Rechnungsliste ] | key-type "M1+m"
-	get-view [ t Rechnungsliste ] | maximize
-	get-view [ t Rechnungsliste ] | key-type "M1+m" // Minimize
+	get-view $invoiceList | key-type "M1+m"
+	get-view $invoiceList | maximize
+	get-view $invoiceList | key-type "M1+m" // Minimize
 	concat "GetHighestInvoiceNrOf set highestInvoiceNr to: " $highestInvoiceNr | log
 	$highestInvoiceNr | str
 }
@@ -234,21 +246,21 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] [ val workAround21559 true ] {
 	close-window-if-open [ t error ]
 	if [ $workAround21559  | eq true ] {
-		concat "GetNrOfInvoices: workAround21559 view is "  [ t Rechnungsliste ] | log
+		concat "GetNrOfInvoices: workAround21559 view is "  $invoiceList | log
 		try {
-			get-view [ t Rechnungsliste ] | get-label -index 1 | get-property caption -raw | log
-			let [ val textContent [ get-view  [ t Rechnungsliste ] | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
+			get-view $invoiceList | get-label -index 1 | get-property caption -raw | log
+			let [ val textContent [ get-view  $invoiceList | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
 				concat "GetNrOfInvoices got before : " $status " as int " $textContent | log
 				$textContent | int
 			}
-			get-view [ t Rechnungsliste ] | close
-			concat "GetNrOfInvoices: workAround21559 closed wait"  [ t Rechnungsliste ] | log
+			get-view $invoiceList | close
+			concat "GetNrOfInvoices: workAround21559 closed wait"  $invoiceList | log
 		} -error [val errorObj] -catch {
 			log "GetNrOfInvoices:  Rechnungsliste not present"
 		}
 	}
 	RechnungslisteAnzeigen -status $status
-	let [ val textContent [ get-view  [ t Rechnungsliste ] | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
+	let [ val textContent [ get-view  $invoiceList | get-editbox -after [get-label [ t Rechnungen_in_Liste ] ] | get-property text -raw ] ] {
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Rechnung/einlesen_" $anzeigeNr "_GetNrOfInvoices_" $textContent ".png"]
 		$textContent | int
 	}

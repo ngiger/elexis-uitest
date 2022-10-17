@@ -1,0 +1,41 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _QPqdkBNIEemmeedSb1JQew
+Element-Name: AktuellenFallVerrechnen
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _uaWGcE4mEe2qb8Ku3XgI7Q
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/17/22, 5:18 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+
+proc "FallVerrechnen" [ val keyId ] [ val abortOnError true ] {
+	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
+	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
+	    [ val male		 [ GetTestProperty [ concat $keyId male      ] ] ]
+	    [ val caseName	 [ GetTestProperty [ concat $keyId caseName  ] ] ]
+	    [ val blockNr	 [ GetTestProperty [ concat $keyId blockNr   ] 4 ] ]
+	    [ val tarmed	 [ GetTestProperty [ concat $keyId tarmed    ] [ concat "10.0010" ] ] ]
+	    [ val birthDate  [ GetTestProperty [ concat $keyId birthDate ] "29.02.1984" ] ]
+	    [ val blockName	 [ GetTestProperty [ concat $keyId blockName ] "kons plus (KVG)" ] ]
+    {
+      concat "Uing invoiceList: " $invoiceList | log
+		if [ $firstName | equals "" ] {
+			concat "FallVerrechnen found no entry with key " $keyId | log
+		} -else {
+			concat "FallVerrechnen started with key " $keyId " " $firstName " " $familyName | log
+			AktuellenFallVerrechnen -abortOnError $abortOnError -label [ concat $familyName "-" $firstName "-" $caseName ]
+			// AktuellenFallSchliessen
+		}
+	}
+}
+
+FallVerrechnen patient.100.
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
