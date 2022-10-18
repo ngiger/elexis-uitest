@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/18/22, 10:04 AM
+Save-Time: 10/18/22, 12:41 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -43,7 +43,7 @@ _aMFqEOBrEeqxlcSTFlM60Q	// kind: 'test' name: 'SetupTextPluginTests' path: '../T
 _NbvRkFILEemrk7fLFkHFEw	// kind: 'test' name: 'CreateFemalePatient' path: '../Tests/CreateFemalePatient.test'
 _r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../Tests/Behandlung/Issue_17063_KonsDirektVerrechnen.test'
 _gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
-_Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: '../Tests/Rechnungen/CheckTarmedFallVerrechnen.test'
+_Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CreateAndPrintTarmed' path: '../Tests/Rechnungen/CreateAndPrintTarmed.test'
 _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/Infrastruktur/BasicKonsTests.test'
 _1gcfIMceEeyvX6ZcbpmWFg	// kind: 'test' name: 'Docx_create_AUF' path: '../Tests/Textverarbeitung/Docx_create_AUF.test'
 _gAMNcECkEeucZoJXQ1XGtg	// kind: 'test' name: 'PrivatRechnung' path: '../Tests/Rechnungen/PrivatRechnung.test'

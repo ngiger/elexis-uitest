@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/18/22, 1:09 AM
+Save-Time: 10/18/22, 12:19 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -29,9 +29,14 @@ proc "SelectContact"  [ val kontakt Test ] {
 			key-type "TRAVERSE_TAB_NEXT"
 		}
         get-editbox -index 2 | set-focus
-         log [ concat $kontakt ".*"]
-        get-table | select [ concat $kontakt ".*"]
-		get-button [ t ok ] | click
+        try {
+        	get-table | select [ concat $kontakt ".*"]
+         	log [ concat "SelectContact existing " $kontakt ".*"]
+			get-button [ t ok ] | click
+		} -catch {
+         	log [ concat "SelectContact failed: No such " $kontakt ".*"]
+			close-window-if-open [ t select_contact ]
+	 }
 	}
 }
 
@@ -148,7 +153,6 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 				SelectContact [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ]]
 				log "Done"
 			} -catch {
-			log "second try"
 		}
 		with [get-group [ t notwendigen_Identifikationsdaten ]] {
 					EnterOneFinanzDetail [ t Abteilung ]
@@ -254,7 +258,7 @@ proc "create-user" [ val idMandant 1 ]
 			}
 	if [ $kontakt | matches ".+" ] {
 				get-group [t dlg_create_user_accounting] | get-link [ t dlg_create_user_accounting_change ] | click-link
-				SelectContact  [ concat ".*" $kontakt ".+" ]
+				SelectContact  [ concat ".*" $kontakt ]
 			}
 			with [get-group Systemzugang] {
 		get-button Administrator | check
