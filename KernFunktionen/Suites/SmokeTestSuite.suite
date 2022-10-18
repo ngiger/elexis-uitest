@@ -5,8 +5,8 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/29/22, 8:34 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/18/22, 10:04 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -19,39 +19,40 @@ Sollte nicht mehr als 10 Minuten dauren.
 Content-Type: text/testcase
 Entry-Name: testcase-items
 
-_gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../../../KernFunktionen/Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
-_naPjYLBwEemub6f3erWwag	// kind: 'test' name: 'AboutElexis' path: '../../../KernFunktionen/Tests/Infrastruktur/AboutElexis.test'
-__ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '../../../KernFunktionen/Tests/Infrastruktur/NoPreferenceWithPercent.test'
-_yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../../../KernFunktionen/Tests/Infrastruktur/NoViewWithPercent.test'
-_rAxhUGlSEeySBq0xgLXOFw	// kind: 'test' name: 'EnsureLoincCodes' path: '../../../KernFunktionen/Tests/Infrastruktur/EnsureLoincCodes.test'
-_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
-_ddB9ELBUEemub6f3erWwag	// kind: 'test' name: 'ImportAnalysenListe' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportAnalysenListe.test'
-_UCxVwGBKEem4h8rctksNbQ	// kind: 'test' name: 'ImportBlocks' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportBlocks.test'
-_gZfZELBSEemub6f3erWwag	// kind: 'test' name: 'ImportComplementary' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportComplementary.test'
-_d0UGkLBSEemub6f3erWwag	// kind: 'test' name: 'ImportTarmed' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportTarmed.test'
-_lqzhsLBSEemub6f3erWwag	// kind: 'test' name: 'ImportMigel' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportMigel.test'
-_YvC5kA9aEe28EodTjFsVbw	// kind: 'test' name: 'ImportEigendiagnose' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportEigendiagnose.test'
-_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../../../KernFunktionen/Tests/BasicMandanten.test'
-_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../../../KernFunktionen/Tests/Infrastruktur/BasicAbrechnungssytems.test'
-_NZyqMJLOEeup49yUtwR__A	// kind: 'test' name: 'ImportArtikelstammFull' path: '../../../KernFunktionen/Tests/Infrastruktur/SingleImportTests/ImportArtikelstammFull.test'
-_LCaAADvbEeyu1PDabCdSug	// kind: 'test' name: 'CreateSQLdumpInitPractice' path: '../../../KernFunktionen/Tests/Infrastruktur/CreateSQLdumpInitPractice.test'
-_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../../../KernFunktionen/Tests/RestartElexis.test'
-_iHZ1QA9IEe28EodTjFsVbw	// kind: 'test' name: 'Enable_ti_code_tab' path: '../../../KernFunktionen/Tests/Infrastruktur/Enable_ti_code_tab.test'
-_oNRWQDS0EeuXVMkM-fyEfg	// kind: 'test' name: 'CheckRestart' path: '../../../KernFunktionen/Tests/CheckRestart.test'
-_aMFqEOBrEeqxlcSTFlM60Q	// kind: 'test' name: 'SetupTextPluginTests' path: '../../../KernFunktionen/Tests/Textverarbeitung/SetupTextPluginTests.test'
-_NbvRkFILEemrk7fLFkHFEw	// kind: 'test' name: 'CreateFemalePatient' path: '../../../KernFunktionen/Tests/CreateFemalePatient.test'
-_r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../../../KernFunktionen/Tests/Behandlung/Issue_17063_KonsDirektVerrechnen.test'
-_gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../../../KernFunktionen/Tests/Rechnungen/TarmedFallVerrechnen.test'
-_Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: '../../../KernFunktionen/Tests/Rechnungen/CheckTarmedFallVerrechnen.test'
-_GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../../../KernFunktionen/Tests/Infrastruktur/BasicKonsTests.test'
-_1gcfIMceEeyvX6ZcbpmWFg	// kind: 'test' name: 'Docx_create_AUF' path: '../../../KernFunktionen/Tests/Textverarbeitung/Docx_create_AUF.test'
-_gAMNcECkEeucZoJXQ1XGtg	// kind: 'test' name: 'PrivatRechnung' path: '../../../KernFunktionen/Tests/Rechnungen/PrivatRechnung.test'
-_PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../../../KernFunktionen/Tests/Infrastruktur/CreateSQLdump.test'
-_C9LzwI1wEeup49yUtwR__A	// kind: 'test' name: 'CheckArtikelstammSuche' path: '../../../KernFunktionen/Tests/Behandlung/CheckArtikelstammSuche.test'
-_7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../../../KernFunktionen/Tests/Infrastruktur/TimeTool.test'
-_6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../../../KernFunktionen/Tests/Textverarbeitung/hilotec_odf.test'
-_D7-c0A9mEe28EodTjFsVbw	// kind: 'test' name: 'Create_and_print_prescription' path: '../../../KernFunktionen/Tests/Behandlung/Konsultation/Create_and_print_prescription.test'
-_mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../../../KernFunktionen/Tests/Kassenbuch.test'
-_U42uwAO8EemXxf0UDvXYOw	// kind: 'test' name: 'VisitAllViews' path: '../../../KernFunktionen/Tests/Infrastruktur/VisitAllViews.test'
+_gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
+_naPjYLBwEemub6f3erWwag	// kind: 'test' name: 'AboutElexis' path: '../Tests/Infrastruktur/AboutElexis.test'
+__ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '../Tests/Infrastruktur/NoPreferenceWithPercent.test'
+_yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../Tests/Infrastruktur/NoViewWithPercent.test'
+_rAxhUGlSEeySBq0xgLXOFw	// kind: 'test' name: 'EnsureLoincCodes' path: '../Tests/Infrastruktur/EnsureLoincCodes.test'
+_tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
+_ddB9ELBUEemub6f3erWwag	// kind: 'test' name: 'ImportAnalysenListe' path: '../Tests/Infrastruktur/SingleImportTests/ImportAnalysenListe.test'
+_UCxVwGBKEem4h8rctksNbQ	// kind: 'test' name: 'ImportBlocks' path: '../Tests/Infrastruktur/SingleImportTests/ImportBlocks.test'
+_gZfZELBSEemub6f3erWwag	// kind: 'test' name: 'ImportComplementary' path: '../Tests/Infrastruktur/SingleImportTests/ImportComplementary.test'
+_d0UGkLBSEemub6f3erWwag	// kind: 'test' name: 'ImportTarmed' path: '../Tests/Infrastruktur/SingleImportTests/ImportTarmed.test'
+_lqzhsLBSEemub6f3erWwag	// kind: 'test' name: 'ImportMigel' path: '../Tests/Infrastruktur/SingleImportTests/ImportMigel.test'
+_YvC5kA9aEe28EodTjFsVbw	// kind: 'test' name: 'ImportEigendiagnose' path: '../Tests/Infrastruktur/SingleImportTests/ImportEigendiagnose.test'
+_DW3ooE60Ee2nGcGI_RqS-w	// kind: 'test' name: 'CreateSQLDumpBeforeMandant' path: '../Tests/Infrastruktur/CreateSQLDumpBeforeMandant.test'
+_aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
+_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/Infrastruktur/BasicAbrechnungssytems.test'
+_NZyqMJLOEeup49yUtwR__A	// kind: 'test' name: 'ImportArtikelstammFull' path: '../Tests/Infrastruktur/SingleImportTests/ImportArtikelstammFull.test'
+_LCaAADvbEeyu1PDabCdSug	// kind: 'test' name: 'CreateSQLdumpInitPractice' path: '../Tests/Infrastruktur/CreateSQLdumpInitPractice.test'
+_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Tests/RestartElexis.test'
+_iHZ1QA9IEe28EodTjFsVbw	// kind: 'test' name: 'Enable_ti_code_tab' path: '../Tests/Infrastruktur/Enable_ti_code_tab.test'
+_oNRWQDS0EeuXVMkM-fyEfg	// kind: 'test' name: 'CheckRestart' path: '../Tests/CheckRestart.test'
+_aMFqEOBrEeqxlcSTFlM60Q	// kind: 'test' name: 'SetupTextPluginTests' path: '../Tests/Textverarbeitung/SetupTextPluginTests.test'
+_NbvRkFILEemrk7fLFkHFEw	// kind: 'test' name: 'CreateFemalePatient' path: '../Tests/CreateFemalePatient.test'
+_r8134DV7EeuXVMkM-fyEfg	// kind: 'test' name: 'KonsDirektVerrechnen' path: '../Tests/Behandlung/Issue_17063_KonsDirektVerrechnen.test'
+_gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
+_Mr6FcFFuEemrk7fLFkHFEw	// kind: 'test' name: 'CheckTarmedFallVerrechnen' path: '../Tests/Rechnungen/CheckTarmedFallVerrechnen.test'
+_GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/Infrastruktur/BasicKonsTests.test'
+_1gcfIMceEeyvX6ZcbpmWFg	// kind: 'test' name: 'Docx_create_AUF' path: '../Tests/Textverarbeitung/Docx_create_AUF.test'
+_gAMNcECkEeucZoJXQ1XGtg	// kind: 'test' name: 'PrivatRechnung' path: '../Tests/Rechnungen/PrivatRechnung.test'
+_PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
+_C9LzwI1wEeup49yUtwR__A	// kind: 'test' name: 'CheckArtikelstammSuche' path: '../Tests/Behandlung/CheckArtikelstammSuche.test'
+_7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
+_6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../Tests/Textverarbeitung/hilotec_odf.test'
+_D7-c0A9mEe28EodTjFsVbw	// kind: 'test' name: 'Create_and_print_prescription' path: '../Tests/Behandlung/Konsultation/Create_and_print_prescription.test'
+_mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../Tests/Kassenbuch.test'
+_U42uwAO8EemXxf0UDvXYOw	// kind: 'test' name: 'VisitAllViews' path: '../Tests/Infrastruktur/VisitAllViews.test'
 
 ------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8--
