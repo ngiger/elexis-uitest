@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 4:03 PM
+Save-Time: 10/19/22, 8:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -41,7 +41,7 @@ proc "AcceptChangeMandant" {
 	  get-window [ t change_mandant_dialog] | get-button OK | click -metaKeys ""
 	  concat "Had to close window: " [ t change_mandant_dialog] | log
 	} -catch {
-		  concat "Did not find window: " [ t change_mandant_dialog] | log
+		 // concat "Did not find window: " [ t change_mandant_dialog] | log
 	}
 }
 

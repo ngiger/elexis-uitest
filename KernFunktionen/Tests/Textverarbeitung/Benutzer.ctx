@@ -6,50 +6,51 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 5:18 PM
+Save-Time: 10/19/22, 8:43 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
-proc ChangeMandant [ val name ] [ val first_name ".*" ] {
+proc ChangeMandant [val name] [val first_name ".*"] {
 	concat "ChangeMandant: " $name " f " $first_name | log
-	get-menu -path [ t Datei_Mandant_wechseln ] | click
-	with [get-window [ t Dialog_Mandant_wechseln ] ] {
-		get-table | select [ concat $name " " $first_name ]
-		get-window [ t Dialog_Mandant_wechseln ] | gen-screenshot [concat $imagesDir "ChangeMandant_" $name "_" $first_name "_1.png"]
+	get-menu -path [t Datei_Mandant_wechseln] | click
+	with [get-window [t Dialog_Mandant_wechseln]] {
+		get-table | select [concat $name " " $first_name]
+		get-window [t Dialog_Mandant_wechseln] | gen-screenshot [concat $imagesDir ChangeMandant_ $name "_" $first_name "_1.png"]
 		get-button OK | click
 	}
 }
 
-proc "SelectContact"  [ val kontakt Test ] {
+proc SelectContact [val kontakt Test] {
 	with [get-window [t select_contact]] {
 		with [get-editbox -index 1] {
 			set-text $kontakt
-			key-type "TRAVERSE_TAB_NEXT"
+			key-type TRAVERSE_TAB_NEXT
 		}
-        get-editbox -index 2 | set-focus
-        try {
-        	get-table | select [ concat $kontakt ".*"]
-         	log [ concat "SelectContact existing " $kontakt ".*"]
-			get-button [ t ok ] | click
+		get-editbox -index 2 | set-focus
+		try {
+			get-table | select [concat $kontakt ".*"]
+			log [concat "SelectContact existing " $kontakt ".*"]
+			get-button [t ok] | click
 		} -catch {
-         	log [ concat "SelectContact failed: No such " $kontakt ".*"]
-			close-window-if-open [ t select_contact ]
-	 }
+			log [concat "SelectContact failed: No such " $kontakt ".*"]
+			close-window-if-open [t select_contact]
+		}
 	}
 }
 
-proc EnterOneDetail [ val key ] [ val idMandant 1 ]  {
-	concat EnterOneDetail $key| log
-	concat "EnterOneDetail: " $key " translation "  [ t $key ] | log
-	concat "EnterOneDetail: " $key " praxiskey "  "praxis.mandant.1" $key | log
-	concat "EnterOneDetail: " $key " GetPraxisProperty "  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant "." $key ] ] | log
-	with [get-window [ t Identifikationselemente ]] {
-		with [get-group [ t notwendigen_Identifikationsdaten ]] {
-			 let [ val label [ t $key ] ] {
-		 let [ val value [ GetPraxisProperty [ concat "praxis.mandant." $idMandant "." $key ] ] ] {
-					concat "EnterOneDetail: " $key " label "  $label " value " $value | log
+proc EnterOneDetail [val key] [val idMandant 1] {
+	concat EnterOneDetail $key | log
+	concat "EnterOneDetail: " $key " translation " [t $key] | log
+	concat "EnterOneDetail: " $key " praxiskey " "praxis.mandant.1" $key | log
+	concat "EnterOneDetail: " $key " GetPraxisProperty " [GetPraxisProperty [concat "praxis.mandant." $idMandant "."
+		$key]] | log
+	with [get-window [t Identifikationselemente]] {
+		with [get-group [t notwendigen_Identifikationsdaten]] {
+			let [val label [t $key]] {
+				let [val value [GetPraxisProperty [concat "praxis.mandant." $idMandant "." $key]]] {
+					concat "EnterOneDetail: " $key " label " $label " value " $value | log
 					get-editbox -after [get-label $label] | set-text $value
 				}
 			}
@@ -57,302 +58,298 @@ proc EnterOneDetail [ val key ] [ val idMandant 1 ]  {
 	}
 }
 
-proc EnterOneFinanzDetail [ val key ] [ val idMandant 1 ]  {
+proc EnterOneFinanzDetail [val key] [val idMandant 1] {
 	concat EnterOneFinanzDetail " key is: " "praxis.mandant." $idMandant ".bank." $key | log
-	let [ val value [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank." $key ] ] ] {
+	let [val value [GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank." $key]]] {
 		concat "EnterOneFinanzDetail: " $key " value " $value | log
-		with [get-editbox -after [get-label $key ] ] {
-		   set-text  $value
-	   }
-   }
+		with [get-editbox -after [get-label $key]] {
+			set-text $value
+		}
+	}
 }
 
 proc SetStandard4Cases {
 	get-preferences-menu | click
-	with [get-window [ t preferences ] ] {
-		get-tree | select [ t preferences_users_cases ]
-//    get-editbox -after [get-label [ t preferences_cases_standard ] ] | set-text "ist krank"
-	    get-editbox -after [get-label [ t preferences_cases_invoicesystem ] ] | set-text KVG
-	    get-editbox -after [get-label [ t preferences_cases_standard_diagnosis ] ] | click-text
-	    get-button [ t preferences_cases_diagnosis ] | click -metaKeys ""
-	    with [get-window [ t select_diagnosis ]] {
-	        get-editbox -after [get-label "Fil.*"] | set-text U
-	        get-table | select "U9.*" | double-click
-        }
-	    get-button [ t apply_and_close ] | click -metaKeys ""
+	with [get-window [t preferences]] {
+		get-tree | select [t preferences_users_cases]
+		// get-editbox -after [get-label [ t preferences_cases_standard ] ] | set-text "ist krank"
+		get-editbox -after [get-label [t preferences_cases_invoicesystem]] | set-text KVG
+		get-editbox -after [get-label [t preferences_cases_standard_diagnosis]] | click-text
+		get-button [t preferences_cases_diagnosis] | click -metaKeys ""
+		with [get-window [t select_diagnosis]] {
+			get-editbox -after [get-label "Fil.*"] | set-text U
+			get-table | select "U9.*" | double-click
+		}
+		get-button [t apply_and_close] | click -metaKeys ""
 	}
 }
 
-proc SetMandantenDetails [ val idMandant 1 ] {
-	concat "SetMandantenDetails" $idMandant " starting" | log
+proc SetMandantenDetails [val idMandant 1] {
+	concat SetMandantenDetails $idMandant " starting" | log
 	get-preferences-menu | click
-	with [get-window [ t preferences ]] {
-		get-tree | select [ t prefs_users_and_rights ]
-		GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"]  | log
+	with [get-window [t preferences]] {
+		get-tree | select [t prefs_users_and_rights]
+		GetPraxisProperty [concat "praxis.mandant." $idMandant ".kuerzel"] | log
 		try {
-			get-table | select  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] | double-click
-			get-button [ t cancel ] | click
+			get-table | select [GetPraxisProperty [concat "praxis.mandant." $idMandant ".kuerzel"]] | double-click
+			get-button [t cancel] | click
 		} -catch {
 			log "Mandant not found. Must create it"
-			get-button [ t cancel ] | click
-			create-user -userName [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ]
-				-role executive_doctor
-				-plainPW [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pw"] ]
-				-forMandat ""
-				-kontakt [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name"] ]
+			get-button [t cancel] | click
+			create-user -userName [GetPraxisProperty [concat "praxis.mandant." $idMandant ".kuerzel"]] -role "executi" +
+				"ve_doctor" -plainPW [GetPraxisProperty [concat "praxis.mandant." $idMandant ".pw"]] -forMandat ""
+				-kontakt [GetPraxisProperty [concat "praxis.mandant." $idMandant ".Name"]]
 		}
 	}
-  	get-preferences-menu | click
-	with [get-window [ t preferences ]] {
-		get-tree | select [t Abrechnungssysteme_Tarmed ]
+	get-preferences-menu | click
+	with [get-window [t preferences]] {
+		get-tree | select [t Abrechnungssysteme_Tarmed]
 		try {
-			get-combo -after [get-label "Tarmed.*"] | select [ concat [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] ".*"]
+			get-combo -after [get-label "Tarmed.*"] | select [concat [GetPraxisProperty [concat "praxis.mandant." $idMandant ".kuerzel"]] ".*"]
 		} -catch {
 			concat "Selecting " $idMandant " failed. We just use the first one, eg. James Bond"
 			get-combo -after [get-label "Tarmed.*"] | select ".+"
 		}
-		global [val AbrNameFirst [ concat
-			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name"] ] " "
-			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Vorname"] ]
-		] ] -override
-		concat "AbrNameFirst: <" $AbrNameFirst "> Tarmed_Rechnungen <" [ t Tarmed_Rechnungen ] "> label <" [ t responsible_doctor ] ">" | log
+		global [val AbrNameFirst [concat [GetPraxisProperty [concat "praxis.mandant." $idMandant ".Name"]] " "
+			[GetPraxisProperty [concat "praxis.mandant." $idMandant ".Vorname"]]]] -override
+		concat "AbrNameFirst: <" $AbrNameFirst "> Tarmed_Rechnungen <" [t Tarmed_Rechnungen] "> label <" [t "responsi" +
+			"ble_doctor"] ">" | log
 		try {
-			get-combo -after [get-label [ t Tarmed_Rechnungen ] ] | select $AbrNameFirst
+			get-combo -after [get-label [t Tarmed_Rechnungen]] | select $AbrNameFirst
 		} - catch {
 			log "AbrNameFirst Not found"
 		}
-		get-group [ t responsible_doctor ] | get-combo | select  $AbrNameFirst
-		get-group [ t Detailangaben ]| get-button "Bills electronically" | check
-		get-group [ t Detailangaben ]| get-link [ t Leistungserbringer ] | click
-		with [get-window [ t Identifikationselemente ]] {
-			str "tarmed_anrede tarmed_ean tarmed_ksk tarmed_kanton1 tarmed_kanton2 tarmed_rolle tarmed_nif tarmed_diag_system tarmed_esr5oresr9 tarmed_esrplus tarmed_erbringungsort tarmed_speziality tarmed_tg_or_tg"  |
-			split -sep " " | foreach [val item]  {
+		get-group [t responsible_doctor] | get-combo | select $AbrNameFirst
+		get-group [t Detailangaben] | get-button "Bills electronically" | check
+		get-group [t Detailangaben] | get-link [t Leistungserbringer] | click
+		with [get-window [t Identifikationselemente]] {
+			str "tarmed_anrede tarmed_ean tarmed_ksk tarmed_kanton1 tarmed_kanton2 tarmed_rolle tarmed_nif tarmed_dia" +
+				"g_system tarmed_esr5oresr9 tarmed_esrplus tarmed_erbringungsort tarmed_speziality tarmed_tg_or_tg"
+				| split -sep " " | foreach [val item] {
 				concat "item: " $item | log
 				EnterOneDetail -key $item -idMandant $idMandant
 			}
-			get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_details.png"]
+			get-eclipse-window | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_details.png"]
 			get-button OK | click
 		}
-		if [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ] {
-			log "PC-Konto definiert"
-			with [get-group [ t Detailangaben ]] |  get-link [ t Postkonto ] | click
-			with [get-window [ t Postkonto ]] {
-				get-editbox -after [get-label TarmedESRParticipantNumber] | set-text  [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ]
-						get-window [ t Postkonto ] | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_pc.png"]
-				get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_PC_detail.png"]
+		global [val pcKonto [GetPraxisProperty [concat "praxis.mandant." $idMandant ".pc_konto"]]] -override
+		concat "praxis.mandant." $idMandant ".pc_konto " $pcKonto | log
+		if [not [$pcKonto | equals ""]] {
+			concat "PC-Konto definiert: " [t Postkonto] " as " $pcKonto | log
+			if [get-group [t Detailangaben] | get-link [t Postkonto] | get-property enablement -raw | equals false] {
+				log "link Postkonto is disabled Elexis 3.10"
+				get-group [t Detailangaben] | get-button Postkonto | click -metaKeys ""
+			} -else {
+				log "link Postkonto is enabeld"
+				get-group [t Detailangaben] | get-link [t Postkonto] | click
+			}
+
+			with [get-window [t Postkonto]] {
+				get-editbox -after [get-label TarmedESRParticipantNumber] | set-text [GetPraxisProperty [concat
+					"praxis.mandant." $idMandant ".pc_konto"]]
+				get-editbox -after [get-label IBAN] | set-text [GetPraxisProperty [concat
+					"praxis.mandant." $idMandant ".iban"]]
+				get-window [t Postkonto] | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_pc.png"]
+				get-eclipse-window | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_PC_detail.png"]
 				get-button OK | click
 			}
 		} -else {
-			if [ get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | get-property enablement -raw | equals false ] {
+			if [get-group [t Detailangaben] | get-link [t Bankverbindung] | get-property enablement -raw | equals
+				"false"] {
 				log "link Bankverbindung is disabled Elexis 3.10"
-				get-group [ t Detailangaben ] | get-button Bank | click -metaKeys ""
+				get-group [t Detailangaben] | get-button Bank | click -metaKeys ""
 			} -else {
 				log "link Bankverbindung is enabeld"
-				get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | click
+				get-group [t Detailangaben] | get-link [t Bankverbindung] | click
 			}
-			with [get-window [ t select_Zahlungsinstitut ]] {
-			try {
-				get-link [ t Finanzinstitut ] | click
-				GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ] | log
-				SelectContact [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ]]
-		        get-link Kontoinhaber | click
-				SelectContact [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ]]
-			} -catch {
-		}
-		with [get-group [ t notwendigen_Identifikationsdaten ]] {
-					EnterOneFinanzDetail [ t Abteilung ]
-					EnterOneFinanzDetail [ t Postfach ]
+			with [get-window [t select_Zahlungsinstitut]] {
+				try {
+					get-link [t Finanzinstitut] | click
+					GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank.Name"] | log
+					SelectContact [GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank.Name"]]
+					get-link Kontoinhaber | click
+					SelectContact [GetPraxisProperty [concat "praxis.mandant." $idMandant ".Name"]]
+				} -catch {
+				}
+				with [get-group [t notwendigen_Identifikationsdaten]] {
+					EnterOneFinanzDetail [t Abteilung]
+					EnterOneFinanzDetail [t Postfach]
 					EnterOneFinanzDetail TarmedESRParticipantNumber
 					EnterOneFinanzDetail TarmedESRIdentity
 					EnterOneFinanzDetail IBAN
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
-		}
-		get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_id_data.png"]
-		get-button OK | click
-	}
-	// TODO: Why is the work-around necessary in RCPTT???
-			get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | click
-			with [get-window [ t select_Zahlungsinstitut ]] {
-			/*
-				with [get-group [ t notwendigen_Identifikationsdaten ]] {
-					EnterOneFinanzDetail [ t Abteilung ]
-					EnterOneFinanzDetail [ t Postfach ]
-					EnterOneFinanzDetail TarmedESRParticipantNumber
-					EnterOneFinanzDetail TarmedESRIdentity
-					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 				}
-				*/
-				get-window [ t select_Zahlungsinstitut ]| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_zahlungsinstitut.png"]
+				get-eclipse-window | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_bank_detail.png"]
 				get-button OK | click
 			}
-			get-button [ t Anwenden ] | click
 		}
-		// Verify TarmedESRParticipantNumber
-		if [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pc_konto"] ] {
-			log "Skip verify pc_konto"
-		} -else {
-			log "Verify Bankverbindung"
-			get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | click
-			get-window [ t preferences ] | get-window [ t select_Zahlungsinstitut ]
-				| get-group [ t notwendigen_Identifikationsdaten ] | get-editbox
-				-after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
-			get-window [ t preferences ] | get-window [ t select_Zahlungsinstitut ]| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
-			get-window [ t preferences ] | get-window [ t select_Zahlungsinstitut ] | get-button OK | click
-		}
-		let  [val AbrTrustCenter [ concat
-			[ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".trustcenter"] ]
-		] ] {
-			if [ 	$AbrTrustCenter | eq "" ] {
+		get-eclipse-window | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_id_data.png"]
+		let [val AbrTrustCenter [concat [GetPraxisProperty [concat "praxis.mandant." $idMandant ".trustcenter"]]]] {
+			if [$AbrTrustCenter | eq ""] {
 				concat "no trustcenter for : <" $AbrNameFirst "> " | log
-				with [get-group [ t Trustcenter ] ] {
-					get-button [ t edDA_Vertrag_mit_Trustcenter ] | uncheck
+				with [get-group [t Trustcenter]] {
+					get-button [t edDA_Vertrag_mit_Trustcenter] | uncheck
 				}
 			} -else {
 				concat "set trustcenter for " $AbrNameFirst " <" $AbrTrustCenter "> " | log
-				with [get-group [ t Trustcenter ] ] {
+				with [get-group [t Trustcenter]] {
 					get-combo | select $AbrTrustCenter
-					get-button [ t edDA_Vertrag_mit_Trustcenter ] | check
+					get-button [t edDA_Vertrag_mit_Trustcenter] | check
 				}
 			}
-			get-window [ t preferences ] | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_tc.png"]
-			get-button [ t Anwenden ] | click
+			get-window [t preferences] | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_tc.png"]
+			get-button [t Anwenden] | click
 		}
-		
-		get-window [ t preferences ] | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant ".png"]
-		get-button [ t apply_and_close ] | click
+
+		get-window [t preferences] | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant ".png"]
+		get-button [t apply_and_close] | click
 	}
-	concat "SetMandantenDetails" $idMandant " done" | log
+	concat SetMandantenDetails $idMandant " done" | log
 }
 
-/**
- * Creates a new user in the user administration if it does not yet exists
- * A kontact with the same name and with the check-box mandant set must already exists
- */
-proc "create-user" [ val idMandant 1 ]
-	[val userName "" ] // GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] ]
-	[val forMandat "" ] // [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".worksFor"] ] ]
-	[val kontakt "" ] // [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".worksFor"] ] ]
-	[val role "executive_doctor" ]
-	[val plainPW ] // [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pw"] ] ]
-	 {
+/* Creates a new user in the user administration if it does not yet exists
+  A kontact with the same name and with the check-box mandant set must already exists */
+proc "create-user" [val idMandant 1] [val userName
+	""] // GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel"] ] ]
+	[val forMandat ""] // [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".worksFor"] ] ]
+	[val kontakt ""] // [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".worksFor"] ] ]
+	[val role executive_doctor] [val plainPW] // [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".pw"] ] ]
+	{
 	concat "create-user" $userName " starting" | log
 	get-preferences-menu | click
-	get-window [ t preferences ] | get-tree | expand-all | select [ t prefs_users_and_rights ]
+	get-window [t preferences] | get-tree | expand-all | select [t prefs_users_and_rights]
 	try {
-		get-window [ t preferences ] | get-table | get-item -path $userName | get-property caption | equals $userName | verify-true
+		get-window [t preferences] | get-table | get-item -path $userName | get-property caption | equals $userName
+			| verify-true
 		concat "Benutzer, " $userName " already exists" | log
-		get-window [ t preferences ] | get-button [ t cancel ] | click
-	} -error  [val errorObj]  -catch {
+		get-window [t preferences] | get-button [t cancel] | click
+	} -error [val errorObj] -catch {
 		// concat "EError was: " [$errorObj | get message] | log
-		concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password " $plainPW | log
-		with [get-window [ t preferences ]] {
-			get-button -after [get-label [t btn_user_admin] ] -index 3 | click
+		concat "create-user " $userName " for " $forMandat " role " $role " kontakt " $kontakt " with password "
+			$plainPW | log
+		with [get-window [t preferences]] {
+			get-button -after [get-label [t btn_user_admin]] -index 3 | click
 		}
-		with [get-window [ t dlg_create_user ] ] {
-			get-editbox 
-		-after [get-label [ t dlg_create_user_set] ] | set-text $userName
-			get-button [ t ok ] | click
+		with [get-window [t dlg_create_user]] {
+			get-editbox -after [get-label [t dlg_create_user_set]] | set-text $userName
+			get-button [t ok] | click
 		}
-		with [get-window [ t preferences ]] {
+		with [get-window [t preferences]] {
 			get-table | select $userName
-			with [get-group [t dlg_create_user_accounting] ] {
-		get-group [t user_role] | get-table | get-item -path $role | check
-		if [ $forMandat | matches ".+" ] {
-			get-group [t select_works_for] | get-table | get-item  -path $forMandat | check
+			with [get-group [t dlg_create_user_accounting]] {
+				get-group [t user_role] | get-table | get-item -path $role | check
+				if [$forMandat | matches ".+"] {
+					get-group [t select_works_for] | get-table | get-item -path $forMandat | check
 					get-window [t view_no_contact] | get-button [t ok] | click
-		}
+				}
 			}
-	if [ $kontakt | matches ".+" ] {
-				get-group [t dlg_create_user_accounting] | get-link [ t dlg_create_user_accounting_change ] | click-link
-				SelectContact  [ concat ".*" $kontakt ]
+			if [$kontakt | matches ".+"] {
+				get-group [t dlg_create_user_accounting] | get-link [t dlg_create_user_accounting_change] | click-link
+				SelectContact [concat ".*" $kontakt]
 			}
 			with [get-group Systemzugang] {
-		get-button Administrator | check
-		get-link "<a>Passwort ändern</a>" | click-link
+				get-button Administrator | check
+				get-link "<a>Passwort ändern</a>" | click-link
 			}
-			concat "Neues Passwort ist: " $plainPW| log
+			concat "Neues Passwort ist: " $plainPW | log
 			with [get-window -class ChangePasswordDialog] {
-		get-editbox -after [get-label "Neues Passwort"] | set-text $plainPW
-		get-editbox -after [get-label "Bestätigen"] | set-text $plainPW
-		get-button "Prüfregeln ignorieren (nicht empfohlen)" | check
-		get-button OK | click
+				get-editbox -after [get-label "Neues Passwort"] | set-text $plainPW
+				get-editbox -after [get-label "Bestätigen"] | set-text $plainPW
+				get-button "Prüfregeln ignorieren (nicht empfohlen)" | check
+				get-button OK | click
 			}
-			concat "Checking Role " $role "res" [$role | matches "executive_doctor"  ] | log
-			if [ $role | matches "executive_doctor" ] {
-				get-group "Verrechnung" | get-button "ist verantwortlicher Arzt" | check
+			concat "Checking Role " $role res [$role | matches executive_doctor] | log
+			if [$role | matches executive_doctor] {
+				get-group Verrechnung | get-button "ist verantwortlicher Arzt" | check
 				try {
-					get-window [ t Kontakt_ist_kein_Mandant ] | get-button [ t yes ]  | click -metaKeys ""
+					get-window [t Kontakt_ist_kein_Mandant] | get-button [t yes] | click -metaKeys ""
 				} -catch {
 					log "Kontakt is already a mandant"
 				}
-//				get-group "Verrechnung" | get-button "ist verantwortlicher Arzt" | uncheck
+				// get-group "Verrechnung" | get-button "ist verantwortlicher Arzt" | uncheck
 			} -else {
 				concat "Role " $role " is not executive_doctor" | log
 			}
-			get-eclipse-window | gen-screenshot [concat $imagesDir "user_" VerantwortlicherArzt "_created.png" ]
-			get-button [ t apply_and_close ] | click
+			get-eclipse-window | gen-screenshot [concat $imagesDir user_ VerantwortlicherArzt "_created.png"]
+			get-button [t apply_and_close] | click
 		}
 		concat "Benutzer " $userName " angelegt. verantwortlich" $forMandat " rolle " $role " kontakt " $kontakt | log
 	}
 	concat "create-user" $userName " starting" | log
 }
-/**
- * Setze Benutzerrecht<br>
- *
- *  @recht: Der Name des Rechtes. Nur Top-Element können im Moment ausgewählt werden
- *   z.B Administration und nicht Administration/Zugriff/Rechte. Niklaus weiss nicht
- *   wie dieser Dialog für Unter-Elemente via RCPTT bedient werden könnte<br>
- *
- *  @wert: Zustand des Rechts, Entweder " ", "A" oder "x"<br>
- *
- *  @rolle: Tooltip-Name, one of the following.<br>
- */
-proc "SetzeBenutzerRecht" [ val recht ] [ val wert "A" ] [ val role "user" ] {
+/* Setze Benutzerrecht<br>
+ 
+   @recht: Der Name des Rechtes. Nur Top-Element können im Moment ausgewählt werden
+    z.B Administration und nicht Administration/Zugriff/Rechte. Niklaus weiss nicht
+    wie dieser Dialog für Unter-Elemente via RCPTT bedient werden könnte<br>
+ 
+   @wert: Zustand des Rechts, Entweder " ", "A" oder "x"<br>
+ 
+   @rolle: Tooltip-Name, one of the following.<br> */
+proc SetzeBenutzerRecht [val recht] [val wert A] [val role user] {
 	// concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $rolle | log
 	get-preferences-menu | click
-	get-window  [ t preferences ] | get-tree | select [ t select_roles_right ]
-    with [get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"]] {
-	    let [ val nrItems [ get-item -path Administration | get-property "getParent().getColumns().length" -raw ] ] {
-			with [ get-item -path Administration ] {
+	get-window [t preferences] | get-tree | select [t select_roles_right]
+	with [get-window [t preferences] | get-tree -after [get-link "<a>ändern</a>"]] {
+		let [val nrItems [get-item -path Administration | get-property "getParent().getColumns().length" -raw]] {
+			with [get-item -path Administration] {
 				// Next few lines is a hack, as I cannot loop and set values inside. Don't know why.
-				global [ val BenutzerRechteIndex "-1" ] -override
-				global [ val BenutzerRechteIndex1  [ get-property "getParent().getColumns().TreeColumns[1].getToolTipText()" -raw ] ]
-				global [ val BenutzerRechteIndex2  [ get-property "getParent().getColumns().TreeColumns[2].getToolTipText()" -raw ] ]
-				global [ val BenutzerRechteIndex3  [ get-property "getParent().getColumns().TreeColumns[3].getToolTipText()" -raw ] ]
-				global [ val BenutzerRechteIndex4  [ get-property "getParent().getColumns().TreeColumns[4].getToolTipText()" -raw ] ]
-				global [ val BenutzerRechteIndex5  [ get-property "getParent().getColumns().TreeColumns[5].getToolTipText()" -raw ] ]
-				global [ val BenutzerRechteIndex6  [ get-property "getParent().getColumns().TreeColumns[6].getToolTipText()" -raw ] ]
-				if [ $role | eq $BenutzerRechteIndex1 ] { global [ val BenutzerRechteIndex 1 ] -override}
-				if [ $role | eq $BenutzerRechteIndex2 ] { global [ val BenutzerRechteIndex 2 ] -override}
-				if [ $role | eq $BenutzerRechteIndex3 ] { global [ val BenutzerRechteIndex 3 ] -override}
-				if [ $role | eq $BenutzerRechteIndex4 ] { global [ val BenutzerRechteIndex 4 ] -override}
-				if [ $role | eq $BenutzerRechteIndex5 ] { global [ val BenutzerRechteIndex 5 ] -override}
-				if [ $role | eq $BenutzerRechteIndex6 ] { global [ val BenutzerRechteIndex 6 ] -override}
-				if [$BenutzerRechteIndex | eq "-1" ] {
-					bool false | assert-true -message [ concat "No valid ID found for role " $role ]
+				global [val BenutzerRechteIndex "-1"] -override
+				global [val BenutzerRechteIndex1 [get-property "getParent().getColumns().TreeColumns[1].getToolTipTex" +
+					"t()" -raw]]
+				global [val BenutzerRechteIndex2 [get-property "getParent().getColumns().TreeColumns[2].getToolTipTex" +
+					"t()" -raw]]
+				global [val BenutzerRechteIndex3 [get-property "getParent().getColumns().TreeColumns[3].getToolTipTex" +
+					"t()" -raw]]
+				global [val BenutzerRechteIndex4 [get-property "getParent().getColumns().TreeColumns[4].getToolTipTex" +
+					"t()" -raw]]
+				global [val BenutzerRechteIndex5 [get-property "getParent().getColumns().TreeColumns[5].getToolTipTex" +
+					"t()" -raw]]
+				global [val BenutzerRechteIndex6 [get-property "getParent().getColumns().TreeColumns[6].getToolTipTex" +
+					"t()" -raw]]
+				if [$role | eq $BenutzerRechteIndex1] {
+					global [val BenutzerRechteIndex 1] -override
 				}
-				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $role " mit index "  $BenutzerRechteIndex | log
-		    }
+				if [$role | eq $BenutzerRechteIndex2] {
+					global [val BenutzerRechteIndex 2] -override
+				}
+				if [$role | eq $BenutzerRechteIndex3] {
+					global [val BenutzerRechteIndex 3] -override
+				}
+				if [$role | eq $BenutzerRechteIndex4] {
+					global [val BenutzerRechteIndex 4] -override
+				}
+				if [$role | eq $BenutzerRechteIndex5] {
+					global [val BenutzerRechteIndex 5] -override
+				}
+				if [$role | eq $BenutzerRechteIndex6] {
+					global [val BenutzerRechteIndex 6] -override
+				}
+				if [$BenutzerRechteIndex | eq "-1"] {
+					bool false | assert-true -message [concat "No valid ID found for role " $role]
+				}
+				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $role " mit index " $BenutzerRechteIndex | log
+			}
 		}
-		let [ val rechte_index [
-			get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
-		    | get-property index -raw] ] {
-			if [ get-window  [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
-			    | get-property [ concat "columns[" $BenutzerRechteIndex "]"] -raw | eq $wert ] {
-					concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $BenutzerRechteIndex " schon gesetzt. Index " $rechte_index | log
-			    } -else {
-					concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $BenutzerRechteIndex " wird gesetzt. Index " $rechte_index | log
-					with [get-window [ t preferences ] | get-tree -after [get-link "<a>ändern</a>"]] {
-						get-cell $rechte_index $BenutzerRechteIndex | click
-					}
+		let [val rechte_index [get-window [t preferences] | get-tree -after [get-link "<a>ändern</a>"] | get-item
+			-path $recht | get-property index -raw]] {
+			if [get-window [t preferences] | get-tree -after [get-link "<a>ändern</a>"] | get-item -path $recht
+				| get-property [concat "columns[" $BenutzerRechteIndex "]"] -raw | eq $wert] {
+				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $BenutzerRechteIndex " schon gesetzt. Index "
+					$rechte_index | log
+			} -else {
+				concat "SetzeBenutzerRecht " $recht " auf " $wert " für " $BenutzerRechteIndex " wird gesetzt. Index "
+					$rechte_index | log
+				with [get-window [t preferences] | get-tree -after [get-link "<a>ändern</a>"]] {
+					get-cell $rechte_index $BenutzerRechteIndex | click
 				}
+			}
 		}
 	}
-	with [ get-window  [ t preferences ]  ] {
-		get-button [ t apply_and_close ] | click
+	with [get-window [t preferences]] {
+		get-button [t apply_and_close] | click
 	}
 }
 // Ende
 //
-
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--

@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/31/22, 1:50 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/19/22, 7:49 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -68,12 +68,16 @@ proc "ImportEigenDiagnosen"  [ val file  [ concat $rcpttDir "/Eigendiagnosen.csv
 
 proc "VerifyEigendiagnose" [ val name  "Tauglichkeitsuntersuchung Führerschein" ] {
 	OpenLeistungen
-	with [get-view [ t codes ]] {
+	get-view [ t codes] | close
+	OpenLeistungen
+	with [ get-view [ t codes]] {
+		maximize
 		get-tab-folder | get-tab-item [ t diag_eigendiagnosen ] | click
 		get-editbox | set-focus
 		get-tree | select [concat ".*" $name ]
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Eigendiagnose_" $name ".png"]
 		concat "VerifyEigendiagnose: " $name " was successful" | log
+		restore
 	}
 }
 proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
