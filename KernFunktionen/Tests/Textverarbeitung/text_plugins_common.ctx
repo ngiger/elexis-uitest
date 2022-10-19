@@ -5,8 +5,8 @@ Element-Name: text_plugins_common
 Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/31/22, 1:47 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/19/22, 5:18 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -170,7 +170,21 @@ proc ConfigureDocx_TextVerarbeitung {
 	with [get-window [ t preferences ]] {
 	    get-tree | select  [ t Textverarbeitung ]
 	    get-button "0 : Docx-Document" | click -metaKeys ""
-	    get-editbox -after [get-label [ t pref_externes_textprogramm ]] | set-text $praxisDatenDir
+	    try {
+		    get-editbox -after [get-label [ t pref_externes_textprogramm ]] | set-text $praxisDatenDir
+	    } -catch {
+			concat [t pref_externes_textprogramm ] "not enable must setup VFS under elexis >= 3.10" | log
+		    get-button "Durchsuchen..." | click -metaKeys ""
+			with [get-window -class VirtualFilesystemUriEditorDialog] {
+			    get-editbox -after [get-label Path] | click-text
+			    get-combo -after [get-label Scheme] | select file
+			    get-editbox -after [get-label Host] | click-text
+			    with [get-editbox -after [get-label Path]] {
+			        set-text $praxisDatenDir
+			    }
+			    get-button OK | click -metaKeys ""
+			}
+	    }
 		get-button [t pref_texte_lokal_editieren] | check // Must be checked for Docx Plugin
 		get-button [t print_save_letter_extern] | check // Must be checked for Docx Plugin
 	    get-tree | select [ t pref_docx ]

@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/18/22, 1:05 AM
+Save-Time: 10/19/22, 4:03 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -36,6 +36,15 @@ proc "SelectKontakt" [ val bezeichnung1 "Devaud" ] [ val location "" ] {
 	}
 }
 
+proc "AcceptChangeMandant" {
+	try {
+	  get-window [ t change_mandant_dialog] | get-button OK | click -metaKeys ""
+	  concat "Had to close window: " [ t change_mandant_dialog] | log
+	} -catch {
+		  concat "Did not find window: " [ t change_mandant_dialog] | log
+	}
+}
+
 proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
 	let [ val kuerzel [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".kuerzel" ] ] ] {
 		if [ SelectKontakt -bezeichnung1 $kuerzel | equals true] {		
@@ -57,7 +66,6 @@ proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
 						-EMail [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".EMail" ] ]
 						-Website [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Website" ] ]
 						-Bemerkung [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Bemerkung" ] ]
-			get-eclipse-window | gen-screenshot [concat $imagesDir "Mandant_" $idMandant "_kontakt_info.png"]
 		} -else {
 			concat "SetMandantKontatkInfo Kontakt via Kuerzel " $kuerzel " NICHT gefunden" | log
 			let [ val familyName [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ] ] ] {
@@ -87,10 +95,7 @@ proc "SetMandantKontaktInfo"  [ val idMandant 1 ] {
 		}
 	}
 	try {
-	  concat "Checking " [ t change_mandant_dialog] | log
-	  open-window-by-name [ t change_mandant_dialog]
-	  get-button OK | click
-	  concat "Checking " [ t change_mandant_dialog] " Done" | log
+	  AcceptChangeMandant
 	} -catch {
 	  concat "No " [ t change_mandant_dialog] | log
 	  get-window ".*" | get-button [ t cancel ] | click
@@ -122,24 +127,36 @@ proc "SetSelectedKontaktInfo" [ val Name "" ]
 		get-view [ t Details_zum_Kontakt] | click
 		with [get-view [ t Details_zum_Kontakt  ]] {
 			maximize
-			close-window-if-open [ t want_to_change_mandant ]
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Name ] ] | set-text $Name
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Geschlecht ] ] | set-text $Geschlecht
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Vorname ] ] | set-text $Vorname
+			AcceptChangeMandant
 //			get-editbox -after [get-label [ t field_Zusatz ] ] | set-text $Zusatz
 			get-editbox -after [get-label [ t field_Plz ] ] | set-text $Plz
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Ort ] ] | set-text $Ort
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Land ] ] | set-text $Land
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Telefon1 ] ] | set-text $Telefon1
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Telefon2 ] ] | set-text $Telefon2
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Mobile ] ] | set-text $Mobile
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Fax ] ] | set-text $Fax
+			AcceptChangeMandant
 			get-editbox -after [get-label [ t field_Bemerkung ] ] | set-text $Bemerkung
+			AcceptChangeMandant
 //			get-editbox -after [get-label [ t field_Kuerzel ] ] | set-text $Kuerzel
 			get-editbox -after [get-label [ t field_Titel ] ] | set-text $Titel
+			AcceptChangeMandant
+			get-eclipse-window | gen-screenshot [concat $imagesDir "kontakt_" $Name "_" $Vorname "_created.png"]
 			restore
 		}
-		get-eclipse-window | gen-screenshot [concat $imagesDir "kontakt_" $Name "_" $Vorname "_created.png"]
 //	}
 }
 

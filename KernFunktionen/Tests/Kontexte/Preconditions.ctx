@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/18/22, 10:03 AM
+Save-Time: 10/19/22, 2:00 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -113,10 +113,9 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 				// "-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
 				concat "Dump to " $zipFile " skipped under windows" | log
 			} -else {
-				concat "/usr/bin/env" " java" " -classpath " $jarFile " org.h2.tools.Script"
-				" -url " $jdbc " -user" " sa" " -script " $zipFile " -options" " compression" " zip" | log
+				concat "Creating "  $zipFile ".zip from " $jdbc  | log
 				exec-process "/usr/bin/env" "java" "-classpath" $jarFile "org.h2.tools.Script"
-				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
+				"-url" "jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_de/db;AUTO_SERVER=TRUE" "-user" "sa" "-script" [ concat $zipFile ".zip" ] "-options" "compression" "zip"
 			}
 		} -else {
 			if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "mysql" ] {

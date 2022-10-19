@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/18/22, 12:19 PM
+Save-Time: 10/19/22, 5:18 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -143,7 +143,13 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 				get-button OK | click
 			}
 		} -else {
-			get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | click
+			if [ get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | get-property enablement -raw | equals false ] {
+				log "link Bankverbindung is disabled Elexis 3.10"
+				get-group [ t Detailangaben ] | get-button Bank | click -metaKeys ""
+			} -else {
+				log "link Bankverbindung is enabeld"
+				get-group [ t Detailangaben ] | get-link [ t Bankverbindung ] | click
+			}
 			with [get-window [ t select_Zahlungsinstitut ]] {
 			try {
 				get-link [ t Finanzinstitut ] | click
@@ -151,7 +157,6 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 				SelectContact [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".bank.Name" ]]
 		        get-link Kontoinhaber | click
 				SelectContact [ GetPraxisProperty [ concat "praxis.mandant." $idMandant ".Name" ]]
-				log "Done"
 			} -catch {
 		}
 		with [get-group [ t notwendigen_Identifikationsdaten ]] {
@@ -162,7 +167,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 					EnterOneFinanzDetail IBAN
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 		}
-		get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
+		get-eclipse-window | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_id_data.png"]
 		get-button OK | click
 	}
 	// TODO: Why is the work-around necessary in RCPTT???
@@ -177,7 +182,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 				}
 				*/
-				get-window [ t select_Zahlungsinstitut ]| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_bank.png"]
+				get-window [ t select_Zahlungsinstitut ]| gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_zahlungsinstitut.png"]
 				get-button OK | click
 			}
 			get-button [ t Anwenden ] | click
@@ -209,6 +214,7 @@ proc SetMandantenDetails [ val idMandant 1 ] {
 					get-button [ t edDA_Vertrag_mit_Trustcenter ] | check
 				}
 			}
+			get-window [ t preferences ] | gen-screenshot [concat $imagesDir "tarmed_mandant_" $idMandant "_tc.png"]
 			get-button [ t Anwenden ] | click
 		}
 		

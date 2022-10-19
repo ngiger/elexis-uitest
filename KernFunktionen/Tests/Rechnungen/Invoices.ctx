@@ -6,11 +6,26 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/17/22, 5:20 PM
+Save-Time: 10/19/22, 5:17 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+proc "UsingNewInvoiceName" {
+	try {
+		open-window-by-name [ t Rechnungsliste_3.10.0_alt]
+		global [ val invoiceList [ t Rechnungsliste_3.10.0 ] ]
+	} -catch {
+		global [ val invoiceList [ t Rechnungsliste_3.9 ] ]
+	}
+	concat "UsingNewInvoiceName: " $invoiceList | log
+}
+UsingNewInvoiceName
+
+proc "OpenRechnungsliste" {
+	open-window-by-name $invoiceList
+}
 
 proc "AbrechnungsSystemKonfigurieren"
 	[ val abrSystem  [ t case_KVG ] ]
@@ -142,18 +157,6 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 	}
 }
 
-proc "OpenRechnungsliste" {
-	try {
-		open-window-by-name [ t Rechnungsliste_beta ]
-		global [val invoiceList  [ t Rechnungsliste_beta ]] -override
-		
-    } -catch {
-		global [val invoiceList  [ t Rechnungsliste ]] -override
-		open-window-by-name [ t Rechnungsliste ]
-    }
-}
-
-OpenRechnungsliste
 
 proc RechnungAusgeben [ val invoiceListViewName $invoiceList ]
 	[ val invoiceId 1 ]
@@ -256,7 +259,7 @@ proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] [ val workAroun
 			get-view $invoiceList | close
 			concat "GetNrOfInvoices: workAround21559 closed wait"  $invoiceList | log
 		} -error [val errorObj] -catch {
-			log "GetNrOfInvoices:  Rechnungsliste not present"
+			log "GetNrOfInvoices:  Rechnungsliste_alt not present"
 		}
 	}
 	RechnungslisteAnzeigen -status $status

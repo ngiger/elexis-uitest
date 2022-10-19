@@ -5,8 +5,8 @@ Element-Name: Patienten
 Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/23/22, 5:55 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/19/22, 5:15 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -50,19 +50,32 @@ proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 	$occurences_selected | gt 0
 }
 
-/**
- * Set the AHV number for the currently selected patient
- */
 proc SetAHVnumber [ val AHVnumber "756.1234.5678.10" ] {
+	t Patientendetails  | log
+	t Patientendetails_new  | log
 	open-window-by-name [ t Patientendetails_new ]
-	get-view [ t Patientendetails ] | get-label [ t Patientendetails_AHV ] | click
-	with [get-window [ t Identifikationselemente ] ] {
-	    with [get-group [ t notwendigen_Identifikationsdaten ] | get-editbox -after [get-label [ t AHV]]] {
-	        set-text $AHVnumber
+	try { // old pre 3.10 elexis
+		get-view [ t Patientendetails ] | get-label [ t Patientendetails_AHV ] | click
+		with [get-window [ t Identifikationselemente ] ] {
+		    with [get-group [ t notwendigen_Identifikationsdaten ] | get-editbox -after [get-label [ t AHV]]] {
+		        set-text $AHVnumber
+		    }
+			get-eclipse-window | gen-screenshot -out [concat $imagesDir "AHV_" $AHVnumber ".png"]
+		    get-button [ t ok ] | click
 	    }
-		get-eclipse-window | gen-screenshot -out [concat $imagesDir "AHV_" $AHVnumber ".png"]
-	    get-button [ t ok ] | click
-    }
+	 } -catch {
+	 	concat "SetAHVnumber Elexis 3.10 can set AHV directly: "  $AHVnumber | log
+		with [get-view [ t Patientendetails ] ] {
+		    with [ get-editbox -after [get-label [ t Patientendetails_AHV]]] {
+		    	try {
+			        set-text $AHVnumber
+		        } -catch {
+		        // kann man das nicht ändern, da es ein enabled
+				 	concat "SetAHVnumber Elexis 3.10 Unable to set AHV: "  $AHVnumber | log
+			 	}
+		    }
+		}
+	 }
 }
 
 proc PatientenErstellenFallsNichtVorhanden [val familyName "Wesen" ] [val firstName "Armes" ] [val male [bool true] ] 
