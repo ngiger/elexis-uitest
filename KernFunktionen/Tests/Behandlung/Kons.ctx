@@ -5,8 +5,8 @@ Element-Name: Kons
 Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/31/22, 8:32 AM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/19/22, 8:53 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -543,7 +543,7 @@ proc SelectPatFallKonsFromProperty [ val keyId ] [ val abortOnError true ] [ val
 		}
 	}
 }
-proc "ImportPatFallKonsFromProperty" [ val keyId ] [ val abortOnError true ] {
+proc ImportPatFallKonsFromProperty [ val keyId ] [ val abortOnError true ] {
 	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage] ]
 	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
 	    [ val male		 [ GetTestProperty [ concat $keyId male      ] ] ]
