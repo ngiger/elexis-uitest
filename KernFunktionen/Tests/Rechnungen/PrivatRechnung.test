@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _gAMNcECkEeucZoJXQ1XGtg
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/31/22, 1:52 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 10/20/22, 2:44 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -18,7 +18,8 @@ Entry-Name: .content
 // Kopieren von KonsDirectVerrechnen
 // Bank findet man via Raiffeisenbank
 
-TextPluginSelect docx
+// TextPluginSelect docx
+
 SetupPrivatrechnung
 
 // Siehe https://redmine.medelexis.ch/issues/17063
@@ -29,22 +30,12 @@ ChangeMandant [ GetPraxisProperty praxis.mandant.1.Name ]
 global [ val privatPatientVorname	"Carlo" ]
 global [ val privatPatientName	"PrivatPatient" ]
 
-if [ not [ SelectPatient $privatPatientName $privatPatientVorname] ] {
-	PatientenErstellen  $privatPatientName $privatPatientVorname true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
-	SelectPatient $privatPatientName $privatPatientVorname -mustExist true
-}
-let [ val anfangs2022 "30.01.2022" ] [val caseLaw "privat" ] [val caseReason [t reason_KVG]] {
-	if [  FallZuPatientExistiert -text [ concat  "privat.*" [ t fall_offen_part ] ".*" ]] {
-		log "FallZuPatientExistiert"
-	} -else {
-		FallZuPatientErstellen -startDate $anfangs2022 -caseLaw $caseLaw -caseReason $caseReason
-		FallSetVersicherungsNummer 87654329 -fall [ concat  ".*" $caseLaw ".*"  $anfangs2022 ".*"]
-		FallSetCostBearer -name "Helsana Unfall" -printId [concat $privatPatientName " "  $anfangs2022 ]
-		FallSetDefaultInvoiceRecipient $privatPatientName $privatPatientVorname
-	}
-	SelectFall -caseLaw $caseLaw -startDate $anfangs2022
-	kons-erstellen [concat $privatPatientName " "  $anfangs2022 " now " [ now ] ] -createSecond true
-	kons-set-date $anfangs2022
+let [ val yesterday "30.01.2022" ] [val caseLaw "privat" ] [val caseReason [t reason_KVG]] {
+	PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $privatPatientName -firstName $privatPatientVorname 
+		-birthDate "15.01.2000" -caseName $caseLaw -caseReason $caseReason
+	PatientMustBeSelected  -familyName $privatPatientName -firstName $privatPatientVorname
+	kons-erstellen [concat $privatPatientName " "  $yesterday " now " [ now ] ] -createSecond true
+	kons-set-date $yesterday
 	kons-add-artikelstamm Nolvadex "Nolvadex.*100 Stk.*"
 	kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 }

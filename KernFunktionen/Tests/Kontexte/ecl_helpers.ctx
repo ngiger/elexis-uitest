@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 7:59 PM
+Save-Time: 10/20/22, 2:27 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -94,6 +94,7 @@ proc "get-seconds" {
  * @input: inString a string
 */
 proc replaceFirst [ val inString ] [ val searchPattern ] [ val replaceString] {
+	// concat "replaceFirst: " $inString " '"  $searchPattern "' -> '" $replaceString "'" | log
 	$inString | invoke replaceFirst $searchPattern $replaceString
 }
 // replaceFirst "Welcome to Tutorialspoint.com" "(.*)Tutorials(.*)" "AMROOD" | log
@@ -329,6 +330,9 @@ proc OpenAndResetStartPerspektive {
 	}-error [val errorObj] -catch {
 		concat "ErrorObj: " $errorObj " for OpenAndResetStartPerspektive" | log
 	}
+	 // cleanup possible leftover of a last error
+	close-window-if-open [ t show_view ]
+	close-window-if-open [ t window_warning ]
 	// we need reproducable conditions else labels etc suddenly vanish
 	get-eclipse-window | get-object | invoke setSize 1400 1024
 	// concat "OpenAndResetStartPerspektive: Size is " [ get-eclipse-window | get-object | invoke getSize ] | log

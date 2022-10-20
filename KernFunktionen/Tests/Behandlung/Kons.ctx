@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 8:53 PM
+Save-Time: 10/20/22, 3:34 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -661,27 +661,33 @@ proc "SelectLastPrescripion" {
 	}
 }
 
-proc "CreatePrescription" {
-	ActivateVisibleKonsView
-	with [get-view [t prescription_view]] {
-	    click
-	    get-button [ t prescription_create_one] | click -metaKeys ""
+proc "SetLongMediName"  [ val itemName "Nolvadex" ] [ val longName "" ] {
+	if [$longName | eq ""]  {
+		global [val longMediName [ concat  $itemName ".*Stk.*" ]] -override
+	} -else {
+		global [val longMediName [ concat  $longName]] -override
 	}
+	concat "SetLongMediName <" $longMediName ">" | log
 }
 
-proc "AddMediToPrescription" [ val itemName "Nolvadex.*" ] [ val morning 0 ] [ val lunch 0 ] [ val supper 0 ]
+proc "CreatePrescription"  [ val itemName "Nolvadex" ] [ val longName "" ] {
+	SetLongMediName $itemName $longName
+	ActivateVisibleKonsView
+	get-view [t prescription_view ] | click
+	with [get-view [t prescription_view]] {
+	    get-button [ t prescription_create_one] | click -metaKeys ""
+	}
+	SelectArtikelitemInTab -shortName $itemName -longName $longMediName 
+	get-view [t leistungen ] | get-group [t alle_leistungen] | get-table | select $longMediName | double-click
+}
+
+proc "AddMediToPrescription" [ val itemName "Nolvadex" ]  [ val longName "" ] [ val morning 0 ] [ val lunch 0 ] [ val supper 0 ]
 	[ val night 0] [ val instructions "" ] [ val reason "" ] [ val isReserve [ bool false ] ] [ val freetext "" ] {
+	SetLongMediName $itemName $longName
 	SelectLastPrescripion
 	get-view [t prescription_view] | get-button [t prescription_new_line]| click -metaKeys ""
-	with [get-view [t leistungen ]] {
-	    with [get-group [t alle_leistungen]] {
-	        get-editbox -after [get-label [t artikelstamm_label]] | set-focus
-	        get-view [t leistungen ] | get-group [t alle_leistungen] | get-button [t btn_execute_search]| click -metaKeys ""
-	        wait 1000 // this takes some time sometimes
-	        get-table | select $itemName
-	        get-table | select $itemName | double-click
-	    }
-	}
+	SelectArtikelitemInTab -shortName $itemName -longName $longMediName
+	get-view [t leistungen ] | get-group [t alle_leistungen] | get-table | select $longMediName | double-click
 	get-view [t prescription_view] | get-list | select $itemName| get-menu -path [t prescription_change] | click -metaKeys ""
 	with [get-window [t prescription_detail]] {
 		get-editbox | get-property "getMessage()" -raw | log
@@ -711,7 +717,12 @@ proc "PrintPrescription" {
 	log "PrintPrescription starting"
 	SelectLastPrescripion
 	get-view [t prescription_view] | get-button [t print_prescription ] | click -metaKeys ""
-	close-window-if-open [ t error] // TODO: This should not be necesssary once docx prints directly newly opened docx files
+	try {
+		get-window  "Rezept erstellen" | get-button "Rezept neu erstellen" | click
+		log "Rezept existiert schon, überschreien"
+	} -catch {
+		log "No existing medication"
+	}
 	log "PrintPrescription done"
 }
 

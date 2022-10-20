@@ -6,13 +6,14 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 5:15 PM
+Save-Time: 10/20/22, 2:46 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
 
 proc PatientMustBeSelected [val familyName] [val firstName] {
+	get-view [t kons_view ] | click
 	let [val currentTitle [ get-eclipse-window | get-property title -raw ]]
 	    [val pattern  [ concat ".*" $familyName ".*" $firstName ".*" ]] {
 		$currentTitle | matches $pattern |
@@ -23,6 +24,9 @@ proc PatientMustBeSelected [val familyName] [val firstName] {
 
 proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 	global [val occurences_selected 0 ] -override
+	open-window-by-name [t kons_view ]
+	get-view [t kons_view ] | click
+
 	open-window-by-name [t view_patients ]
 	get-view [t view_patients ] | get-editbox | set-focus
 	with [get-view [t view_patients ]] {
@@ -47,6 +51,10 @@ proc SelectPatient [val familyName] [val firstName] [val mustExist false] {
 		}
 	}
 	concat "SelectPatient: " $familyName " " $firstName " found " $occurences_selected " times" | log
+	wait 1000 // refresh
+	if $mustExist {
+		PatientMustBeSelected -familyName $familyName -firstName $firstName
+	}
 	$occurences_selected | gt 0
 }
 

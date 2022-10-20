@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 2:00 PM
+Save-Time: 10/20/22, 1:38 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -114,8 +114,13 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 				concat "Dump to " $zipFile " skipped under windows" | log
 			} -else {
 				concat "Creating "  $zipFile ".zip from " $jdbc  | log
+				global [val dbFile [ replaceFirst $jdbc "jdbc:h2:" ""  ] ] -override
+				global [val dbFile [ concat [ replaceFirst $dbFile ";AUTO_SERVER=TRUE" ""  ] ".mv.db"] ] -override
+				global [val dbFile [ replaceFirst $dbFile "~" [ get-java-property "user.home" ] ] ] -override
+				exec-process "/usr/bin/env" "cp" "-pv" $dbFile $resultsDir
 				exec-process "/usr/bin/env" "java" "-classpath" $jarFile "org.h2.tools.Script"
-				"-url" "jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_de/db;AUTO_SERVER=TRUE" "-user" "sa" "-script" [ concat $zipFile ".zip" ] "-options" "compression" "zip"
+				"-url" $jdbc "-user" "sa" "-script" [ concat $zipFile ".zip" ] "-options" "compression" "zip"
+				concat "Copied "  $dbFile " to " $resultsDir  | log
 			}
 		} -else {
 			if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "mysql" ] {
