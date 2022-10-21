@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/20/22, 1:38 PM
+Save-Time: 10/21/22, 11:13 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -62,7 +62,6 @@ try {
 // RunScript runs a SQL script against a database. 
  
 global [val h2Jar	   [ concat $rcpttDir "h2-1.4.200.jar"] ]
-global [val dumpFile	[ concat $rcpttDir "dump.sql.zip"] ]
 global [val sqlCmdFile	  [ concat $rcpttDir "commands.sql"] ]
 global [val jdbcConnection  "Unknown jdbcConnection"]
 
@@ -99,9 +98,9 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 *	  144.76.170.222:45657" Connection is broken: "java.net.ConnectException:
 *	  Verbindungsaufbau abgelehnt (Connection refused): 144.76.170.222:45657" [90067-197]
 */
-proc "create-backup-sql" [val zipFile $dumpFile] 
-				 [val jarFile $h2Jar]
-				 [val jdbc  [ concat "jdbc:h2:~/elexis/h2_elexis_rcptt_" $defaultLanguage "/db;AUTO_SERVER=TRUE" ] ] {
+proc "create-backup-sql" [val baseName "dump"] [val jarFile $h2Jar]
+				 [val jdbc  [ concat $jdbcConnection "/db" ] ] {
+	global [val outFile [ concat $resultsDir $baseName "_" $defaultLanguage ] ] -override
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 		log "I do not know how to access the JDBConnection when Running from Scratch"
 	} -else {
@@ -111,27 +110,31 @@ proc "create-backup-sql" [val zipFile $dumpFile]
 				" " "-url" " " $jdbc " " "-user" " " "sa" " " "-script" $zipFile " " "-options" " " "compression" " " "zip" | log
 				// exec-process "java" "-classpath" $jarFile "org.h2.tools.Script"
 				// "-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
-				concat "Dump to " $zipFile " skipped under windows" | log
+				concat "Dump to " $outFile " skipped under windows" | log
 			} -else {
-				concat "Creating "  $zipFile ".zip from " $jdbc  | log
-				global [val dbFile [ replaceFirst $jdbc "jdbc:h2:" ""  ] ] -override
-				global [val dbFile [ concat [ replaceFirst $dbFile ";AUTO_SERVER=TRUE" ""  ] ".mv.db"] ] -override
-				global [val dbFile [ replaceFirst $dbFile "~" [ get-java-property "user.home" ] ] ] -override
-				exec-process "/usr/bin/env" "cp" "-pv" $dbFile $resultsDir
+			/*
+				global [val zipFile [ concat $outFile ".zip" ] ] -override
 				exec-process "/usr/bin/env" "java" "-classpath" $jarFile "org.h2.tools.Script"
-				"-url" $jdbc "-user" "sa" "-script" [ concat $zipFile ".zip" ] "-options" "compression" "zip"
-				concat "Copied "  $dbFile " to " $resultsDir  | log
+				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
+				concat "Creating "  $zipFile " from " $jdbc  | log
+				*/
+				global [val dbFile [ replaceFirst $jdbc "jdbc:h2:" ""  ] ] -override
+				global [val dbFile [ concat $dbFile ".mv.db"] ] -override
+				global [val dbFile [ replaceFirst $dbFile "~" [ get-java-property "user.home" ] ] ] -override
+				exec-process "/usr/bin/env" "cp" "-pv" $dbFile [ concat $outFile ".mv.db" ]
+				concat "Copied for dump  to " $dbFile " to " $outFile| log
 			}
 		} -else {
 			if [ safe-get-java-property "ch.elexis.dbFlavor" | eq "mysql" ] {
+				global [val outFile [ concat $outFile ".sql" ] ] -override
 				if [ get-by-os  -win false -macosx false -linux true ] {
-					concat "Starting mysqldump to " $zipFile | log
+					concat "Starting mysqldump to " $outFile | log
 					exec-process "/usr/bin/env" "mysqldump"
 					[ concat "--user=" [safe-get-java-property "ch.elexis.dbUser" ]]
 					[ concat "--password=" [safe-get-java-property "ch.elexis.dbPw" ]]
 					[ concat "elexis_rcptt_" $defaultLanguage ]
-					[ concat "--result-file=" $zipFile]
-					concat "Done dumping mysql to " $zipFile | log
+					[ concat "--result-file=" $outFile]
+					concat "Done dumping mysql to " $outFile | log
 				} -else {
 					concat "create-backup-sql unsupported flavor/os " [ safe-get-java-property "ch.elexis.dbFlavor" ] | log
 				}
