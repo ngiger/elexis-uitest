@@ -6,7 +6,7 @@ Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/18/22, 12:41 PM
+Save-Time: 10/20/22, 1:43 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -50,7 +50,6 @@ _gAMNcECkEeucZoJXQ1XGtg	// kind: 'test' name: 'PrivatRechnung' path: '../Tests/R
 _PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
 _C9LzwI1wEeup49yUtwR__A	// kind: 'test' name: 'CheckArtikelstammSuche' path: '../Tests/Behandlung/CheckArtikelstammSuche.test'
 _7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
-_6_AoIBsCEembU9g-6bJhVg	// kind: 'test' name: 'hilotec_odf_aut' path: '../Tests/Textverarbeitung/hilotec_odf.test'
 _D7-c0A9mEe28EodTjFsVbw	// kind: 'test' name: 'Create_and_print_prescription' path: '../Tests/Behandlung/Konsultation/Create_and_print_prescription.test'
 _mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../Tests/Kassenbuch.test'
 _U42uwAO8EemXxf0UDvXYOw	// kind: 'test' name: 'VisitAllViews' path: '../Tests/Infrastruktur/VisitAllViews.test'
