@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/1/22, 3:22 PM
+Save-Time: 11/1/22, 7:31 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -48,23 +48,20 @@ proc EnterOneDetail [val key] [val idMandant 1] {
 		$key]] | log
 	with [get-window [t Identifikationselemente]] {
 		with [get-group [t notwendigen_Identifikationsdaten]] {
-			let [val label [t $key]] {
-				let [val value [GetPraxisProperty [concat "praxis.mandant." $idMandant "." $key]]] {
+			let [val label [t $key]]
+			    [val value [GetPraxisProperty [concat "praxis.mandant." $idMandant "." $key]]] {
 					concat "EnterOneDetail: " $key " label " $label " value " $value | log
 					get-editbox -after [get-label $label] | set-text $value
-				}
 			}
 		}
 	}
 }
 
-proc EnterOneFinanzDetail [val key] [val idMandant 1] {
+proc EnterOneFinanzDetail [ val label ] [val key] [val idMandant] {
 	concat EnterOneFinanzDetail " key is: " "praxis.mandant." $idMandant ".bank." $key | log
 	let [val value [GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank." $key]]] {
-		concat "EnterOneFinanzDetail: " $key " value " $value | log
-		with [get-editbox -after [get-label $key]] {
-			set-text $value
-		}
+		concat "EnterOneFinanzDetail: " $key " label " $label " value " $value | log
+		get-editbox -after [get-label $label] | set-text $value
 	}
 }
 
@@ -162,7 +159,7 @@ proc SetMandantenDetails [val idMandant 1] {
 			if [get-group [t Detailangaben] | get-link [t Bankverbindung] | get-property enablement -raw | equals
 				"false"] {
 				log "link Bankverbindung is disabled Elexis 3.10"
-				get-group [t Detailangaben] | get-button Bank | click -metaKeys ""
+				get-group [t Detailangaben] | get-button [t Bank ] | click -metaKeys ""
 			} -else {
 				log "link Bankverbindung is enabeld"
 				get-group [t Detailangaben] | get-link [t Bankverbindung] | click
@@ -177,11 +174,11 @@ proc SetMandantenDetails [val idMandant 1] {
 				} -catch {
 				}
 				with [get-group [t notwendigen_Identifikationsdaten]] {
-					EnterOneFinanzDetail [t Abteilung]
-					EnterOneFinanzDetail [t Postfach]
-					EnterOneFinanzDetail TarmedESRParticipantNumber
-					EnterOneFinanzDetail TarmedESRIdentity
-					EnterOneFinanzDetail IBAN
+					EnterOneFinanzDetail [ t Abteilung ] Abteilung $idMandant
+					EnterOneFinanzDetail [ t Postfach ] Postfach $idMandant
+					EnterOneFinanzDetail TarmedESRParticipantNumber TarmedESRParticipantNumber $idMandant
+					EnterOneFinanzDetail TarmedESRIdentity TarmedESRIdentity $idMandant
+					EnterOneFinanzDetail IBAN IBAN $idMandant
 					get-editbox -after [get-label TarmedESRParticipantNumber] | get-property text -raw | log
 				}
 				get-eclipse-window | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_bank_detail.png"]
