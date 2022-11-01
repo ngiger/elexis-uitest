@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/21/22, 11:37 AM
+Save-Time: 11/1/22, 3:51 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -98,7 +98,7 @@ proc "exec-h2-script"  [val scriptName  "org.h2.tools.Script"]
 *   works only under linux
 */
 proc "create-backup-sql" [val baseName "dump"] [val jarFile $h2Jar]
-				 [val jdbc  [ concat $jdbcConnection "/db" ] ] {
+				 [val jdbc  $jdbcConnection ] {
 	global [val outFile [ concat $resultsDir $baseName "_" [safe-get-java-property "ch.elexis.dbFlavor"] "_" $defaultLanguage ] ] -override
 	if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
 		log "I do not know how to access the JDBConnection when Running from Scratch"
@@ -111,12 +111,6 @@ proc "create-backup-sql" [val baseName "dump"] [val jarFile $h2Jar]
 				// "-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
 				concat "Dump to " $outFile " skipped under windows" | log
 			} -else {
-			/*
-				global [val zipFile [ concat $outFile ".zip" ] ] -override
-				exec-process "/usr/bin/env" "java" "-classpath" $jarFile "org.h2.tools.Script"
-				"-url" $jdbc "-user" "sa" "-script" $zipFile "-options" "compression" "zip"
-				concat "Creating "  $zipFile " from " $jdbc  | log
-				*/
 				global [val dbFile [ replaceFirst $jdbc "jdbc:h2:" ""  ] ] -override
 				global [val dbFile [ concat $dbFile ".mv.db"] ] -override
 				global [val dbFile [ replaceFirst $dbFile "~" [ get-java-property "user.home" ] ] ] -override

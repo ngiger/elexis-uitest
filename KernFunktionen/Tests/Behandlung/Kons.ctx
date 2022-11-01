@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _yO1KQAYtEemcp9WoDsgIvA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/20/22, 3:34 PM
+Save-Time: 11/1/22, 3:54 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -571,6 +571,7 @@ proc ImportPatFallKonsFromProperty [ val keyId ] [ val abortOnError true ] {
 			kons-add-artikelstamm -item_short Losartan -item_long $Losartan
 			kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 			kons-add-block  -blockName $blockName -info [ concat  $firstName " " $familyName ]
+			close-window-if-open [t window_warning]
 			AktuellenFallVerrechnen -abortOnError $abortOnError -label [ concat $familyName "-" $firstName "-" $caseName ]
 			AktuellenFallSchliessen
 		}
