@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 5:17 PM
+Save-Time: 11/1/22, 4:41 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -14,15 +14,16 @@ Entry-Name: .ecl.context
 
 proc "UsingNewInvoiceName" {
 	try {
+		concat "UsingNewInvoiceName: " [ t Rechnungsliste_3.10.0 ] " or " [ t Rechnungsliste_3.10.0_alt]| log
 		open-window-by-name [ t Rechnungsliste_3.10.0_alt]
-		global [ val invoiceList [ t Rechnungsliste_3.10.0 ] ]
+		global [ val invoiceList [ t Rechnungsliste_3.10.0 ] ] -override
 	} -catch {
-		global [ val invoiceList [ t Rechnungsliste_3.9 ] ]
+		global [ val invoiceList [ t Rechnungsliste_3.9.0 ] ] -override
 	}
 	concat "UsingNewInvoiceName: " $invoiceList | log
 }
-UsingNewInvoiceName
 
+UsingNewInvoiceName
 proc "OpenRechnungsliste" {
 	open-window-by-name $invoiceList
 }
@@ -35,8 +36,11 @@ proc "AbrechnungsSystemKonfigurieren"
 	[ val newFactor  "0.95" ]
 	[ val startDate  "01.01.2018" ] {
 	get-preferences-menu | click
+		 t preferences | log
 	global [ val found_abr_system false ] -override
 	with [get-window [ t preferences ]] {
+		 t preferences | log
+		 t Abrechnungssysteme | log
 		get-tree | select [ t Abrechnungssysteme ]
 		try {
 			get-table | get-item -path  $abrSystem | double-click
@@ -156,7 +160,6 @@ proc RechnungsAusgabeDefinieren [ val druckTyp [ t Tarmed_XML_Datei ] ] {
 		}
 	}
 }
-
 
 proc RechnungAusgeben [ val invoiceListViewName $invoiceList ]
 	[ val invoiceId 1 ]

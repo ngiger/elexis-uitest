@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 5:18 PM
+Save-Time: 11/1/22, 4:30 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -174,7 +174,7 @@ proc ConfigureDocx_TextVerarbeitung {
 		    get-editbox -after [get-label [ t pref_externes_textprogramm ]] | set-text $praxisDatenDir
 	    } -catch {
 			concat [t pref_externes_textprogramm ] "not enable must setup VFS under elexis >= 3.10" | log
-		    get-button "Durchsuchen..." | click -metaKeys ""
+		    get-button [ t search_all_docs ] | click -metaKeys ""
 			with [get-window -class VirtualFilesystemUriEditorDialog] {
 			    get-editbox -after [get-label Path] | click-text
 			    get-combo -after [get-label Scheme] | select file
