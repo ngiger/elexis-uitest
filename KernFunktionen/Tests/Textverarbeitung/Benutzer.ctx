@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 8:43 PM
+Save-Time: 11/1/22, 3:22 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -140,15 +140,20 @@ proc SetMandantenDetails [val idMandant 1] {
 				log "link Postkonto is disabled Elexis 3.10"
 				get-group [t Detailangaben] | get-button Postkonto | click -metaKeys ""
 			} -else {
-				log "link Postkonto is enabeld"
+				log "link Postkonto is enabled"
 				get-group [t Detailangaben] | get-link [t Postkonto] | click
 			}
 
 			with [get-window [t Postkonto]] {
+				concat "pc-konto: "  [ GetPraxisProperty [concat "praxis.mandant." $idMandant ".pc_konto"] ]
+				       " IBAN: " [GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank.IBAN"]] | log
 				get-editbox -after [get-label TarmedESRParticipantNumber] | set-text [GetPraxisProperty [concat
 					"praxis.mandant." $idMandant ".pc_konto"]]
 				get-editbox -after [get-label IBAN] | set-text [GetPraxisProperty [concat
-					"praxis.mandant." $idMandant ".iban"]]
+					"praxis.mandant." $idMandant ".bank.IBAN"]]
+				with [get-editbox -after [get-label IBAN]] {
+				    get-property text | equals [GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank.IBAN"]] | verify-true
+				}
 				get-window [t Postkonto] | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_pc.png"]
 				get-eclipse-window | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_PC_detail.png"]
 				get-button OK | click
