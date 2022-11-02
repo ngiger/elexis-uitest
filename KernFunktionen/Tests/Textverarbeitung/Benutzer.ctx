@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/2/22, 5:30 PM
+Save-Time: 11/2/22, 6:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -135,7 +135,7 @@ proc SetMandantenDetails [val idMandant 1] {
 			concat "PC-Konto definiert: " [t Postkonto] " as " $pcKonto | log
 			if [get-group [t Detailangaben] | get-link [t Postkonto] | get-property enablement -raw | equals false] {
 				log "link Postkonto is disabled Elexis 3.10"
-				get-group [t Detailangaben] | get-button Postkonto | click -metaKeys ""
+				get-group [t Detailangaben] | get-button [t PostkontoButton] | click -metaKeys ""
 			} -else {
 				log "link Postkonto is enabled"
 				get-group [t Detailangaben] | get-link [t Postkonto] | click
@@ -168,12 +168,14 @@ proc SetMandantenDetails [val idMandant 1] {
 			}
 			with [get-window [t select_Zahlungsinstitut]] {
 				try {
+					concat  [t Finanzinstitut]  ": Link for Finanzinstitut not found" | log
 					get-link [t Finanzinstitut] | click
 					GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank.Name"] | log
 					SelectContact [GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank.Name"]]
 					get-link Kontoinhaber | click
 					SelectContact [GetPraxisProperty [concat "praxis.mandant." $idMandant ".Name"]]
 				} -catch {
+					concat  [t Finanzinstitut]  ": Link for Finanzinstitut not found" | log
 				}
 				get-window [t select_Zahlungsinstitut] | get-object | invoke getSize | log
 				get-window [t select_Zahlungsinstitut] | get-object | invoke setSize 700 600

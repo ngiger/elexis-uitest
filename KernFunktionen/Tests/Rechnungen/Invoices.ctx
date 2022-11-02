@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/2/22, 5:20 PM
+Save-Time: 11/2/22, 6:12 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -252,7 +252,7 @@ proc "GetHighestInvoiceNrOf" [ val status [ t alle_rechnungs_stati ] ] {
 }
 
 proc "GetNrOfInvoices" [ val status [ t alle_rechnungs_stati ] ] [ val workAround21559 true ] {
-	close-window-if-open [ t error ]
+	close-window-if-open [ t error_window ]
 	if [ $workAround21559  | eq true ] {
 		concat "GetNrOfInvoices: workAround21559 view is "  $invoiceList | log
 		try {
