@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/20/22, 2:27 PM
+Save-Time: 11/2/22, 9:39 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -408,13 +408,8 @@ proc "open-window-by-name" [ val windowName ] {
 	try {
 		get-view $windowName
 	} -catch {
-		// concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
-		if [ concat "" $defaultLanguage "" | eq "fr" ] {
-			get-eclipse-window | key-type "M1+n" // Ctrl-N
-		} -else {
-			set-dialog-result File [ concat "/dummy_" $windowName ]
-			get-menu -path [ t menu_select_view ]| click
-		}
+		set-dialog-result File [ concat "/dummy_" $windowName ]
+		get-menu -path [ t menu_select_view ]| click
 		with [get-window [ t show_view ]] {
 		    get-editbox | set-text ""
 			if [ matches $windowName ".*/.*" ] {

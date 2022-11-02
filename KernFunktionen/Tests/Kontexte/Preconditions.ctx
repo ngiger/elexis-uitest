@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/1/22, 3:51 PM
+Save-Time: 11/2/22, 9:34 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -139,6 +139,7 @@ proc "create-backup-sql" [val baseName "dump"] [val jarFile $h2Jar]
 					"pg_dump" "--host=localhost"
 					[ concat "--user=" [safe-get-java-property "ch.elexis.dbUser" ]]
 					[ concat "elexis_rcptt_" $defaultLanguage ]
+					"--create" "--clean" "--if-exists"
 					[ concat "--file=" $outFile]
 					concat "Done dumping postgres to " $outFile | log
 				} -else {
@@ -193,9 +194,11 @@ proc "Statusinformationen-Open" {
 }
 
 proc "ensure-loinc-codes-loaded" {
-	HandleMissingInvoiceSystems
 	log "vor Ensure-Loinc-Codes-loaded"
+	HandleMissingInvoiceSystems
 	open-window-by-name [ t daten_artikel ]
+	wait 1000
+	HandleMissingInvoiceSystems
 	open-window-by-name [ concat [ t codes ] "/" [ t codes ] ]// Force reading of loinc
 	loop {
 	    if [Statusinformationen-Open] {
