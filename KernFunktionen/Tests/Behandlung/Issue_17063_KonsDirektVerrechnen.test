@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _r8134DV7EeuXVMkM-fyEfg
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/31/22, 9:15 AM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 11/2/22, 5:30 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -22,8 +22,17 @@ Entry-Name: .content
 
 // Siehe https://redmine.medelexis.ch/issues/17063
 // Offener Fall mit Konsultation kann nicht verrechnet werden
-ChangeMandant [ GetPraxisProperty praxis.mandant.2.Name ]
-// TextPluginSelect hilotec_odf
+global [ val konsDirektVorname "Carlo" ] -override
+ChangeMandant [ GetPraxisProperty praxis.mandant.3.Name ]
+
+proc "PrintAndCheck" [ val expectedInvoiceNr [ GetHighestInvoiceNrOf ] ] {
+	RechnungAusgeben -invoiceId $expectedInvoiceNr
+	CheckTarmedFallVerrechnen -invoiceId $expectedInvoiceNr -drugName Nolvadex
+	CheckTarmedXml $expectedInvoiceNr "code=\"10.0670\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
+	CheckTarmedXml $expectedInvoiceNr "code=\"00.0060\"" //  "Konsultation, erste 5 Min. (Grundkonsultation)" // BLock Kons plus (KVG)
+	CheckTarmedXml $expectedInvoiceNr "code=\"00.0080\"" // "Konsultation bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min."
+	CheckTarmedXml $expectedInvoiceNr "code=\"00.0095\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
+}
 
 if [ not [ SelectPatient DirektVerrechnen $konsDirektVorname] ] {
 	PatientenErstellen  DirektVerrechnen $konsDirektVorname true "30.3.1990" "Nebenstrasse 66" 3340 Elexisdorf "056 323 45 67"
@@ -42,22 +51,24 @@ let [ val anfangs2020 "30.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason 
 	kons-add-tarmed -ziffer "10.0670" // Blutstillung
 	kons-neue-diagnose [ t kons_diagnose.1.reiter ] [ t kons_diagnose.1.item ]
 }
+
 OpenAndResetStartPerspektive
+
 
 let [val expectedInvoiceNr [ GetHighestInvoiceNrOf | plus 1  ] ] {
 	get-view [t view_cases] | get-table | get-menu -path [t mnu_incoice_case] | click
 	try {
 		get-window [t invoice_error] | get-label -index 1 | get-property caption -raw | log
 		bool false | assert-true -message  "KonsDirektVerrrechnung schlug fehl. Rechnung mit Fehler"
-	} -catch {
-		log "KonsDirektVerrrechnung konnte Rechnung erstellen"
+	} -error  [val errorObj ] -catch {
+		concat "errorObj " $errorObj " msg: >"  [$errorObj | get message ] "<"| log
+		if [$errorObj | get message | equals "get-window" ] {
+			log "KonsDirektVerrrechnung konnte Rechnung erstellen"
+		} -else {
+			bool false | assert-true -message  "KonsDirektVerrrechnung schlug fehl. Rechnung mit Fehler"
+		}
 	}
-	RechnungAusgeben -invoiceId $expectedInvoiceNr
-	CheckTarmedFallVerrechnen -invoiceId $expectedInvoiceNr -drugName Nolvadex
-	CheckTarmedXml $expectedInvoiceNr "code=\"10.0670\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
-	CheckTarmedXml $expectedInvoiceNr "code=\"00.0060\"" //  "Konsultation, erste 5 Min. (Grundkonsultation)" // BLock Kons plus (KVG)
-	CheckTarmedXml $expectedInvoiceNr "code=\"00.0080\"" // "Konsultation bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min."
-	CheckTarmedXml $expectedInvoiceNr "code=\"00.0095\"" // "Konsultation, letzte 5 Min. (Konsultationszuschlag)"
+	PrintAndCheck $expectedInvoiceNr
 }
 AktuellenFallSchliessen
 

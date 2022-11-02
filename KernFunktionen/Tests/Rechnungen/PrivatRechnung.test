@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _gAMNcECkEeucZoJXQ1XGtg
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/1/22, 7:20 PM
+Save-Time: 11/2/22, 3:42 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -20,6 +20,7 @@ Entry-Name: .content
 
 // TextPluginSelect docx
 SetupPrivatrechnung
+// As there are no template for privatrechnungen we cannot print them using docx!
 
 // Siehe https://redmine.medelexis.ch/issues/17063
 // Offener Fall mit Konsultation kann nicht verrechnet werden
@@ -28,7 +29,6 @@ ChangeMandant [ GetPraxisProperty praxis.mandant.2.Name ]
 
 global [ val privatPatientVorname	"Carlo" ]
 global [ val privatPatientName	"PrivatPatient" ]
-
 let [ val yesterday "30.01.2022" ] [val caseLaw "privat" ] [val caseReason [t reason_KVG]] {
 	PatientMitFallUndKonsErstellenOderAuswaehlen -familyName $privatPatientName -firstName $privatPatientVorname 
 		-birthDate "15.01.2000" -caseName $caseLaw -caseReason $caseReason
@@ -40,8 +40,9 @@ let [ val yesterday "30.01.2022" ] [val caseLaw "privat" ] [val caseReason [t re
 }
 OpenAndResetStartPerspektive
 let [val expectedInvoiceNr [ GetHighestInvoiceNrOf | plus 1  ] ] {
+// let [val expectedInvoiceNr [ GetHighestInvoiceNrOf  ] ] {
 	get-view [t view_cases] | get-table | get-menu -path [t mnu_incoice_case] | click
-	RechnungAusgeben -invoiceId $expectedInvoiceNr
+	RechnungAusgeben -invoiceId $expectedInvoiceNr -druckTyp "Privatrechnung auf Drucker"
 }
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _aR2ZoC1yEemYspbA8Fsyow
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/18/22, 12:21 PM
+Save-Time: 11/2/22, 4:59 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -16,19 +16,11 @@ Entry-Name: .content
 
 SetStandard4Cases
 
-OrganisationErfassen 1 // PostFinanz
-OrganisationErfassen 2 // Raiffeisen Elexikon
-SetMandantKontaktInfo 1
-SetMandantenDetails 1 // test
-
-// Bei diesem Mandante läuft etwas schief,
-// IN Einstelllungen..Abrechnungssystemen..Tarmed-Rechnung
-// kann man als Leistungserbringer nur (dafür 2x) Test Alfred auswählen
-// Keine Zeit dies zu korrigieren.
-// Das Feld Fixer Leistungserbringer wird im Moment nicht gebraucht oder getestet
-SetMandantKontaktInfo 2
-SetMandantenDetails 2 // Mustermann
-
+emit 1 2 3 | foreach [val idx]{
+	OrganisationErfassen $idx
+	SetMandantKontaktInfo $idx
+	SetMandantenDetails $idx
+}
 ChangeMandant [ GetPraxisProperty praxis.mandant.2.Name ]
 preferences-use-macros-with-TI-and-Favoriten
 

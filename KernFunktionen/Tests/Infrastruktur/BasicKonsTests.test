@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _GbaREP_HEeiXxf0UDvXYOw
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/30/22, 3:45 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 11/2/22, 4:59 PM
 Testcase-Type: ecl
 Verifications: _GcdboAX2Eemcp9WoDsgIvA
 
@@ -16,6 +16,7 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 // requires ImportSwissBase, BasicMandanten, BasicAbrechnungssystems run before
+ChangeMandant [ GetPraxisProperty praxis.mandant.2.Name ]
 emit 1 2 3 4 5 | foreach [val idx]{
 // emit 1 | foreach [val idx]{
 	let [ val keyId [ concat "patient." $idx "." ] ] {

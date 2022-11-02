@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/1/22, 4:41 PM
+Save-Time: 11/2/22, 5:20 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -178,10 +178,10 @@ proc RechnungAusgeben [ val invoiceListViewName $invoiceList ]
 				get-property title -raw | log
 				gen-screenshot [concat $imagesDir "RechnungAusgeben_" $logName "_Fehler.png"]
 				global [val RechnungAusgebenError "1" ] -override
-				// bool false | assert-true -message [concat "RechnungAusgeben Fehler beim Drucken von " $logName ]
 				get-button "OK" | click
 				close-window-if-open [ t invoice_error ]
 				close-window-if-open [ t invoice_error ]
+				bool false | assert-true -message [concat "RechnungAusgeben " $druckTyp " Fehler beim Drucken von " $logName ]
 			}
 			log "RechnungAusgebe: Fehler beim Drucken umgangen"
 		} -error [val errorObj] -catch {
@@ -209,11 +209,13 @@ proc RechnungAusgeben [ val invoiceListViewName $invoiceList ]
 		if [ $RechnungAusgebenError | eq "1" ] {
 			bool false | assert-true -message [ concat "RechnungAusgebe: Fehler beim Drucken der Rechnung " $invoiceId  ". Wahrscheinlich kein PDF erstellt"]
 		}
+		/* this check does not work, if I print again with alle
 		let [val nrItemsAfter [ GetNrOfInvoices -status [ t Offen_und_gedruckt ] ] ] {
 			concat "RechnungAusgeben: " $nrItemsAfter " after have " $nrItemsAfter " items Offen_und_gedruckt"| log
 			$nrItemsBefore | lt $nrItemsAfter | assert-true -message
 				[ concat "RechnungAusgeben: After invoicing expected Offen_und_gedruckt " $nrItemsBefore " items lower than but found " $nrItemsAfter]
 		}
+		*/
 		concat "RechnungAusgeben finished: " $invoiceListViewName " log " $logName | log
 	}
 }

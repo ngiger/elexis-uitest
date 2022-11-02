@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _TrPRoAOnEemXxf0UDvXYOw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/1/22, 7:31 PM
+Save-Time: 11/2/22, 5:30 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -151,6 +151,8 @@ proc SetMandantenDetails [val idMandant 1] {
 				with [get-editbox -after [get-label IBAN]] {
 				    get-property text | equals [GetPraxisProperty [concat "praxis.mandant." $idMandant ".bank.IBAN"]] | verify-true
 				}
+				get-window [t Postkonto] | get-object | invoke getSize | log
+				get-window [t Postkonto] | get-object | invoke setSize 700 400
 				get-window [t Postkonto] | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_pc.png"]
 				get-eclipse-window | gen-screenshot [concat $imagesDir tarmed_mandant_ $idMandant "_PC_detail.png"]
 				get-button OK | click
@@ -173,6 +175,8 @@ proc SetMandantenDetails [val idMandant 1] {
 					SelectContact [GetPraxisProperty [concat "praxis.mandant." $idMandant ".Name"]]
 				} -catch {
 				}
+				get-window [t select_Zahlungsinstitut] | get-object | invoke getSize | log
+				get-window [t select_Zahlungsinstitut] | get-object | invoke setSize 700 600
 				with [get-group [t notwendigen_Identifikationsdaten]] {
 					EnterOneFinanzDetail [ t Abteilung ] Abteilung $idMandant
 					EnterOneFinanzDetail [ t Postfach ] Postfach $idMandant

@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _Mr6FcFFuEemrk7fLFkHFEw
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/1/22, 3:34 PM
+Save-Time: 11/2/22, 4:20 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -15,17 +15,17 @@ Content-Type: text/ecl
 Entry-Name: .content
 
 // requires ImportSwissMediBase and BasicMandanten or demoDB run before
-/*
-SetMandantKontaktInfo 1
-SetMandantenDetails 1 // Test
+OrganisationErfassen 3 // Sparkasse
+SetMandantKontaktInfo 3
+SetMandantenDetails 3 // Weirich
+ChangeMandant [ GetPraxisProperty praxis.mandant.3.Name ]
 
 EnableTab -view_name [ t diag_name ] -tab_name [ t diag_eigendiagnosen ]
 
 AllVerrechnungenEntfernen
 OpenRechnungsliste
 GetNrOfInvoices
-*/
-ChangeMandant [ GetPraxisProperty praxis.mandant.2.Name ]
+
 let [ val keyId patient.104. ] {
 	let [ val familyName [ concat [ GetTestProperty [ concat $keyId familyName  ] ] "-" $defaultLanguage ] ]
 	    [ val firstName  [ GetTestProperty [ concat $keyId firstName ] ] ]
