@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/1/22, 4:30 PM
+Save-Time: 11/5/22, 3:16 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -161,7 +161,7 @@ global [ val  docxVorlagen[ list "AUF-Zeugnis" "AUF-Zeugnis_A5" "Abrechnungslist
 	 "Verordnung_für_Badekuren" "Verordnung_zur_Ergotherapie" "Verordnung_zur_Ernährungsberatung" 
 	 "Verordnung_zur_Logopädie" "Verordnung_zur_Physiotherapie" ] ]
 // global [ val  docxVorlagen [ list "Liste" ] ] -override
-global [ val praxisDatenDir	[ concat [get-user-dir] "/elexis_praxis_daten" ] ]
+global [ val praxisDatenDir	[ concat $resultsDir "elexis_praxis_daten" ] ]
 
 proc ConfigureDocx_TextVerarbeitung {
 	str "RCPTT praxisDatenDir" | write-lines [ concat $praxisDatenDir "/dummy.txt" ]
