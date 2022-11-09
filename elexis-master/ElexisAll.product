@@ -107,6 +107,7 @@
       <feature id="ch.elexis.privatrechnung.feature" installMode="root"/>
       <feature id="ch.elexis.stickynotes.feature" installMode="root"/>
       <feature id="ch.elexis.support.dbshaker.feature" installMode="root"/>
+      <feature id="ch.gpb.elexis.cst.feature" installMode="root"/>
       <feature id="ch.itmed.fop.printing.feature" installMode="root"/>
       <feature id="ch.itmed.lmz.risch.laborder.feature" installMode="root"/>
       <feature id="ch.medshare.connect.abacusjunior.feature" installMode="root"/>
