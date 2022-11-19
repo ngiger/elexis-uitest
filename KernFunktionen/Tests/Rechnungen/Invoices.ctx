@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _QPqdkBNIEemmeedSb1JQew
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/2/22, 6:12 PM
+Save-Time: 11/19/22, 6:00 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -17,6 +17,7 @@ proc "UsingNewInvoiceName" {
 		concat "UsingNewInvoiceName: " [ t Rechnungsliste_3.10.0 ] " or " [ t Rechnungsliste_3.10.0_alt]| log
 		open-window-by-name [ t Rechnungsliste_3.10.0_alt]
 		global [ val invoiceList [ t Rechnungsliste_3.10.0 ] ] -override
+		close-window-if-open "Ansicht veraltet"
 	} -catch {
 		global [ val invoiceList [ t Rechnungsliste_3.9.0 ] ] -override
 	}

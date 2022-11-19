@@ -5,8 +5,8 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.5.3.202205021448
-Save-Time: 7/19/22, 12:11 PM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 11/19/22, 7:28 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -50,6 +50,7 @@ proc "check-one-view-item" [val viewName] {
 		concat "check-one-view-item "  $viewPathName | log
 		try {
 			open-window-by-name $viewPathName
+			close-window-if-open "Ansicht veraltet"
 			get-view $realViewName | maximize
 			wait 100 // Give it some time to populate it
 			get-eclipse-window | gen-screenshot -out [ $curViewImage ]
