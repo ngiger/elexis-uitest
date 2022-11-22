@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <category-def name="libraries" label="libraries [invisible]">
+      <description>
+         Hier finden sie Bibliotheken, welche keine direkt für den Benutzer sichtbare Auswirkung haben. Diese können jedoch von mehreren Plug-In verwendet werden.
+      </description>
+   </category-def>
+</site>
