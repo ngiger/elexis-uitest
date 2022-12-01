@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _r8134DV7EeuXVMkM-fyEfg
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/2/22, 6:28 PM
+Save-Time: 12/1/22, 1:24 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -42,7 +42,7 @@ let [ val anfangs2020 "30.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason 
 	FallZuPatientErstellen -startDate $anfangs2020 -caseLaw $caseLaw -caseReason $caseReason
 	SelectFall -caseLaw $caseLaw -startDate $anfangs2020
 	FallSetVersicherungsNummer 87654321 -fall [ concat  ".*" $caseLaw ".*"  $anfangs2020 ".*"]
-	FallSetCostBearer -name "Helsana Unfall" -printId [concat "DirektVerrechnen "  $anfangs2020 ]
+	FallSetCostBearer -name "AMB Assurance maladie Bagnes" -printId [concat "DirektVerrechnen "  $anfangs2020 ]
 	FallSetDefaultInvoiceRecipient DirektVerrechnen $konsDirektVorname
 	kons-erstellen [concat "DirektVerrechnen "  $anfangs2020 " now " [ now ] ] -createSecond true
 	kons-set-date $anfangs2020
@@ -54,20 +54,22 @@ let [ val anfangs2020 "30.01.2020" ] [val caseLaw [t case_KVG]] [val caseReason 
 
 OpenAndResetStartPerspektive
 
-
-let [val expectedInvoiceNr [ GetHighestInvoiceNrOf | plus 1  ] ] {
+proc "CreateInvoice4actKons" {
 	get-view [t view_cases] | get-table | get-menu -path [t mnu_incoice_case] | click
 	try {
 		get-window [t invoice_error] | get-label -index 1 | get-property caption -raw | log
-		bool false | assert-true -message  "KonsDirektVerrrechnung schlug fehl. Rechnung mit Fehler"
+		bool false | assert-true -message  "CreateInvoice4actKons schlug fehl. Rechnung mit Fehler"
 	} -error  [val errorObj ] -catch {
 		concat "errorObj " $errorObj " msg: >"  [$errorObj | get message ] "<"| log
 		if [$errorObj | get message | equals "get-window" ] {
-			log "KonsDirektVerrrechnung konnte Rechnung erstellen"
+			log "CreateInvoice4actKons konnte Rechnung erstellen"
 		} -else {
-			bool false | assert-true -message  "KonsDirektVerrrechnung schlug fehl. Rechnung mit Fehler"
+			bool false | assert-true -message  "CreateInvoice4actKons schlug fehl. Rechnung mit Fehler"
 		}
 	}
+}
+let [val expectedInvoiceNr [ GetHighestInvoiceNrOf | plus 1  ] ] {
+	CreateInvoice4actKons
 	PrintAndCheck $expectedInvoiceNr
 }
 AktuellenFallSchliessen

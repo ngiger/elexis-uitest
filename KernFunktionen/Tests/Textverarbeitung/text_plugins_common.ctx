@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/5/22, 3:16 PM
+Save-Time: 12/1/22, 1:56 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -31,7 +31,6 @@ proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 		ConfigureHilotecODF_TextVerarbeitung
 	} -else {
 		if [$useTextPlugin | equals docx] {
-			ConfigureDocx_TextVerarbeitung
 		} -else {	
 			ConfigureMsOO_TextVerarbeitung
  		}
@@ -138,6 +137,7 @@ proc ConfigureHilotecODF_TextVerarbeitung {
 }
 
 proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $vorlagenDirOpenoffice "/AUF-Zeugnis.odt"]] {
+	global [val allDocxTemplates [ concat "ImportAlleHilotecODF_Vorlagen: started at " [ now ]] ] -override
 	if [ get-file $hiloVorlagen | get exists | equals true ] {
 		log "ImportAlleHilotecODF_Vorlagen already done"
 	} -else {
@@ -147,7 +147,7 @@ proc ImportAlleHilotecODF_Vorlagen [val vorlage [concat $vorlagenDirOpenoffice "
 		Import_Text_Vorlage  $vorlagenDirOpenoffice "TR44_S1" ".odt"
 		Import_Text_Vorlage  $vorlagenDirOpenoffice "TR44_S2" ".odt"
 		Import_Text_Vorlage  $vorlagenDirOpenoffice "Tarmedrechnung_S1" ".odt"
-		str "ImportAlleHilotecODF_Vorlagen done" | write-lines $hiloVorlagen
+		concat $allDocxTemplates  "ImportAlleHilotecODF_Vorlagen finished at " [ now ] | write-lines $hiloVorlagen
 	}
 }
 
@@ -162,9 +162,9 @@ global [ val  docxVorlagen[ list "AUF-Zeugnis" "AUF-Zeugnis_A5" "Abrechnungslist
 	 "Verordnung_zur_Logopädie" "Verordnung_zur_Physiotherapie" ] ]
 // global [ val  docxVorlagen [ list "Liste" ] ] -override
 global [ val praxisDatenDir	[ concat $resultsDir "elexis_praxis_daten" ] ]
-
+concat "praxisDatenDir ist " $praxisDatenDir | log
 proc ConfigureDocx_TextVerarbeitung {
-	str "RCPTT praxisDatenDir" | write-lines [ concat $praxisDatenDir "/dummy.txt" ]
+	concat "RCPTT praxisDatenDir: " $praxisDatenDir " created at " [now] | write-lines [ concat $praxisDatenDir "/config.txt" ]
 	EnsureLibreOffficIsInstalled
 	get-preferences-menu | click
 	with [get-window [ t preferences ]] {
@@ -207,6 +207,7 @@ proc ConfigureDocx_TextVerarbeitung {
 
 proc ImportAlleDocx_Vorlagen [val directory $vorlagenDirMsWord ]
 	[ val vorlage "AUF-Zeugnis" ] [val extension ".docx" ] {
+	global [val allDocxTemplates [ concat "ImportAlleDocx_Vorlagen: started at " [ now ]] ] -override
 	if [ get-file $docxVorlage | get exists | equals true ] {
 		concat "Found " $docxVorlage " ImportAlleDocx_Vorlagen already done" | log
 	} -else {
@@ -214,8 +215,8 @@ proc ImportAlleDocx_Vorlagen [val directory $vorlagenDirMsWord ]
 		  concat "doxVorlage ist: " $vorlage | log
 			Import_Text_Vorlage  $vorlagenDirMsWord $vorlage ".docx"
 		} 
-		concat "ImportAlleDocx_Vorlagen finished. " [ get-time ] " " $today | write-lines $docxVorlage
-		concat "ImportAlleDocx_Vorlagen finished. " [ get-time ] " " $today | log
+		concat $allDocxTemplates  "ImportAlleDocx_Vorlagen finished at " [ now ] | write-lines $docxVorlage
+		concat "ImportAlleDocx_Vorlagen finished. " [ now ] | log
 	}
 }
 
@@ -265,6 +266,7 @@ proc Import_Text_Vorlage [val directory $vorlagenDirOpenoffice ]
 	} -error [ val errorObj ] -catch {
 	//	concat $vorlage $extension " existierte noch nicht: " $errorObj | log
 	}
+	global [val allDocxTemplates [concat $allDocxTemplates " \n" $vorlage ] ] -override
 	get-view [t Textvorlagen_Management ] | restore
 }
 
