@@ -151,7 +151,7 @@ Hier bin ich mir noch nicht klar, wie diese strukturiert sein sollen und ggf via
 
 Für Linux-Builds muss die Bibliothek librxtx-java installiert.
 
-Für Linux muss z.B. openbox + menu (wegen /var/lib/openbox/debian-menu.xml) installiert sein, damit ein Window-Manager die Titelleiste anzeigt. Siehe z.B. run_h2.sh
+Für Linux muss z.B. openbox + menu (wegen /var/lib/openbox/debian-menu.xml) installiert sein, damit ein Window-Manager die Titelleiste anzeigt. Siehe z.B. run_h2_de.sh. Use openbox-session if you do not want to see the window titles in the generated screenshots.
 
 Für das Testen des OpenOffice Text plugins braucht es einen PDF-Printer, z.B. das Debian Paket printer-driver-cups-pdf
 

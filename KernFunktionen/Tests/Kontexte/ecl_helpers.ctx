@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/2/22, 9:39 PM
+Save-Time: 12/2/22, 4:16 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -436,6 +436,30 @@ proc "close-window-if-open" [val windowName] {
 		concat "close-window-if-open: Window " $windowName " not open: "  [$errorObj | get message] | log
 	}
 }
+
+proc EnableFlightRecorder {
+	if [ get-menu -path "Hilfe/Java Flight Recorder/Flight Recorder aktivieren" | get-property selection -raw ] {
+		log "Flight Recorder is already enabled"
+	} -else {
+		log "Flight Recorder disabled"
+		get-menu -path "Hilfe/Java Flight Recorder/Flight Recorder aktivieren" | click -metaKeys ""
+	}
+}
+
+global [val flightRecorderId 0 ] -override
+
+proc SaveFlightRecording [ val filePrefix "flighrecorder" ] {
+	global [val flightRecorderId [ $flightRecorderId | plus 1 ] ] -override
+	log eins
+	let [ val fullName [ concat $resultsDir "jfr_" $filePrefix "_" $flightRecorderId ".jfr" ] ] {
+		concat "SaveFlightRecording to " $fullName | log
+		set-dialog-result File $fullName
+		get-menu -path "Hilfe/Java Flight Recorder/Aufnahme speichern" | click -metaKeys ""
+		get-window Success | get-button OK | click -metaKeys ""
+	}
+}
+
+EnableFlightRecorder
 
 OpenAndResetStartPerspektive
 

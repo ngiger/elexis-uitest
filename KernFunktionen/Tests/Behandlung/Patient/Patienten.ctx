@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/2/22, 1:17 PM
+Save-Time: 12/2/22, 4:25 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -21,6 +21,7 @@ proc PatientMustBeSelected [val familyName] [val firstName] {
 			    concat "PatientMustBeSelected " $familyName " " $firstName " matches " $currentTitle| log
 		    } -else {
 				log $messages
+				SaveFlightRecording	[concat "PatientMustBeSelected_" $familyName]
 				$currentTitle | matches $pattern | assert-true -message $message
 			}
 		}
