@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _LkBSkBsDEembU9g-6bJhVg
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/1/22, 1:56 PM
+Save-Time: 12/2/22, 11:46 AM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -24,6 +24,7 @@ global [val docxVorlage [ concat $rcpttDir "msword/fenster_links" ] ] -override
 global [val ooFile [ concat $rcpttDir "medelexis_oo_configured" ] ] -override
 global [val vorlagenDirOpenoffice  [concat $rcpttDir "elexis-vorlagen/openoffice" ] ] -override
 global [val vorlagenDirMsWord  [concat $rcpttDir "elexis-vorlagen/msword/fenster_links" ] ] -override
+global [val allDocxTemplates "" ] -override
 
 proc TextPluginSelect [val useTextPlugin hilotec_odf] {
 	global [val ConfiguredTextPlugin useTextPlugin] -override

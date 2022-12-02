@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/20/22, 2:46 PM
+Save-Time: 12/2/22, 12:02 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -18,7 +18,7 @@ proc PatientMustBeSelected [val familyName] [val firstName] {
 	    [val pattern  [ concat ".*" $familyName ".*" $firstName ".*" ]] {
 		$currentTitle | matches $pattern |
 			assert-true -message [ concat "PatientMustBeSelected " $currentTitle " does not match pattern " $pattern]
-		concat "PatientMustBeSelected " $currentTitle " does match pattern " $pattern " in window title" | log
+		concat "PatientMustBeSelected window title: \n" $currentTitle "\n does NOT match pattern\n" $pattern | log
 	}
 }
 
