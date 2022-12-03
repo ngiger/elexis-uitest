@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/2/22, 4:16 PM
+Save-Time: 12/3/22, 4:48 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -437,25 +437,37 @@ proc "close-window-if-open" [val windowName] {
 	}
 }
 
+global [val flightRecorderId 0 ] -override
+
+find-all [GetWindowTitle] "(\\d+)\.(\\d+)\.(\\d+)" | to-list | each [val groups] {
+	global [val elexisVersion [ concat [$groups | get 1 -default "unknown" ] "." [$groups | get 2 -default "unknown" ] ] ]-override
+	concat "Saved elexisVersion is " $elexisVersion " from window title " [GetWindowTitle] | log
+}
+
 proc EnableFlightRecorder {
-	if [ get-menu -path "Hilfe/Java Flight Recorder/Flight Recorder aktivieren" | get-property selection -raw ] {
-		log "Flight Recorder is already enabled"
+	if [ $elexisVersion | equals "3.9" ] {
+		log "skip  EnableFlightRecorder as elexisVersion is 3.9"
 	} -else {
-		log "Flight Recorder disabled"
-		get-menu -path "Hilfe/Java Flight Recorder/Flight Recorder aktivieren" | click -metaKeys ""
+		if [ get-menu -path [ t activate_flight_recorder ] | get-property selection -raw ] {
+			log "Flight Recorder is already enabled"
+		} -else {
+			log "Flight Recorder disabled"
+			get-menu -path [ t activate_flight_recorder ]| click -metaKeys ""
+		}
 	}
 }
 
-global [val flightRecorderId 0 ] -override
-
 proc SaveFlightRecording [ val filePrefix "flighrecorder" ] {
-	global [val flightRecorderId [ $flightRecorderId | plus 1 ] ] -override
-	log eins
-	let [ val fullName [ concat $resultsDir "jfr_" $filePrefix "_" $flightRecorderId ".jfr" ] ] {
-		concat "SaveFlightRecording to " $fullName | log
-		set-dialog-result File $fullName
-		get-menu -path "Hilfe/Java Flight Recorder/Aufnahme speichern" | click -metaKeys ""
-		get-window Success | get-button OK | click -metaKeys ""
+	if [ $elexisVersion | equals "3.9" ] {
+		log "skip SaveFlightRecording as elexisVersion is 3.9"
+	} -else {
+		global [val flightRecorderId [ $flightRecorderId | plus 1 ] ] -override
+		let [ val fullName [ concat $resultsDir "jfr_" $filePrefix "_" $flightRecorderId ".jfr" ] ] {
+			concat "SaveFlightRecording to " $fullName | log
+			set-dialog-result File $fullName
+			get-menu -path [ t dump_flight_recording ] | click -metaKeys ""
+			get-window Success | get-button OK | click -metaKeys ""
+		}
 	}
 }
 
