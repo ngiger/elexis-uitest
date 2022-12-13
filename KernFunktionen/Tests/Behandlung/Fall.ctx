@@ -5,8 +5,8 @@ Element-Name: Fall
 Element-Type: context
 Element-Version: 2.0
 Id: _p5Ui8P79EeiFyvHqIglmCA
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/31/22, 12:09 AM
+Runtime-Version: 2.5.4.202210020716
+Save-Time: 12/13/22, 2:42 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -362,7 +362,7 @@ proc PatientMitFallUndKonsErstellenOderAuswaehlen [val familyName Testarossa]
 	} -else {
 		FallZuPatientErstellen -caseLaw $caseName -caseReason $caseReason -startDate $caseStartDate
 		concat "FallZuPatientErstellen " $familyName " " $firstName " " caseName | log
-		SelectPatient $familyName $firstName
+		SelectPatient $familyName $firstName -mustExist true
 	}
 	PatientMustBeSelected -familyName $familyName -firstName $firstName
 	SelectFall -caseLaw $caseName -startDate $caseStartDate
