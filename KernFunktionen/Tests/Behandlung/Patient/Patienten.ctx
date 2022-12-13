@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _dgccYP7qEeiuqdAcgkHVvQ
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/12/22, 2:12 PM
+Save-Time: 12/13/22, 2:37 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -155,6 +155,7 @@ proc PatientenErstellen [val familyName "Wesen" ] [val firstName "Armes" ] [val 
 	}
 	concat "Res is " $PatientenErstellenOkay | log
 	$PatientenErstellenOkay | assert-true
+	PatientMustBeSelected -familyName $familyName -firstName $firstName
 }
 // Ende
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998--
