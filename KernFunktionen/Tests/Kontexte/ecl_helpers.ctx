@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/3/22, 4:48 PM
+Save-Time: 12/13/22, 2:16 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -439,8 +439,8 @@ proc "close-window-if-open" [val windowName] {
 
 global [val flightRecorderId 0 ] -override
 
-find-all [GetWindowTitle] "(\\d+)\.(\\d+)\.(\\d+)" | to-list | each [val groups] {
-	global [val elexisVersion [ concat [$groups | get 1 -default "unknown" ] "." [$groups | get 2 -default "unknown" ] ] ]-override
+find-all [GetWindowTitle] "(\\d+)\.(\\d+)\.(\\d+)\\." | to-list | each [val groups] {
+	global [val elexisVersion [ concat [$groups | get 1 -default "unknown" ] "." [$groups | get 2 -default "unknown" ] ] ] -override
 	concat "Saved elexisVersion is " $elexisVersion " from window title " [GetWindowTitle] | log
 }
 
@@ -449,9 +449,9 @@ proc EnableFlightRecorder {
 		log "skip  EnableFlightRecorder as elexisVersion is 3.9"
 	} -else {
 		if [ get-menu -path [ t activate_flight_recorder ] | get-property selection -raw ] {
-			log "Flight Recorder is already enabled"
+			log "elexisVersion " $elexisVersion " Flight Recorder is already enabled"
 		} -else {
-			log "Flight Recorder disabled"
+			log "elexisVersion " $elexisVersion " Flight Recorder disabled"
 			get-menu -path [ t activate_flight_recorder ]| click -metaKeys ""
 		}
 	}
@@ -463,7 +463,7 @@ proc SaveFlightRecording [ val filePrefix "flighrecorder" ] {
 	} -else {
 		global [val flightRecorderId [ $flightRecorderId | plus 1 ] ] -override
 		let [ val fullName [ concat $resultsDir "jfr_" $filePrefix "_" $flightRecorderId ".jfr" ] ] {
-			concat "SaveFlightRecording to " $fullName | log
+			concat "elexisVersion " $elexisVersion " SaveFlightRecording to " $fullName | log
 			set-dialog-result File $fullName
 			get-menu -path [ t dump_flight_recording ] | click -metaKeys ""
 			get-window Success | get-button OK | click -metaKeys ""
