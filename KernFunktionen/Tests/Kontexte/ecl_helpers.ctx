@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/13/22, 2:16 PM
+Save-Time: 12/13/22, 3:36 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -158,15 +158,18 @@ proc RestartElexis {
 	let [ val milliSecsBeforeRestart [ get-time ] ] {
 		concat "RestartElexis: Run-Mode is " [ safe-get-java-property "elexis-run-mode" ] " ms: " $milliSecsBeforeRestart | log
 		if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
-			log "Skipping restart as RunFromScratch" // We cannot restart Elexis without loosing all content
+			log "RestartElexis skipping as RunFromScratch" // We cannot restart Elexis without loosing all content
 		} -else {
 			concat "RestartElexis: Trying to restart Elexis milliSecsBeforeRestart " $milliSecsBeforeRestart | log
 			str $milliSecsBeforeRestart  | write-lines $restart_msFile
 			if [ safe-get-java-property "ch.elexis.dbFlavor" |  eq "h2" ] {
-				log "Do not restart under h2. Would fail with Failed to apply context Close modal dialogs"
+				log "RestartElexis: Do not restart under h2. Would fail with Failed to apply context Close modal dialogs"
 			} -else {
+				log "RestartElexis: Calling log restart-aut"
 				restart-aut
+				log "RestartElexis: After restart-aut"
 				wait-until-eclipse-is-ready
+				log "RestartElexis: After wait-until-eclipse-is-ready"
 			}
 		}
 	}
