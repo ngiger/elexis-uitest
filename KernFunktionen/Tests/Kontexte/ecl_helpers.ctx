@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/13/22, 3:36 PM
+Save-Time: 12/19/22, 2:45 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -147,7 +147,7 @@ proc "no_OOM_error" {
 no_OOM_error
 
 global [val rcpttDir	[ concat [ get-user-dir ] "/rcptt/"] ]
-global [val restart_msFile [ concat $rcpttDir "restart_ms" ] ] -override
+global [val restart_msFile [ concat $rcpttDir "restart_msFile" ] ] -override
 global [val default_KK "Aquilana" ] -override
 
 /**
@@ -167,9 +167,9 @@ proc RestartElexis {
 			} -else {
 				log "RestartElexis: Calling log restart-aut"
 				restart-aut
-				log "RestartElexis: After restart-aut"
+				// cannot insert wait or log here
 				wait-until-eclipse-is-ready
-				log "RestartElexis: After wait-until-eclipse-is-ready"
+				// cannot insert wait nor log here
 			}
 		}
 	}
@@ -179,20 +179,29 @@ proc RestartElexis {
  * Check whether the restart took between 5 and 120 seconds for Elexis
  */
 proc CheckRestartElexis {
+				log "CheckRestartElexis null"
+				wait-until-eclipse-is-ready
+				log "CheckRestartElexis eins"
+				wait 5000
+				wait-until-eclipse-is-ready
+				log "CheckRestartElexis zwei"
+	global [val minWaitInSeconds 20 ] -override
+	global [val maxWaitInSeconds [mult 10 60 ] ] -override // 10 minutes
+	concat "CheckRestartElexis: minWait " $minWaitInSeconds " maxWait " $maxWaitInSeconds " seconds " | log
+	wait [ mult 1 1000] // Wait 10 seconds
+	wait-until-eclipse-is-ready
+	log "RestartElexis: After wait-until-eclipse-is-ready"
+	log "CheckRestartElexis: After waiting 10 seconds"
 	// read-file does not work, read-lines neither at they return	 the first line + EOL/EOF
 	let [ val milliSecsBeforeRestart [ read-lines $restart_msFile | foreach -do str] ] {
-		concat "CheckRestartElexis: milliSecsBeforeRestart were <" $milliSecsBeforeRestart ">" | log
-		concat "CheckRestartElexis: milliSecsBeforeRestart now  <" [ get-time ] ">" | log
-		if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
-			log "Skipping CheckRestartElexis as RunFromScratch" // We cannot restart Elexis without loosing all content
-			// return
-		} -else {
-			concat "CheckRestartElexis ms is now: " [ get-time ] " took " [  minus [ get-time ] $milliSecsBeforeRestart ] | log
-		}
-		minus [ get-time ] $milliSecsBeforeRestart | gt   5000 | log
-		minus [ get-time ] $milliSecsBeforeRestart | lt 200000 | log
-	    minus [ get-time ] $milliSecsBeforeRestart | gt   5000 | assert-true -message [ concat "CheckRestartElexis  (min 5secs) Too fast ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
-		minus [ get-time ] $milliSecsBeforeRestart | lt 200000 | assert-true -message [ concat "CheckRestartElexis: (max 200secs) Too slow ms: " [  minus [ get-time ] $milliSecsBeforeRestart ] ]
+		global [ val waitSeconds [ div [ minus [ get-time ] $milliSecsBeforeRestart ] 1000 ] ] -override
+		concat "CheckRestartElexis: took " $waitSeconds " seconds"| log
+		concat "CheckRestartElexis: milliSecsBeforeRestart was <" $milliSecsBeforeRestart ">" " is " [ get-time ]  | log
+		// $waitSeconds | lt $minWaitInSeconds |not | log
+		// $waitSeconds | lt $maxWaitInSeconds | log
+	    $waitSeconds | lt $minWaitInSeconds | not | assert-true -message [ concat "CheckRestartElexisTook. Took " $waitSeconds " seconds. Less than " $minWaitInSeconds " seconds"]
+		$waitSeconds | lt $maxWaitInSeconds | assert-true -message [ concat "CheckRestartElexis. Took " $waitSeconds " seconds. More than " $maxWaitInSeconds " seconds"]
+		concat "CheckRestartElexis: Must take more than " $minWaitInSeconds " and less than " $maxWaitInSeconds " took " $waitSeconds " seconds" | log
 	}
 }
 
