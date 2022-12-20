@@ -74,6 +74,7 @@
       <feature id="ch.elexis.base.messages.feature" installMode="root"/>
       <feature id="ch.elexis.buchhaltung.basis.feature" installMode="root"/>
       <feature id="ch.elexis.connect.afinion.feature" installMode="root"/>
+      <feature id="ch.elexis.connect.fuji.drichem3500.feature" installMode="root"/>
       <feature id="ch.elexis.connect.mythic.feature" installMode="root"/>
       <feature id="ch.elexis.connect.reflotron.v2.feature" installMode="root"/>
       <feature id="ch.elexis.connect.sysmex.feature" installMode="root"/>
@@ -112,7 +113,6 @@
       <feature id="ch.itmed.lmz.risch.laborder.feature" installMode="root"/>
       <feature id="ch.medshare.connect.abacusjunior.feature" installMode="root"/>
       <feature id="ch.medshare.elexis_directories.feature" installMode="root"/>
-      <feature id="ch.medshare.mediport.feature" installMode="root"/>
       <feature id="ch.novcom.elexis.mednet.plugin.feature" installMode="root"/>
       <feature id="ch.pharmed.phmprescriber.feature" installMode="root"/>
       <feature id="ch.unibe.iam.scg.archie.feature" installMode="root"/>
