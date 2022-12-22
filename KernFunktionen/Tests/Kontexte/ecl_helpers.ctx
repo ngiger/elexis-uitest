@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/19/22, 2:45 PM
+Save-Time: 12/22/22, 3:40 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -162,15 +162,11 @@ proc RestartElexis {
 		} -else {
 			concat "RestartElexis: Trying to restart Elexis milliSecsBeforeRestart " $milliSecsBeforeRestart | log
 			str $milliSecsBeforeRestart  | write-lines $restart_msFile
-			if [ safe-get-java-property "ch.elexis.dbFlavor" |  eq "h2" ] {
-				log "RestartElexis: Do not restart under h2. Would fail with Failed to apply context Close modal dialogs"
-			} -else {
-				log "RestartElexis: Calling log restart-aut"
-				restart-aut
-				// cannot insert wait or log here
-				wait-until-eclipse-is-ready
-				// cannot insert wait nor log here
-			}
+			log "RestartElexis: Calling log restart-aut"
+			restart-aut
+			// cannot insert wait or log here
+			wait-until-eclipse-is-ready
+			// cannot insert wait nor log here
 		}
 	}
 }
@@ -179,12 +175,9 @@ proc RestartElexis {
  * Check whether the restart took between 5 and 120 seconds for Elexis
  */
 proc CheckRestartElexis {
-				log "CheckRestartElexis null"
-				wait-until-eclipse-is-ready
-				log "CheckRestartElexis eins"
-				wait 5000
-				wait-until-eclipse-is-ready
-				log "CheckRestartElexis zwei"
+	wait-until-eclipse-is-ready
+	wait 5000
+	wait-until-eclipse-is-ready
 	global [val minWaitInSeconds 20 ] -override
 	global [val maxWaitInSeconds [mult 10 60 ] ] -override // 10 minutes
 	concat "CheckRestartElexis: minWait " $minWaitInSeconds " maxWait " $maxWaitInSeconds " seconds " | log
