@@ -11,9 +11,9 @@
   </parent>
   <properties>
     <!--  Initial preparation to TO ONCE, on Debian Buster sudo -u root mysql
-    create database elexis;
     create database elexis_rcptt_de;
     create database elexis_rcptt_fr;
+    create database elexis;
     create user elexis identified by 'elexisTest';
     grant all on elexis_rcptt_de.* to elexis@'%';
     grant all on elexis_rcptt_de.* to 'elexis'@'%' with grant option;
