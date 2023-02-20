@@ -138,11 +138,11 @@
             <!-- the default value of 300 for testExecTimeout was not long enough for VisitAllViews -->
             <!-- full list given http://rcptt.xored.com/arguments, s.a. sets timeout options for the whole test suite and for a single test:-->
             <timeout>7213</timeout>
-		<!-- Timeout for all tests, in seconds (90 minutes)-->
-            <execTimeout>5400</execTimeout>
-            <testExecTimeout>7213</testExecTimeout>
+            <execTimeout>5400</execTimeout><!-- Timeout for all tests, in seconds (90 minutes)-->
+            <testExecTimeout>1200</testExecTimeout> <!-- Allow up to 20 minutes for VisitAllViews to finish -->
             <contextRunnableTimeout>5403000</contextRunnableTimeout>
             <passedTestDetails>true</passedTestDetails>
+            <memoryUsage>true</memoryUsage>
             <launchingKillAutOnConnectError>true</launchingKillAutOnConnectError>
           </testOptions>
           <aut>
