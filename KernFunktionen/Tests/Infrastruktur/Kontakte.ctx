@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
 Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 8:20 PM
+Save-Time: 8/5/23, 6:33 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -207,9 +207,14 @@ proc "OrganisationErfassen"  [ val idOrganisation 1 ] {
 		if [ get-link [ t link_not_set ] | get-property enablement -raw | equals false] {
 			get-button OK | click
 		} -else {
-	   		get-link [ t link_not_set ] | click
-	   		concat "WIndow Name: " [ t Company_exists ] | log
-			try {	   		
+			get-link [ t link_not_set ] | click
+			concat "WIndow Name: " [ t Company_exists ] | log
+			try {
+				get-window [ t Company_exists ] | get-button [ t ok ] | click
+			} -catch {
+				concat "Company " $idOrganisation " already exists. Adding"
+			}
+			try {
 		   		get-window [ t Postanschrift ] | get-button OK | click
 				get-window [ t Kontakt_erfassen ] | gen-screenshot [concat $imagesDir "organisation_" $idOrganisation "_created.png"]
 				get-button OK | click
