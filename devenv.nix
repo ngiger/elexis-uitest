@@ -1,0 +1,83 @@
+{
+  pkgs,
+  config,
+  ...
+}: {
+  # https://devenv.sh/basics/
+  env.GREET = "devenv";
+
+  # https://devenv.sh/packages/
+  packages = [
+    pkgs.git
+    pkgs.curl
+    pkgs.killall
+    pkgs.rsync
+    pkgs.steam-run-free
+    pkgs.swt
+    pkgs.gtk3
+    pkgs.glib
+    pkgs.openjdk21
+    pkgs.xorg.libX11
+    pkgs.xorg.libXext
+    pkgs.xorg.libXi
+    pkgs.xorg.libXrender
+    pkgs.xorg.libXtst
+    pkgs.libsecret
+    pkgs.webkitgtk_4_0
+    pkgs.zlib
+  ];
+
+  env.RCPTT_URL = "https://download.eclipse.org/rcptt/nightly/2.6.0/latest/ide/rcptt.ide-2.6.0-nightly-linux.gtk.x86_64.zip";
+  env.RCPTT_ZIP = "rcptt.ide-2.6.0.zip";
+
+  enterShell = ''
+    git --version
+    rsync -av setup/data/ ~/elexis/rcptt/
+    if [ ! -f ${config.env.RCPTT_ZIP} ]; then
+      echo Must download the file ${config.env.RCPTT_URL}
+      ${pkgs.curl}/bin/curl -o ${config.env.RCPTT_ZIP} ${config.env.RCPTT_URL}
+    else
+      echo I am testing whether I have to update ${config.env.RCPTT_ZIP}
+      ${pkgs.curl}/bin/curl --silent -z ${config.env.RCPTT_ZIP} ${config.env.RCPTT_URL}
+    fi
+    unzip -o -u ${config.env.RCPTT_ZIP}
+  '';
+  scripts.rcptt.exec = ''
+    ${pkgs.steam-run-free}/bin/steam-run rcptt/rcptt -data rcptt-ws
+  '';
+
+  services.postgres.enable = true;
+  services.postgres.initialDatabases = [
+    {name = "elexis_rcptt_de";}
+    {name = "elexis_rcptt_fr";}
+    {name = "elexis_rcptt_it";}
+    {name = "elexis";}
+  ];
+  services.postgres.initialScript = ''
+    drop USER if exists elexis;
+    CREATE USER elexis WITH PASSWORD 'elexisTest';
+    ALTER USER elexis WITH SUPERUSER;
+    CREATE ROLE niklaus SUPERUSER;
+  '';
+
+  services.mysql.initialDatabases = [
+    {name = "elexis_rcptt_de";}
+    {name = "elexis_rcptt_fr";}
+    {name = "elexis_rcptt_it";}
+    {name = "elexis";}
+  ];
+  services.mysql.enable = true;
+  services.mysql.ensureUsers = [
+    {
+      name = "elexis";
+      password = "elexisTest";
+      ensurePermissions = {
+        "database.*" = "ALL PRIVILEGES";
+        "elexis.*" = "ALL PRIVILEGES";
+        "elexis_rcptt_de.*" = "ALL PRIVILEGES";
+        "elexis_rcptt_fr.*" = "ALL PRIVILEGES";
+        "elexis_rcptt_it.*" = "ALL PRIVILEGES";
+      };
+    }
+  ];
+}
