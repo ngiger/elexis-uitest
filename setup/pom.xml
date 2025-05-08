@@ -123,9 +123,9 @@
           </configuration>
         </plugin>
       <plugin>
-        <groupId>com.googlecode.maven-download-plugin</groupId>
+        <groupId>io.github.download-maven-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
-        <version>1.4.1</version>
+        <version>2.0.0</version>
         <executions>
           <execution>
             <id>download-MiGeL-xlsx</id>
@@ -138,32 +138,6 @@
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <unpack>false</unpack>
               <md5>29e1ba7305c11a922bedc6b0198be828</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-Universal-krankenkasse</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://wiki.elexis.info/images/c/ce/Universal_krankenkasse.xls</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <unpack>false</unpack>
-              <md5>470b203a84b64ed92595ec9c6070a4d4</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-Universal-patienten</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://wiki.elexis.info/images/a/ae/Universal_patienten.xls</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <unpack>false</unpack>
-              <md5>808a8662e6f421c52e7805043e04f943</md5>
             </configuration>
           </execution>
           <execution>
@@ -193,26 +167,13 @@
             </configuration>
           </execution>
           <execution>
-            <id>download-Analyseliste_EAL</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://wiki.elexis.info/images/2/23/EAL_01.04.2020.xlsx</url>
-              <outputFileName>EAL_01.04.2020.xlsx</outputFileName>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <md5>5e0d9c02d95e78d81b136f1d6f3da1f7</md5>
-            </configuration>
-          </execution>
-          <execution>
             <id>download-TARMED_01_09_00</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://www.fmh.ch/files/zip1/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.zip</url>
+              <url>https://download.elexis.info/elexis/demoDB/TARMED__Datenbank_01.09.00_BR_KVG-27.12.2017.zip</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <md5>08d47fd527a7d5282e140aa63ea48fd0</md5>
               <unpack>true</unpack>
@@ -228,31 +189,6 @@
               <url>https://repo1.maven.org/maven2/com/h2database/h2/${h2.version}/h2-${h2.version}.jar</url>
               <outputDirectory>${rcptt-resources}</outputDirectory>
               <md5>18c05829a03b92c0880f22a3c4d1d11d</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-blocks_landarztpraxis_sevelen</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://wiki.elexis.info/images/1/1f/Tarmed_Blocks_109.txt</url>
-              <outputFileName>blocks_landarztpraxis_sevelen.xchange</outputFileName>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <md5>b9f436fdbbb8b8f107215bf48a004d20</md5>
-            </configuration>
-          </execution>
-          <execution>
-            <id>download-artikelstamm_01012019_v5</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://artikelstamm.elexis.info/v5/20210401/artikelstamm_01042021_v5.xml</url>
-              <outputDirectory>${rcptt-resources}</outputDirectory>
-              <md5>639320fa0e1e79534e22eaa0e3972b64</md5>
             </configuration>
           </execution>
         </executions>
@@ -271,6 +207,11 @@
                   <copy file="${rcptt-resources}/MiGel_2022v2.csv" tofile="${rcptt-resources}/migel_it.csv" preservelastmodified="true" />
                   <copy file="${project.basedir}/${save_run_from_scratch}" tofile="${rcptt-resources}/${save_run_from_scratch}" preservelastmodified="true" />
                   <copy file="${project.basedir}/data/test.properties" tofile="${rcptt-resources}/test.properties" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/blocks_landarztpraxis_sevelen.xchange" tofile="${rcptt-resources}/blocks_landarztpraxis_sevelen.xchange" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/EAL_01.04.2020.xlsx" tofile="${rcptt-resources}/EAL_01.04.2020.xlsx" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/artikelstamm_01042021_v5.xml" tofile="${rcptt-resources}/artikelstamm_01042021_v5.xml" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Universal_krankenkasse.xls" tofile="${rcptt-resources}/Universal_krankenkasse.xls" preservelastmodified="true" />
+                  <copy file="${project.basedir}/data/Universal_patienten.xls" tofile="${rcptt-resources}/Universal_patienten.xls" preservelastmodified="true" />
                   <copy file="${project.basedir}/data/translations_de.properties" tofile="${rcptt-resources}/translations_de.properties" preservelastmodified="true" />
                   <copy file="${project.basedir}/data/translations_fr.properties" tofile="${rcptt-resources}/translations_fr.properties" preservelastmodified="true" />
                   <copy file="${project.basedir}/data/translations_it.properties" tofile="${rcptt-resources}/translations_it.properties" preservelastmodified="true" />

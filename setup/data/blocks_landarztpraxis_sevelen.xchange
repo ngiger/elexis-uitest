@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xChange:xChange xmlns:xChange="http://informatics.sgam.ch/xChange" xmlns:xsi="http://www.w3.org/2001/XML Schema-instance" xmlns:schemaLocation="http://informatics.sgam.ch/xChange xchange.xsd" timestamp="2017-12-28T16:19:04" id="k6789c9b71b01212e0417" origin="C2e58fce9f4e4c19cb232" destination="undefined" responsible="C2e58fce9f4e4c19cb232">
+  <xChange:header creatorName="Elexis" creatorID="ch.elexis" creatorVersion="3.4.0.qualifier" protocolVersion="2.0.0" language="de_CH" />
+  <xChange:serviceblocks>
+    <xChange:serviceblock name="arzt_Gynäkologie (KVG)">
+      <xChange:service name="Gynäkologische präventive Untersuchung, als alleinige gynäkologische Leistung" contractCode="22.0020" contractName="Tarmed" minutes="11" cost="0" price="4158">
+        <xChange:xid id="x22.0020-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.0020-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Spezielle gynäkologische Beratung durch den Facharzt, pro 5 Min." contractCode="22.0030" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x22.0030-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.0030-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Spekularuntersuchung" contractCode="22.0050" contractName="Tarmed" minutes="3" cost="0" price="1134">
+        <xChange:xid id="x22.0050-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.0050-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Entnahme von Material für Zytologie" contractCode="22.0070" contractName="Tarmed" minutes="3" cost="0" price="1134">
+        <xChange:xid id="x22.0070-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.0070-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Vaginalsekretentnahme für Sekretanalyse und Bakteriologie" contractCode="22.0060" contractName="Tarmed" minutes="2" cost="0" price="756">
+        <xChange:xid id="x22.0060-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.0060-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Erste Schwangerschaftsuntersuchung und Schwangerschaftsberatung" contractCode="22.1910" contractName="Tarmed" minutes="21" cost="0" price="7939">
+        <xChange:xid id="x22.1910-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.1910-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Schwangerschaftsuntersuchung, nachfolgende" contractCode="22.1920" contractName="Tarmed" minutes="8" cost="0" price="3025">
+        <xChange:xid id="x22.1920-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.1920-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Schwangerschaftsuntersuchung, weitere" contractCode="22.1930" contractName="Tarmed" minutes="8" cost="0" price="3025">
+        <xChange:xid id="x22.1930-20070401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.1930-20070401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Geburtsnachkontrolle" contractCode="22.1990" contractName="Tarmed" minutes="11" cost="0" price="4158">
+        <xChange:xid id="x22.1990-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="22.1990-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Untersuchung der Mammae" contractCode="23.0010" contractName="Tarmed" minutes="5" cost="0" price="1891">
+        <xChange:xid id="x23.0010-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="23.0010-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="mpa_bven (KVG)">
+      <xChange:service name="Punktion, venös, zwecks Blutentnahme, jede Lokalisation durch nichtärztliches Personal" contractCode="00.0715" contractName="Tarmed" minutes="0" cost="0" price="819">
+        <xChange:xid id="x00.0715-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0715-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Leistung u6,ü75 (KVG)">
+      <xChange:service name="Dokumentationsbogen für Erstkonsultation nach kraniozervikalem Beschleunigungstrauma ({HWS}-Fragebogen)" contractCode="00.2215" contractName="Tarmed" minutes="40" cost="0" price="14208">
+        <xChange:xid id="x00.2215-20100401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2215-20100401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Vorbesprechung diagnostischer/therapeutischer Eingriffe mit Patienten/Angehörigen durch den Facharzt bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 5 Min." contractCode="00.0055" contractName="Tarmed" />
+      <xChange:service name="Kleine Untersuchung durch den Facharzt für Grundversorgung bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 5 Min." contractCode="00.0416" contractName="Tarmed" />
+      <xChange:service name="Spezifische Beratung durch den Facharzt für Grundversorgung bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 5 Min." contractCode="00.0515" contractName="Tarmed" />
+      <xChange:service name="Genetische u/o pränatale Beratung durch den Facharzt bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 5 Min" contractCode="00.0535" contractName="Tarmed" />
+      <xChange:service name="Instruktion von Selbstmessungen, Selbstbehandlungen durch den Facharzt bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 5 Min." contractCode="00.0615" contractName="Tarmed" />
+      <xChange:service name="Durchführung und Überwachung einer Desensibilisierung/Hyposensibilisierung bei Allergie mittels Injektion durch den Facharzt" contractCode="00.1310" contractName="Tarmed" minutes="7" cost="0" price="2646">
+        <xChange:xid id="x00.1310-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.1310-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Nachbetreuung/Betreuung/Überwachung in der Arztpraxis bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 15 Min." contractCode="00.1375" contractName="Tarmed" />
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Leistung plus (KVG)">
+      <xChange:service name="Dokumentationsbogen für Erstkonsultation nach kraniozervikalem Beschleunigungstrauma ({HWS}-Fragebogen)" contractCode="00.2215" contractName="Tarmed" minutes="40" cost="0" price="14208">
+        <xChange:xid id="x00.2215-20100401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2215-20100401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Vorbesprechung diagnostischer/therapeutischer Eingriffe mit Patienten/Angehörigen durch den Facharzt bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 5 Min." contractCode="00.0056" contractName="Tarmed" />
+      <xChange:service name="Kleine Untersuchung durch den Facharzt für Grundversorgung bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 5 Min. " contractCode="00.0417" contractName="Tarmed" />
+      <xChange:service name="Spezifische Beratung durch den Facharzt für Grundversorgung bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 5 Min." contractCode="00.0516" contractName="Tarmed" />
+      <xChange:service name="Genetische u/o pränatale Beratung durch den Facharzt bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 5 Min" contractCode="00.0536" contractName="Tarmed" />
+      <xChange:service name="Instruktion von Selbstmessungen, Selbstbehandlungen durch den Facharzt bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 5 Min." contractCode="00.0616" contractName="Tarmed" />
+      <xChange:service name="Durchführung und Überwachung einer Desensibilisierung/Hyposensibilisierung bei Allergie mittels Injektion durch den Facharzt" contractCode="00.1310" contractName="Tarmed" minutes="7" cost="0" price="2646">
+        <xChange:xid id="x00.1310-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.1310-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Nachbetreuung/Betreuung/Überwachung in der Arztpraxis bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 15 Min." contractCode="00.1376" contractName="Tarmed" />
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Haut (KVG)">
+      <xChange:service name="Stanzbiopsie der Haut, erste Biopsie" contractCode="04.0190" contractName="Tarmed" minutes="10" cost="0" price="3807">
+        <xChange:xid id="x04.0190-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0190-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Stanzbiopsie der Haut, jede weitere Biopsie" contractCode="04.0200" contractName="Tarmed" minutes="7" cost="0" price="2665">
+        <xChange:xid id="x04.0200-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0200-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Scharfes Abtragen von benignen Hautläsionen, bis 5 Läsionen" contractCode="04.0210" contractName="Tarmed" minutes="3" cost="0" price="1142">
+        <xChange:xid id="x04.0210-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0210-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Scharfes Abtragen von benignen Hautläsionen, 6 bis 10 Läsionen" contractCode="04.0220" contractName="Tarmed" minutes="6" cost="0" price="2284">
+        <xChange:xid id="x04.0220-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0220-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Elektrokauterisation, pro Läsion, jede Methode" contractCode="04.0360" contractName="Tarmed" minutes="1" cost="0" price="380">
+        <xChange:xid id="x04.0360-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0360-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Inzision/Drainage oberflächlicher/subkutaner Prozess (Hämatom, Abszess, Zyste usw.)" contractCode="04.0520" contractName="Tarmed" minutes="10" cost="0" price="4359">
+        <xChange:xid id="x04.0520-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0520-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Exzision von Hautprozessen (Tumor, entzündliche Prozesse, Schmutztätowierung, Tätowierung, Narbenfläche): Gesicht, Hals (ohne Nacken), Hand, grösstes Exzisat kleiner als 2 cm², erstes Exzisat kleiner als 2 cm²" contractCode="04.0540" contractName="Tarmed" minutes="17" cost="0" price="6979">
+        <xChange:xid id="x04.0540-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0540-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Exzision von Hautprozessen (Tumor, entzündliche Prozesse, Schmutztätowierung, Tätowierung, Narbenfläche): Gesicht, Hals (ohne Nacken), Hand, grösstes Exzisat kleiner als 2 cm², jede weitere Exzision kleiner als 2 cm²" contractCode="04.0541" contractName="Tarmed" minutes="11" cost="0" price="4795">
+        <xChange:xid id="x04.0541-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0541-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Exzision von Hautprozessen (Tumor, entzündliche Prozesse, Schmutztätowierung, Tätowierung, Narbenfläche): Gesicht, Hals (ohne Nacken), Hand, mehr als 2 cm² Exzisat, erste 2 cm²" contractCode="04.0550" contractName="Tarmed" minutes="24" cost="0" price="17234">
+        <xChange:xid id="x04.0550-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0550-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Exzision von Hautprozessen (Tumor, entzündliche Prozesse, Schmutztätowierung, Tätowierung, Narbenfläche): übrige Regionen, grösstes Exzisat kleiner als 5 cm²,  erstes Exzisat kleiner als 5 cm²" contractCode="04.0580" contractName="Tarmed" minutes="15" cost="0" price="6107">
+        <xChange:xid id="x04.0580-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0580-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Fremdkörperexzision, Cutis und Subcutis, bis 1 cm Tiefe ab Oberfläche" contractCode="04.0900" contractName="Tarmed" minutes="18" cost="0" price="7319">
+        <xChange:xid id="x04.0900-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0900-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Zuschlag für Fremdkörperexzision, bis 1 cm Tiefe ab Oberfläche, aus Gesicht, Hals (ohne Nacken), Hand, Fusssohle" contractCode="04.0910" contractName="Tarmed" minutes="8" cost="0" price="3253">
+        <xChange:xid id="x04.0910-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.0910-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_telefon (KVG)">
+      <xChange:service name="Telefonische Konsultation durch den Facharzt, erste 5 Min." contractCode="00.0110" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0110-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0110-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Telefonische Konsultation durch den Facharzt, jede weiteren 5 Min." contractCode="00.0120" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0120-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0120-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Telefonische Konsultation durch den Facharzt, letzte 5 Min." contractCode="00.0130" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0130-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0130-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="mpa_Leistungen (KVG)">
+      <xChange:service name="Injektion/Infusion durch nichtärztliches Personal" contractCode="00.0750" contractName="Tarmed" minutes="0" cost="0" price="819">
+        <xChange:xid id="x00.0750-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0750-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Wundtoilette/Verbandwechsel durch nichtärztliches Personal, pro 5 Min." contractCode="00.1345" contractName="Tarmed" minutes="0" cost="0" price="819">
+        <xChange:xid id="x00.1345-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.1345-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Spezialverbände: Venen, Lymphgefässe, Gesicht, Mamma" contractCode="01.0310" contractName="Tarmed" minutes="6" cost="0" price="2736">
+        <xChange:xid id="x01.0310-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="01.0310-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Kleine Spirometrie mit Dokumentation der Flussvolumenkurve" contractCode="15.0130" contractName="Tarmed" minutes="5" cost="0" price="4032">
+        <xChange:xid id="x15.0130-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="15.0130-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Elektrokardiogramm ({EKG})" contractCode="17.0010" contractName="Tarmed" minutes="8" cost="0" price="3338">
+        <xChange:xid id="x17.0010-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="17.0010-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Blutdruckmessung, 24 Std." contractCode="17.0510" contractName="Tarmed" minutes="11" cost="0" price="10836">
+        <xChange:xid id="x17.0510-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="17.0510-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Nichtärztliche Betreuung ambulanter Patienten ausserhalb der Tagesklinik, ambulanter Patient, erste 60 Min." contractCode="35.0510" contractName="Tarmed" minutes="0" cost="0" price="2250">
+        <xChange:xid id="x35.0510-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="35.0510-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Nichtärztliche Betreuung ambulanter Patienten ausserhalb der Tagesklinik, ambulanter Patient, jede weiteren 60 Min." contractCode="35.0520" contractName="Tarmed" minutes="0" cost="0" price="1501">
+        <xChange:xid id="x35.0520-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="35.0520-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Medikamentenverabreichung durch nichtärztliches Personal" contractCode="00.0150" contractName="Tarmed" minutes="0" cost="0" price="819">
+        <xChange:xid id="x00.0150-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0150-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Nichtärztliche Medikamentenabgabe zur Substitutionsbehandlung bei Opiatabhängigkeit" contractCode="00.0155" contractName="Tarmed" minutes="0" cost="0" price="819">
+        <xChange:xid id="x00.0155-20080101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0155-20080101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Überwachte Urinabgabe bei Alkohol-/Drogenpatienten durch nichtärztliches Personal" contractCode="00.0160" contractName="Tarmed" minutes="0" cost="0" price="819">
+        <xChange:xid id="x00.0160-20050101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0160-20050101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Gefässzugang, periphervenös, jeder Zugang, durch nichtärztliches Personal" contractCode="00.0855" contractName="Tarmed" minutes="0" cost="0" price="3529">
+        <xChange:xid id="x00.0855-20100401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0855-20100401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Nichtärztliche Behandlung und Betreuung ambulanter, onkologischer/hämatologischer/diabetologischer Patienten, erste 15 Min." contractCode="00.1430" contractName="Tarmed" minutes="20" cost="0" price="5709">
+        <xChange:xid id="x00.1430-20050101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.1430-20050101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Wundbehandlung ohne Einbezug komplexer Strukturen durch nichtärztliches Personal, Wunden mit einer Fläche von 5 cm² bis 10 cm²" contractCode="04.1170" contractName="Tarmed" minutes="0" cost="0" price="2841">
+        <xChange:xid id="x04.1170-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.1170-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Wundbehandlung ohne Einbezug komplexer Strukturen durch nichtärztliches Personal, Wunden mit einer Fläche von 10.1 cm² bis 20 cm²" contractCode="04.1175" contractName="Tarmed" minutes="0" cost="0" price="5683">
+        <xChange:xid id="x04.1175-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="04.1175-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Entfernung härtender Verbände der Kategorie II durch nichtärztliches Personal, erste 5 Min." contractCode="01.0265" contractName="Tarmed" minutes="5" cost="0" price="1639">
+        <xChange:xid id="x01.0265-20070401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="01.0265-20070401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ nichtärztliche Behandlung und Betreuung ambulanter, onkologischer/hämatologischer/diabetologischer Patienten, jede weiteren 15 Min." contractCode="00.1440" contractName="Tarmed" minutes="0" cost="0" price="2447">
+        <xChange:xid id="x00.1440-20050101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.1440-20050101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_in Abwesen u6,ü75 (KVG)">
+      <xChange:service name="Aktenstudium in Abwesenheit des Patienten bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 1 Min." contractCode="00.0131" contractName="Tarmed" />
+      <xChange:service name="Erkundigungen bei Dritten in Abwesenheit des Patienten bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 1 Min." contractCode="00.0132" contractName="Tarmed" />
+      <xChange:service name="Auskünfte an Angehörige oder andere Bezugspersonen des Patienten in Abwesenheit des Patienten bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 1 Min." contractCode="00.0133" contractName="Tarmed" />
+      <xChange:service name="Besprechungen mit Therapeuten und Betreuern des Patienten in Abwesenheit des Patienten bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 1 Min." contractCode="00.0134" contractName="Tarmed" />
+      <xChange:service name="Überweisungen an Konsiliarärzte in Abwesenheit des Patienten bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 1 Min." contractCode="00.0135" contractName="Tarmed" />
+      <xChange:service name="Ausstellen von Rezepten oder Verordnungen ausserhalb von Konsultation, Besuch und telefonischer Konsultation in Abwesenheit des Patienten bei Kindern unter 6 Jahren und Personen über 75 Jahren, pro 1 Min." contractCode="00.0136" contractName="Tarmed" />
+      <xChange:service name="Dokumentationsbogen für Erstkonsultation nach kraniozervikalem Beschleunigungstrauma ({HWS}-Fragebogen)" contractCode="00.2215" contractName="Tarmed" minutes="40" cost="0" price="14208">
+        <xChange:xid id="x00.2215-20100401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2215-20100401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="kons (KVG)">
+      <xChange:service name="Konsultation, erste 5 Min. (Grundkonsultation)" contractCode="00.0010" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0010-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0010-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Zuschlag für hausärztliche Leistungen in der Arztpraxis" contractCode="00.0015" contractName="Tarmed" minutes="0" cost="0" price="1000">
+        <xChange:xid id="x00.0015-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0015-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Konsultation bei Personen über 6 Jahren und unter 75 Jahren, jede weiteren 5 Min. (Konsultationszuschlag)" contractCode="00.0020" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0020-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0020-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Konsultation, letzte 5 Min. (Konsultationszuschlag)" contractCode="00.0030" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0030-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0030-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Leistung (KVG)">
+      <xChange:service name="Vorbesprechung diagnostischer/therapeutischer Eingriffe mit Patienten/Angehörigen durch den Facharzt, pro 5 Min." contractCode="00.0050" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0050-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0050-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Kleine Untersuchung durch den Facharzt für Grundversorgung bei Personen über 6 Jahren und unter 75 Jahren, pro 5 Min." contractCode="00.0415" contractName="Tarmed" />
+      <xChange:service name="Umfassende Untersuchung durch den Facharzt für Grundversorgung, pro 5 Min." contractCode="00.0425" contractName="Tarmed" />
+      <xChange:service name="Spezifische Beratung durch den Facharzt für Grundversorgung bei Personen über 6 Jahren und unter 75 Jahren, pro 5 Min." contractCode="00.0510" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0510-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0510-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Psychotherapeutische/psychosoziale Beratung durch den Facharzt für Grundversorgung, pro 5 Min." contractCode="00.0520" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0520-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0520-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Genetische u/o pränatale Beratung durch den Facharzt bei Personen über 6 Jahren und unter 75 Jahren, pro 5 Min." contractCode="00.0530" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0530-20070401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0530-20070401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Instruktion von Selbstmessungen, Selbstbehandlungen durch den Facharzt bei Personen über 6 Jahren und unter 75 Jahren, pro 5 Min." contractCode="00.0610" contractName="Tarmed" minutes="5" cost="0" price="1891">
+        <xChange:xid id="x00.0610-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0610-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Durchführung und Überwachung einer Desensibilisierung/Hyposensibilisierung bei Allergie mittels Injektion durch den Facharzt" contractCode="00.1310" contractName="Tarmed" minutes="7" cost="0" price="2646">
+        <xChange:xid id="x00.1310-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.1310-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Nachbetreuung/Betreuung/Überwachung in der Arztpraxis bei Personen über 6 Jahren und unter 75 Jahren, pro 15 Min." contractCode="00.1370" contractName="Tarmed" minutes="2" cost="0" price="3184">
+        <xChange:xid id="x00.1370-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.1370-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="kons plus (KVG)">
+      <xChange:service name="Konsultation, erste 5 Min. (Grundkonsultation)" contractCode="00.0010" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0010-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0010-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Zuschlag für hausärztliche Leistungen in der Arztpraxis" contractCode="00.0015" contractName="Tarmed" minutes="0" cost="0" price="1000">
+        <xChange:xid id="x00.0015-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0015-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Konsultation bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min." contractCode="00.0026" contractName="Tarmed" />
+      <xChange:service name="+ Konsultation, letzte 5 Min. (Konsultationszuschlag)" contractCode="00.0030" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0030-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0030-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Notfall (KVG)">
+      <xChange:service name="Dringlichkeits-Inkonvenienzpauschale F bei dringlichen Konsultationen/Besuchen ausserhalb der regulären Sprechstundenzeiten, sowie Mo-Fr 19-22, Sa 7-19, sowie So 7-19" contractCode="00.2505" contractName="Tarmed" minutes="0" cost="0" price="4500">
+        <xChange:xid id="x00.2505-20070401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2505-20070401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Notfall-Inkonvenienzpauschale A, Mo-Fr 7-19, Sa 7-12" contractCode="00.2510" contractName="Tarmed" minutes="0" cost="0" price="5000">
+        <xChange:xid id="x00.2510-20070401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2510-20070401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Notfall-Inkonvenienzpauschale B, Mo-So 19-22, Sa 12-19, So 7-19" contractCode="00.2520" contractName="Tarmed" minutes="0" cost="0" price="11000">
+        <xChange:xid id="x00.2520-20090301">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2520-20090301" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="(+) %-Zuschlag für Notfall B, Mo-So 19-22, Sa 12-19, So 7-19" contractCode="00.2530" contractName="Tarmed" minutes="0" cost="0" price="0">
+        <xChange:xid id="x00.2530-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2530-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Notfall-Inkonvenienzpauschale C, Mo-So 22-7" contractCode="00.2540" contractName="Tarmed" minutes="0" cost="0" price="18000">
+        <xChange:xid id="x00.2540-20090301">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2540-20090301" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="(+) %-Zuschlag für Notfall C, Mo-So 22-7" contractCode="00.2550" contractName="Tarmed" minutes="0" cost="0" price="0">
+        <xChange:xid id="x00.2550-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2550-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Notfall-Inkonvenienzpauschale D bei telefonischer Konsultation, Mo-So 19-22, Sa 12-19, So 7-19" contractCode="00.2560" contractName="Tarmed" minutes="0" cost="0" price="3000">
+        <xChange:xid id="x00.2560-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2560-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="(+) %-Zuschlag für Notfall D, Mo-So 19-22, Sa 12-19, So 7-19" contractCode="00.2570" contractName="Tarmed" minutes="0" cost="0" price="0">
+        <xChange:xid id="x00.2570-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2570-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Notfall-Inkonvenienzpauschale E bei telefonischer Konsultation, Mo-So 22-7" contractCode="00.2580" contractName="Tarmed" minutes="0" cost="0" price="7000">
+        <xChange:xid id="x00.2580-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2580-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="(+) %-Zuschlag für Notfall E, Mo-So 22-7" contractCode="00.2590" contractName="Tarmed" minutes="0" cost="0" price="0">
+        <xChange:xid id="x00.2590-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2590-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="mpa_bkap (KVG)">
+      <xChange:service name="Blutentnahme kapillär, jede Lokalisation durch nichtärztliches Personal" contractCode="00.0716" contractName="Tarmed" minutes="0" cost="0" price="492">
+        <xChange:xid id="x00.0716-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0716-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_in Abwesenheit (KVG)">
+      <xChange:service name="Aktenstudium in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren, pro 1 Min." contractCode="00.0141" contractName="Tarmed" />
+      <xChange:service name="Erkundigungen bei Dritten in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren, pro 1 Min." contractCode="00.0142" contractName="Tarmed" />
+      <xChange:service name="Auskünfte an Angehörige oder andere Bezugspersonen des Patienten in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren, pro 1 Min." contractCode="00.0143" contractName="Tarmed" />
+      <xChange:service name="Besprechungen mit Therapeuten und Betreuern des Patienten in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren, pro 1 Min." contractCode="00.0144" contractName="Tarmed" />
+      <xChange:service name="Überweisungen an Konsiliarärzte in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren, pro 1 Min." contractCode="00.0145" contractName="Tarmed" />
+      <xChange:service name="Ausstellen von Rezepten oder Verordnungen ausserhalb von Konsultation, Besuch und telefonischer Konsultation in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren, pro 1 Min." contractCode="00.0146" contractName="Tarmed" />
+      <xChange:service name="Dokumentationsbogen für Erstkonsultation nach kraniozervikalem Beschleunigungstrauma ({HWS}-Fragebogen)" contractCode="00.2215" contractName="Tarmed" minutes="40" cost="0" price="14208">
+        <xChange:xid id="x00.2215-20100401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2215-20100401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Besuch plus (KVG)">
+      <xChange:service name="+ Besuch, letzte 5 Min. (Besuchszuschlag)" contractCode="00.0080" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0080-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0080-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Besuch, erste 5 Min. (Grundbesuch)" contractCode="00.0060" contractName="Tarmed" minutes="5" cost="0" price="3308">
+        <xChange:xid id="x00.0060-20120601">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0060-20120601" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Wegentschädigung, pro 5 Min." contractCode="00.0095" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0095-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0095-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Patiententransport durch den Facharzt, pro 5 Min." contractCode="00.0100" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0100-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0100-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Besuch bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min." contractCode="00.0076" contractName="Tarmed" />
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Berichte (KVG)">
+      <xChange:service name="Formalisierter Arztbericht, pro 5 Min." contractCode="00.2206" contractName="Tarmed" />
+      <xChange:service name="Dokumentationsbogen für Erstkonsultation nach kraniozervikalem Beschleunigungstrauma ({HWS}-Fragebogen)" contractCode="00.2215" contractName="Tarmed" minutes="40" cost="0" price="14208">
+        <xChange:xid id="x00.2215-20100401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2215-20100401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Verlangter kleiner Arztbericht an den Versicherer (Bestandteil von Allgemeine Grundleistungen)" contractCode="00.2255" contractName="Tarmed" minutes="0" cost="0" price="0">
+        <xChange:xid id="x00.2255-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2255-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Kopien an den Versicherer, pro Auftrag" contractCode="00.2260" contractName="Tarmed" minutes="3" cost="0" price="1066">
+        <xChange:xid id="x00.2260-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2260-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Kopien von grossem Umfang und/oder Kopien von Bildträgern an den Versicherer, pro Auftrag" contractCode="00.2265" contractName="Tarmed" minutes="6" cost="0" price="2131">
+        <xChange:xid id="x00.2265-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2265-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Nicht formalisierter Bericht, 11 bis 35 Zeilen Text" contractCode="00.2285" contractName="Tarmed" minutes="11" cost="0" price="3907">
+        <xChange:xid id="x00.2285-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2285-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Nicht formalisierter Bericht, jede weiteren 35 Zeilen Text" contractCode="00.2295" contractName="Tarmed" minutes="9" cost="0" price="3197">
+        <xChange:xid id="x00.2295-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2295-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_telefon plus (KVG)">
+      <xChange:service name="Telefonische Konsultation durch den Facharzt, erste 5 Min." contractCode="00.0110" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0110-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0110-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Telefonische Konsultation durch den Facharzt, letzte 5 Min." contractCode="00.0130" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0130-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0130-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Telefonische Konsultation durch den Facharzt bei Personen über 6 Jahren und unter 75 Jahre mit einem erhöhten Behandlungsbedarf, jede weiteren 5 Min." contractCode="00.0126" contractName="Tarmed" />
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Besuch u6,ü75 (KVG)">
+      <xChange:service name="+ Besuch, letzte 5 Min. (Besuchszuschlag)" contractCode="00.0080" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0080-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0080-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Besuch, erste 5 Min. (Grundbesuch)" contractCode="00.0060" contractName="Tarmed" minutes="5" cost="0" price="3308">
+        <xChange:xid id="x00.0060-20120601">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0060-20120601" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Wegentschädigung, pro 5 Min." contractCode="00.0095" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0095-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0095-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Patiententransport durch den Facharzt, pro 5 Min." contractCode="00.0100" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0100-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0100-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Besuch bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min." contractCode="00.0075" contractName="Tarmed" />
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_in Abwesenheit plus (KVG)">
+      <xChange:service name="Aktenstudium in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 1 Min." contractCode="00.0161" contractName="Tarmed" />
+      <xChange:service name="Erkundigungen bei Dritten in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 1 Min." contractCode="00.0162" contractName="Tarmed" />
+      <xChange:service name="Auskünfte an Angehörige oder andere Bezugspersonen des Patienten in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 1 Min." contractCode="00.0163" contractName="Tarmed" />
+      <xChange:service name="Besprechungen mit Therapeuten und Betreuern des Patienten in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 1 Min." contractCode="00.0164" contractName="Tarmed" />
+      <xChange:service name="Überweisungen an Konsiliarärzte in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 1 Min." contractCode="00.0165" contractName="Tarmed" />
+      <xChange:service name="Ausstellen von Rezepten oder Verordnungen ausserhalb von Konsultation, Besuch und telefonischer Konsultation in Abwesenheit des Patienten bei Personen über 6 Jahren und unter 75 Jahren mit einem erhöhten Behandlungsbedarf, pro 1 Min." contractCode="00.0166" contractName="Tarmed" />
+      <xChange:service name="Dokumentationsbogen für Erstkonsultation nach kraniozervikalem Beschleunigungstrauma ({HWS}-Fragebogen)" contractCode="00.2215" contractName="Tarmed" minutes="40" cost="0" price="14208">
+        <xChange:xid id="x00.2215-20100401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.2215-20100401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="kons u6,ü75 (KVG)">
+      <xChange:service name="Konsultation, erste 5 Min. (Grundkonsultation)" contractCode="00.0010" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0010-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0010-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Zuschlag für hausärztliche Leistungen in der Arztpraxis" contractCode="00.0015" contractName="Tarmed" minutes="0" cost="0" price="1000">
+        <xChange:xid id="x00.0015-20141001">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0015-20141001" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Konsultation bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min." contractCode="00.0025" contractName="Tarmed" />
+      <xChange:service name="+ Konsultation, letzte 5 Min. (Konsultationszuschlag)" contractCode="00.0030" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0030-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0030-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_Besuch (KVG)">
+      <xChange:service name="Besuch, erste 5 Min. (Grundbesuch)" contractCode="00.0060" contractName="Tarmed" minutes="5" cost="0" price="3308">
+        <xChange:xid id="x00.0060-20120601">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0060-20120601" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Besuch, jede weiteren 5 Min. (Besuchszuschlag)" contractCode="00.0070" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0070-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0070-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Besuch, letzte 5 Min. (Besuchszuschlag)" contractCode="00.0080" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0080-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0080-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="Patiententransport durch den Facharzt, pro 5 Min." contractCode="00.0100" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0100-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0100-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Wegentschädigung, pro 5 Min." contractCode="00.0095" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0095-20060401">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0095-20060401" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+    </xChange:serviceblock>
+    <xChange:serviceblock name="arzt_telefon u6, ü75(KVG)">
+      <xChange:service name="Telefonische Konsultation durch den Facharzt, erste 5 Min." contractCode="00.0110" contractName="Tarmed" minutes="5" cost="0" price="1776">
+        <xChange:xid id="x00.0110-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0110-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Telefonische Konsultation durch den Facharzt, letzte 5 Min." contractCode="00.0130" contractName="Tarmed" minutes="5" cost="0" price="888">
+        <xChange:xid id="x00.0130-20010101">
+          <xChange:identity domain="www.xid.ch/id/tarmedsuisse" domainID="00.0130-20010101" quality="localAssignment" isGUID="false" />
+        </xChange:xid>
+      </xChange:service>
+      <xChange:service name="+ Telefonische Konsultation durch den Facharzt bei Kindern unter 6 Jahren und Personen über 75 Jahren, jede weiteren 5 Min." contractCode="00.0125" contractName="Tarmed" />
+    </xChange:serviceblock>
+    </xChange:serviceblocks>
+</xChange:xChange>
+
