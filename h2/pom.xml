@@ -32,7 +32,6 @@
             <id>Create ${project.basedir}/target/results</id>
             <phase>verify</phase>
             <configuration>
-               <verbose>true</verbose>
                <target>
                     <mkdir dir="${project.basedir}/target/results" />
                 </target>
@@ -45,7 +44,6 @@
               <id>dump-${user.home}/elexis/h2_elexis_rcptt_${language}/db</id>
               <phase>verify</phase>
               <configuration>
-                <verbose>true</verbose>
                 <target>
                   <!-- only under linux as it fails under Windows -->
                   <!-- fails sometimes with an error 
@@ -75,7 +73,6 @@
               <id>schema-${user.home}/elexis/h2_elexis_rcptt_${language}/db</id>
               <phase>verify</phase>
               <configuration>
-                <verbose>true</verbose>
                 <target>
                   <!-- only under linux as it fails under Windows -->
                   <exec executable="java" failonerror="true" os="Linux">
@@ -101,7 +98,6 @@
               <id>copy-${user.home}/elexis/h2_elexis_rcptt_${language}</id>
               <phase>verify</phase>
               <configuration>
-                <verbose>true</verbose>
                 <target>
                   <!-- only under linux as it fails under Windows -->
                   <exec executable="cp" failonerror="true" os="Linux">

@@ -63,9 +63,6 @@
               <id>drop-create-database ${dropCreateDbScript}</id>
               <phase>process-sources</phase>
               <configuration>
-                    <properties>
-                        <language>${language}</language>
-                    </properties>
                   <target> 
                   <exec executable="${dropCreateDbScript}" failonerror="true" >
                     <arg value="${language}"/>
@@ -133,7 +130,6 @@
 			  <vmArg>-Xmx1024m</vmArg>
 		  </vmArgs>
 		</runner>
-          <timeout>5412</timeout>
           <testOptions>
             <!-- the default value of 300 for testExecTimeout was not long enough for VisitAllViews -->
             <!-- full list given http://rcptt.xored.com/arguments, s.a. sets timeout options for the whole test suite and for a single test:-->

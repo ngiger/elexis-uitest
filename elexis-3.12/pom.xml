@@ -6,13 +6,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <artifactId>common</artifactId>
     <version>0.1</version>
   </parent>
-  <version>3.13</version>
-  <artifactId>elexis-master</artifactId>
+  <version>3.12</version>
+  <artifactId>elexis-3.12</artifactId>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <elexis.target>2025-03-java21</elexis.target>
-    <buildBranch>master</buildBranch>
+    <elexis.target>2023-09-java17</elexis.target>
     <!-- vvv required empty vvv-->
     <os-jvm-flags/>
   </properties>
@@ -26,9 +25,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       <id>elexis.3.core</id>
       <!--
       <url>file:///home/niklaus/elexis-ide/git/elexis-3-core/ch.elexis.core.p2site/target/repository</url>
-      <url>https://download.elexis.info/elexis/${buildBranch}/p2/elexis-3-core</url>
+      <url>https://download.elexis.info/elexis/3.12/p2/elexis-3-core</url>
 	  -->
-      <url>https://download.elexis.info/elexis/${buildBranch}/p2/elexis-3-core</url>
+      <url>https://download.elexis.info/elexis/3.12/p2/elexis-3-core</url>
       <layout>p2</layout>
     </repository>
     <repository>
@@ -36,7 +35,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       <!--
       <url>file:///opt/ide/2022.03/git/elexis-3-base/ch.elexis.base.p2site/target/repository</url>
 	  -->
-      <url>https://download.elexis.info/elexis/${buildBranch}/p2/elexis-3-base</url>
+      <url>https://download.elexis.info/elexis/3.12/p2/elexis-3-base</url>
       <layout>p2</layout>
     </repository>
   </repositories>
@@ -50,23 +49,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
           <configuration>
               <executionEnvironment>JavaSE-17</executionEnvironment>
               <pomDependencies>consider</pomDependencies>
-              <environments>
-                      <environment>
-                              <os>linux</os>
-                              <ws>gtk</ws>
-                              <arch>x86_64</arch>
-                      </environment>
-                      <environment>
-                        <os>win32</os>
-                        <ws>win32</ws>
-                        <arch>x86_64</arch>
-                      </environment>
-                      <environment>
-                        <os>macosx</os>
-                        <ws>cocoa</ws>
-                        <arch>x86_64</arch>
-                      </environment>
-                </environments>
             <dependency-resolution>
               <profileProperties>
                 <org.eclipse.justj.buildtime>true</org.eclipse.justj.buildtime>
@@ -97,7 +79,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
             <linux>zip</linux>
           </formats>
         </configuration>
-    </plugin>
+      </plugin>
     </plugins>
   </build>
 </project>

@@ -6,7 +6,7 @@
   <version>0.1</version>
   <packaging>pom</packaging>
   <properties>
-    <tycho.version>2.7.5</tycho.version>
+    <tycho.version>4.0.12</tycho.version>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <!-- we need a version > 2.3.0 because we need the proc find-all to extract the language from the nl parameter
     commit 265067eb1ce14428ea4d33e97606934a6238d9e8
@@ -17,7 +17,7 @@
     <!--rcptt-maven-version>2.4.0-20181219.003252-175</rcptt-maven-version-->
     <!-- we do not need a snapshot version as they change too often rcptt-maven-version>2.4.0-SNAPSHOT</rcptt-maven-version !-->
     <!--rcptt-maven-version>2.5.2-SNAPSHOT</rcptt-maven-version-->
-    <rcptt-maven-version>2.5.4</rcptt-maven-version>
+    <rcptt-maven-version>2.5.5</rcptt-maven-version>
     <rcptt-resources>${user.home}/elexis/rcptt</rcptt-resources>
     <suite2run>SmokeTestSuite</suite2run>
     <language>de</language>
@@ -63,24 +63,6 @@
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-packaging-plugin</artifactId>
           <version>${tycho.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.eclipse.tycho.extras</groupId>
-              <artifactId>tycho-buildtimestamp-jgit</artifactId>
-              <version>${tycho.version}</version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <strictBinIncludes>false</strictBinIncludes>
-            <format>yyyyMMdd-HHmm</format>
-            <timestampProvider>jgit</timestampProvider>
-            <timestampProvider>jgit</timestampProvider>
-            <jgit.ignore>
-              pom.xml
-              .polyglot.build.properties
-            </jgit.ignore>
-            <jgit.dirtyWorkingTree>warning</jgit.dirtyWorkingTree>
-          </configuration>
         </plugin>
     </plugins>
   </build>
