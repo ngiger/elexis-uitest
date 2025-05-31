@@ -2,7 +2,7 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 # Test it using https://rhysd.github.io/actionlint/
 
-name: Build ElexisAllOpensource 3.12 with Maven
+name: Build ElexisAllOpensource master with Maven
 
 on:
   push:
@@ -39,14 +39,27 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - name: Build with elexis-3.12 with Maven
-      run:  mvn -V clean verify -Dtycho.localArtifacts=ignore -f elexis-3.12/pom.xml
-    - name: Upload ElexisAllOpenSourceApp (product)
+    - name: Build with elexis-master with Maven
+      run:  mvn -V clean verify -Dtycho.localArtifacts=ignore -f elexis-master/pom.xml
+    - name: Upload ElexisAllOpenSourceApp (product) for linux
       uses: actions/upload-artifact@v4
       with:
         retention-days: 90
-        name: Elexis-3.12-linux.zip
+        name: Elexis-Master-linux.zip
         path: |
-          elexis-3.12/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip
-#          elexis-3.12/target/products/ElexisAllOpenSourceApp-win32.win32.x86_64.zip
-#          elexis-3.12/target/products/ElexisAllOpenSourceApp-macosx.cocoa.x86_64.tar.gz
+          elexis-master/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip
+    - name: Upload ElexisAllOpenSourceApp (product) for Windows
+      uses: actions/upload-artifact@v4
+      with:
+        retention-days: 90
+        name: Elexis-Master-Windows.zip
+        path: |
+          elexis-master/target/products/ElexisAllOpenSourceApp-win32.win32.x86_64.zip
+    - name: Upload ElexisAllOpenSourceApp (product) for macosx
+      uses: actions/upload-artifact@v4
+      with:
+        retention-days: 90
+        name: Elexis-Master-macosx.zip
+        path: |
+          elexis-master/target/products/ElexisAllOpenSourceApp-macosx.cocoa.x86_64.tar.gz
+
