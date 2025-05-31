@@ -6,24 +6,25 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _aR2ZoC1yEemYspbA8Fsyow
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/2/22, 4:59 PM
+Runtime-Version: 2.6.0.202505301009
+Save-Time: 5/31/25, 2:35 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
+log "BasicMandanten Started " 
 SetStandard4Cases
 
 emit 1 2 3 | foreach [val idx]{
 	OrganisationErfassen $idx
 	SetMandantKontaktInfo $idx
-	SetMandantenDetails $idx
+// TODO: Can we skip this	SetMandantenDetails $idx
 }
 ChangeMandant [ GetPraxisProperty praxis.mandant.2.Name ]
 preferences-use-macros-with-TI-and-Favoriten
-
+log "BasicMandanten finished" 
 // Ende
 //
 

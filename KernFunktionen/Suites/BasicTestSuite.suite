@@ -5,7 +5,8 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _iBWHgAVHEemrdfrfk5Gp9Q
 Manually-Ordered: true
-Save-Time: 11/23/20 8:16 PM
+Runtime-Version: 2.6.0.202505301009
+Save-Time: 5/31/25, 4:45 PM
 
 ------=_testcase-items-62c497da-4241-31f4-811a-6b453a3ecff8
 Content-Type: text/testcase
@@ -14,10 +15,9 @@ Entry-Name: testcase-items
 __ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '../Tests/Infrastruktur/NoPreferenceWithPercent.test'
 _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../Tests/Infrastruktur/NoViewWithPercent.test'
 _gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
-_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/BasicAbrechnungssytems.test'
+_ynjc0GeUEemC85j2jjHDAQ	// kind: 'test' name: 'BasicAbrechnungssytems' path: '../Tests/Infrastruktur/BasicAbrechnungssytems.test'
 _aR2ZoC1yEemYspbA8Fsyow	// kind: 'test' name: 'BasicMandanten' path: '../Tests/BasicMandanten.test'
 _c13msBQlEemEb8FG0wciYA	// kind: 'test' name: 'ImportSwissBaseAll' path: '../Tests/Infrastruktur/SingleImportTests/ImportSwissBaseAll.test'
-_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Hilfen/RestartElexis.test'
 _GbaREP_HEeiXxf0UDvXYOw	// kind: 'test' name: 'BasicKonsTests' path: '../Tests/Infrastruktur/BasicKonsTests.test'
 _gN-zEBNWEemmeedSb1JQew	// kind: 'test' name: 'TarmedFallVerrechnen' path: '../Tests/Rechnungen/TarmedFallVerrechnen.test'
 _tFxLkBNbEemKBfY3bI9wrQ	// kind: 'test' name: 'EphaInteraktionen' path: '../Tests/EphaInteraktionen.test'

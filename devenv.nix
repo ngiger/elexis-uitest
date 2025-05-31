@@ -8,23 +8,28 @@
 
   # https://devenv.sh/packages/
   packages = [
-    pkgs.git
     pkgs.curl
-    pkgs.killall
-    pkgs.rsync
-    pkgs.steam-run-free
-    pkgs.swt
-    pkgs.gtk3
+    pkgs.git
     pkgs.glib
+    pkgs.gtk3
+    pkgs.killall
+    pkgs.libsecret
+    pkgs.openbox
     pkgs.openjdk21
+    pkgs.ruby
+    pkgs.temurin-jre-bin # see https://github.com/NixOS/nixpkgs/issues/376697
+    pkgs.rsync
+    pkgs.steam-run
+    pkgs.swt
+    pkgs.webkitgtk_4_1
     pkgs.xorg.libX11
     pkgs.xorg.libXext
     pkgs.xorg.libXi
     pkgs.xorg.libXrender
     pkgs.xorg.libXtst
-    pkgs.libsecret
-    pkgs.webkitgtk_4_0
+    pkgs.xvfb-run
     pkgs.zlib
+    pkgs.nss # Needed for chromium plugin
   ];
 
   env.RCPTT_URL = "https://download.eclipse.org/rcptt/nightly/2.6.0/latest/ide/rcptt.ide-2.6.0-nightly-linux.gtk.x86_64.zip";
@@ -47,11 +52,12 @@
   '';
 
   services.postgres.enable = true;
+  services.postgres.listen_addresses = "127.0.0.1"; # "0.0.0.0"; # on all available IPv4 network interfaces
   services.postgres.initialDatabases = [
-    {name = "elexis_rcptt_de";}
-    {name = "elexis_rcptt_fr";}
-    {name = "elexis_rcptt_it";}
-    {name = "elexis";}
+    {name = "elexis_rcptt_de"; pass="elexisTest";}
+    {name = "elexis_rcptt_fr"; pass="elexisTest";}
+    {name = "elexis_rcptt_it"; pass="elexisTest";}
+    {name = "elexis"; pass="elexisTest";}
   ];
   services.postgres.initialScript = ''
     drop USER if exists elexis;
@@ -59,7 +65,6 @@
     ALTER USER elexis WITH SUPERUSER;
     CREATE ROLE niklaus SUPERUSER;
   '';
-
   services.mysql.initialDatabases = [
     {name = "elexis_rcptt_de";}
     {name = "elexis_rcptt_fr";}
@@ -80,4 +85,5 @@
       };
     }
   ];
+
 }

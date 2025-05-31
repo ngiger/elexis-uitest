@@ -5,8 +5,8 @@ Element-Name: ecl_helpers
 Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 12/22/22, 3:40 PM
+Runtime-Version: 2.6.0.202505301009
+Save-Time: 5/31/25, 4:43 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -164,8 +164,6 @@ proc RestartElexis {
 			str $milliSecsBeforeRestart  | write-lines $restart_msFile
 			log "RestartElexis: Calling log restart-aut"
 			restart-aut
-			// cannot insert wait or log here
-			wait-until-eclipse-is-ready
 			// cannot insert wait nor log here
 		}
 	}
@@ -175,14 +173,18 @@ proc RestartElexis {
  * Check whether the restart took between 5 and 120 seconds for Elexis
  */
 proc CheckRestartElexis {
+			log "CheckRestartElexis 1" 
 	wait-until-eclipse-is-ready
+			log "CheckRestartElexis 2"
 	wait 5000
 	wait-until-eclipse-is-ready
+			log "CheckRestartElexis 3"
 	global [val minWaitInSeconds 20 ] -override
 	global [val maxWaitInSeconds [mult 10 60 ] ] -override // 10 minutes
 	concat "CheckRestartElexis: minWait " $minWaitInSeconds " maxWait " $maxWaitInSeconds " seconds " | log
 	wait [ mult 1 1000] // Wait 10 seconds
 	wait-until-eclipse-is-ready
+			log "CheckRestartElexis 4"
 	log "RestartElexis: After wait-until-eclipse-is-ready"
 	log "CheckRestartElexis: After waiting 10 seconds"
 	// read-file does not work, read-lines neither at they return	 the first line + EOL/EOF

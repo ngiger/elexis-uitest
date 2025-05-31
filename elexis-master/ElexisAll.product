@@ -106,6 +106,10 @@
       <feature id="ch.elexis.privatrechnung.feature" installMode="root"/>
       <feature id="ch.elexis.stickynotes.feature" installMode="root"/>
       <feature id="ch.elexis.support.dbshaker.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.administration.covercard.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.finance.analytics.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.hin.auth.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.labor.teamw.feature" installMode="root"/>
       <feature id="ch.gpb.elexis.cst.feature" installMode="root"/>
       <feature id="ch.itmed.fop.printing.feature" installMode="root"/>
       <feature id="ch.itmed.lmz.risch.laborder.feature" installMode="root"/>

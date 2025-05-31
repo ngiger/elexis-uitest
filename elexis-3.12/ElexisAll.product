@@ -50,7 +50,6 @@
       <feature id="at.gruber.elexis.mythic22.feature" installMode="root"/>
       <feature id="at.medevit.elexis.agenda.feature" installMode="root"/>
       <feature id="at.medevit.elexis.bluemedication.feature" installMode="root"/>
-      <!-- No longer present?? feature id="at.medevit.elexis.cobasmira.feature" installMode="root"/-->
       <feature id="at.medevit.elexis.decision.feature" installMode="root"/>
       <feature id="at.medevit.elexis.ehc.feature" installMode="root"/>
       <feature id="at.medevit.elexis.emediplan.feature" installMode="root"/>
@@ -65,6 +64,10 @@
       <feature id="ch.elexis.agenda.feature" installMode="root"/>
       <feature id="ch.elexis.archie.patientstatistik.feature" installMode="root"/>
       <feature id="ch.elexis.archie.wzw.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.administration.covercard.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.finance.analytics.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.hin.auth.feature" installMode="root"/>
+      <feature id="ch.framsteg.elexis.labor.teamw.feature" installMode="root"/>
       <feature id="ch.elexis.barcode.scanner.feature" installMode="root"/>
       <feature id="ch.elexis.base.befunde.feature" installMode="root"/>
       <feature id="ch.elexis.base.ch.feature" installMode="root"/>
@@ -111,7 +114,6 @@
       <feature id="ch.itmed.lmz.risch.laborder.feature" installMode="root"/>
       <feature id="ch.medshare.connect.abacusjunior.feature" installMode="root"/>
       <feature id="ch.medshare.elexis_directories.feature" installMode="root"/>
-       <!-- No longer present?? feature id="ch.medshare.mediport.feature" installMode="root"/-->
       <feature id="ch.novcom.elexis.mednet.plugin.feature" installMode="root"/>
       <feature id="ch.pharmed.phmprescriber.feature" installMode="root"/>
       <feature id="ch.unibe.iam.scg.archie.feature" installMode="root"/>

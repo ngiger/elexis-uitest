@@ -5,8 +5,8 @@ Element-Name: Kontakte
 Element-Type: context
 Element-Version: 2.0
 Id: _jOjx0CCAEem06Mv2pVmYtA
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 8/5/23, 6:33 PM
+Runtime-Version: 2.6.0.202505301009
+Save-Time: 5/31/25, 2:06 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -199,7 +199,7 @@ proc "OrganisationErfassen"  [ val idOrganisation 1 ] {
 	with [get-window [ t Kontakt_erfassen ]] {
 		get-button [ t Organisation ] | check
 		str [ t fields_OrganisationErfassen de ] |
-		// "Bezeichnung Zusatz Ansprechperson Geburtsdatum Strasse Plz Ort Telefon EMail"  |
+		// "Bezeichnung Zusatz Ansprechperson Geburtsdatum Strasse Plz Ort Mobil EMail"  |
 			split -sep ";" | foreach [val item]  {
 				EnterOneOrganisationDetail -key $item -idOrganisation $idOrganisation
 		}

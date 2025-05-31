@@ -1,5 +1,22 @@
 # elexis-uitest
 
+## Probleme mit 3.12
+
+Neuerungen sind beschrieben unter https://support.medelexis.ch/docs/version-3-12/
+
+    Rollen und Rechte: Überarbeitung
+    Die Rollen und Rechte wurden laut den Vorgaben des BAG überarbeitet. 
+
+Aber das Format der zu importierenden Datei ist nirgends dokumentiert, noch ein Beispiel vorhanden
+
+SetzeSpracheBeiImportern ist nicht mehr möglich
+Importer Import von externen Daten läuft nicht mehr Universal_patienten.xls und Universal_krankenkasse.xls nicht mehr möglich
+
+Wegen problemen von NixOS mit justj
+    * If elexis-3.12/ElexisAll.product entfernen von `<feature id="org.eclipse.justj.openjdk.hotspot.jre.full" installMode="root"/>`?
+    * In elexis-3.12/pom.xml `<executionEnvironment>JavaSE-17</executionEnvironment>` nach none?
+    * Oder elexis-3.12/patch_elexis3.rb als step einbauen?
+
 GUI-Tests für Elexis
 
 ## Ziele

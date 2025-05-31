@@ -4,7 +4,7 @@
     <stringAttribute key="application" value="ch.elexis.core.application.ElexisApp"/>
     <booleanAttribute key="askclear" value="true"/>
     <stringAttribute key="aut-location" value="/opt/src/elexis-uitest/os"/>
-    <stringAttribute key="aut-target-platform" value="AUT Elexis3MasterLinuxPostgresql (Target Platform)"/>
+    <stringAttribute key="aut-target-platform" value="AUT _opt_src_elexis-uitest_os 5"/>
     <booleanAttribute key="aut-target-updatable" value="true"/>
     <stringAttribute key="bootstrap" value=""/>
     <stringAttribute key="checked" value="[NONE]"/>
@@ -14,6 +14,7 @@
     <stringAttribute key="com.xored.launching.common.attrArch" value="x86_64"/>
     <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterLinuxPostgresql"/>
     <stringAttribute key="location" value="${workspace_loc}/../aut-Elexis3MasterLinuxPostgresql"/>
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <mapAttribute key="org.eclipse.debug.core.environmentVariables">
         <mapEntry key="SWT_GTK3" value="0"/>
     </mapAttribute>
@@ -22,15 +23,17 @@
     <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
     <booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/lgp1lif5561bxpdp25rw38gsdqixirvz-adoptopenjdk-openj9-bin-11.0.11"/>
+    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/m17b6l1x7zq841ibqgrdn12f0q00w4vn-zulu-ca-jdk-21.0.4"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os linux -ws gtk -arch x86_64 -consoleLog -nl de_CH"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 -Dorg.eclipse.gemini.refreshBundles=false -Xmx1024m&#10;-Dch.elexis.dbFlavor=postgresql  -Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt_de&#10;-Dch.elexis.dbUser=elexis  -Dch.elexis.dbPw=elexisTest  -Dch.elexis.firstMandantName=Mustermann&#10;-Dch.elexis.firstMandantPassword=elexisTest  -Dch.elexis.firstMandantEmail=mmustermann@elexis.info&#10;-Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest&#10;-Dch.elexis.test.convertDocx2PDF=true"/>
-    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/home/niklaus/elexis-uitest/ws"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="&quot;-Duser.language=de&quot; &quot;-Duser.region=CH&quot; &quot;-Dfile.encoding=utf-8&quot; &quot;-Dorg.eclipse.gemini.refreshBundles=false&quot; &quot;-Xmx1024m&quot; &quot;-Dch.elexis.dbFlavor=postgresql&quot; &quot;-Dch.elexis.dbSpec=jdbc:postgresql://localhost/elexis_rcptt_de&quot; &quot;-Dch.elexis.dbUser=elexis&quot; &quot;-Dch.elexis.dbPw=elexisTest&quot; &quot;-Dch.elexis.firstMandantName=Mustermann&quot; &quot;-Dch.elexis.firstMandantPassword=elexisTest&quot; &quot;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info&quot; &quot;-Dch.elexis.username=Mustermann&quot; &quot;-Dch.elexis.password=elexisTest&quot; &quot;-Dch.elexis.test.convertDocx2PDF=true&quot;"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/src/elexis-uitest/os"/>
+    <stringAttribute key="org.eclipse.rcptt.launching.ATTR_AUT_LAUNCH_ID" value=""/>
     <stringAttribute key="pde.version" value="3.3"/>
     <stringAttribute key="product" value="ch.elexis.core.application.product"/>
-    <booleanAttribute key="restart" value="true"/>
+    <booleanAttribute key="restart" value="false"/>
     <booleanAttribute key="tracing" value="true"/>
     <booleanAttribute key="useDefaultConfig" value="true"/>
     <booleanAttribute key="useDefaultConfigArea" value="true"/>

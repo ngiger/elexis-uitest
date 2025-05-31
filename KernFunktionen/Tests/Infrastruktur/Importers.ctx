@@ -5,8 +5,8 @@ Element-Name: Importers
 Element-Type: context
 Element-Version: 2.0
 Id: _7pLWIBQVEemEb8FG0wciYA
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 10/19/22, 7:49 PM
+Runtime-Version: 2.6.0.202505301009
+Save-Time: 5/31/25, 2:48 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -78,24 +78,6 @@ proc "VerifyEigendiagnose" [ val name  "Tauglichkeitsuntersuchung Führerschein"
 		get-eclipse-window | gen-screenshot [concat $imagesDir "Eigendiagnose_" $name ".png"]
 		concat "VerifyEigendiagnose: " $name " was successful" | log
 		restore
-	}
-}
-proc "SetzeSpracheBeiImportern" [ val language "deutsch" ] {
-	get-preferences-menu | click
-	with [get-window [t preferences ] ] {
-		get-tree | select [ t System_Allgemein ]
-		get-button $language | click
-		get-button [ t apply_and_close] | click
-	}
-}
-
-if [ safe-get-java-property "user.language" |  eq "de" ] {
-	SetzeSpracheBeiImportern deutsch
-} -else {
-	if [ safe-get-java-property "user.language" |  eq "it" ] {
-		SetzeSpracheBeiImportern Italiano
-	} -else {
-		SetzeSpracheBeiImportern "fran.*ais"
 	}
 }
 

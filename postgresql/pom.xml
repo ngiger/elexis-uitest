@@ -110,7 +110,6 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <verbose>true</verbose>
               <executable>pg_dump</executable>
               <environmentVariables>
                 <PGPASSWORD>elexisTest</PGPASSWORD>
@@ -136,7 +135,6 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <verbose>true</verbose>
               <executable>pg_dump</executable>
               <environmentVariables>
                 <PGPASSWORD>elexisTest</PGPASSWORD>
