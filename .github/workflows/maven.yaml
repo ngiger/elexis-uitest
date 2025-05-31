@@ -1,22 +1,24 @@
 # This workflow will build the Eclipse RCP application with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+# Test it using https://rhysd.github.io/actionlint/
 
 name: Build ElexisAllOpensource with Maven
 
 on:
   push:
-    branches: 
+    branches:
       - master
   pull_request:
   workflow_dispatch:
-
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: "15 4 * * *"
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set locale de_CH.UTF-8
       run: |
           sudo locale-gen de_CH.UTF-8
@@ -24,22 +26,28 @@ jobs:
     - name: Setup timezone
       uses: szenius/set-timezone@v1.0
       with:
-        timezoneLinux: "Europe/Zurich"             
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
+        timezoneLinux: "Europe/Zurich"
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
       with:
-        java-version: 17
+        java-version: 21
         distribution: 'adopt'
     - name: Cache local Maven repository
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ runner.os }}-maven-   
+          ${{ runner.os }}-maven-
     - name: Build with Maven
-      run: mvn -V clean verify -Dtycho.localArtifacts=ignore -f elexis-master/pom.xml
-    - name: Upload ElexisAllOpenSourceApp
-      uses: actions/upload-artifact@v3
+      run: mvn -V --batch-mode clean verify -Dtycho.localArtifacts=ignore -f h2/pom.xml --settings=h2/settings.xml -Dlanguage=de
+    - name: Upload ElexisAllOpenSourceApp (product)
+      uses: actions/upload-artifact@v4
       with:
-        path: elexis-master/target/products/*.zip
+        path: |
+          elexis-master/target/products/ElexisAllOpenSourceApp-linux.gtk.x86_64.zip
+          elexis-master/target/products/ElexisAllOpenSourceApp-win32.win32.x86_64.zip
+          elexis-master/target/products/ElexisAllOpenSourceApp-macosx.cocoa.x86_64.tar.gz
+          results/**
+          **/KernFunktionen.html
+
