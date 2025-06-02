@@ -6,7 +6,7 @@
   <version>0.1</version>
   <packaging>pom</packaging>
   <properties>
-    <tycho.version>4.0.12</tycho.version>
+    <tycho.version>4.0.13</tycho.version>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <!-- we need a version > 2.3.0 because we need the proc find-all to extract the language from the nl parameter
     commit 265067eb1ce14428ea4d33e97606934a6238d9e8

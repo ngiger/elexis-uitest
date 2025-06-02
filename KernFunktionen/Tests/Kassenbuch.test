@@ -6,8 +6,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _mc14UFVdEemNNe-dXP1Xqg
-Runtime-Version: 2.5.4.202207162355
-Save-Time: 7/31/22, 9:21 AM
+Runtime-Version: 2.6.0.202505301009
+Save-Time: 6/2/25, 11:53 AM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -22,7 +22,7 @@ Entry-Name: .content
 
 global [ val firstReceipt 300 ]
 
-SetzeBenutzerRecht -recht "Kassenbuch" -role "user" -wert "A"
+// SetzeBenutzerRecht -recht "Kassenbuch" -role "user" -wert "A"
 close-window-if-open [ t kassenbuch_name ] // We must close it, or the ACE change does not apply
 /*
 ConfigureHilotecODF_TextVerarbeitung

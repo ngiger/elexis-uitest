@@ -143,7 +143,7 @@
           </testOptions>
           <aut>
             <!-- use the product build in elexis-${useBranch} -->
-            <explicit>${autExplicit}</explicit>
+            <explicit>${aut}</explicit>
             <args>
               <arg>-nl</arg>
               <arg>${language}_CH</arg>

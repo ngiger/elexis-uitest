@@ -2,9 +2,9 @@
 logger "cron: $0 started"
 cd `dirname $0`
 # other useful definitions are:
-# -DautExplicit=/opt/rm/elexis-master/elexis-3-core/ch.elexis.core.p2site/target/products/ch.elexis.core.application.ElexisApp-[classifier].zip
+# -Daut=elexis-master/target/products/Elexis-[classifier].zip
 # -Dsuite2run=QuickTestSuite
-# -DuseBranch=f11106
+# -DuseBranch=3.12
 export XX=`pwd`
 echo bin in $XX
 set -v

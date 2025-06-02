@@ -6,7 +6,7 @@ Element-Type: context
 Element-Version: 2.0
 Id: _Cr4zgP0jEeiNqfuAT0PA2A
 Runtime-Version: 2.6.0.202505301009
-Save-Time: 5/31/25, 4:43 PM
+Save-Time: 6/2/25, 11:35 AM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -243,6 +243,9 @@ global [ val defaultLanguage [ get-java-property "user.language" "de" ] ]
 str "Created eHC/input by RCPTT" | write-lines [ concat [get-user-dir] "/elexis/eHC/input/dummy_input.txt" ]
 str "Created eHC/output by RCPTT" | write-lines [ concat [get-user-dir] "/elexis/eHC/output/dummy_output.txt" ]
 
+global [val osgi_uri [invoke-static -pluginId "org.eclipse.core.runtime" -className "java.lang.System" -methodName "getProperty" -args "osgi.instance.area"]]
+global [val osgi_file [ split -str $osgi_uri -sep ":"  | to-list | get 1]]
+concat "Global osgi area is at " $osgi_uri " as file " $osgi_file | log
 proc "t" [val key] [val language $defaultLanguage] {
 	try {
 		// concat "Searching: " $language "." $key | log
@@ -418,16 +421,17 @@ proc "open-window-by-name" [ val windowName ] {
 		set-dialog-result File [ concat "/dummy_" $windowName ]
 		get-menu -path [ t menu_select_view ]| click
 		with [get-window [ t show_view ]] {
-		    get-editbox | set-text ""
-			if [ matches $windowName ".*/.*" ] {
-				get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima
-			} -else {
-				get-tree | expand-all | select [ concat ".*/" $windowName ]
-			}
-		    get-editbox | set-text ""
-			// concat "open-window-by-name: " [ t menu_select_view ]" for " [ t windowName ]| log
-			get-button [t open ] | get-property enablement -raw | log
-			get-button [t open ] | click
+                   get-editbox | set-text ""
+                       if [ matches $windowName ".*/.*" ] {
+                               get-tree | expand-all | select [ replaceAll $windowName  " / " ".*" ] // needed for CST Minima / Maxima
+                       } -else {
+                               get-tree | expand-all | select [ concat ".*/" $windowName ]
+                       }
+                   get-editbox | set-text ""
+                       // concat "open-window-by-name: " [ t menu_select_view ]" for " [ t windowName ]| log
+                       get-button [t open ] | get-property enablement -raw | log
+//			 get-editbox | set-text  [ replaceAll $windowName  "/" "" ]
+			 get-button [t open ] | click
 			// concat "open-window-by-name: lang " $defaultLanguage  ": "[ t menu_select_view ] " for " [ t windowName ]| log
 		}
 		// Seen when running ImportSwissbase with french Elexis

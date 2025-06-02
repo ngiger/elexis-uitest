@@ -5,8 +5,8 @@ Element-Name: Views
 Element-Type: context
 Element-Version: 2.0
 Id: _P7r6AP-yEeiDKs20GBwclA
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/19/22, 7:28 PM
+Runtime-Version: 2.6.0.202505301009
+Save-Time: 6/1/25, 5:39 PM
 
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
@@ -42,15 +42,17 @@ proc "check-one-view-item" [val viewName] {
 		global [val realViewName [replaceFirst $viewName "1," ""]] -override
 		global [val viewPathName2 [concat [$curViewSection] "/" $viewPathName]] -override
 		global [val viewPathName [concat [$curViewSection] "/" $viewPathName]] -override
+		global [val shortViewName [replaceAll $viewPathName "/" ""]] -override
 		global [val curViewImage [ concat $imagesDir
 			"views/"
 			[ replaceAll $viewPathName "\W" "_" ]
 			".png"
 			] ] -override
-		concat "check-one-view-item "  $viewPathName | log
+		concat "check-one-view-item '" $viewPathName "' short'" $shortViewName "'" | log
 		try {
 			open-window-by-name $viewPathName
 			close-window-if-open "Ansicht veraltet"
+			// TODO: Fail if Kompendium online cannot be opened because of missing libdnss
 			get-view $realViewName | maximize
 			wait 100 // Give it some time to populate it
 			get-eclipse-window | gen-screenshot -out [ $curViewImage ]
