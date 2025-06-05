@@ -5,8 +5,8 @@ Element-Type: testsuite
 Element-Version: 2.0
 Id: _Arq5MAO7EemXxf0UDvXYOw
 Manually-Ordered: true
-Runtime-Version: 2.6.0.202505301009
-Save-Time: 6/1/25, 4:03 PM
+Runtime-Version: 2.6.0.202506031405
+Save-Time: 6/5/25, 2:35 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -19,9 +19,11 @@ Sollte nicht mehr als 10 Minuten dauren.
 Content-Type: text/testcase
 Entry-Name: testcase-items
 
+_Ba8WUEH8EfCj-8xF0mpmjQ	// kind: 'test' name: 'MusterMustHaveCRUDIrights' path: '../Tests/MusterMustHaveCRUDIrights.test'
 _gg2CoCopEem_RqgHWcTlRA	// kind: 'test' name: 'LOwriterMustBeInstalled' path: '../Tests/Textverarbeitung/LOwriterMustBeInstalled.test'
 _naPjYLBwEemub6f3erWwag	// kind: 'test' name: 'AboutElexis' path: '../Tests/Infrastruktur/AboutElexis.test'
 __ZaOMBA-Eem9AMAqvR_wLg	// kind: 'test' name: 'NoPreferenceWithPercent' path: '../Tests/Infrastruktur/NoPreferenceWithPercent.test'
+_3oYfkBQoEemEb8FG0wciYA	// kind: 'test' name: 'RestartElexis' path: '../Tests/RestartElexis.test'
 _yxaoYBA9Eem9AMAqvR_wLg	// kind: 'test' name: 'NoViewWithPercent' path: '../Tests/Infrastruktur/NoViewWithPercent.test'
 _rAxhUGlSEeySBq0xgLXOFw	// kind: 'test' name: 'EnsureLoincCodes' path: '../Tests/Infrastruktur/EnsureLoincCodes.test'
 _tm5joLBUEemub6f3erWwag	// kind: 'test' name: 'ImportKK_Patients' path: '../Tests/Infrastruktur/SingleImportTests/ImportKK_Patients.test'
@@ -47,7 +49,7 @@ _1gcfIMceEeyvX6ZcbpmWFg	// kind: 'test' name: 'Docx_create_AUF' path: '../Tests/
 _PKoyQAO9EemQJcOrOzv6KA	// kind: 'test' name: 'CreateSQLdump' path: '../Tests/Infrastruktur/CreateSQLdump.test'
 _C9LzwI1wEeup49yUtwR__A	// kind: 'test' name: 'CheckArtikelstammSuche' path: '../Tests/Behandlung/CheckArtikelstammSuche.test'
 _7yX5kGHhEem4h8rctksNbQ	// kind: 'test' name: 'TimeTool' path: '../Tests/Infrastruktur/TimeTool.test'
-_D7-c0A9mEe28EodTjFsVbw	// kind: 'test' name: 'Create_and_print_prescription' path: '../Tests/Behandlung/Konsultation/Create_and_print_prescription.test'
+_D7-c0A9mEe28EodTjFsVbw	// kind: 'test' name: 'CreateAndPrintPrescription' path: '../Tests/Behandlung/Konsultation/CreateAndPrintPrescription.test'
 _mc14UFVdEemNNe-dXP1Xqg	// kind: 'test' name: 'Kassenbuch' path: '../Tests/Kassenbuch.test'
 _U42uwAO8EemXxf0UDvXYOw	// kind: 'test' name: 'VisitAllViews' path: '../Tests/Infrastruktur/VisitAllViews.test'
 

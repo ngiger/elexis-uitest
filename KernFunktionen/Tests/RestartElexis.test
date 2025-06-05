@@ -5,8 +5,8 @@ Element-Type: testcase
 Element-Version: 3.0
 External-Reference: 
 Id: _3oYfkBQoEemEb8FG0wciYA
-Runtime-Version: 2.6.0.202505301009
-Save-Time: 5/31/25, 4:54 PM
+Runtime-Version: 2.6.0.202506031405
+Save-Time: 6/5/25, 2:43 PM
 Testcase-Type: ecl
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
@@ -20,8 +20,10 @@ Call CheckRestart afterwards!
 Content-Type: text/ecl
 Entry-Name: .content
 
-log "Skipping RestartElexis as it does not work with RCPTT 2.6.0"
-// RestartElexis
+log "TestCase RestartElexis: Restarting Elexis"
+restart-aut
+wait-until-eclipse-is-ready
+log "TestCase RestartElexis: After wait-until-eclipse-is-ready. Restarting Elexis done"
 // Ende
 //
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

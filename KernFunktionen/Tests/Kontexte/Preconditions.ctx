@@ -5,8 +5,8 @@ Element-Name: Preconditions
 Element-Type: context
 Element-Version: 2.0
 Id: __8MAcP49EeiuqdAcgkHVvQ
-Runtime-Version: 2.5.4.202210020716
-Save-Time: 11/2/22, 9:34 PM
+Runtime-Version: 2.6.0.202506031405
+Save-Time: 6/5/25, 2:53 PM
 
 ------=_.description-216f885c-d591-38ce-8ea2-e4f8cb4d6ffa
 Content-Type: text/plain
@@ -23,6 +23,58 @@ Defines the following global variables:
 ------=_.ecl.context-718f04b4-ed39-33e3-af62-0995e4561998
 Content-Type: text/ecl
 Entry-Name: .ecl.context
+
+global [val sqlCmdFile	  [ concat $rcpttDir "commands.sql"] ]
+
+proc "run1SqlCommand" {
+	try {
+		invoke-static "ch.elexis.core.data" "ch.elexis.data.PersistentObject" executeSQLScript $sqlCmdFile "ch.elexis.core.data"
+	} -error [val errorObj] -catch {
+		// Verify that the window was missing (and not some other problem)
+		concat "errorObj " $errorObj " msg: >"  [$errorObj | get message ] "<"| log
+		concat $errorObj ": SQL already executed from ?  " $sqlCmdFile | log
+	}
+	// Achtung! Diese Änderungen werden erst nach einem Neustart wirksam
+}
+
+
+run1SqlCommand
+
+proc "giveMustermannAllRights" {
+	try {
+		delete-file  [uri-from-path $sqlCmdFile ]
+		concat "Deleted File: " $sqlCmdFile | log
+	} -catch {
+		concat "File: " $sqlCmdFile " not found" | log
+	}
+	// Needed for ImportComplementary etc
+	str "insert into user_role_joint (id, deleted, user_id)  values ('mandator', 0, 'Mustermann');" | write-lines -uri $sqlCmdFile -append true
+	str "insert into user_role_joint (id, deleted, user_id)  values ('poweruser', 0, 'Mustermann');"  | write-lines -uri $sqlCmdFile -append true
+	str "insert into user_role_joint (id, deleted, user_id)  values ('ict-administrator', 0, 'Mustermann');"  | write-lines -uri $sqlCmdFile -append true
+	str "insert into user_role_joint (id, deleted, user_id)  values ('medical-assistant', 0, 'Mustermann');"  | write-lines -uri $sqlCmdFile -append true
+	str "insert into user_role_joint (id, deleted, user_id)  values ('medical-user', 0, 'Mustermann');"  | write-lines -uri $sqlCmdFile -append true
+	str "insert into user_role_joint (id, deleted, user_id)  values ('bot', 0, 'Mustermann');"  | write-lines -uri $sqlCmdFile -append true
+	str "insert into user_role_joint (id, deleted, user_id)  values ('mpk', 0, 'Mustermann');"  | write-lines -uri $sqlCmdFile -append true
+	str "insert into user_role_joint (id, deleted, user_id)  values ('mpa', 0, 'Mustermann');"  | write-lines -uri $sqlCmdFile -append true
+	run1SqlCommand
+	concat "Done giveMustermannAllRights used " $sqlCmdFile | log
+
+}
+global [val MusterMannHasCRUDI false ] -override
+proc "CheckWhetherMustermannHasCRUDI" {
+	get-preferences-menu | click
+	with [get-window [t preferences]] {
+		try {
+			get-tree | select [t Textverarbeitung] | verify-true
+			global [val MusterMannHasCRUDI true ] -override
+			log "Found Textverarbeitung"
+		} -catch {
+			log "Missing Textverarbeitung"
+			giveMustermannAllRights
+		}
+	}
+	close-window-if-open  [t preferences]
+}
 
 // Fail early when User.home with space in it. Some scripts (e.g. backup sql) will not work (at least under windows)
 if [ get-java-property "user.home" | matches ".* .*" | eq true ] {
@@ -62,7 +114,6 @@ try {
 // RunScript runs a SQL script against a database. 
  
 global [val h2Jar	   [ concat $rcpttDir "h2-1.4.200.jar"] ]
-global [val sqlCmdFile	  [ concat $rcpttDir "commands.sql"] ]
 global [val jdbcConnection  "Unknown jdbcConnection"]
 
 if [ safe-get-java-property "elexis-run-mode" |  eq "RunFromScratch" ] {
@@ -210,7 +261,6 @@ proc "ensure-loinc-codes-loaded" {
 	HandleMissingInvoiceSystems
 	log "nach Ensure-Loinc-Codes-loaded"
 }
-
 
 // Ende
 //

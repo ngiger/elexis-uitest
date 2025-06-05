@@ -12,23 +12,25 @@
     <booleanAttribute key="clearws" value="false"/>
     <booleanAttribute key="clearwslog" value="false"/>
     <stringAttribute key="com.xored.launching.common.attrArch" value="x86_64"/>
-    <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Elexis3MasterLinuxH2german"/>
-    <stringAttribute key="location" value="${workspace_loc}/../aut-Elexis3MasterLinuxH2german"/>
+    <stringAttribute key="configLocation" value="${workspace_loc}"/>
+    <stringAttribute key="location" value="${workspace_loc}/Elexis3LinuxH2german"/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <booleanAttribute key="org.eclipse.debug.ui.ATTR_APPEND_TO_FILE" value="true"/>
-    <stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="${workspace_loc}/Elexis3MasterLinuxH2german/console.log"/>
+    <stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="${workspace_loc}/Elexis3LinuxH2german/elexis-5.log"/>
     <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/openjdk"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch x86_64 -consoleLog -nl de_CH"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="&quot;-Duser.language=de&quot; &quot;-Duser.region=CH&quot; &quot;-Dfile.encoding=utf-8&quot; &quot;-Dch.elexis.dbFlavor=h2&quot; &quot;-Dch.elexis.dbSpec=jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_de/db&quot; &quot;-Dch.elexis.dbUser=sa&quot; &quot;-Dch.elexis.dbPw=&quot; &quot;-Dch.elexis.dbH2AutoServer=1&quot; &quot;-Dch.elexis.firstMandantName=Mustermann&quot; &quot;-Dch.elexis.firstMandantPassword=elexisTest&quot; &quot;-Dch.elexis.firstMandantEmail=mmustermann@elexis.info&quot; &quot;-Dch.elexis.username=Mustermann&quot; &quot;-Dch.elexis.password=elexisTest&quot; &quot;-Dch.elexis.test.convertDocx2PDF=true&quot;"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.language=de -Duser.region=CH -Dfile.encoding=utf-8 &#10;-Dch.elexis.dbFlavor=h2 -Dch.elexis.dbSpec='jdbc:h2:/home/niklaus/elexis/h2_elexis_rcptt_de/db' &#10;-Dch.elexis.dbUser=sa -Dch.elexis.dbPw= -Dch.elexis.dbH2AutoServer=1 &#10;-Dch.elexis.firstMandantName=Mustermann -Dch.elexis.firstMandantPassword=elexisTest -Dch.elexis.firstMandantEmail=mmustermann@elexis.info &#10;-Dch.elexis.username=Mustermann -Dch.elexis.password=elexisTest -Dch.elexis.test.convertDocx2PDF=true"/>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="/opt/src/elexis-uitest/os"/>
+    <stringAttribute key="org.eclipse.rcptt.launching.ATTR_AUT_LAUNCH_ID" value=""/>
     <stringAttribute key="pde.version" value="3.3"/>
     <stringAttribute key="product" value="ch.elexis.core.application.product"/>
+    <booleanAttribute key="restart" value="false"/>
     <booleanAttribute key="tracing" value="false"/>
     <booleanAttribute key="useDefaultConfig" value="true"/>
-    <booleanAttribute key="useDefaultConfigArea" value="true"/>
+    <booleanAttribute key="useDefaultConfigArea" value="false"/>
     <booleanAttribute key="useProduct" value="true"/>
 </launchConfiguration>

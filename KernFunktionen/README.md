@@ -17,7 +17,42 @@ Wegen problemen von NixOS mit justj
     * In elexis-3.12/pom.xml `<executionEnvironment>JavaSE-17</executionEnvironment>` nach none?
     * Oder elexis-3.12/patch_elexis3.rb als step einbauen?
 
+java.lang.Exception: Insufficient rights [requires crudi] on objects [ch.elexis.base.ch.labortarif.ILaborLeistung]
+        at ch.elexis.core.ui.util.ImporterPage$ImporterJob.run(ImporterPage.java:143)
+        at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Deshalb laufen folgende Importer nicht:
+  * Import Analysenlist
+  * Import Blöcke
+  * Import Komplementärmedizin
+  * Import Tarmed
+Weiter wurde ConfigureDocx_TextVerarbeitung geändert
+Beim Erstellen der Patienten kann die AHV mangels Berechtigung nicht erstellt werden, aber kein PopUp-Meldung erscheint!!
+  (Bei Patienten.test auf Zeile 131, nur AHV eingeben, wenn vorhanden)
+quickget debian 12.11.0 gnome
+
+ObjectEvaluatableACE(type, Right.IMPORT).and(Right.CREATE)
+										.and(Right.UPDATE).and(Right.DELETE).and(Right.READ)))
+Welche Workaround gibt es für
+SWT OS.java Error: Failed to load swt-pi3, loading swt-pi4 as fallback.
+
 GUI-Tests für Elexis
+* ImportAnalysenListe 1006
+* ImportBlocks
+* ImportTarmed select-tarmed-leistung 01.01.01 
+* ImportMigel Absaug
+* ImportEigendiagnose
+* ImportEigenleistung Window Eigenleistung could not be found
+* BasicAbrechnungssystem Privatrechnung not found
+* ImportArtikelstammFull Failed to set selection: [[Losartan.*Stk.*]].
+* CreateFemalePatient Cannot execute command on the required control Elexis 3.12.0.20250604-0834 -  Mustermann Max / Weirich Gerry  / Müller Manon (w), 13.05.1985 (40) - [1] because there is still the active modal dialog "Identifikationselemente".
+  * Dito KonsDirektVerrechnen
+  * Dito TarmedFallberechen
+  * ..
+* TimeTool
+* CreateAndPrintPrescription
+
+### Failing tests with 3.12
+
 
 ## Ziele
 
