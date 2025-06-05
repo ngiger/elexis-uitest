@@ -52,8 +52,7 @@ end
 set zip_file elexis-$branch/target/products/*zip
 echo zip_file is $zip_file
 set cmd mvn -V --batch-mode clean install --settings=$dbtype/settings.xml -f $dbtype/pom.xml -DuseBranch=$branch -Dlanguage=$language -DautExplicit=$autDir/Elexis3
-echo $cmd
-$cmd
+$cmd 2>&1 | tee mvn-(date '+%Y-%m-%d-%H-%M').log
 set result $status
 echo "Maven returned $result mit $status branch $_flag_branch"
 ls -lh Kernfunktionen/target/results/Kernfunktionen.html

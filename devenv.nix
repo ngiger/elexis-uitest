@@ -71,7 +71,7 @@
     {name = "elexis_rcptt_it";}
     {name = "elexis";}
   ];
-  services.mysql.enable = true;
+  services.mysql.enable = false;
   services.mysql.ensureUsers = [
     {
       name = "elexis";

@@ -6,5 +6,5 @@ cd `dirname $0`
 # -Dsuite2run=QuickTestSuite
 # -DuseBranch=3.12
 set -v
-mvn -V --batch-mode clean install --settings=$PWD/postgresql/settings.xml -f $PWD/postgresql/pom.xml -DuseBranch=3.12 2>&1 | tee `basename --suffix=.sh $0`-3.log;
+mvn -V --batch-mode clean install --settings=$PWD/postgresql/settings.xml -f $PWD/postgresql/pom.xml -DuseBranch=3.12 2>&1 | tee mvn-`date '+%Y-%m-%d-%H-%M'`.log;
 echo done

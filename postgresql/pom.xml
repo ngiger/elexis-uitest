@@ -47,7 +47,7 @@
         <plugin>
         <groupId>org.eclipse.rcptt</groupId>
         <artifactId>rcptt-maven-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>${rcptt-maven-version}</version>
         <extensions>true</extensions>
         <configuration>
           <timeout>5402</timeout>
